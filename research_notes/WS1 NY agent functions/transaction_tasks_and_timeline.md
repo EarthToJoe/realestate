@@ -270,3 +270,190 @@ Across both inventories the pattern is consistent: roughly 60% of tasks are docu
 
 ### Gaps
 - Licensing questions (whether an unlicensed software operator may perform any of S1–S28/B1–B16 for a fee, and whether the attorney's exemption extends to an entity) are WS2's remit and were not researched here.
+
+---
+
+## Gap fill (2026-10-23, VPS session)
+
+Scope of this pass: audit the task and timeline notes above against WS1's exact ask, re-open the sources the timeline and task conclusions rest on, and close the holes that change a classification or a number. Licensing, fiduciary and 2025–2026 legal changes are in the gap fill of `licensing_curriculum_and_duties.md`. Where this section disagrees with the text above it says so; the text above is unchanged.
+
+### Coverage audit
+
+| # | Question inside the ask | Before this pass | After this pass |
+|---|---|---|---|
+| 1 | Everything a listing (seller's) agent does | Full (S1–S28) | Full; cross-checked against NAR's 179-item list, now retrieved from NAR's own PDF |
+| 2 | Everything a buyer's agent does | Full (B1–B16) | Full; added items the notes lacked (neighbourhood and school information as a fair-housing risk; SOP gating; offer-price advice; competing-buyer conflicts) |
+| 3 | Business development and client acquisition (how agents get clients; marketing the business) | Not answered | Answered: NAR primary figures on agent use and FSBO; solicitation and advertising rules (other file); NAR list's pre-listing tasks |
+| 4 | Post-close work | Partly | Full: NAR list items 175–179; Commission Escrow Act re-read (one correction); records |
+| 5 | Hudson Valley listing-to-close timeline | Full (OneKey DOM) | Full; Dutchess figures re-verified; seasonality added |
+| 6 | Buyer search-to-close timeline | Partly | Partly (national 10-week search median from a secondary summary; no Hudson Valley figure) |
+| 7 | Where attorneys, licensee, inspector, appraiser, lender and title company act | Partly | Full for the Hudson Valley counties from NYSBA county closing-custom sheets (dated 2018–2020) |
+| 8 | How upstate (outside the Hudson Valley) differs | Partly (snippet only) | Full: Moran v Erk read; NYSBA Albany and Monroe sheets; NYSBA LegalEase |
+| 9 | Contract-to-close durations (mortgage commitment, closing date) | Partly | Partly: 45-day commitment contingency and "on or about" closing ±30 days (attorney guide, case-law snippets); no 2025–2026 primary national days-to-close |
+| 10 | Columbia and Greene timelines | Not answered | Still open |
+| 11 | Classification of each task | First pass (Full/Partly/Not) | Superseded by the F-ID inventory in `docs/research/WS1-agent-functions.md` |
+
+### Verification of load-bearing claims
+
+| # | Claim | Source re-checked (accessed 2026-10-23) | Result |
+|---|---|---|---|
+| T1 | OneKey Q3-2026 Dutchess single-family: closed 592 (582), DOM 51 (48), median $547,700 (+10.3%), months supply 4.5; DOM = listing to accepted offer; data as of Oct 7, 2026 | [OneKey Dutchess Q3-2026 PDF](https://corporate.onekeymls.com/s/DutchessCounty-mrmd.pdf) pp.1–2, 8 | Confirmed; added seasonality (below) |
+| T2 | Amended PCDA effective Mar 20, 2024: no $500 credit; 56 questions incl. seven new flood questions | [nysenate §462](https://www.nysenate.gov/legislation/laws/RPP/462) (latest revision 2025-07-04) | Confirmed 56 questions and no credit; **refined**: on the current form the flood questions run 10–17 (the notes above cite items 10–13), and a further amendment signed Sept 27, 2024 added a septic paragraph to question 36, mandatory from July 1, 2025 (G6) |
+| T3 | RPL §466 agent duties (inform seller; inform buyer before binding contract) | [HGAR/NYSAR legal update](https://hgar.com/nysar-legal-update-amended-pcds-must-be-used-beginning-july-1-2025); March 2026 DOS booklet TOC | Confirmed |
+| T4 | Written buyer agreement before any in-person or live virtual tour from Aug 17, 2024; specific, objectively ascertainable compensation; "not set by law and are fully negotiable" | [NAR Written Buyer Agreements 101](https://www.nar.realtor/the-facts/written-buyer-agreements-101) | Confirmed; the page itself lists no open-house exception (the exception in the notes comes from NAR's consumer page) |
+| T5 | Reg Z: agents are covered persons; may supply information and ask for corrections; an agent's estimate is a "valuation" | [12 CFR 1026.42 (CFPB)](https://www.consumerfinance.gov/rules-policy/regulations/1026/42/) | Confirmed; **refined**: an estimate produced exclusively by an automated model is not a "valuation" (comment 42(b)(3)-2), while one a person develops partly from automated output is |
+| T6 | Commission Escrow Act: "broker must sue within 60 days" (S27 above, from Cuddy & Feder) | [nysenate §294-b](https://www.nysenate.gov/legislation/laws/RPP/294-B) | **Corrected**: the broker must sue within six months of the deposit (§294-b(5)(f)); if neither side sues within 60 days the seller may petition for the money to be paid out (§294-b(5)(e)); the 60-day limit "shall not be extended" |
+| T7 | NAR 2025 Profile: 88% of buyers and 91% of sellers used an agent; FSBO 5%; FSBO median $360,000 vs $425,000 | [NAR release, Nov 4, 2025](https://www.nar.realtor/newsroom/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40); [NAR news, Nov 11, 2025](https://www.nar.realtor/news/real-estate-news/fsbos-reach-all-time-low-more-sellers-rely-on-agents) | Confirmed (FSBO down from 7% the prior year) |
+| T8 | Hudson Valley custom: seller's attorney drafts the contract and holds the deposit | NYSBA county closing-custom sheets (G1) | Confirmed for Columbia, Dutchess, Greene, Orange, Sullivan, Ulster (sheets dated 2018–2019) |
+| T9 | Upstate: broker-prepared contracts with attorney-approval contingency (Moran v Erk) | [Moran v Erk at LII](https://www.law.cornell.edu/nyctap/I08_0176.htm) | Confirmed (G2) |
+| T10 | Private-well testing at sale is not law | [nysenate S9622](https://www.nysenate.gov/legislation/bills/2025/S9622) | Confirmed: in Senate Environmental Conservation, last action Mar 30, 2026 |
+| T11 | NAR "179 Ways" text not retrievable (KQ7 above) | [NAR 179 Ways PDF (2023)](https://www.nar.realtor/sites/default/files/documents/2023_179_ways_real_estate_pros_8.5x11_pages_final.pdf) | **Corrected**: NAR posts the full list publicly (G3) |
+| T12 | Practitioner durations: acceptance to contract 1–2 weeks; acceptance to close 45–60 days (Boeckelman; Rand) | Not re-fetched; corroborated by an attorney guide (G2) | Not re-verified directly; corroborated |
+
+### Gap theme G1: who does what in Hudson Valley closings (NYSBA county sheets)
+
+### Takeaway
+The NYSBA Real Property Law Section's county closing-custom sheets confirm the downstate pattern across the Hudson Valley: the seller's attorney drafts the contract and holds the deposit, the lender's ("bank") attorney disburses at closing, the title company records, surveys are customary only for new construction, and brokers are paid at closing. The deposit custom varies by county (10% in Ulster, 5% in Orange, $1,000–$5,000 in Columbia, Greene and Sullivan). The Capital Region and Rochester follow the upstate pattern instead: brokers prepare the contract on an MLS or bar form subject to attorney approval and the broker holds a small deposit.
+
+### Cited Findings
+- NYSBA "Practices by County" index: Columbia (updated 1/17/18), Dutchess (4/10/19), Greene (1/17/18), Orange (4/18/18), Putnam (2/20/2020), Rockland (3/1/19), Sullivan (1/17/18), Ulster (1/17/18), Albany (1/22/18), Monroe (1/8/18) [PRIMARY-adjacent (bar association practitioner survey), accessed 2026-10-23; FLAG dated 2018–2020] — [NYSBA Real Property Law Section practices by county](https://nysba.org/real-property-law-section-practices-by-county/)
+- Columbia: contract prepared by "Seller Attorney"; deposit held by "Seller's Attorney"; customary deposit "$1000 - 5000"; survey only for new construction; owner's title policy not customary; checks cut by "Bank Attorney"; realtors paid at closing; title company records; RP-5217 by buyer's attorney, TP-584 by seller's attorney [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Columbia sheet](https://nysba.org/wp-content/uploads/2020/02/Columbia-2.pdf)
+- Greene: contract by seller's attorney; deposit held by seller's attorney, $1,000–$5,000; survey only new construction; bank attorney cuts checks; realtors paid at closing; title company records [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Greene sheet](https://nysba.org/wp-content/uploads/2020/02/Greene-2.pdf)
+- Sullivan: same pattern; deposit $1,000–$5,000; bank attorney cuts checks; realtors paid at closing [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Sullivan sheet](https://nysba.org/wp-content/uploads/2020/02/Sullivan-2.pdf)
+- Ulster: contract by seller's attorney; deposit held by seller's attorney, "10% of the sale price, unless the mortgage amount is greater than 90%"; realtor contracts marked "Yes/Yes" for attorney approval and notification; survey only new construction; owner's policy customary, paid by buyer; realtors paid at closing; title company records [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Ulster sheet](https://nysba.org/wp-content/uploads/2020/02/Ulster-2.pdf)
+- Orange: contract by "Sellers Attorney" on "NYSBA approved form"; deposit held by seller's attorney, customary 5%; survey not required; owner's policy customary; bank and seller's attorney disburse; realtors paid at closing; title company records [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Orange sheet](https://nysba.org/wp-content/uploads/2020/02/Orange.pdf)
+- Dutchess: contract drafted by an attorney; deposit held by seller's attorney; customary deposit "varies"; owner's policy customary; bank (or purchaser's attorney if no bank) cuts checks; realtors paid at closing; title agent records. The sheet's header reads "Bronx County" while its entries reference Red Hook and a Dutchess GIS link, so treat it with care [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Dutchess sheet](https://nysba.org/wp-content/uploads/2020/02/Practice-Guide-Dutchess.pdf)
+- Albany (Capital Region, contrast): contract prepared by "Realtors" on a CRMLS form, subject to attorney approval with written attorney notification; deposit held by the listing realtor, $500–$2,000; owner's policy not customary [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Albany sheet](https://nysba.org/wp-content/uploads/2020/02/Albany.pdf)
+- Monroe (Rochester, contrast): contract "predominately Realtor" on the local bar form, subject to attorney approval; broker holds a $1,000–$2,000 deposit; realtors paid after recording, not at closing [PRIMARY-adjacent, accessed 2026-10-23] — [NYSBA Monroe sheet](https://nysba.org/wp-content/uploads/2020/02/Monroe.pdf)
+- NYSBA LegalEase: upstate the agent usually drafts the offer or contract "subject to the approval of the parties' attorneys"; downstate the seller's attorney prepares the contract; the seller's attorney prepares the deed and closing papers [SECONDARY (bar consumer guide, undated, © 2026), accessed 2026-10-23] — [NYSBA LegalEase](https://nysba.org/legalease-the-attorneys-role-in-home-purchase-transactions/)
+
+### Inferences
+- [INFERENCE] In every Hudson Valley county sheet, the agent's role stops at the accepted offer and the memorandum; contract, deposit, title clearance and disbursement belong to attorneys, the lender's attorney and the title company. A Hudson Valley brokerage therefore needs no broker escrow account if it follows custom, which removes one licensed burden (175.1) at launch.
+- [INFERENCE] Expansion to the Capital Region or Rochester would change the product: there the broker fills in the purchase contract (subject to attorney approval) and usually holds the deposit, which brings 175.1 escrow and LI04's fill-in limits into play.
+- [INFERENCE] Ulster's 10% and Orange's 5% versus $1,000–$5,000 in Columbia, Greene and Sullivan means the product's deposit field cannot be a fixed default.
+
+### Gaps
+- The sheets are 2018–2020; current practice should be confirmed with a local attorney (the attorney-founder can do this in minutes).
+- No Putnam or Rockland detail was extracted (Putnam PDF unreadable to the fetch tool; Rockland not fetched).
+
+### Gap theme G2: contract-to-close timing and the attorney-approval contingency
+
+### Takeaway
+Upstate attorney-approval clauses are enforced as written (Court of Appeals, Moran v Erk, 2008): either attorney may disapprove "for any reason or for no stated reason" within the approval period, commonly three business days. Downstate-style contracts typically give the buyer 45 days to obtain a mortgage commitment and set the closing "on or about" a date that in practice moves up to 30 days either way.
+
+### Cited Findings
+- Moran v Erk, 2008 NY Slip Op 09255 (Nov 25, 2008): "Attorney approval contingencies are routinely included in real estate contracts in upstate New York"; "an attorney for either party may timely disapprove the contract for any reason or for no stated reason"; "no vested rights are created by the contract prior to the expiration of the contingency period"; rider: "This Contract is contingent upon approval by attorneys for Seller and Purchaser by the third business day …"; the form was approved by the Greater Buffalo Association of Realtors and the Bar Association of Erie County [PRIMARY, accessed 2026-10-23] — [Moran v Erk at LII](https://www.law.cornell.edu/nyctap/I08_0176.htm)
+- Attorney guide (Angiuli & Gentile LLP, Staten Island, May 29, 2022): inspection follows the signed offer and the contract is drafted "if all goes well with the inspection"; "the seller's attorney will draft a proposed contract of sale"; "the purchaser will typically have 45 days to obtain a mortgage commitment"; the closing date "will typically vary up to 30 days before and 30 days after" [SECONDARY, accessed 2026-10-23] — [Angiuli & Gentile guide](https://industrym.com/point-of-sale/)
+- Court decisions quote 45-day commitment clauses measured from delivery of the fully executed contract to the purchaser or the purchaser's attorney, with short cancellation-notice windows (e.g., five business days after the commitment date in Dazzo v Kilcullen, 2d Dept 2008) [SECONDARY, search-result summaries; nycourts pages returned HTTP 403, accessed 2026-10-23] — [Dazzo v Kilcullen](https://www.nycourts.gov/REPORTER/3dseries/2008/2008_08447.htm)
+- National days-to-close: no primary 2025–2026 ICE figure was retrievable; lender and blog pages cite about 42–43 days for purchase loans in 2026, attributed to ICE but not checked against ICE [CLAIMED, accessed 2026-10-23] — [mortgage-info.com, July 2026](https://mortgage-info.com/blog/how-long-does-it-take-to-close-on-a-house-2026)
+
+### Inferences
+- [INFERENCE] Combining the verified pieces: accepted offer → inspection within about a week → executed contract and deposit at about one to two weeks → 45-day commitment window → closing "on or about" 60 days after acceptance, give or take 30 days. This matches the Rand 45–60-day practitioner figure in KQ3.
+- [INFERENCE] For the product, the contingency dates (attorney approval where used, mortgage commitment, cancellation-notice windows) are the deadline engine that a transaction tracker must compute from the executed-contract date, not from acceptance.
+
+### Gaps
+- Hudson Valley-specific attorney sources on current contingency periods were not found; the attorney-founder can supply the local norm.
+- A primary 2025–2026 days-to-close statistic.
+
+### Gap theme G3: NAR's "179 Ways" list, item by item
+
+### Takeaway
+NAR posts the full list publicly. It is a seller-side (listing) list in nine sections; measured against New York law and Hudson Valley custom, roughly 140 of its 179 items are data gathering, document, scheduling, marketing-production or tracking steps, about 17 are advice or negotiation acts that New York reserves to the licensee, about 10 need a body on site, about 8 are done by attorneys or title companies in the Hudson Valley, and 3 do not apply in New York at all; one item ("explain impact of schools on market value") is a fair-housing hazard in New York.
+
+### Cited Findings
+- Structure: Pre-Listing Activities 1–22; Listing Appointment Presentation 23–108; Offers 109–120; Contracts 121–131; Inspections 132–143; Home Inspections 144–150; The Appraisal 151–153; Processing for Closing 154–174; Follow-up After Closing 175–179; "Print this out and use it in your listing presentation" [PRIMARY, NAR 2023 PDF, accessed 2026-10-23] — [NAR 179 Ways PDF](https://www.nar.realtor/sites/default/files/documents/2023_179_ways_real_estate_pros_8.5x11_pages_final.pdf)
+- Advice and negotiation items include: 23 market overview and projections; 27 present CMA; 28 pricing strategy; 29 seller goals; 35 "Explain transaction/agency brokerage relationship"; 36 "Review and explain all clauses in listing contract and addendum, then obtain seller's signature"; 45 buyer financing alternatives; 105 discuss showing feedback and changes; 111 "Explain merits and weakness of each offer to sellers"; 112 discuss offers with buyers' agents; 116 "Negotiate all offers per seller's direction on seller's behalf"; 117 counteroffers; 126 advise seller of additional offers; 147 explain seller's responsibilities and "recommend an attorney interpret any clauses"; 150 "Negotiate payment, and oversee all required repairs on seller's behalf"; 155 help question a low appraisal; 176 resolve repair conflicts [PRIMARY, accessed 2026-10-23] — [NAR 179 Ways PDF](https://www.nar.realtor/sites/default/files/documents/2023_179_ways_real_estate_pros_8.5x11_pages_final.pdf)
+- Physical items include: 17 exterior curb-appeal assessment; 24 tour property; 38–39 measure square footage and rooms; 66 extra lockbox key; 71 yard sign; 81 photos; 85 "Install electronic lock box if authorized"; 92–93 print and distribute brochures [PRIMARY, accessed 2026-10-23] — same PDF
+- Items that Hudson Valley custom assigns to attorneys or title companies: 41 unrecorded liens and easements; 121 "Record and promptly deposit buyer's earnest money in escrow account"; 156 "Get contract signed by all parties"; 160 select closing location; 162 "Assist in solving any title problems"; 165–166 request and review closing figures; 170 review documents with the closing attorney [PRIMARY list; assignment per G1 sheets] — same PDF
+- Items that do not fit New York: 21 "Review Obsolete Property Rehabilitation Act (OPRA) Report from Township"; 57 transferable "Termite Bond"; 62 register a vacant property "with the township" [PRIMARY, accessed 2026-10-23] — same PDF
+- Item 19: "Confirm current public schools and explain impact of schools on market value" [PRIMARY, accessed 2026-10-23] — same PDF
+
+### Inferences
+- [INFERENCE] The counts above are my tally from the item texts (approximate at the edges: e.g., item 29 "discuss goals" could be clerical). They support the notes' earlier view that the list counts steps rather than weighing them, and they show the national list overstates the New York agent's role in the contract, escrow and closing stages.
+- [INFERENCE] Item 19 should not be automated as written: "school talk" tied to market value is the kind of steering conduct New York enforcement has targeted (WS2 has the enforcement record); the product should give only neutral links to official school data, never a recommendation.
+- [INFERENCE] The list has no buyer-side section, no compliance section and no business-development section; the WS1 inventory has to add these from the statutes and the syllabi.
+
+### Gaps
+- NAR's companion "105 More Ways" was not read.
+
+### Gap theme G4: business development and client acquisition evidence
+
+### Takeaway
+Agent use is at or near record highs (91% of sellers, 88% of buyers) and FSBO is at a record low 5%, so client acquisition is a contest against established agents, not against self-service; the notes' referral figures (66% of sellers by referral or prior use) remain from a secondary summary.
+
+### Cited Findings
+- NAR 2025 Profile (July 2024–June 2025 transactions): 88% of buyers used an agent or broker (92% for previously owned homes); 91% of sellers used an agent, "equal to the highest share on record"; 91% of buyers would use their agent again or recommend them [PRIMARY, NAR release Nov 4, 2025, accessed 2026-10-23] — [NAR newsroom](https://www.nar.realtor/newsroom/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40)
+- FSBO 5% of sales in 2025, down from 7%; sellers used agents to reach a wider pool of buyers and price competitively; 86% said their agent offered a broad range of services; FSBO median $360,000 vs $425,000 agent-assisted [PRIMARY, NAR news Nov 11, 2025, accessed 2026-10-23] — [NAR news](https://www.nar.realtor/news/real-estate-news/fsbos-reach-all-time-low-more-sellers-rely-on-agents)
+
+### Inferences
+- [INFERENCE] The business-development functions that matter (referrals, reputation, the founder's network) are trust functions; software can run the CRM and the marketing machine, but the scarce input is the relationship. This is consistent with K5 in WS5.
+
+### Gaps
+- NAR's referral and "how found agent" exhibits are only available via the secondary summary already cited above.
+
+### Gap theme G5: commission collection and post-close
+
+### Takeaway
+The Commission Escrow Act lets a licensed broker whose agreement carries the statutory bold notice file an affidavit of entitlement before the deed passes, forcing the seller to deposit the lesser of net proceeds or the unpaid commission with the county clerk; the broker then has six months to sue, but the seller can get the money released if nobody sues within 60 days. This corrects the notes' "must sue within 60 days".
+
+### Cited Findings
+- §294-b: applies to one-to-four family, condo or co-op residences; the brokerage contract must contain a "clear and conspicuous bold type" notice beginning "At the time of closing, you may be required to deposit the broker's commission with the county clerk"; affidavit filed by a licensed broker with licence number, served on the seller within five business days; not a lien; seller deposits the lesser of net proceeds or the unpaid commission at delivery of the deed; broker must sue "within six months of the deposit of the monies" (5(f)); if neither side sues "within sixty days from the day of deposit of monies" the seller may petition for release, and the sixty days "shall not be extended" (5(e)) [PRIMARY, accessed 2026-10-23] — [nysenate §294-b](https://www.nysenate.gov/legislation/laws/RPP/294-B)
+- NAR list post-close items 175–179: warranty paperwork, repair disputes, information requests, rental prorations, close-out in the management program; item 173 refer sellers to an agent at their destination [PRIMARY, accessed 2026-10-23] — [NAR 179 Ways PDF](https://www.nar.realtor/sites/default/files/documents/2023_179_ways_real_estate_pros_8.5x11_pages_final.pdf)
+
+### Inferences
+- [INFERENCE] The listing-agreement generator should include the §294-b bold notice by default; it costs nothing and preserves the only statutory collection remedy a New York broker has.
+
+### Gaps
+- None material.
+
+### Gap theme G6: disclosure updates since the notes' sources
+
+### Takeaway
+The PCDS changed again: a law signed September 27, 2024 added a septic-system paragraph to question 36, and the amended form must be used from July 1, 2025; NYSAR tells licensees not to help sellers fill the form in.
+
+### Cited Findings
+- "The newly amended PCDS must be used beginning July 1, 2025"; the amendment adds a paragraph to question 36 pointing to a Department of Health pamphlet on septic operation and maintenance (GBL §396-s); signed by Governor Hochul Sept 27, 2024; listing agents must inform sellers, buyers' agents must inform buyers before a binding contract; "Licensees should not be assisting the seller in filling out the PCDS"; transition rules for listings taken before July 1, 2025 [SECONDARY (NYSAR legal update republished by HGAR, June/July 2025), accessed 2026-10-23] — [HGAR/NYSAR legal update](https://hgar.com/nysar-legal-update-amended-pcds-must-be-used-beginning-july-1-2025)
+- nysenate §462: the statutory form has 56 numbered questions; flood questions 10–17; latest revision 2025-07-04 [PRIMARY, accessed 2026-10-23] — [nysenate §462](https://www.nysenate.gov/legislation/laws/RPP/462)
+
+### Inferences
+- [INFERENCE] The disclosure module must carry the July-2025 form and version-stamp each PCDS it delivers; Hudson Valley's many septic properties make question 36 live in most listings.
+
+### Gaps
+- S5772 (a proposed buyer "right to inspection") status not checked.
+
+### Gap theme G7: physical-presence professionals and valuation
+
+### Takeaway
+Paid home inspections require a New York home-inspector licence (architects, engineers and code officials excepted), and federal appraisal-independence rules let agents supply information but not influence value; an estimate produced purely by software is outside Reg Z's definition of a "valuation".
+
+### Cited Findings
+- RPL §444-d: "No person shall conduct or represent that he or she has the ability to conduct a home inspection for compensation" without a licence under the article; exceptions for architects, engineers, code-enforcement officials and licensing candidates [PRIMARY, accessed 2026-10-23] — [nysenate §444-d](https://www.nysenate.gov/legislation/laws/RPP/444-D)
+- 12 CFR 1026.42 comment 42(b)(1)-1: "'Covered persons' include creditors, mortgage brokers, appraisers, appraisal management companies, real estate agents"; 42(c)(3) permits asking the appraiser to consider "additional, appropriate property information", to explain, and to correct errors; comment 42(b)(3)-1: a valuation includes "an estimate of market value prepared by a real estate agent"; comment 42(b)(3)-2: an estimate produced exclusively by an automated model is not a valuation, but one a person develops partly from automated output is [PRIMARY, accessed 2026-10-23] — [12 CFR 1026.42 (CFPB)](https://www.consumerfinance.gov/rules-policy/regulations/1026/42/)
+
+### Inferences
+- [INFERENCE] Pricing can be split cleanly: the automated estimate (outside "valuation") is software's; the licensee's pricing advice is a covered person's valuation and must never be used to pressure an appraiser. The product should keep the two labelled separately.
+
+### Gaps
+- New York's own rules on broker price opinions were not found (searches returned other states only).
+
+### Gap theme G8: seasonality of listing-to-offer time
+
+### Takeaway
+Listing-to-accepted-offer time in Dutchess swings with the season: 51 days in Q3-2026 but 66 in Q1-2026, 60 in Q2-2026 and 56 in Q4-2025; year-to-date 2026 averaged 58.
+
+### Cited Findings
+- Dutchess single-family DOM until sale by quarter: Q4-2024 59; Q1-2025 75; Q2-2025 61; Q3-2025 48; Q4-2025 56; Q1-2026 66; Q2-2026 60; Q3-2026 51; YTD 2026 58 (YTD 2025 60) [PRIMARY, accessed 2026-10-23] — [OneKey Dutchess Q3-2026 PDF](https://corporate.onekeymls.com/s/DutchessCounty-mrmd.pdf) p.8
+
+### Inferences
+- [INFERENCE] A winter listing in Dutchess should be planned at roughly two to two-and-a-half months to an accepted offer, a summer listing at under two.
+
+### Gaps
+- Equivalent quarterly series for the other counties were not extracted.
+
+### Still open after gap fill
+- Columbia and Greene 2026 days-on-market: no HVCR MLS or NYSAR 2026 figure found; ask the Hudson Valley Catskill Region REALTORS or buy NYSAR data.
+- A primary 2025–2026 days-to-close statistic: ICE's report page was not retrievable.
+- Current (2026) Hudson Valley contract customs: the NYSBA sheets are 2018–2020; the attorney-founder can confirm in one conversation.
+- How Hudson Valley listing agents treat offers from software-led or discount brokerages: no data; only real deals will show it (WS5 K6).
+- New York broker-price-opinion rules: not found.
+- Whether any self-tour programme (Redfin, Opendoor) operates in the Hudson Valley: not checked (WS3/WS7 territory).

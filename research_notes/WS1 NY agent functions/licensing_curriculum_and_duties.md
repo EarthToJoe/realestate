@@ -442,3 +442,182 @@ First-pass classification key: **A** = automatable as a clerical/document functi
 ### Gaps
 - The classification is a first pass by a non-lawyer from statutory text, DOS guidance and three decisions; the attorney-broker should test rows 10, 23, 24 and 29 against DOS directly (written inquiry), since none has been applied to automated systems.
 - Not covered here (other workstreams): MLS participation rules after the 2024 NAR settlement (buyer agreements before touring; no MLS compensation offers) as they apply to OneKey MLS and other Hudson Valley MLSs; GBL §349 consumer-protection exposure for automated statements; the attorney's own professional-responsibility rules; Hudson Valley county-level customs (attorney-prepared contracts, who holds deposits) beyond what the DOS syllabus states.
+
+---
+
+## Gap fill (2026-10-23, VPS session)
+
+Scope of this pass: audit the notes above against WS1's exact ask ("everything a NY buyer's and seller's agent actually does … licensing course curricula … broker duties, fiduciary expectations … transaction timelines … mark each function"), re-open the primary sources the conclusions rest on, and close the gaps that would change a classification. About 75 searches and fetches were spent across both WS1 notes files. Where this section disagrees with the text above, this section says so explicitly; the text above is left unchanged. Customs, timelines and the 179-item NAR list are in the gap fill of `transaction_tasks_and_timeline.md`.
+
+### Coverage audit
+
+| # | Question inside the ask | Before this pass | After this pass |
+|---|---|---|---|
+| 1 | What the salesperson course (77 h) trains, subject by subject with hours | Full | Full; re-verified against the DOS syllabus PDF and the March 2026 DOS booklet |
+| 2 | What the broker course (75 h; 152 h total) trains | Full | Full; re-verified the same way |
+| 3 | Which course topics map to which agent functions | Not answered (no mapping) | Answered in the deliverable (topic-to-F-ID mapping), built on the verified syllabi |
+| 4 | Broker duties: supervision, record keeping, escrow, advertising, agency disclosure, fair-housing notices, SOPs | Full | Full; March 2026 booklet confirms Part 175 still ends at 175.29 with no new sections |
+| 5 | Fiduciary duties and what they mean for a software-led service | Full on the statute; partly on case law (Rivkin not read; Lemecke read only as a snippet) | Full; Rivkin and Lemecke read |
+| 6 | Which acts need a licence; what unlicensed people or software may do | Partly; showings and open houses "contested" | Mostly; a DOS decision (Ardelean, 1993) treats an unlicensed person discussing availability with a prospect and showing listings as unlicensed salesperson activity; still no DOS ruling on software |
+| 7 | Changes in 2025–2026 the notes predate | Partly | Answered: March 2026 DOS booklet; broker-experience bill S8870/A9518 and private-listing bill A10679-B passed both houses (not yet signed per the bill pages); S7499 passed Senate only; S9564 in committee; DOS AI-photo alert (Nov 2025); AI-image disclosure bill A11635 introduced July 2026 |
+| 8 | Attorney route to a broker licence; CE exemption | Partly ([CLAIMED]) | Partly; [SECONDARY] confirmation of the exemption and the $185 fee; the DOS broker page itself does not mention attorneys |
+| 9 | Business-development rules (solicitation, advertising the firm itself) | Partly | Full: only one cease-and-desist zone remains (Brooklyn, to 1 July 2028); advertising rules cover websites, e-mail, business cards and signs |
+| 10 | Classification of each function | First pass, 39 rows (A/P/H/L/?) | Superseded by the 89-function F-ID inventory in `docs/research/WS1-agent-functions.md` |
+
+### Verification of load-bearing claims
+
+| # | Claim the conclusions rest on | Source re-checked (accessed 2026-10-23) | Result |
+|---|---|---|---|
+| V1 | Salesperson course is 77 hours of instruction (+3 h exam) in 19 subjects with the hours in the 176.3 table; fair housing 6 h | [DOS 77-hour syllabus PDF](https://dos.ny.gov/real-estate-salesperson-77-hour-curriculum-eff-12212022) p.1; [DOS Real Estate License Law, March 2026](https://dos.ny.gov/system/files/documents/2026/03/real-estate-license-law_03.2026.pdf) p.32–33 | Confirmed |
+| V2 | Broker course is 75 hours in 11 chapters (26/7/4/3/3/4/4/3/13/6/2); 176.4 subject list incl. supervision, onboarding, teams, SOPs | [DOS 75-hour syllabus PDF](https://dos.ny.gov/real-estate-broker-75-hour-curriculum-eff-12212022) p.2; March 2026 booklet p.33 | Confirmed |
+| V3 | Broker syllabus: broker's role preface; supervision, unlicensed assistants, escrow, BPOs, SOPs, "meeting of the minds", "orchestrate the closing" | DOS 75-hour syllabus PDF pp.2–5 | Confirmed |
+| V4 | Salesperson syllabus "Contract Preparation": upstate vs downstate forms; who prepares the contract; who holds the down payment; §443 statement when brokers prepare contracts; attorney review clauses | DOS 77-hour syllabus PDF pp.16–17 | Confirmed. Note: the same page reads "Clauses relating to lead-based paint (properties constructed after 1978)"; the federal rule covers pre-1978 housing, so this looks like a DOS typo |
+| V5 | RPL §440 definitions of broker, associate broker, salesperson, office manager | [nysenate §440](https://www.nysenate.gov/legislation/laws/RPP/440) (revision 2022-08-19); March 2026 booklet p.3 | Confirmed |
+| V6 | RPL §443 definitions, timing, three-year retention, sworn refusal declaration, six fiduciary duties, §443(5) and (6) | [nysenate §443](https://www.nysenate.gov/legislation/laws/RPP/443) (revision 2022-08-19) | Confirmed, with a refinement: the buyer's-agent definition already covers an agent "who finds a buyer for a property and presents an offer to purchase to the seller or seller's agent and negotiates on behalf of the buyer" |
+| V7 | RPL §442-h(4) SOP duty (ID, exclusive agreement, pre-approval; notarize, date-stamp, post, archive within 30 days; affirm at renewal) | [nysenate §442-h](https://www.nysenate.gov/legislation/laws/RPP/442-H) (revisions 2025-05-16 and 2025-09-12) | Confirmed. The March 2026 DOS booklet, like the January 2024 one, prints §442-h only through subdivision 3 (p.12–13), even though §441-c (p.8) refers to "subdivision four of section four hundred forty-two-h" |
+| V8 | §441-c: fine up to $2,000, revocation, suspension, reprimand; one-year relicensing bar | March 2026 booklet pp.8–9 | Confirmed |
+| V9 | §442 (splits only to licensees; rebates to principals allowed), §442-a, §442-c, §442-d, §442-e, §442-f | March 2026 booklet pp.10–11 | Confirmed |
+| V10 | 19 NYCRR 175.1 escrow: separate special federally insured account, deposit within three business days | [LII 175.1](https://www.law.cornell.edu/regulations/new-york/19-NYCRR-175.1) (amended eff. 1/4/2017); March 2026 booklet p.26 | Confirmed |
+| V11 | 175.21 supervision = "regular, frequent and consistent personal guidance, instruction, oversight and superintendence" | [LII 175.21](https://www.law.cornell.edu/regulations/new-york/19-NYCRR-175.21); March 2026 booklet p.29 | Confirmed |
+| V12 | 175.23 three-year records; 175.24 six-point explanation and MLS offer-routing option | [LII 175.24](https://www.law.cornell.edu/regulations/new-york/19-NYCRR-175.24) (amended eff. 5/20/2015); March 2026 booklet p.29 | Confirmed |
+| V13 | 175.25: only a broker places ads; owner authorization; "honest and accurate description"; associate/team websites supervised "while the website is live" | [LII 175.25](https://www.law.cornell.edu/regulations/new-york/19-NYCRR-175.25) (amended eff. 11/2/2020); March 2026 booklet pp.29–31 | Confirmed |
+| V14 | 175.28: fair-housing notice at first substantive contact; e-mail/text/link allowed; oral not enough; three-year retention; sworn refusal declaration | [LII 175.28](https://www.law.cornell.edu/regulations/new-york/19-NYCRR-175.28) (eff. 6/20/2020) | Confirmed |
+| V15 | DOS unlicensed-assistant page: 15 permitted activities, no prohibited list, undated; transaction-based pay requires a licence | [DOS Unlicensed Real Estate Assistants](https://dos.ny.gov/node/64166) | Confirmed |
+| V16 | DOS LI04: brokers may fill blanks on simple forms subject to attorneys' approval; no legal terms, no legal advice, no discouraging counsel, no separate fee | [DOS LI04](https://dos.ny.gov/node/23931) (Feb 14, 2020) | Confirmed |
+| V17 | DOS LI12: dual agency needs informed consent; a brokerage and its agents are one entity | [DOS LI12](https://dos.ny.gov/legal-memorandum-li12-be-wary-dual-agency) (updated Feb 2020) | Confirmed |
+| V18 | Dubbs v Stribling (June 12, 2001): broker is "a fiduciary with a duty of loyalty"; disclosure must "lay bare the truth" | [Dubbs at LII](https://www.law.cornell.edu/nyctap/I01_0072.htm) | Confirmed |
+| V19 | Matter of Malul (3d Dept, Nov 6, 2025): failure to supervise = untrustworthiness/incompetency and "fraudulent practices" | [nycourts.gov 2025 NY Slip Op 06110](https://www.nycourts.gov/reporter/3dseries/2025/2025_06110.htm) and [court PDF](https://decisions.courts.state.ny.us/ad3/Decisions/2025/CV-24-1010.pdf): both blocked this session (HTTP 403; connection refused); search listing confirms date, citation (243 AD3d 998) and the ALJ's finding that failure to supervise was untrustworthiness or incompetency | Partly confirmed (disposition and quotations not re-read) |
+| V20 | DOS broker fees: $185 application, $15 exam | [DOS become a broker](https://dos.ny.gov/become-real-estate-broker) | Confirmed; the $155 figure some pages give is the base fee before a $30 surcharge ([RealEstateU, updated 2026-09-14](https://realestateu.com/real-estate/guides/new-york-real-estate-broker-license)) [SECONDARY] |
+| V21 | Cease-and-desist zones: Kings County zones expiring Nov 1, 2025 and July 1, 2028 (KQ4 above) | March 2026 booklet p.27 | **Corrected**: only the County of Kings zone (Community Board 17), expiring July 1, 2028, remains; no Hudson Valley zone |
+| V22 | 22.5 hours CE per two-year term with the statutory topic minimums; attorneys exempt | §441(3)(a) as printed in the March 2026 booklet; attorney exemption from the DOS FAQ quoted above (not re-fetched) | Confirmed (statute); exemption as previously sourced |
+
+### Gap theme G1: is showing a home for a seller a licensed act?
+
+### Takeaway
+Yes on the best New York authority found: in 1993 the Department of State held that an unlicensed trainee who checked availability with the owners, discussed availability with a prospect and showed him other listings was acting as an unlicensed salesperson, and suspended the broker who let her. The case was a rental, but the statutory definition it applied ("offer for sale", "rent or place for rent") covers sales the same way, and DOS's own assistant list permits only "Schedule appointments for licensees to show listed property". No DOS ruling addresses a seller showing their own home, which the statute does not reach because it is not done "for another".
+
+### Cited Findings
+- DOS v. Ardelean, 96 DOS 93 (decision on a July 8, 1993 hearing): "Those activities clearly are referable to an attempt to rent real property, and, therefore, constitute working as an unlicensed salesperson"; conclusion of law: "By allowing Bugyi, who was not licensed … to ascertain from the owners of real property whether an apartment was available for rental, to discuss such availability with Mariani, and to show additional listings to Mariani, the respondent authorized, permitted and suffered Bugyi to act as an unlicensed real estate salesperson, thereby violating RPL § 442-c and demonstrating incompetency"; the broker's licence was suspended six months (with a separate fair-housing finding for failing to show apartments because of ancestry) [PRIMARY, accessed 2026-10-23] — [DOS decision 96 DOS 93 (PDF)](https://docs.dos.ny.gov/ooah/decisions/rebrokers/ardelean.pdf)
+- RPL §440(3): a salesperson is a person associated with a broker "to list for sale, sell or offer for sale … or to negotiate the purchase or sale"; §440(1) broker acts are done "for another and for a fee" [PRIMARY, accessed 2026-10-23] — [nysenate §440](https://www.nysenate.gov/legislation/laws/RPP/440)
+- DOS assistant page lists "Schedule appointments for licensees to show listed property" and contains no line permitting unlicensed staff to show property or host open houses [PRIMARY, accessed 2026-10-23] — [DOS Unlicensed Real Estate Assistants](https://dos.ny.gov/node/64166)
+- Searches for a NYSAR Legal Hotline answer or a DOS opinion on unlicensed showings of for-sale homes returned none; NYSAR's hotline is a member service at (518) 436-9727 [SECONDARY, search summary, accessed 2026-10-23] — [NYSAR legal update listing](https://nysar.com/wp-content/uploads/2023/12/2023_December_Legal_update.pdf)
+- Other states write the rule down: Texas requires a licence to show a broker's listings (Rule 535.4(c)), Illinois bars unlicensed assistants from hosting open houses or showing property [SECONDARY, search summary, accessed 2026-10-23] — [TREC](https://www.trec.texas.gov/node/676); [Illinois Admin. Code 1450](https://witnessslips.ilga.gov/ftp/JCAR/AdminCode/068/068014500G07400R.html)
+
+### Inferences
+- [INFERENCE] For classification: accompanied showings and open houses run by the brokerage for a seller are "Human or licence required" on legal grounds (Ardelean, §440(3), the assistant list) as well as practical ones (presence, safety). The contradiction-free workaround is the owner: a seller who shows or opens their own home is not acting "for another". Scheduling, access codes, route planning and feedback stay fully automatable.
+- [INFERENCE] This sharpens A6: a buyer-side service with "no human agent for tours" is not available inside a brokerage; buyer tours need a licensee (the broker or a sponsored salesperson paid only through the broker, §442-a), or the listing side's owner/agent.
+
+### Gaps
+- Ardelean is a 1993 rental decision; no sales-specific DOS ruling or court case on showings by unlicensed people was found. A written inquiry to DOS Division of Licensing Services would settle it.
+
+### Gap theme G2: fiduciary case law beyond Dubbs
+
+### Takeaway
+The Court of Appeals in Rivkin (2008) held that an individual buyer's agent may not represent competing buyers on the same property without disclosure and consent, but the brokerage firm as a whole need not stop other affiliated agents from doing so; and a DOS appeal decision (Lemecke) holds that failing to give the §443 form is a violation without any intent. Both bear directly on a software brokerage that serves many buyers and both sides.
+
+### Cited Findings
+- Rivkin v Century 21 Teran Realty LLC, 2008 NY Slip Op 03517 (Apr 24, 2008): certified question answered "in the negative"; "[s]imultaneously representing multiple buyers with respect to the same property is inconsistent with these duties"; "practical considerations cause us to draw a distinction between the fiduciary duty" owed by an individual agent and the duty of the firm; agents "only earn commissions for sales to their own clients" so there is "no incentive" to under-serve [PRIMARY, accessed 2026-10-23] — [Rivkin at LII](https://www.law.cornell.edu/nyctap/I08_0056.htm)
+- DOS appeal decision (Lemecke): "The Legislature in enacting Real Property Law §443 (3) did not require an element of intent"; "The mere failure to provide a client with the disclosure form, by itself, violates the statute"; facts included a buyer's broker who never conveyed the seller's counter-offer to his buyer; six-month suspension effective June 1, 2004 [PRIMARY, accessed 2026-10-23] — [DOS appeal decision, Lemecke](https://docs.dos.ny.gov/ooah/decisions/appeals/17%20DOS%20APP%2004%20Lemecke.htm)
+- §443(1) "Designated sales agent" is "a licensed real estate salesperson or associate broker, working under the supervision of a real estate broker, who has been assigned to represent a client when a different client is also represented by such real estate broker in the same transaction" [PRIMARY, accessed 2026-10-23] — [nysenate §443](https://www.nysenate.gov/legislation/laws/RPP/443)
+
+### Inferences
+- [INFERENCE] Rivkin's individual-agent rule maps onto software: if one licensee (the attorney-broker) is the agent for every buyer, every pair of buyers bidding on the same home triggers the individual-agent rule; the product needs a conflict check across buyers and a disclosure-and-consent step, not only a seller/buyer dual-agency step.
+- [INFERENCE] Lemecke makes the §443 form a strict-liability step: the software must make it impossible to proceed to a listing agreement or buyer agreement without a delivered, acknowledged (or sworn-refused) form, and must log it.
+- [INFERENCE] Designated agents need at least two licensed salespersons or associate brokers under the broker; a one-licensee brokerage cannot use them.
+
+### Gaps
+- No NY case tests whether a written "non-agent" engagement under §443(5) negates fiduciary duties.
+
+### Gap theme G3: 2025–2026 changes the notes predate
+
+### Takeaway
+DOS reissued its licence-law booklet in March 2026 with Part 175 and the course syllabi unchanged; the Legislature passed two bills in June 2026 that would change brokerage practice (public marketing by default for listings, four years' salesperson experience before a broker licence), neither shown as signed on the bill pages; and DOS warned in November 2025 that AI-generated listing photos can be misleading advertising.
+
+### Cited Findings
+- DOS "Real Estate License Law (March 2026)" booklet: Article 12-A, related statutes and 19 NYCRR Parts 175–179; Part 175 runs 175.1–175.29; §176.3 and §176.4 tables unchanged (77 and 75 hours); §441-c fine still "not exceeding two thousand dollars" [PRIMARY, accessed 2026-10-23] — [DOS booklet March 2026](https://dos.ny.gov/system/files/documents/2026/03/real-estate-license-law_03.2026.pdf)
+- A10679-B / S10274 (proposed RPL §443-b): listing agents must share information with buyers' licensees, respond to inquiries, make the property available for showings and publicly advertise on at least one MLS or qualifying open platform, unless the seller signs a standardized state opt-out form (kept three years); raises the §441-c fine cap to $5,000; effective 180 days after becoming law; passed Assembly May 29, 2026 and Senate June 1, 2026 (60–0); the bill pages show no delivery to the Governor, signature, veto or chapter as of 2026-10-23 [PRIMARY, accessed 2026-10-23] — [nysenate A10679](https://www.nysenate.gov/legislation/bills/2025/A10679); [nysenate S10274](https://www.nysenate.gov/legislation/bills/2025/S10274). Trade press in June–July 2026 also described it as awaiting the Governor [SECONDARY] — [HGAR](https://www.hgar.com/realtors-hail-passage-of-bill-restricting-private-home-listings-in-new-york-state)
+- S8870 / A9518: raises the salesperson experience needed for a broker licence from two to "FOUR CONSECUTIVE years" (three years' general experience alternative unchanged); passed both houses June 1, 2026; effective 180 days after becoming law; no Governor action shown; earlier versions (S5426/A7691) were vetoed in 2025 [PRIMARY, accessed 2026-10-23] — [nysenate S8870](https://www.nysenate.gov/legislation/bills/2025/S8870)
+- S7499 (listing agreements ≤ two years, no automatic extension): passed Senate May 29, 2026 (50–8); in Assembly Judiciary; not passed by the Assembly [PRIMARY, accessed 2026-10-23] — [nysenate S7499](https://www.nysenate.gov/legislation/bills/2025/S7499)
+- S9564 / A8910 (statutory written buyer-broker agreement): referred to Judiciary Mar 25, 2026; no further action [PRIMARY, accessed 2026-10-23] — [nysenate S9564](https://www.nysenate.gov/legislation/bills/2025/S9564)
+- DOS trend alert, Nov 13, 2025: DOS is seeing more listings using AI-generated pictures; Secretary Mosley: "these automated technology tools may produce misleading or exaggerated representation of properties"; dishonest and misleading ads can bring §441-c discipline; ads must accurately depict the property (19 NYCRR 175.25(c)(9)); GBL §§349, 350, 350-a also apply; no explicit AI-disclosure duty [PRIMARY, accessed 2026-10-23] — [DOS news release](https://dos.ny.gov/news/new-york-department-state-issues-new-trend-alert-warning-homebuyers-ai-generated-home-listings)
+- A11635 (Rosenthal, introduced July 2026): would require disclosure of digitally altered images in property ads and inclusion of the unedited photo; not passed [SECONDARY, 6sqft, Sept 9, 2026, accessed 2026-10-23] — [6sqft](https://www.6sqft.com/new-york-legislation-would-require-disclosure-for-ai-edited-real-estate-listings/)
+- 2025 cease-and-desist bills (S6135; A5881-A/B) would add a Kings County zone section and an owner-publicity defence; not enacted on the search evidence; they may explain why §442-h shows 2025 revisions on nysenate.gov, but the actual 2025 change was not identified [PRIMARY bill pages via search, accessed 2026-10-23] — [nysenate S6135](https://www.nysenate.gov/legislation/bills/2025/S6135); [nysenate A5881A](https://www.nysenate.gov/legislation/bills/2025/A5881A)
+
+### Inferences
+- [INFERENCE] If A10679-B is signed, the marketing-exposure choice becomes a documented seller decision on a state form, which suits software (a form, a signature, a three-year record) but removes "quiet" off-MLS selling as a low-cost option.
+- [INFERENCE] If S8870 is signed it does not touch the attorney route (attorneys are exempt from the experience requirement per the sources in G4), but it lengthens the path for any salesperson the venture sponsors to become a second broker.
+- [INFERENCE] The DOS AI-photo alert is the first DOS statement aimed at AI output: it applies existing advertising rules, so AI-written copy and AI-edited images carry §441-c risk for the broker who approves them.
+
+### Gaps
+- Governor action on A10679-B and S8870 after delivery could not be confirmed; check the bill pages or the Governor's bill-action list.
+- What changed in §442-h on 2025-05-16 and 2025-09-12 is still unidentified.
+
+### Gap theme G4: the attorney route to a broker licence
+
+### Takeaway
+A secondary source quoting the DOS application and NYSAR says attorneys admitted in New York are exempt from the broker course, exam and experience and pay the $185 fee; the DOS broker web page itself is silent on attorneys. The fee conflict in the sources ($155 vs $185) is resolved: $155 base plus $30 surcharge.
+
+### Cited Findings
+- "Attorneys admitted to the New York State Bar are exempt from the qualifying education, exam, and experience requirements"; they "must still submit an application and pay the $185 fee"; $185 = $155 base fee + $30 surcharge [SECONDARY, RealEstateU, updated 2026-09-14, accessed 2026-10-23] — [RealEstateU broker guide](https://realestateu.com/real-estate/guides/new-york-real-estate-broker-license)
+- DOS broker page: "$185 - Initial Application"; "$15 - Written Exam"; 152 hours; two years as salesperson or three years general experience; no mention of attorneys [PRIMARY, accessed 2026-10-23] — [DOS become a broker](https://dos.ny.gov/become-real-estate-broker)
+- DOS instructor-qualification points scale counts "Attorney, admitted to New York State Bar" experience at 10 points a year (176.11), showing DOS treats bar admission as real-estate-relevant experience in its own rules [PRIMARY, accessed 2026-10-23] — [DOS booklet March 2026](https://dos.ny.gov/system/files/documents/2026/03/real-estate-license-law_03.2026.pdf) p.34
+
+### Inferences
+- [INFERENCE] The function "hold the broker licence" (F73 in the deliverable) is cheap for the attorney-founder (no course, no exam, $185) but still personal: the licence, the place of business and the supervision duty attach to him.
+
+### Gaps
+- The DOS attorney-basis application instructions were not retrieved directly.
+
+### Gap theme G5: business development and solicitation rules
+
+### Takeaway
+Advertising the brokerage itself is regulated advertising (websites, e-mail, business cards, signs) and only the broker may place it; direct solicitation is restricted only in the single remaining cease-and-desist zone (Brooklyn) and by the blockbusting ban; no Hudson Valley solicitation zone exists.
+
+### Cited Findings
+- 175.25(a)(1): "'Advertising' and 'advertisement' mean promotion and solicitation related to licensed real estate activity, including but not limited to, advertising via mail, telephone, websites, e-mail, electronic bulletin boards, business cards, signs, billboards, and flyers"; an initial e-mail to a client or potential client must carry the required broker information (175.25(d)(4)) [PRIMARY, accessed 2026-10-23] — [DOS booklet March 2026](https://dos.ny.gov/system/files/documents/2026/03/real-estate-license-law_03.2026.pdf) pp.29–30
+- 175.17(a)(3)(ii): the only designated cease-and-desist zone is "County of Kings", expiration "July 1, 2028" (Community Board 17); solicitation under 175.17(a)(4) includes telephone, mail, delivery services and personal contact, but not classified ads in non-real-estate periodicals, public-view ads, or radio/TV [PRIMARY, accessed 2026-10-23] — [DOS booklet March 2026](https://dos.ny.gov/system/files/documents/2026/03/real-estate-license-law_03.2026.pdf) pp.27–28
+- 175.17(a)(1) blockbusting ban and 175.17(b) presumptive untrustworthiness on any discrimination finding, unchanged [PRIMARY, accessed 2026-10-23] — same booklet p.27–28
+
+### Inferences
+- [INFERENCE] Every automated marketing touch for the firm (site pages, e-mail sequences, social posts, mailers) is a 175.25 advertisement: it needs the broker's name and contact, the fair-housing homepage link (175.29(c)) and broker approval of the template. That makes "marketing of the business itself" partially automatable, not fully.
+
+### Gaps
+- Telemarketing and texting rules (TCPA, GBL §399-z) are covered by WS2 and were not re-verified here.
+
+### Gap theme G6: federal lead-paint duty on agents
+
+### Takeaway
+Federal rules put a duty on the agent, not only the seller: for pre-1978 housing the agent must inform the seller of the disclosure obligations and ensure compliance, with a liability shield only for what the seller hid.
+
+### Cited Findings
+- 40 CFR 745.115(a): the agent must "ensure compliance with all requirements of this subpart", by informing the seller of obligations under §§745.107, 745.110 and 745.113 and either confirming the seller completed them or personally ensuring they are met; (b): an agent who informed the seller is not liable for hazards the seller knew of but did not disclose to the agent [PRIMARY, accessed 2026-10-23] — [40 CFR 745.115 (LII)](https://www.law.cornell.edu/cfr/text/40/745.115)
+
+### Inferences
+- [INFERENCE] This is a checklist-and-evidence duty that software can carry fully (year-built trigger, forms, signatures, the 10-day inspection opportunity in the offer), which is why the deliverable classes disclosure delivery as fully automatable.
+
+### Gaps
+- None material.
+
+### Gap theme G7: "first substantive contact"
+
+### Takeaway
+Neither the statute nor the rules define "first substantive contact"; a NYSAR magazine article reports DOS's long-standing "warm body" approach and a 1995 DOS opinion letter excusing routine open-house greetings, but the article body and the letter could not be retrieved.
+
+### Cited Findings
+- Search summary of NYSAR's New York State REALTOR (May/June 2023): DOS provides "no definition in law or regulation"; DOS takes a "warm body" approach; exception for open houses per a DOS opinion letter dated Aug. 18, 1995 [SECONDARY, search snippet; page body empty when fetched, accessed 2026-10-23] — [New York State REALTOR, May/June 2023](https://pubs.royle.com/article/Disclosure+Of+Agency+Relationships/4576028/791540/article.html)
+- §443(3)(b) uses but does not define "first substantive contact" [PRIMARY, accessed 2026-10-23] — [nysenate §443](https://www.nysenate.gov/legislation/laws/RPP/443)
+
+### Inferences
+- [INFERENCE] For software the safe reading is the "warm body" one: send the §443 form and the 175.28 fair-housing notice at the first exchange that goes beyond generic information (any question about the person's needs, finances, or a specific property's price or terms).
+
+### Gaps
+- The 1995 DOS opinion letter text.
+
+### Still open after gap fill
+- No DOS opinion, decision or rule on software or AI performing licensed functions (beyond the Nov 2025 photo alert): only a written inquiry to DOS Division of Licensing Services can settle it.
+- Showings of for-sale homes by unlicensed people: Ardelean is a 1993 rental decision; a DOS inquiry or the NYSAR hotline would confirm the sales case.
+- Whether a §443(5) "non-agent" engagement is effective: untested in any source found; it decides whether a reduced-duty facilitator model exists.
+- Malul (2025) disposition and exact language: court sites blocked this session; re-read when reachable.
+- Content of the 2025 revisions to §442-h: unidentified; needs the 2025 session laws.
+- Governor action on A10679-B (public marketing) and S8870 (broker experience): pending delivery or action per bill pages.
+- The 1995 DOS open-house opinion letter: not retrieved.
