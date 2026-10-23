@@ -10,10 +10,11 @@ please make it, exactly as you made `shorts`:
 1. Open github.com/new on your phone.
 2. Name: `realestate`. Owner: EarthToJoe. **Private.** Leave "Add a README" unticked. Create.
 3. Reply "repo made". I push everything there within minutes and delete the temporary copy.
-- *Why it matters:* this cloud container is wiped after inactivity. Until the repo exists, the work is kept
-  on a temporary branch called `lifeboat/realestate` inside the `shorts` repo, which I delete once the real repo
-  is up.
-- *Provisional:* lifeboat branch, pushed at every milestone.
+- *Why it matters:* this cloud container is wiped after inactivity. I tried to park the work on a temporary
+  branch inside the `shorts` repo, but the session's permission rules block pointing git at another repo (a
+  sensible rule, and I did not work around it). So until the repo exists the work lives only in this container.
+- *Provisional:* I send you the key documents as files in chat at each milestone, and push everything the
+  minute you say "repo made".
 
 **Q2. Start the VPS session.** I cannot reach the VPS from this cloud session (no SSH here; the VPS is only
 known as the `ssh vps` alias on your Mac). After Q1, run this once on your Mac:

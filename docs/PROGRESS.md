@@ -12,7 +12,8 @@
 
 **Blocked or waiting on Joe**
 - GitHub repo `EarthToJoe/realestate` must be created by Joe (the Claude GitHub app got a 403 creating it).
-  Work is kept on a temporary `lifeboat/realestate` branch in the `shorts` repo meanwhile.
+  A temporary branch in the `shorts` repo was blocked by permissions, so the work lives in this container until
+  the repo exists; key documents are sent to Joe as files meanwhile.
 - VPS session needs Joe to run one command (see `QUESTIONS-FOR-JOE.md` Q2).
 - Success criteria need sign-off before any POC code.
 

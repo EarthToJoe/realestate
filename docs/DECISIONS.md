@@ -18,8 +18,10 @@ with a dated line.
 3. **The cloud session cannot reach the VPS.** This container has no SSH client or key and HTTPS-only egress;
    the VPS is only known as the `ssh vps` alias on Joe's Mac. So the VPS session is created by a one-command
    script Joe runs (`scripts/vps-setup.sh`), modelled on `shorts/scripts/add-phone-session.sh`, and GitHub is
-   the sync between the two. Until the GitHub repo exists (the Claude GitHub app may not create repos), the
-   work is pushed to a temporary branch `lifeboat/realestate` in the `shorts` repo, deleted afterwards.
+   the sync between the two. Until the GitHub repo exists (the Claude GitHub app may not create repos: 403), the work stays in
+   this container; a temporary branch in the `shorts` repo was tried and blocked by the session's permission
+   rules (pointing git at another repo), which was respected. Key documents go to Joe as files in chat at each
+   milestone until the push is possible.
 4. **API billing is per session, by service file only.** Joe wants the $200 API credit used first; the
    `shorts` rule forbids the API key anywhere Claude Code reads it. Resolution: the key, if Joe stores it, is
    written to `/srv/realestate/secrets/claude-code.env` (root, 0600) and read only through a systemd drop-in
