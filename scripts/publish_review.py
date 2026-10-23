@@ -43,6 +43,11 @@ SECTIONS = [
         ("docs/research/WS5-competitors.md", "5. Competitors", "Who already does this, and can a local launch win"),
         ("docs/research/WS6-free-inspection.md", "6. Free inspection", "Pros, cons, liability"),
     ]),
+    ("Demo build", [
+        ("docs/specs/poc-architecture.md", "Architecture plan", "How the demo is built, what it costs per run, build days"),
+        ("docs/specs/demo-house.md", "Demo house: 146 Rt 292, Holmes", "Official-record facts and nearby sales"),
+        ("docs/research/fact-check.md", "Fact-check of the reports", "Independent check of the key claims"),
+    ]),
     ("Living documents", [
         ("docs/ASSUMPTIONS.md", "Riskiest assumptions", "Ranked, with kill criteria and status"),
         ("docs/DECISIONS.md", "Decision log", "Every choice and why"),
