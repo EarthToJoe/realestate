@@ -1,6 +1,32 @@
 # Progress (daily summary, newest first)
 
-## 2026-10-23 (day 1, cloud session)
+## 2026-10-23 (day 1, cloud session), end of day
+
+**Research notes complete.** All thirteen passes finished and are committed (about 1 MB of sourced notes).
+Every pass reported that the session's shared web-search budget ran out part-way; each file lists its gaps
+rather than guessing, and the handover tells the VPS session to fill them with a fresh budget first.
+
+**What the research says, in one paragraph.** The costs of running the brokerage are small (year one about
+$9,000 to $13,600 fixed). The binding constraints are legal and structural: only a licensed broker may
+perform the licensed acts and that person must be the actor (RPL 440, 442-d); an unlicensed co-founder may
+own equity but may not be paid per deal (RPL 442); a lawyer may not be lawyer and broker in the same deal
+(fifteen NYSBA opinions through 2024), and only lawyers may draft contract terms (Judiciary Law 484, 495;
+DOS memo LI04), so "the lawyer is out of the loop" is not available as a drafting model and becomes "the
+lawyer step is pre-filled, faster and cheaper"; every portal ingests from the MLS and no NY MLS offers a
+listing-input API, so MLS entry is a licensed-human step and MLS membership (OneKey plus the Ulster,
+Columbia and Greene board's MLS) needs a real broker licence plus Realtor membership; the free inspection as
+proposed (unlicensed friend, brokerage-paid, "buyer skips") is unlawful and unsound, while a narrow seller-
+engaged licensed version works; every venture-scale discount brokerage in the US has died, been absorbed or
+reverted, killed by customer-acquisition cost and no cost advantage, not by consumers rejecting low fees;
+and local trust is real but attaches to a person giving broad service, with two-thirds of sellers picking a
+referred or prior agent. Kill criteria K1 to K9 are written in the WS5c notes. The assumptions table in
+`ASSUMPTIONS.md` gets its dated status lines when the deliverables are written.
+
+**Handover.** Per Joe's instruction that all work runs on the API credit, the writing of the six deliverables,
+the plan and the executive summary moves to the VPS session (`docs/HANDOVER.md`), which Joe starts with one
+command (`QUESTIONS-FOR-JOE.md` Q2). The cloud session stops active work here unless Joe says "continue here".
+
+## 2026-10-23 (day 1, cloud session), morning
 
 **Done**
 - Project created as its own git repo, with Joe's brief saved verbatim (`docs/BRIEF.md`).

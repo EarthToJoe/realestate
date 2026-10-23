@@ -10,10 +10,9 @@ use; if it says a claude.ai login, tell Joe the key step was skipped and give hi
 
 - Read Joe's brief (`docs/BRIEF.md`, verbatim) and wrote the living documents in `docs/`.
 - Launched thirteen research passes in the cloud (two for WS1, three for WS2, two for WS3, one for WS4, three
-  for WS5, one for WS6, one "what already exists" pass for the POC, called WS7). Their sourced notes land in
-  `research_notes/<workstream>/`. If a notes file named in the table below is missing, that pass failed in
-  the cloud: re-run it yourself with the same brief (the brief for each pass is reconstructible from
-  `docs/BRIEF.md` workstream text plus `docs/research/method/researcher.md`).
+  for WS5, one for WS6, one "what already exists" pass for the POC, called WS7). All thirteen finished on 2026-10-23 and their
+  sourced notes are committed in `research_notes/<workstream>/` (thirteen files, about 1 MB in total, every
+  claim labelled and dated). Each file ends its sections with explicit Gaps; see the search-budget note below.
 - Could not reach the VPS (no SSH from the cloud) and could not create the GitHub repo (the Claude GitHub
   app lacks that permission: 403). With Joe's permission the work was pushed to the temporary branch
   `realestate-lifeboat` in the `shorts` repo; `scripts/repoint-origin.sh` moves this clone to the real repo
