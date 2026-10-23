@@ -1,5 +1,36 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), afternoon: slice 1 of the demo is live
+
+**See it:** https://realestate.hughesnode.com (house login). Press **Start demo**. The review pages are where
+they were: the "Review documents" link, `/index.html`, and every `/docs-*.html` address still work.
+
+**Built (BUILD-1):** the app skeleton (step list, persona switcher Seller / Buyer / Presenter, the DEMONSTRATION
+mark and the firm's identity block on every page), the record service with all 35 record codes from one catalogue
+file, and the first two screens of the sale:
+- **Step 1 Intake:** address and facts ("Use demo house"), property profile with a source chip on every fact
+  (public record / seller / inferred by the AI, with its reason), disclosure checklist (lead paint and
+  agricultural notice worked out as not needed; the seller's own disclosure form, never pre-filled), onboarding
+  (three notices sent at first contact, agency form, listing presentation, conflicts check, the AI accepting the
+  listing with its red "NY law today" marker, the listing agreement with the state's exclusive-listing explanation).
+  The seller's decisions block: the agreement cannot be signed before the agency form, and nobody but the seller
+  can make them (checked on the server).
+- **Step 9 Deal timeline:** built only from the records, coloured AI / client decision / NY law today / third
+  party, with header counts, the standing "no broker of record" marker and a first hurdle map.
+
+**Checked:** 41 fast tests; the whole intake walked on the live site by `scripts/live-flow.sh` (profile with all
+three chip kinds in 3 clicks; sign-before-agency refused; presenter refused a seller decision; timeline colours;
+review page served). Try-first checks: 6 pass, T3 (state-machine library) and T5 (FEMA server unreachable) took
+their fallbacks; results in the architecture spec, section 1.
+
+**AI use so far:** two live Haiku calls, $0.00098, to prove the live connection and record the replay the site
+uses; the demo house now replays at no cost. App cap $12.
+
+**Questions raised (for `QUESTIONS-FOR-JOE.md`; another job is editing it now):** the firm's name. Provisional:
+"Hudson Valley AI Realty", marked "demonstration name; not a licensed firm" (`config/brokerage.yaml`).
+
+**Next:** slice 2 (pricing, listing copy with the fair-housing checker, marketing plan). Disk: 19 GB free.
+
 ## 2026-10-23 (day 1), morning: the original idea stands; build unblocked
 
 **Joe's answers:** "Keep the original idea, that is what I said I would build. I can pare it back on the future if

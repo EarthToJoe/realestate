@@ -165,3 +165,27 @@ with a dated line.
     for another (L21, L22)". The product never says a lawyer is unnecessary (L23). Why: the attorney-approval
     wording comes from the broker's narrow fill-in privilege (L22), which software drafting a whole contract does
     not fit anyway, and adding it would put lawyers back in the loop by contract, against decision 21.
+27. **Hosting: realestate is a docker-type hughesnode project; the keys are mounted read-only (2026-10-23, BUILD-1).**
+    `hn` supports per-project `VOLUMES` in `hn.conf`, so the container mounts `/srv/realestate/secrets` read-only
+    at `/run/secrets/realestate` (model key, `PII_KEY`, `DB_KEY`), `/srv/realestate/data` at `/data`, and the
+    review pages' `public/` folder read-only at `/review`. No `app.env` is used; no secret is in the image, the
+    repo, a compose label or a log. `public/` did not move, so `scripts/publish-review.sh` is unchanged and every
+    review link keeps its address; the app serves the POC at `/` and falls through to the review files for
+    everything else (`/index.html` is still the review home). Changes go through `scripts/hosting.sh` (prepare,
+    trial, docker, redeploy, static, check), which touches only `/srv/hughesnode/apps/realestate` and
+    `/srv/realestate`; `hn.conf.static.bak` allows a one-command return to the static type. The container runs as
+    root inside so it can read the root-only key files (mode 600) without loosening them; no-new-privileges is set
+    by `hn`. One uvicorn worker, not two: the log masker learns each person's values in-process, and SQLite with
+    one demo user does not need a second worker.
+28. **Try-first results (2026-10-23, BUILD-1; spec section 1).** Adopted: WeasyPrint in the image (T1), SQLCipher
+    for the whole database when a `DB_KEY` secret exists, on top of the Fernet PII columns (T2), Driver.js with
+    htmx (T4, slice 4), Leaflet with a static SVG fallback (T7), pyHanko seal (T8, slice 3, still first to cut),
+    the PII token round trip (T6). Fallbacks: python-statemachine skipped for the record-derived gates (T3:
+    refusals could not say which decision is missing or why, and it duplicates record state); FEMA flood zone
+    stays a fixture because FEMA's server does not answer from the VPS (T5; the Census geocoder works).
+29. **Replays are committed files, not a table; the hosted app replays first (2026-10-23, BUILD-1).** Recorded model
+    answers live in `replays/<request-hash>.json` (masked before hashing and recording; a grep for the personas' names, e-mails and
+    phones finds none), so they survive the demo reset, ship in the image and rehearse at no cost.
+    The spend log (`model_call`) also survives "Start demo". The hosted app runs in replay mode: the demo-house
+    inputs replay (badge "AI: replay of the run recorded ..."); any changed input goes live once and is recorded.
+    Locally, `make run` is live when the key is readable, otherwise replay.

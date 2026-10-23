@@ -8,7 +8,8 @@ kinds are defined in `docs/specs/poc-architecture.md`, section 3. A row without 
 Written 2026-10-23 from the architecture spec; **revised 2026-10-23 for decision 21** (the AI is the agent on both
 sides and performs every agent act, including the functions WS1 classes "human or licence required", each with a
 red "NY law today" marker; the seller and the buyer make their own decisions). Status is updated as the build lands
-(planned → built → tested).
+(planned → built → tested). Slice 1 statuses set 2026-10-23 (BUILD-1): "tested" means a pytest test and the
+live-site walk (`scripts/live-flow.sh`) check it.
 
 **In the demo** = who performs it in the product: **AI**, **seller**, **buyer**, **third party** (planned, named
 on the timeline), **human required** (a practical step with no software route). **NY law today** = the marker text
@@ -17,12 +18,12 @@ client_decision, LM law_marker, HR human_required, TP third_party, AU automated.
 
 | Feature (module / screen) | SC # | WS1 functions replaced (F-IDs) | WS2 constraints respected (L-IDs) | Record | In the demo | NY law today | Status |
 |---|---|---|---|---|---|---|---|
-| `intake` / Address and facts form, "Use demo house" | 1 | F14 | L48, L60 (four §242 questions asked) | none (data entry) | seller, AI | none | planned |
-| `intake` / Property profile with source chips (seller, public record, inferred) via `PublicRecordConnector` stub | 1 | F14 | L18, L54 (inferences labelled, no false claims) | none (AI work shown) | AI | none | planned |
-| `intake` / Disclosure checklist (PCDS, lead paint, ag district, §242) | 1 | F15, F59 | L43, L44, L46, L60 | CP-04 CD | AI builds; seller completes the PCDS (never pre-filled) | none | planned |
-| `intake` / Onboarding notices (agency form, DOS-2156, not-legal-services) | 1 | F8, F9, F10 | L12, L29, L39 | CP-24 AU; CP-01 CD | AI sends; seller acknowledges | none | planned |
-| `intake` / Listing presentation, flat fee, conflicts check, listing acceptance | 1 | F5, F7, F12 | L1, L5, L14 | CP-02 LM | AI | Accepting a listing for a fee: licensed broker | planned |
-| `intake` / Listing agreement with six-point exclusive-listing explanation | 1 | F13 | L9, L14, L34 | CP-03 CD | AI generates; seller signs | none (the firm is the contracting party; see CP-35) | planned |
+| `intake` / Address and facts form, "Use demo house" | 1 | F14 | L48, L60 (four §242 questions asked) | none (data entry) | seller, AI | none | tested |
+| `intake` / Property profile with source chips (seller, public record, inferred) via `PublicRecordConnector` stub | 1 | F14 | L18, L54 (inferences labelled, no false claims) | none (AI work shown) | AI | none | tested |
+| `intake` / Disclosure checklist (PCDS, lead paint, ag district, §242) | 1 | F15, F59 | L43, L44, L46, L60 | CP-04 CD | AI builds; seller completes the PCDS (never pre-filled) | none | tested (PCDS: selected §462 questions; full form with the contract, slice 3) |
+| `intake` / Onboarding notices (agency form, DOS-2156, not-legal-services) | 1 | F8, F9, F10 | L12, L29, L39 | CP-24 AU; CP-01 CD | AI sends; seller acknowledges | none | tested |
+| `intake` / Listing presentation, flat fee, conflicts check, listing acceptance | 1 | F5, F7, F12 | L1, L5, L14 | CP-02 LM | AI | Accepting a listing for a fee: licensed broker | tested |
+| `intake` / Listing agreement with six-point exclusive-listing explanation | 1 | F13 | L9, L14, L34 | CP-03 CD | AI generates; seller signs | none (the firm is the contracting party; see CP-35) | tested |
 | `pricing` / Comparable sales table, adjustments, range, net sheet ("not an appraisal") | 2 | F21, F25 | L6 (preparatory work), WS3-D5 | none (AI work shown) | AI | none | planned |
 | `pricing` / AI's recommended list price with reasoning | 2 | F22, F24 | L6, L18, WS3-D5 | CP-25 LM | AI | Price advice: listing agent's fiduciary duty (licensed broker) | planned |
 | `pricing` / Seller's list-price choice | 2 | F22, F24 | L9, WS3-R9 | CP-05 CD | seller | none | planned |
@@ -60,21 +61,21 @@ client_decision, LM law_marker, HR human_required, TP third_party, AU automated.
 | `buyer` / Dual-agency consent (buyer wants the firm's own listing); information wall between the two AIs | 8 | F11, F51 | L13 | CP-17 CD | seller and buyer consent; AI keeps the wall | Designated agents must be two licensees (in the CP-30 marker) | planned |
 | `buyer` / AI advises on offer price and terms and drafts the offer | 8 | F23, F43, F44 | L6, L18, L22, L24 | CP-31 LM | AI | Advising the buyer on price: buyer's agent's fiduciary duty (licensed broker) | planned |
 | `buyer` / Buyer approves the offer and the reply to the counter | 8 | F44 | L24 | CP-18 CD | buyer | none | planned |
-| `timeline` / Deal dashboard coloured AI / client decided / NY law today / third party, built from records | 9 | F34, F63 | L5, L17 | displays all records | AI (display) | shows every marker | planned |
-| `timeline` / Hurdle map: every red marker with rule, who the law says, link; header counts | 9 | F89 (evidence of what the law requires, by step) | L1, L5, L18, L21 | displays every LM, HR, TP | AI (display) | shows every marker | planned |
-| `timeline` / Planned: deposit escrow, inspection, mortgage, appraisal, title, walkthrough, closing | 9 | F55, F56, F57, F60, F61, F62, F66, F67, F68 | L25, L33, L35 | CP-20, CP-21, CP-22, CP-23 TP | third party | none (planned third-party steps) | planned |
-| `timeline` / Planned: AI negotiates repairs or credits and writes them into the contract; keeps the deal together | 9 | F58, F64 | L1, L21 | CP-34 LM (planned) | AI | Negotiating repairs (licensed broker); amending the contract (attorney) | planned |
+| `timeline` / Deal dashboard coloured AI / client decided / NY law today / third party, built from records | 9 | F34, F63 | L5, L17 | displays all records | AI (display) | shows every marker | tested (first version, slice 1) |
+| `timeline` / Hurdle map: every red marker with rule, who the law says, link; header counts | 9 | F89 (evidence of what the law requires, by step) | L1, L5, L18, L21 | displays every LM, HR, TP | AI (display) | shows every marker | built (slice 1: markers and human-required steps by step, header counts; finished in slice 4) |
+| `timeline` / Planned: deposit escrow, inspection, mortgage, appraisal, title, walkthrough, closing | 9 | F55, F56, F57, F60, F61, F62, F66, F67, F68 | L25, L33, L35 | CP-20, CP-21, CP-22, CP-23 TP | third party | none (planned third-party steps) | built (planned records written at intake) |
+| `timeline` / Planned: AI negotiates repairs or credits and writes them into the contract; keeps the deal together | 9 | F58, F64 | L1, L21 | CP-34 LM (planned) | AI | Negotiating repairs (licensed broker); amending the contract (attorney) | built (planned record written at intake) |
 | `timeline` / Agent-acts log (every AI agent act with its marker) | 9 | F75, F69 | L5, L6, L17, L61 | display of every LM | AI (display) | shows every marker | planned |
-| Platform / Brokerage identity block on every page and message; standing broker-of-record marker | under the hood, 5, 9 | F73, F74, F75 | L2, L3, L4, L5, L10 | CP-35 LM (standing) | AI (the firm) | A licensed broker must run and supervise the firm (licensed broker) | planned |
+| Platform / Brokerage identity block on every page and message; standing broker-of-record marker | under the hood, 5, 9 | F73, F74, F75 | L2, L3, L4, L5, L10 | CP-35 LM (standing) | AI (the firm) | A licensed broker must run and supervise the firm (licensed broker) | tested |
 | `brand` / Brokerage campaign: landing page, local ad, seller lead magnet (founder named) | 10 | F1, F3, F4 | L10, L40, L41, L54, L55 | CP-26 AU | AI | see CP-19 | planned |
 | `brand` / Ad targeting panel (allowed criteria only) | 10 | F30 | L38, L58 | covered by CP-19 | AI | none | planned |
 | `brand` / AI publishes the campaign (simulated) | 10 | F1, F76 | L10, L18, L38 | CP-19 LM | AI | Only the broker places and approves ads (licensed broker) | planned |
 | `demo` / Start demo, step list, narration cards, Driver.js, generated `DEMO-SCRIPT.md`, live/replay badge | 11 | all of the above (presentation layer) | L54 (replay labelled, never passed off as live), L55 | none | Presenter | none | planned |
-| Platform / `ModelProvider` interface, model-call spend log, spend cap | under the hood | F2, F26 (enabler) | L18, L56 | none | AI | none | planned |
-| Platform / Record service: five kinds, client-decision gates enforced server-side, `catalogue.yaml`, persona roles | under the hood | F75, F84 | L1, L5, L18, L24 | enforces every CD; writes every LM, HR, TP, AU | AI | none | planned |
-| Platform / `AgentContext(side)` information wall and its test | under the hood | F51, F84 | L13 | none | AI | none | planned |
-| Platform / PII registry, Fernet columns, model-context whitelist, access log, export, delete, log masking | under the hood | F87, F69 | L17, L56, L57 | none | AI | none | planned |
-| Platform / Append-only audit log with hash chain | under the hood | F69, F75 | L17, L61 | none | AI | none | planned |
+| Platform / `ModelProvider` interface, model-call spend log, spend cap | under the hood | F2, F26 (enabler) | L18, L56 | none | AI | none | tested (live proven, replay recorded, fake in tests; cap enforced) |
+| Platform / Record service: five kinds, client-decision gates enforced server-side, `catalogue.yaml`, persona roles | under the hood | F75, F84 | L1, L5, L18, L24 | enforces every CD; writes every LM, HR, TP, AU | AI | none | tested |
+| Platform / `AgentContext(side)` information wall and its test | under the hood | F51, F84 | L13 | none | AI | none | tested |
+| Platform / PII registry, Fernet columns, model-context whitelist, access log, export, delete, log masking | under the hood | F87, F69 | L17, L56, L57 | none | AI | none | built (registry, Fernet columns, SQLCipher file, model-context whitelist test, access log, log masking; export and delete in slice 4) |
+| Platform / Append-only audit log with hash chain | under the hood | F69, F75 | L17, L61 | none | AI | none | tested |
 
 ## The 21 "human or licence required" functions
 

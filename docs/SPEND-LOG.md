@@ -1,8 +1,9 @@
 # API spend log (per workstream)
 
 Where the $200 credit (expires 2026-11-08) goes. Three sources:
-1. **The POC's own model calls**: logged by the app to `app/data/spend.jsonl` (module, tokens in/out, cost,
-   time) and rolled up here by `scripts/spend-summary.sh` (to be written with the POC).
+1. **The POC's own model calls**: logged by the app in its `model_call` table (module, task, model, tokens in /
+   cache write / cache read / out, cost, time, live or replay); the footer of every screen shows the live total
+   against the $12 cap. A roll-up script comes with slice 4; until then the rows are copied here by hand.
 2. **Headless jobs on the VPS** (`scripts/api-run.sh`): one line per run in `/srv/realestate/spend.jsonl`, rolled
    up per workstream tag by `scripts/spend-summary.sh` and pasted here at each milestone.
 3. **The Anthropic Console usage page** for the key, as the cross-check.
@@ -45,3 +46,14 @@ FACTCHECK = independent check on Sonnet; PLAN = assumptions, questions, plan and
 
 **Running total against the credit: $156.07** of $200; **about $44 left, of which $15 is reserved** for the demo's
 own model calls (decision 19). Cross-check: the Anthropic Console usage page.
+
+## The POC app's own model calls
+
+| Date | Where | Task | Model | Tokens in / cache write / out | Cost (USD) | Why |
+|---|---|---|---|---|---|---|
+| 2026-10-23 | local, `scripts/record-replays.py` | intake.infer_gaps | claude-haiku-5-5 | 2,637 / 1,195 / 924 | 0.000875 | Prove the live provider; record the demo-house replay |
+| 2026-10-23 | local, `scripts/record-replays.py` | probe.mask_roundtrip (T6) | claude-haiku-5-5 | 406 / 0 / 123 | 0.000102 | Try-first check T6 (PII tokens round trip) |
+
+**App live spend so far: $0.00098** of the $12 app cap (inside the $15 demo reserve). The hosted app answers the
+demo house from the recorded replay at no cost; tests use the fake provider.
+

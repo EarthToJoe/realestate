@@ -116,16 +116,16 @@ and the screens.
 
 **Tried on a real example before committing (slice 1, time-boxed to 2 hours total):**
 
-| # | Try | Pass condition | If it fails |
-|---|---|---|---|
-| T1 | WeasyPrint 70.0 inside the Docker image (Debian Pango) | 10-page contract HTML renders to PDF under 5 s | ReportLab for the flyer; contract as DOCX + HTML print view |
-| T2 | sqlcipher3 0.6.4 with SQLAlchemy | create, encrypt, reopen | Plain SQLite + Fernet-encrypted PII columns (planned anyway) |
-| T3 | python-statemachine on the deal lifecycle | fewer lines and clearer guards than ~80 lines hand-rolled | Hand-roll (provisional default) |
-| T4 | Driver.js tour across two HTMX swaps | spotlight survives the swap | Narration cards only |
-| T5 | FEMA NFHL point query + Census geocoder on 146 Rt 292 | returns zone and county | Use the stored fixture; connector stays a stub |
-| T6 | Regex masker on a sample buyer message, model call, re-insert | names, e-mail, phone never reach the request body | Drop free-text from the model context |
-| T7 | Leaflet + OSM + static fallback | map renders; fallback image shows offline | Static image only |
-| T8 | pyHanko seal on a generated PDF | a reader flags an edit | Cut (first item on the cut list) |
+| # | Try | Pass condition | If it fails | Result (2026-10-23, BUILD-1; script in `scripts/try/`) |
+|---|---|---|---|---|
+| T1 | WeasyPrint 70.0 inside the Docker image (Debian Pango) | 10-page contract HTML renders to PDF under 5 s | ReportLab for the flyer; contract as DOCX + HTML print view | **Pass.** 30 pages in 1.06 s inside the image (1.31 s on the host); image 477 MB. Adopted. |
+| T2 | sqlcipher3 0.6.4 with SQLAlchemy | create, encrypt, reopen | Plain SQLite + Fernet-encrypted PII columns (planned anyway) | **Pass.** Wheel installs on 3.12; file encrypted on disk, reopens with the key, wrong key refused. Adopted: with a `DB_KEY` secret (the server) the whole database is SQLCipher; Fernet PII columns stay; locally plain SQLite. |
+| T3 | python-statemachine on the deal lifecycle | fewer lines and clearer guards than ~80 lines hand-rolled | Hand-roll (provisional default) | **Fail, fallback taken (hand-roll).** It works (50 lines for 7 states), but a refused transition only says "Can't Sign listing when in Intake", not which client decision is missing and why; it holds a second copy of state the records already hold; and its single linear state does not fit decisions that run in parallel (the PCDS, the buyer side). The record service's `require()` (12 lines) gives the code, the rule and whose decision it is. |
+| T4 | Driver.js tour across two HTMX swaps | spotlight survives the swap | Narration cards only | **Pass.** Spotlight on the swap container (the app's pattern: stable `hx-target`, innerHTML swap) survives two swaps with the popover shown; a spotlight on an element the swap replaces needs re-pinning on `htmx:afterSettle` (one line), then also passes. Adopt in slice 4. |
+| T5 | FEMA NFHL point query + Census geocoder on 146 Rt 292 | returns zone and county | Use the stored fixture; connector stays a stub | **Partial, fallback taken.** Census geocoder matches "146 RTE 292, HOLMES, NY, 12531", Dutchess County. FEMA's NFHL server did not answer from the VPS (no connection, as during the demo-house job). Fixture kept; connector stays a stub. |
+| T6 | Regex masker on a sample buyer message, model call, re-insert | names, e-mail, phone never reach the request body | Drop free-text from the model context | **Pass.** Live Haiku call: the request held only `[BUYER_1]`, `[BUYER_1_EMAIL]`, `[BUYER_1_PHONE]`; the reply used the tokens; real values were put back only in the rendered text. Test `test_t6_tokenize_roundtrip_keeps_pii_out_of_the_request`. |
+| T7 | Leaflet + OSM + static fallback | map renders; fallback image shows offline | Static image only | **Pass.** Headless Chromium: 6 OSM tiles loaded online; with tile requests blocked, the static SVG fallback (pin, address, coordinates) shows after 3 tile errors. No tiles are stored (OSM policy). |
+| T8 | pyHanko seal on a generated PDF | a reader flags an edit | Cut (first item on the cut list) | **Pass.** pyHanko 0.38.0 seals a WeasyPrint PDF with a self-signed demo certificate: `intact=True`; one byte changed after sealing: `intact=False`. Keep for slice 3 (still first on the cut list). |
 
 ---
 

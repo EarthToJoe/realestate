@@ -62,6 +62,14 @@ appending findings to the same files under a dated "Gap fill" heading.
    `docs/DEMO-SCRIPT.md` kept in step with the screens.
 8. Keep `docs/QUESTIONS-FOR-JOE.md` current: note a question, make a provisional choice, keep moving.
 
+## The build (from 2026-10-23)
+
+Slice 1 is live (BUILD-1): skeleton, record service, Step 1 Intake, Step 9 timeline, docker type on hughesnode.
+Later slices build on it: see `README.md` ("The demo app") for the code map and commands, the architecture spec
+section 9 for what each slice must pass, and decisions 27 to 29 for hosting, try-first results and replays. After
+changing code: `make test`, commit, `bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh`. New model
+tasks go in `config/models.yaml`; record new replays with `scripts/record-replays.py` (extend it per slice).
+
 ## Rules that are easy to forget
 
 - Joe sees things by link: `https://realestate.hughesnode.com` (house login), republished on every commit
