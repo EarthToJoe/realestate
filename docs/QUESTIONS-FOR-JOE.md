@@ -5,85 +5,72 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 
 ## Open
 
-> **Start here (updated 2026-10-23 morning).** Every question below has a default that holds until you answer.
-> - **Answered this morning:** Q26 (credit first, then Max), Q19 and Q24 (the original idea: the software replaces
->   both agents and drafts the contract). The plan, summary and questions for your father-in-law are being
->   rewritten around the original idea today.
-> - **Quick confirms for the demo, defaults hold if you say nothing:** Q25 recorded replay at the meeting with a
->   live switch; Q43 free inspection stays as the research recommends.
-> - **After the meeting:** everything else (fee model, counties, marketing, lockboxes, inspection pilot, scope).
+> **Start here (updated 2026-10-23, afternoon, after decision 21).** Every question below has a default that holds
+> until you answer.
+> - **For the meeting with your father-in-law:** Q44, one short bundle of five questions only he can answer (bar
+>   registration, where he lives and an office, broker of record, ten people by 2026-11-06, the contract route).
+> - **Quick confirms for the demo, defaults hold if you say nothing:** Q23 the software drafts the full contract,
+>   marked subject to each party's attorney's approval; Q25 recorded replay at the meeting with a live switch; Q43 the
+>   free inspection shown as his idea with the research's findings.
+> - **After the meeting:** everything else (fees, tours, counties, marketing, lockboxes, scope).
+> - **Closed today by decision 21 or merged into Q44:** Q11, Q13 to Q17, Q37 (see Answered).
 
-**Q11. Two facts about your father-in-law, now that he lives outside New York** (raised by Joe's 2026-10-23
-answer to Q4). (a) **Where does he live now?** A New York broker must "have and maintain a definite place of
-business within this state" with a sign readable from the sidewalk (RPL 441-a(3)), and must supervise the
-firm's work; both are harder from out of state. (b) **Is his New York attorney registration current?** NY
-lawyers re-register every two years even when they live elsewhere. DOS grants the broker licence with no
-course and no exam only to "an Attorney who is currently admitted to the New York State bar"; if his status
-lapsed or he registered as retired, that route may need fixing first.
-- *Provisional:* he lives outside NY, his registration is current or can be made current, and the firm rents
-  a small licensed office in the Hudson Valley. The research on his roles will cover both questions.
+**Q44 (FIL bundle). Five questions for your father-in-law, for the meeting about 2026-10-30.** Take this one page;
+each answer unblocks a Phase 0 step in `docs/PLAN.md`. (1) **Is his New York attorney registration current?** The
+no-exam broker licence ($185) needs "an Attorney who is currently admitted"; check the court's attorney search or call
+212-428-2800; a lapsed registration must be cured first, and "retired" is untested for this route. (2) **Where does he
+live, and where could a New York office be?** The firm needs "a definite place of business within this state" with a
+sign readable from the sidewalk (a licensed home office counts); no reciprocity excuses a non-resident. (3) **Will he
+be broker of record of the firm that runs the software,** doing only the acts the law requires of a licensee (accept
+listings, decide ads, offer advice and negotiating positions, supervise), each one prepared, carried out and logged
+by the software, and join HGAR so the firm can use OneKey MLS? (4) **Who are ten people who might sell in the next
+year?** Names, not categories, by **2026-11-06**; he calls them by about 2026-12-15. (5) **His view on the contract
+route:** the software's full contract as the firm's paper subject to each party's attorney's approval; him as the
+seller's lawyer on fixed-fee deals (Ops. 1015, 1117; written ethics advice first); or the parties drafting their own
+with the software (untested in New York). *Provisional:* (1) current or curable; (2) outside New York, with a small
+licensed Hudson Valley office; (3) yes; (4) the ten-calls test runs as written, and if fewer than three would list, we
+rethink how the firm finds customers before building past the demo; (5) the first route on every deal, the second
+where he chooses it, the third only after a written ethics opinion. *Unblocks:* A12, A13, A14, A18, K9, Phase 0.
+(WS2, WS3, WS5, memo, [plan: the contract route](PLAN.md#the-contract-route-what-new-york-allows-today))
 
-### From the research (added 2026-10-23, Q13 to Q42)
+### From the research (added 2026-10-23, Q18 to Q43; reworded for decision 21)
 
-Gathered from the seven research handoffs and the architecture spec, duplicates merged. **(FIL)** marks a question
-only your father-in-law can answer; take those to the meeting. Each has the choice I am using until you answer, and
-what the answer unblocks. Q13 to Q18 matter most: they are Phase 0 in `docs/PLAN.md`.
+Gathered from the seven research handoffs and the architecture spec, duplicates merged, and reworded on 2026-10-23
+for the original idea (decision 21). **(FIL)** marks a question only your father-in-law can answer. Each has the choice
+I am using until you answer, and what the answer unblocks.
 
-**Q13 (FIL). Who are the first ten sellers he could call this month?** Names, not categories: estates, divorces,
-relocations, owners selling to someone they know. *Provisional:* treat his network as unproven; he calls them over
-30 to 60 days after the meeting; if fewer than three would list with the firm in the next year, re-plan around a
-local partner broker before building past the demo. *Unblocks:* A12 (now the top risk), A5, K2, and whether the
-build goes past the demo. (WS5)
+**Q18 (FIL). Who opens the door at showings and buyer tours?** The AI books every showing and tour, but on the best
+New York authority a licensed person (or the owner, at his own home) must open the door, and lockbox keys cannot be
+lent. Options for buyer tours: (a) a licensed showing agent per tour ($45 to $400 a showing), (b) him, (c) a licensed
+salesperson the firm sponsors. *Provisional:* owners host showings and open houses on the firm's listings; (a) for
+buyer tours at launch, (c) once volume grows; DOS asked about unaccompanied tours (Q29). *Unblocks:* the tour step's
+marker and the buyer-side cost. (WS1, WS3, WS4)
 
-**Q14 (FIL). Will he take the New York broker licence and be broker of record of an LLC you co-own, and join HGAR
-as a REALTOR so the firm can use OneKey MLS?** Licence: paper form DOS-0036-f-a, $185 for two years, no course or
-exam for an admitted attorney. HGAR: about $606 a year plus $100, with the NAR Code of Ethics. *Provisional:* yes to
-all. *Unblocks:* the entity, MLS access and every portal (K9), every licensed checkpoint in the product. (WS2, WS3,
-WS7)
+**Q20. Fee per side.** *Provisional:* a flat $4,500 for the seller side (0.88% of a $510,000 house) and $3,500 for the
+buyer side (0.69%), with any surplus seller-offered buyer-agent pay rebated to the buyer; never a document fee. When
+the firm acts for both sides the seller saves about two thirds of today's commission; one third when the buyer brings
+an agent. These are WS4's working figures; confirm after the ten calls. *Unblocks:* the pricing screen, savings
+calculator, the plan's revenue line. (WS4, WS5)
 
-**Q15 (FIL). Broker only, or also the seller's lawyer on some listings?** Broker only is simplest. Being the
-seller's lawyer too is allowed only where the brokerage fee is fixed, non-refundable and owed whether or not the
-house sells, with the seller's written consent, his legal fee billed by his own law practice, never the buyer's
-lawyer, and only after written ethics advice (Ops. 1015, 1117). *Provisional:* broker only; the fixed-fee "legal plus
-listing" package shown as a later option. *Unblocks:* the pricing screen, the contract hand-off, his insurance and
-registration needs. (WS2, memo, fact-check)
+**Q21. When the buyer brings their own human agent: what does the seller offer that agent?** *Provisional:* the seller
+chooses, with the AI recommending a market rate (about 2% to 2.5%) and showing the evidence that lower-paying listings
+sell slower; never silently 0%. *Unblocks:* the listing intake screen; exposure to K1 and K6. (WS5)
 
-**Q16 (FIL). Will he, or a trusted local licensee, be in the Hudson Valley for listing appointments, and what New
-York office will the firm use?** Builds on Q11. The firm needs a New York office with a sign readable from the
-sidewalk; a licensed home office is allowed; NYSBA Op. 1015 favours keeping it separate from any law office.
-*Provisional:* yes to presence; a small licensed office or licensed home office in the Hudson Valley; ask DOS whether
-a shared or co-working office qualifies. *Unblocks:* A13, the brand story, the office line ($0 or $5,500 to $13,200 a
-year). (WS5, WS4, memo)
+**Q22. The software acts for both sides of the same sale: how is dual agency handled?** Acting for both sides is the
+idea, and in New York that is dual agency, which needs both parties' advance informed consent on the state form and
+reduces the duties owed to each; designated agents would need two more licensees. *Provisional:* dual agency with
+written informed consent on the state form at the start of each side, shown with a "NY law today" marker; the
+software never claims undivided loyalty to both. *Unblocks:* the consent screens and the "both sides" wording. (WS1,
+WS2)
 
-**Q17 (FIL). How many hours a week can he give as broker of record?** *Provisional:* 10 to 15, which caps the
-firm at about 35 to 50 closings a year at 15 hours a side, plus 80 to 125 hours before launch (mostly legal set-up).
-*Unblocks:* the capacity plan and the hiring trigger (A1). (WS4, memo)
-
-**Q18 (FIL). At launch, will he personally negotiate every offer, and who takes buyers on tours?** Tours: (a) him,
-(b) a licensed salesperson he sponsors and the firm pays, or (c) no buyer tours at launch. *Provisional:* he
-negotiates every offer; tours (a) at launch, (b) once volume outgrows his hours; on the firm's own listings, sellers
-host showings and open houses themselves. *Unblocks:* the offer and tour checkpoints, broker hours in the cost model.
-(WS1)
-
-**Q20. Fee model.** *Provisional:* a flat $4,500 seller-side fee with optional add-ons; a $3,500 buyer-side fee with
-any surplus seller-offered compensation rebated to the buyer; never a document fee. Local anchors: NY Flat Fee Realty
-1%, Hauseit 1% with a $7,500 minimum, 845 Realty Guys $9,995, Redfin 2% with a $6,000 minimum. Confirm after the ten
-calls. *Unblocks:* the pricing screen, savings calculator, the plan's revenue line. (WS4, WS5)
-
-**Q21. Default buyer-agent pay on the firm's listings?** *Provisional:* the seller chooses, with the firm
-recommending a market rate (about 2% to 2.5%) and showing the steering evidence; never silently 0%. *Unblocks:* the
-listing intake screen; exposure to K1 and K6. (WS5)
-
-**Q22. When the firm's seller meets the firm's buyer: dual agency with written consent, or represent the seller
-only?** *Provisional:* represent the seller only on the firm's own listings; offer the buyer an outside agent or the
-unrepresented path with the agency form; dual agency only with written informed consent and never marketed as "full
-representation of both sides". *Unblocks:* the consent screens and the "both sides" wording. (WS1)
-
-**Q23 (FIL). Contract step: hand off to independent lawyers, and which purchase form does he use?** Options for the
-form: NYSAR's statewide purchase agreement, the bar association's Residential Contract of Sale, or his own.
-*Provisional:* the firm stops at the accepted-offer memo and hands off, with a directory of local attorneys who
-publish flat fees (no referral payments either way); the demo mirrors the bar-association long form's section
-structure in its own words. *Unblocks:* the contract screens. (WS2, WS7, architecture §11)
+**Q23 (FIL). The contract: which route at launch, and which standard form does the software's draft follow?** Routes
+(see the plan): the software's full contract as the firm's paper subject to each party's attorney's approval (lawful
+today, AG 96-F11, DOS LI04); his law practice as the seller's lawyer on fixed-fee deals (Ops. 1015, 1117); the parties
+as their own drafters (untested in New York). Forms: NYSAR's statewide purchase agreement, the bar association's
+Residential Contract of Sale, or his own. *Provisional:* the demo shows the software drafting the full contract under
+a "NY law today" marker; at launch the first route on every deal, the second where he chooses it; the draft mirrors the
+bar-association long form's section structure in its own words. *Unblocks:* the contract screen and Phase 2 step 2.8.
+(WS2, plan, architecture spec)
 
 **Q25. At the meeting: recorded replay by default, with a live switch?** *Provisional:* yes; replay recorded the day
 before and labelled, live only if the room has good internet; map with an offline fallback; the app also runs on a
@@ -96,11 +83,13 @@ covered. *Unblocks:* the insurance line, his personal risk decision, the inspect
 memo)
 
 **Q28 (FIL). Confirm today's closing customs in his counties.** Who drafts, usual deposit, mortgage-commitment
-period, whether brokers attend closings. The bar association's county sheets are from 2018 to 2020. *Provisional:*
+period, whether brokers attend closings, and whether local attorneys will approve a contract the firm's software
+drafted (the first contract route, Q23). The bar association's county sheets are from 2018 to 2020. *Provisional:*
 use those sheets. A 15-minute conversation. *Unblocks:* timeline defaults and the contract step. (WS1)
 
-**Q29 (FIL). Send DOS one written inquiry, signed by him as the licensee?** Questions: may software perform tasks
-under a broker's supervision; are unaccompanied or unlicensed showings of homes for sale licensed acts; does an
+**Q29 (FIL). Send DOS one written inquiry, signed by him as the licensee?** Questions: may software carry out a
+broker's acts (listing, advertising, presenting offers, negotiating) as the broker's own acts under his supervision,
+and what supervision DOS expects; are unaccompanied or unlicensed showings of homes for sale licensed acts; does an
 out-of-state broker of record with a small New York office meet the rules; does a shared or co-working office
 qualify; is Joe's passive ownership acceptable; how does DOS view brokerage-paid, seller-engaged pre-listing
 inspections. Phone first: DOS Division of Licensing Services, (518) 474-4429. *Provisional:* I draft it; he sends it
@@ -120,25 +109,20 @@ homes entered there); join the northern MLS (HVCRR, 845-338-5299) when the first
 
 **Q33 (FIL). Who keys listings into the MLS at launch?** Him, or an hourly assistant registered as an
 "Administrative User" (not you while you co-own the firm and are paid by results). *Provisional:* him for the first
-listings, an hourly assistant later. *Unblocks:* broker hours and checkpoint role labels. (WS3)
+listings, an hourly assistant later. *Unblocks:* broker hours and the MLS step's "who keys it" label. (WS3)
 
-**Q34. Paid marketing.** *Provisional:* referral-only for the first 12 months; brand spending at most $1,000 a
-month; no per-lead buying; no paid portal extras (Zillow Showcase, Homes.com membership) at launch. *Unblocks:* the
+**Q34. Paid marketing.** The software markets the business itself (the brief), so its own campaigns cost little;
+paid advertising is the question. *Provisional:* referrals plus the AI's own campaigns for the first 12 months; brand
+spending at most $1,000 a month; no per-lead buying; no paid portal extras (Zillow Showcase, Homes.com membership) at launch. *Unblocks:* the
 K2 guardrail and the marketing budget. (WS4, WS3)
 
-**Q35. Coordination.** *Provisional:* you and the software coordinate until about 15 closings, then a part-time
-coordinator (about $24,000 a year with employer costs); you are paid hourly or by salary for this, never per deal.
-*Unblocks:* the realistic-case budget. (WS4)
+**Q35. Coordination.** *Provisional:* the software coordinates every deal (scheduling, document chasing, deadlines,
+status updates), with you watching; a part-time coordinator (about $24,000 a year with employer costs) only if the
+pilot's measured hours call for one; you are paid hourly or by salary for any of this, never per deal. *Unblocks:* the
+realistic-case budget. (WS4)
 
 **Q36 (FIL). Lockboxes: SentriLock ($130 a year plus $110 per box) or him attending showings?** *Provisional:*
 subscribe once buyer-side touring starts. *Unblocks:* showing design. (WS3)
-
-**Q37 (FIL). Free inspection: drop the "buyers won't need their own inspection" pitch and run a capped pilot
-instead?** *Provisional:* dropped; new line "you'll know what a buyer's inspector will find before they do, and you
-decide what to fix". Pilot on the first 10 listings, cap $1,500 a listing (about $10,000 in all), the seller as the
-inspector's client, owed whether or not the house sells. The demo shows this design, with an inspection credit and a
-list of three licensed inspectors for sellers who decline. *Unblocks:* the inspection screens, the pilot budget. (WS6,
-WS4)
 
 **Q38 (FIL). The inspector friend: name, and is he New York-licensed?** Will he work at his normal full price, paid
 by the brokerage, with the seller as his client, a signed disclosure that he knows your father-in-law, no repairs on
@@ -146,8 +130,10 @@ houses he inspects, and nothing given back to the brokerage? *Provisional:* lice
 State register; if he will not accept those terms he is not used; the demo uses a fictional inspector. *Unblocks:*
 the pilot provider. (WS6)
 
-**Q39. Will the brokerage ever hold deposits?** *Provisional:* no; the seller's attorney holds them, as is the local
-custom, so no broker escrow ledger. *Unblocks:* whether the product needs an escrow ledger. (WS1)
+**Q39. Will the brokerage ever hold deposits?** With the lawyer out of the drafting, someone still holds the buyer's
+deposit. *Provisional:* not at launch; the seller's attorney holds it, as is the local custom (attorneys still approve
+under the first contract route); a broker escrow account under DOS's rules only if a deal has no attorney escrow.
+*Unblocks:* whether the product needs an escrow ledger. (WS1, WS2)
 
 **Q40. Scope limits: sales only (no rentals), and no cold texting or AI calls?** Rentals carry the heaviest
 2025-26 enforcement; marketing texts and AI-voice calls need prior written consent. *Provisional:* sales only;
@@ -165,9 +151,28 @@ the demo; our own 40+ phrase test set is enough; revisit for production. *Unbloc
 **Q43. The free inspection: does "keep the original idea" include it?** It was your father-in-law's add-on, which
 you asked to be evaluated honestly. *Provisional:* no; the research's recommendation stands (drop it as pitched, run
 a capped pilot on the first ten listings with the seller as the inspector's client), shown in the plan as his
-idea with the findings. *Unblocks:* the plan's inspection section and the demo's intake step. (WS6, decision 21)
+idea with the findings: the pitch line "you'll know what a buyer's inspector will find before they do, and you decide
+what to fix", a cap of $1,500 a listing, owed whether or not the house sells, with an inspection credit and a list of
+three licensed inspectors for sellers who decline (absorbs Q37). *Unblocks:* the plan's inspection section and the
+demo's intake step. (WS6, WS4, decision 21)
 
 ## Answered (newest first)
+
+- **2026-10-23, closed by decision 21 or merged into Q44 (the father-in-law bundle):**
+  - **Q11** (where he lives; is his registration current): merged into Q44 (1) and (2).
+  - **Q13** (ten sellers he could call): merged into Q44 (4), now due 2026-11-06; the fallback "re-plan around a local
+    partner broker" is replaced by "rethink how the firm finds customers", since a partner broker would replace the idea.
+  - **Q14** (licence, broker of record, HGAR): merged into Q44 (3), reworded: he is broker of record of the firm that
+    runs the software, doing only the acts the law requires of him.
+  - **Q15** (broker only, or also the seller's lawyer): closed by decision 21; the "broker only" plan it presumed is
+    gone. Its substance (the fixed-fee seller's-lawyer route) is now one of the contract routes in Q44 (5) and Q23.
+  - **Q16** (presence for listing appointments; New York office): closed by decision 21 for the appointments (the
+    software runs intake and pricing); the office part is merged into Q44 (2).
+  - **Q17** (hours a week as working broker of record): closed by decision 21; his hours now go only to the acts the law
+    requires, which the pilot measures (A1), and Q44 (3) asks whether he will take that role.
+  - **Q37** (drop the free-inspection pitch, run a capped pilot): merged into Q43.
+  - **Reworded, still open:** Q18 (who opens the door), Q20 (fee per side), Q21 (buyer's own agent), Q22 (dual agency
+    when the software acts for both sides), Q23 (contract route and form), Q29 (DOS inquiry), Q34, Q35, Q39.
 
 - **2026-10-23, Joe, Q19, Q24 and the plan's framing:** "Keep the original idea, that is what I said I would
   build. I can pare it back on the future if need be. The idea is the idea. Completely replace the real estate

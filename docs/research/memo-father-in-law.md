@@ -1,13 +1,17 @@
 # Your possible roles in Joe's New York brokerage: what the rules allow
 
+> **Note, 2026-10-23.** This memo is research on your roles, and its findings still apply under the plan Joe has
+> confirmed: software that replaces both agents and drafts the contract, run by a licensed firm with you as broker of
+> record (decision 21; see the [executive summary](../EXECUTIVE-SUMMARY.md) and the [plan](../PLAN.md)).
+
 *Research to plan with; not legal advice.* Prepared 2026-10-23 for Joe to forward. L-numbers refer to the
 constraint table in [WS2 legal and licensing](WS2-legal-licensing.md#10-the-constraint-table). Labels:
 [PRIMARY] = statute, rule, regulator or court text read; [SECONDARY] = reporting or commentary;
 [INFERENCE] = our reading, not a stated rule.
 
 **In short.** You can be broker of record of an LLC Joe co-owns. You need no course, no experience and no
-exam, provided you are "an Attorney who is currently admitted to the New York State bar". You can also
-approve every checkpoint the software reaches (L3, L4, L5). You **cannot** be either party's lawyer in a deal
+exam, provided you are "an Attorney who is currently admitted to the New York State bar". The licensed acts the
+software carries out are then yours, so each must be your real decision (L3, L4, L5). You **cannot** be either party's lawyer in a deal
 where you or the firm earn a commission that depends on the sale closing. NYSBA treats that conflict as one no
 client consent can cure (L26). Two things weigh on you in particular. First, Article 12-A requires a
 **physical New York office with a sign**, because your no-exam route gives you no out-of-state licence to rely
@@ -44,9 +48,11 @@ Brokerage customers must also be told in writing that brokerage services "are no
 
 **What a deal looks like under each option.**
 - *Broker only.* The seller signs a listing agreement on a commission (or flat fee) payable at closing. The
-  software drafts, schedules and fills in the offer on an approved form, and you approve each licensed step
-  (L5, L22). The seller hires an independent Hudson Valley attorney, who by local custom drafts the contract
-  and holds the deposit (L25). The product offers a directory of such attorneys with no referral payments (L31).
+  software does the agent's work, and each licensed step is your decision (L5). On the rules as they stand, the
+  firm's contract paper must be a fill-in form, or made subject to each party's attorney's approval (L22); by local
+  custom the seller's attorney drafts and holds the deposit (L25), and any attorney list carries no referral payments
+  (L31). *(Reworded 2026-10-23 for decision 21: the earlier text described an independent-lawyer hand-off as the
+  plan; the plan's contract routes are in [PLAN.md](../PLAN.md#the-contract-route-what-new-york-allows-today).)*
 - *Broker and seller's lawyer.* The seller pays a fixed brokerage fee up front, non-refundable even if the
   house never sells *(Corrected 2026-10-23 by fact-check: "up front" is our design choice, not an Op. 1015 condition; the condition is that the fee is fixed, non-refundable and not contingent on closing)*, and signs a written informed-consent form. Your law practice is separately engaged, and
   bills the seller, to draft the contract and handle the closing. The buyer has their own lawyer. If the buyer
