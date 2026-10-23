@@ -402,3 +402,184 @@ Among companies verifiably active in October 2026, only Hauseit (NYC, Long Islan
 ### Gaps
 - Prevu, UpNest, Unreal Estate, Homeward, Opendoor fee: not verifiable from readable pages.
 - Buyer-side pricing for the 27 flat-fee entries and for Hauseit's Westchester/Dutchess coverage was not individually confirmed.
+
+---
+
+## Gap fill (2026-10-23, VPS session)
+
+Method: a fresh pass with new web-search budget. Four helper passes (AI entrants; discount, flat-fee and attorney-led models; Hudson Valley ground truth; niche evidence) ran about 350 searches and fetches between them, and the VPS session itself ran about 60 primary-source checks (NY DOS open-data queries, statutes, ethics opinions, company pages, the NAR 2025 Profile PDF). Everything below was accessed 2026-10-23 unless another date is given. Labels as above. Where a new finding contradicts the notes above, it says **CONTRADICTS NOTES ABOVE** and the newer primary source wins; the original text above is left untouched.
+
+### Coverage audit
+
+| Question in the ask (national inventory part) | Before gap fill | After gap fill |
+|---|---|---|
+| AI-driven agent replacement, buyer side: who exists | Partly (2023–2024 cohort covered; 2025–2026 thin) | Full: Homa, reAlpha/Prevu, TurboHome, WithJoy, Zown, Zeego, Agentless.us added or re-checked |
+| AI-driven agent replacement, seller side | Partly (Ridley only) | Full: LocQube (NY), Waymark (TX), For Sale By AI, FSBO.com relaunch, Beycome's AI, HOMLI (Europe) added |
+| Both sides in one product | Not answered | Answered: only Beycome (no NY), Landian (referral, no AI), TurboHome, Zown and an attorney-led Georgia firm (AgentFree) cover both; none in NY with AI |
+| Flat-fee agent replacement and discount brokerages | Full for NY flat-fee MLS; partly for status | Full: every company re-checked with a dated status |
+| Rebate brokers | Partly | Full: Prevu now owned by reAlpha; Digs, NestApple, PropertyClub, ApartmentsExpert, Yoreevo re-checked |
+| iBuyers and power buyers in NY | Answered, but wrong for Opendoor | Corrected: Opendoor buys statewide in NY |
+| Attorney-led flat-fee models in NY and neighbouring states | Not answered (one 2009 NYC item) | Answered: no scaled model anywhere; solo attorney-brokers in WA, CA, FL, TN; AgentFree in GA; none in NY, NJ, CT, PA, MA |
+| Stealth and seed-stage startups | Partly (weakest part) | Partly to full: YC directories re-read; 2025–2026 rounds found (Homa $5M, Ridley $6.4M, Catchouse $3.5M, Breezy $10M agent-side); Crunchbase and PitchBook still unreadable |
+| What they charge | Partly | Full for active firms, dated; conflicts noted |
+| Where they operate | Partly | Full; NY licensing checked against DOS records |
+| How far along (stage, funding, traction) | Partly | Mostly full; traction is almost always company-claimed |
+| Where they fall short | Partly | Full: walk-backs, complaints, missing licence data, coverage gaps |
+
+### Verification of load-bearing claims
+
+| Claim the conclusions rest on | Source checked | Result |
+|---|---|---|
+| Homa: buyer side only, ~1% fee, FL then TX (June 2026), CA next | [Yahoo/San Antonio Express-News, 2026-07-31](https://finance.yahoo.com/real-estate/articles/texas-company-using-ai-put-130000110.html); [HousingWire, 2026-10-15](https://www.housingwire.com/articles/homa-raises-5m-expand-ai-homebuying-platform/) | Confirmed and **updated**: CA soft launch 2026-09-01; $5M seed 2026-10-15 (notes said funding undisclosed) |
+| Ridley: $1,499 / $3,999, 250+ homes, Colorado | [5280, July 2026](https://5280.com/can-ai-replace-real-estate-agents/); [AZFamily, 2026-07-22](https://www.azfamily.com/2026/07/23/ai-home-selling-platform-launches-arizona-offering-flat-fee-alternative/) | Confirmed for July 2026; **updated**: AZ, CO and FL; CEO claims 300+ homes; ridley.com shows an expired TLS certificate, brand now at getridley.com (403 to automated reads) |
+| reAlpha/Claire: Florida only, 75% rebate | [reAlpha IR, 2025-11-25](https://ir.realpha.com/press-release/re-alpha-nasdaq-aire-acquires-prevu-to-expand-multi-state-footprint-and-offer-its-integrated-realty-and-mortgage-services-in-additional-states) | **Corrected**: reAlpha bought Prevu; 12 states plus DC including NY; rebate up to 1.5% (1% brokerage plus 0.5% with its mortgage arm) |
+| Redfin: 2% listing fee, 1% if you also buy, +1% if buyer unrepresented, Sept 2025 | [Redfin disclaimer page](https://www.redfin.com/disclaimer) | Confirmed; New York minimum **$6,000**; Concierge 3%; footer "Updated September 2025"; the 1% is a refund after a Redfin purchase |
+| Hauseit: $399 / $699 / $1,199 in the Hudson Valley | [Hauseit agent-assisted FSBO](https://www.hauseit.com/agent-assisted-fsbo/) | **Corrected**: Core ($699) and Pro ($1,199) are NYC-only; Hudson Valley sellers get Base ($399, 15 photos, no phone, email or pricing support) |
+| Clever's NY flat-fee roster | [Clever NY flat-fee list](https://listwithclever.com/flat-fee-mls-listing/new-york/) | Confirmed: 27 services, "Updated September 3, 2026"; no Hudson Valley county named |
+| No AI-native entrant holds a NY licence | [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25LOCQUBE%25'%20OR%20upper(business_name)%20like%20'%25BEYCOME%25') and the brand query in the Hudson Valley notes' gap fill | **Corrected**: LOCQUBE NEW YORK INC (Bronx) and PREVU REAL ESTATE LLC (Manhattan, now reAlpha) are licensed; BEYCOME BROKERAGE REALTY LLC holds an Albany licence although its site omits NY; Homa, Ridley, TurboHome, Landian, Houzeo hold none |
+| None of the iBuyers buys directly in NY | [Opendoor NY seller page](https://www.opendoor.com/sell/new_york_other) | **Corrected**: Opendoor offers cash "anywhere in New York", names Poughkeepsie as a top market, uses a NY closing attorney on every deal |
+| Compass v. Zillow had no ruling | [Real Estate News, 2026-03-18](https://www.realestatenews.com/2026/03/18/compass-drops-lawsuit-after-zillow-embraces-pre-marketing) | **Corrected**: preliminary injunction denied 2026-02-06; Compass dismissed without prejudice 2026-03-18; Zillow's Listing Access Standards "remain fully in effect" |
+| Alloy Advisors: 23 tasks, $2,000–$6,500 "fair value" of the human core; YouGov 14% trust AI to act for them | [Real Estate News, 2026-06-11](https://www.realestatenews.com/2026/06/11/ai-poised-to-break-agent-commission-model-report-says) | Confirmed (bottom-up estimates, not empirical) |
+| HOMLI (YC, NYC) as an autonomous broker | [YC company page](https://www.ycombinator.com/companies/homli) | Confirmed as described, but it operates in Greece/Europe, not the US |
+
+### G1. 2025–2026 entrants not in the notes above
+
+### Takeaway
+The idea is in motion, but split: funded companies run AI plus a licensed human on one side only. The newest and most relevant entrant is LocQube, a licensed Bronx brokerage that since April 2026 sells an $899 AI-assisted listing in New York and Connecticut (NYC and Westchester named). No new entrant was found that names the Hudson Valley, does both sides with AI, or is attorney-led in New York.
+
+### Cited Findings
+- LocQube launched an "AI-powered home selling platform" on 2026-04-09; CEO Manny Pantiga; "fully licensed brokerage"; a licensed agent handles negotiation and contracts in the hybrid tier [PRIMARY press release] — [PR Newswire](https://www.prnewswire.com/news-releases/locqube-launches-ai-powered-home-selling-platform-that-puts-sellers-back-in-control-302738628.html), accessed 2026-10-23
+- LocQube plans: Insights free; Self-Serve $899 (AI listing description, MLS within 24 hours, seller manages showings, expert backup); Pro 1.99% (dedicated agent, photography, negotiation to closing); "Available in New York and Connecticut", Westchester named, Hudson Valley not named; claims 578 sales, 30 in-house agents, 4.9/5; no buyer service described; no licence shown on the page; Florida expansion banner; page dated 2026-10-20 [PRIMARY; numbers CLAIMED] — [locqube.com](https://www.locqube.com/), accessed 2026-10-23
+- LocQube acquired Pantiga Group (founded 2009, 30+ agents, NY and CT broker), the likely source of its sales history [CLAIMED] — [LocQube blog, 2025-01-13](https://www.locqube.com/blog/tech-startup-locqube-acquires-pantiga-group), accessed 2026-10-23
+- DOS: LOCQUBE NEW YORK INC, 780 Morris Park Ave, Bronx, principal office licence 10991240927 [PRIMARY] — [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25LOCQUBE%25'), accessed 2026-10-23
+- Waymark (Marelli Properties, TREC #639078, San Antonio): seller-only; Launch $699, Manage $1,199; AI "Aria" does pricing, disclosures, staging, copy, offer review and deadlines; one broker reviews listings, disclosures and offers; Texas only; one closed sale cited (2026-06-02) [PRIMARY] — [waymarkre.com](https://www.waymarkre.com), accessed 2026-10-23
+- AgentFree (Atlanta): attorney-led, both sides, 1% each side plus a $500 retainer credited at closing; "Real estate Attorney Partners"; no showings; AI named but no AI features described [PRIMARY] — [goagentfree.ai](https://www.goagentfree.ai/); founder Geoff Friedman named as exclusive attorney partner [CLAIMED, snippet; page 403] — [RISMedia, 2025-05-05](https://www.rismedia.com/2025/05/05/agentffree-homebuying-real-estate-attorneys/), accessed 2026-10-23
+- For Sale By AI, LLC: flat-fee AI-assisted selling "anywhere in the US… subject to availability"; testimonials from Homer and Syracuse NY; NY fair-housing notice; no brokerage or licence shown [PRIMARY] — [forsalebyai.io](https://forsalebyai.io/); trademark filed 2025-03-31 [CLAIMED] — [Justia](https://trademarks.justia.com/owners/for-sale-by-ai-llc-6248201), accessed 2026-10-23
+- FSBO.com: acquired February 2026 by FSBO Holdings (Mike Kortas of NEXA Lending, Brad Rice of Homepie); relaunched 2026-03-30 with "agentic AI" built with Bevri.ai and loan officers as coordinators; PACT digital offer-to-contract beta launched 2026-09-07; licensed coordination and negotiation "coming soon" [SECONDARY / CLAIMED] — [PR Newswire relaunch](https://www.prnewswire.com/news-releases/fsbocom-relaunches-with-agentic-ai-powered-marketplace-uniting-loan-officers-realtors-and-sellers-in-a-smarter-transaction-model-302728824.html); [HousingWire on PACT, 2026-09-07](https://www.housingwire.com/articles/fsbocom-launches-pact-digital-offer-to-contract-platform/), accessed 2026-10-23
+- Zown: Ontario brokerage with an AI concierge, ~1% buyer "Boost" and flat-fee selling; US launch in California with salaried agents and $50/hour showing agents; aims at "every state in 12–16 months" [PRIMARY / SECONDARY] — [zown.ca](https://www.zown.ca); [HousingWire, 2025-08-25](https://www.housingwire.com/articles/beyond-redfin-zown-bets-on-ai-salaried-agents-and-buyer-rebates/), accessed 2026-10-23
+- Zeego.ai (Tiburon, CA): buyer platform at a 0.75% fee, launched October 2025, post-search support (showings, disclosures, offer and closing); founder says most buyers still need agent support [CLAIMED, press release via search] — [AI Journal release](https://aijourn.com/?p=424195), accessed 2026-10-23
+- Anyone.com: free for buyers and FSBO sellers; planned "end-to-end AI guided transactions" at a flat $1,499 in Q3 2026; launch unverified (site 403) [SECONDARY] — [Crescendo blog, 2026-03-01](https://www.crescendo.ai/blog/ai-tools-for-real-estate-businesses), accessed 2026-10-23
+- Agentless (agentless.us, Warrenville IL): buyer DIY tool at $99 per property (offer letter, AI inspection analysis, purchase agreement); © 2024; no licence shown [PRIMARY] — [agentless.us](https://agentless.us), accessed 2026-10-23
+- HOMLI (YC S22): "autonomous real estate broker so homeowners can sell without agents"; YC lists New York City, but it operates in Greece/Europe (Athens hiring, European valuation tool); 20 staff [PRIMARY] — [YC](https://www.ycombinator.com/companies/homli), accessed 2026-10-23
+- YC's real-estate directories show no 2025–2026 US consumer agent-replacement company beyond business-to-business tools (RealPact, Vestris) and Spotlight Realty (NYC rentals) [PRIMARY] — [YC housing and real estate](https://www.ycombinator.com/companies/industry/housing-and-real-estate); [YC real estate, New York](https://www.ycombinator.com/companies/industry/real-estate-and-construction/new-york), accessed 2026-10-23
+- Spotlight Realty's site now has a Sellers section with a home-sale process (it began as a ~4% NYC rental brokerage) [PRIMARY] — [spotlight.realty](https://www.spotlight.realty); DOS lists SPOTLIGHT REALTY INC [PRIMARY] — [DOS query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25SPOTLIGHT%25'), accessed 2026-10-23
+- A New York Times technology reporter sold his Hudson Valley ranch for just over $600,000 using Google's Gemini (listing copy, staging images, showing requests, negotiation emails), estimating he kept about $90,000; the summary notes a human agent might have got a better price and that the AI gave at least one bad piece of advice he caught [SECONDARY summary of the NYT piece of 2026-05-28] — [Newser, 2026-05-30](https://www.newser.com/story/390069/tech-writers-experiment-doesnt-bode-well-for-realtors.html); [Marketplace, 2026-06-12](https://www.marketplace.org/story/2026/06/12/does-ai-make-a-good-real-estate-agent), accessed 2026-10-23. Note: the Newser summary calls the AI's suggestion of offering 0% to the buyer's agent "illegal"; offering no buyer-agent compensation is lawful in New York (sellers set it), so that detail of the summary is treated as unreliable.
+- Snippet-only entrants, not verified: OfferHaus ($99/month DIY offers), Arrivva (flat $9,750 buyer / $15,750 seller; CA, WA, PA, TX), ShopProp (TX, from $1,995), ByOwnerAI (domain does not resolve), Evorimo (Munich) [CLAIMED] — [RISMedia, 2025-10-28](https://www.rismedia.com/2025/10/28/ridley-offerhaus-arrivva-alternate-models-innovators-real-estate-ai-full-service/); [arrivva.com](https://arrivva.com/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] LocQube is the closest live competitor in New York: same "AI tier plus licensed agent" shape, a NY licence, and Westchester service next door to the target counties. It is seller-side only and does not name the Hudson Valley.
+- [INFERENCE] Waymark shows one broker can run "AI does the seller tasks, broker reviews at checkpoints" at $699–$1,199; its single cited sale shows how early that model is.
+- [INFERENCE] The Gemini-assisted Hudson Valley sale shows a capable seller can already do much of this with a general chatbot and a closing attorney; the product's value has to be the licensed, accountable layer and MLS access, not copywriting.
+
+### Gaps
+- LocQube's AI-tier volume, buyer offering and any Hudson Valley listings were not verified; a mystery-shop call would settle it.
+- Anyone.com's launch and For Sale By AI's licensing are unverified.
+
+### G2. Status re-check of the AI-era companies in the notes above (dated 2026-10-23)
+
+### Takeaway
+Homa, Ridley, reAlpha, TurboHome, WithJoy and Landian are alive; Modern Realty, Bramble, GetMyHome and Aalto have pivoted out; Alokee is probably dead; Catchouse is not a competitor. Every survivor that started as "AI instead of an agent" now puts a licensed human on offers, negotiation and closing, and Homa's fee went up, not down.
+
+### Cited Findings
+- Homa fee history: launched April 2025 as a free DIY tool that "does not represent buyers" [SECONDARY] — [Real Estate News, 2025-04-25](https://www.realestatenews.com/2025/04/25/can-an-ai-agent-get-homebuyers-to-the-finish-line); $1,995 flat by December 2025 after "Florida testing showed human agents still add value" [SECONDARY] — [Real Estate News, 2025-12-27](https://www.realestatenews.com/2025/12/27/an-ai-driven-homebuying-model-is-picking-up-steam); $2,000 flat and 10 Florida closings by 2026-01-27 [SECONDARY] — [NBC Miami, 2026-01-27](https://nbcmiami.com/news/local/some-homebuyers-saving-thousands-thanks-to-ai-but-how-does-it-work/3747934); 1% of price by July 2026 [SECONDARY] — [Yahoo/Express-News, 2026-07-31](https://finance.yahoo.com/real-estate/articles/texas-company-using-ai-put-130000110.html), all accessed 2026-10-23
+- Homa: $5M seed led by Quiet Capital with Restive and Cambrian (2026-10-15); FL, TX, CA (soft launch 2026-09-01); one in-house broker per state writes and negotiates offers; flat-fee local specialists for tours; credits average over $10,000 (claimed); no seller side, no NY [SECONDARY] — [HousingWire](https://www.housingwire.com/articles/homa-raises-5m-expand-ai-homebuying-platform/); the CEO in July 2026 advised against relying only on AI [SECONDARY] — [News4JAX, 2026-07-16](https://www.news4jax.com/news/local/2026/07/16/ai-powered-real-estate-services-promise-homebuyers-thousands-in-savings-but-experts-warn-against-replacing-agents/), accessed 2026-10-23. **CONTRADICTS NOTES ABOVE** (funding undisclosed; CA only planned).
+- Ridley: AZ, CO, FL; flat fee $1,500–$5,000; AI-only or AI-plus-agent plans; 300+ homes (CEO claim); a local agent quoted saying AI cannot replace relationships with lenders and trades [SECONDARY] — [AZFamily, 2026-07-22](https://www.azfamily.com/2026/07/23/ai-home-selling-platform-launches-arizona-offering-flat-fee-alternative/); at launch it partnered with brokerages for MLS access and the seller still paid the buyer's agent [SECONDARY] — [HousingWire, 2025-07-15](https://www.housingwire.com/articles/ridley-ai-colorado-launch-mike-chambers-social-media-home-sellers/); Trustpilot: 11 reviews, all 5-star, mostly April 2026 [SECONDARY] — [Trustpilot](https://www.trustpilot.com/review/getridley.com), accessed 2026-10-23. **CONTRADICTS NOTES ABOVE** (Colorado-only, 250+).
+- reAlpha: Q2 2026 revenue about $1.11M (down 11%), net loss about $3.05M, cash $2.23M at 2026-06-30 versus $7.78M at 2025-12-31, about 25% of staff cut, "a more focused mortgage strategy"; Claire not mentioned [PRIMARY content via aggregator] — [StockTitan copy of the 2026-08-14 release](https://www.stocktitan.net/news/AIRE/re-alpha-nasdaq-aire-reports-second-quarter-2026-financial-upino8mn4vjy.html); Nasdaq bid-price compliance regained 2026-05-14 after a 1-for-25 reverse split [CLAIMED] — [TipRanks](https://www.tipranks.com/news/company-announcements/realpha-tech-regains-nasdaq-compliance-stabilizing-listing-status), accessed 2026-10-23. **CONTRADICTS NOTES ABOVE** (Florida-only, 75% rebate).
+- Landian: now a "licensed referral brokerage" for buyers and sellers in 50 states, DC, Puerto Rico and Canada; no AI claim on the homepage; NY not named; Trustpilot 3.5 with a refund complaint [PRIMARY / CLAIMED] — [landian.co](https://www.landian.co); [Trustpilot](https://www.trustpilot.com/review/landian.co), accessed 2026-10-23
+- TurboHome: buyer and seller representation; flat-fee service in CA, TX, WA; 388 closed transactions, $440M volume, 14 agents, 49% offer win rate per a trade profile; conflicting broker numbers and counts on its own site [PRIMARY / SECONDARY; numbers CLAIMED] — [turbohome.com](https://www.turbohome.com); [Propmodo, 2026-08-24](https://propmodo.com/flat-fee-brokerages-automate-research-return-thousands-to-residential-buyers/), accessed 2026-10-23
+- WithJoy.AI: AI "Joy" plus licensed agents; 30% rebate on its site (70% in a 2025 pilot); WA and PA licences [PRIMARY] — [withjoy.ai](https://withjoy.ai), accessed 2026-10-23
+- Catchouse: data platform built "for AI agents rather than human visitors"; beta, California only, no licence; not an agent replacement [SECONDARY / PRIMARY] — [Newsweek, 2026-10-22](https://www.newsweek.com/bay-area-housing-market-new-ai-sales-model-realtors-12586815); [catchouse.com](https://catchouse.com), accessed 2026-10-23
+- Modern Realty → Mage Legal; Bramble → Struct; Aalto → Titus Lending ("pay at close" payments); GetMyHome → RealKey agent tools (a legacy © 2025 page still shows $6,000 flat or 0.99% buyer pricing); Alokee site HTTP 522 and PitchBook "Out of Business" (snippet) [PRIMARY / CLAIMED] — [YC Modern Realty](https://www.ycombinator.com/companies/modern-realty); [YC Bramble](https://www.ycombinator.com/companies/bramble); [gotitus.com](https://www.gotitus.com); [RealKey legacy pricing](https://static.realkey.ai/actions-pricing); [PitchBook Alokee](https://pitchbook.com/profiles/company/530013-70), accessed 2026-10-23
+- Final Offer merged with Purlin (2026-02-03) into an AI platform for agents; Reside was acquired by LPT (February 2026); Nestfully is an MLS-owned search portal; none is an agent replacement [PRIMARY / CLAIMED] — [Yahoo/PR](https://finance.yahoo.com/news/purlin-final-offer-merge-create-120000439.html); [HousingWire](https://www.housingwire.com/articles/lpt-realty-humaniz-reside-acquisition/), accessed 2026-10-23
+- "Tuesday" and "Homely": still no matching US real-estate company; RealStar AI's domain is for sale [PRIMARY observation], accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The walk-back is the most important competitor lesson: the best-documented AI buyer platform tested pure DIY, found buyers wanted a human, and re-priced upward to fund one.
+- [INFERENCE] reAlpha is the only AI-branded buyer business with a NY licence, but its cash and revenue trend make it a weak operator rather than a threat to win the Hudson Valley.
+
+### Gaps
+- Homa and Ridley transaction totals beyond company claims; Ridley's own licence status (it appears to rely on partner brokerages).
+
+### G3. Discount, flat-fee, rebate and referral firms: current terms and status
+
+### Takeaway
+Terms have moved up, not down: Redfin is 2% with a $6,000 New York minimum, Hauseit's 1% has a $7,500 minimum, Prevu's rebate fell to up to 1%. Flat-fee MLS entry stays a $69–$499 commodity, and incumbents are automating the transaction layer (HomeLight's "EVA").
+
+### Cited Findings
+- Redfin: "2.0% in all markets", New York minimum $6,000, Concierge 3.0%, +1% if the buyer is unrepresented, 1% only as a refund after buying with Redfin within 365 days, Partner Agent deals excluded, footer "Updated September 2025" [PRIMARY] — [Redfin disclaimer](https://www.redfin.com/disclaimer); Alessio Sanfilippo named CEO 2026-08-31 after Glenn Kelman left in January 2026 [SECONDARY] — [Real Estate News, 2026-08-31](https://www.realestatenews.com/2026/08/31/former-meta-exec-tapped-as-new-redfin-ceo), accessed 2026-10-23
+- Hauseit 1% full service: "$7,500 minimum commission… $300 upfront for pro media"; buyer credit two-thirds of buyer-agent commission, broker keeps one-third or 1% with a $7,500 minimum [PRIMARY] — [Hauseit pricing](https://www.hauseit.com/pricing/), accessed 2026-10-23
+- Clever: 1.5% listing fee, $3,000 minimum (not guaranteed under $200,000); buyer cash back $250/$500 in 41 states [PRIMARY] — [listwithclever.com](https://listwithclever.com/); HomeLight: 33% referral fee to partner agents [CLAIMED] — [HomeLight help](https://help.homelight.com/hc/en-us/articles/360002947414-what-does-homelight-cost-); $40M financing with BlackRock and launch of "EVA", an AI agent to automate closings (2026-04-27) [CLAIMED] — [MarketScreener](https://www.marketscreener.com/news/homelight-inc-announced-that-it-has-received-40-million-in-funding-from-blackrock-inc-ce7f59dcd080f620); UpNest rebranded "RealChoice Selling", app retired May 2026 [CLAIMED, competitor blog] — [Houwzer blog](https://houwzer.com/blog/upnest-reviews/), accessed 2026-10-23
+- Houzeo press release (2026-06-29): Bronze $399 / $0 at close; Silver $449 + 0.5%; Gold $479 + 1%; Platinum $499 + 1.25%; Clever shows lower upfront prices, so pricing stays inconsistent [PRIMARY / SECONDARY] — [EIN Presswire](https://www.einpresswire.com/article/922983648/houzeo-launches-a-399-flat-fee-mls-plan-with-0-at-closing); [Clever NY](https://www.listwithclever.com/flat-fee-mls-listing/new-york/), accessed 2026-10-23
+- Prevu: "affiliated businesses of reAlpha Tech Corp."; rebate "up to 1% of the purchase price" [PRIMARY] — [Prevu blog](https://cdn-production.prevu.com/blog/commission-rebates-in-maryland); Clever: 2% listing fee, only 17 reviews in the past year [SECONDARY] — [Clever Prevu review](https://listwithclever.com/real-estate-blog/prevu-real-estate-reviews/), accessed 2026-10-23. **CONTRADICTS NOTES ABOVE** (two-thirds, up to 2%).
+- Yoreevo: 1.5% sell-only, 1% if you also buy, minimum not stated; Westchester pages [PRIMARY] — [yoreevo.com/sell](https://www.yoreevo.com/sell); Digs Realty: up to 67% buyer rebate, claims Hudson Valley and Catskills service and $1.15B sales since 2014 [CLAIMED] — [digsrealtynyc.com](https://digsrealtynyc.com/); NestApple: buyers up to 2%, sellers from 1%, NYC and CT [PRIMARY] — [nestapple.com](https://www.nestapple.com/); PropertyClub up to 2.25%, footer © 2024 [PRIMARY] — [propertyclub.nyc](https://propertyclub.nyc/buyer-commission-rebate); ApartmentsExpert 75% rebate, Manhattan only [PRIMARY] — [apartmentsexpert.com](https://www.apartmentsexpert.com/), accessed 2026-10-23
+- Beycome: $99 / $399 / $999 listing; 24/7 AI assistant "Artur" for listings, comps, offers and contract review, with a disclaimer of warranties on its output; 18 states plus DC, NY not listed; claims 22,353+ properties closed [PRIMARY / CLAIMED] — [beycome.com](https://www.beycome.com/); but DOS lists BEYCOME BROKERAGE REALTY LLC at 418 Broadway, Albany [PRIMARY] — [DOS query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25BEYCOME%25'), accessed 2026-10-23
+- Newfound group (Houwzer 1%, HomeRise $95 + $495, HomeLister $99 + $500 and up): no NY on any brand page; HomeLister joined Newfound June 2025 [PRIMARY / CLAIMED] — [houwzer.com](https://houwzer.com/); [homerise.com](https://www.homerise.com/); [homelister.com](https://www.homelister.com/); [Inman, 2025-06-23](https://www.inman.com/2025/06/23/homelister-is-the-latest-member-of-newfounds-brokerage-portfolio/), accessed 2026-10-23
+- UnoFee and Cavestone domains do not resolve (DNS ENOTFOUND); partnerrealestate.com redirects to a domain-for-sale page; Assist-2-Sell has one NY office (Utica); Help-U-Sell shows no NY office; Tomo shows no NY lending or brokerage service [PRIMARY observations] — [unofee.com](https://www.unofee.com/); [Assist2Sell NY locator](https://www.assist2sell.com/locateresults?location=ny); [helpusell.com](https://www.helpusell.com/); [tomo.com](https://tomo.com/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] On a $450,000 Hudson Valley sale, Hauseit's "1%" is really 1.67% because of the $7,500 minimum, and Redfin's is 2% ($9,000) unless the seller also buys with Redfin. Headline discounts overstate the saving.
+- [INFERENCE] Beycome's Albany licence is the one sign that a national flat-fee-plus-AI brand may be preparing NY entry; watch it.
+
+### Gaps
+- Redfin's Sign & Save buyer refund (0.25% under 2024 terms) is unconfirmed for 2026; Yoreevo's minimum is undisclosed; Houzeo's NY broker of record is unconfirmed.
+
+### G4. iBuyers and power buyers: Opendoor now buys in New York
+
+### Takeaway
+**CONTRADICTS NOTES ABOVE**: Opendoor makes direct cash offers anywhere in New York and names Poughkeepsie as a top market. The others remain out of NY or are now lenders.
+
+### Cited Findings
+- "Opendoor buys your New York home as-is"; cash offer "anywhere in New York"; top markets Brooklyn, Buffalo, Poughkeepsie, Queens, Rochester, Staten Island, Syracuse; "works with a qualified NY closing attorney on every transaction"; fee shown only as "minus our fees" [PRIMARY] — [Opendoor NY](https://www.opendoor.com/sell/new_york_other), accessed 2026-10-23
+- Opendoor expanded to the "entire continental United States" per an 8-K of 2025-09-16 [SECONDARY] — [Real Estate News, 2025-09-17](https://www.realestatenews.com/2025/09/17/opendoor-to-expand-nationally-after-stock-bull-run-c-suite-shakeup); bought 8,241 homes in 2025 versus 14,684 in 2024 [CLAIMED] — [Zacks](https://www.zacks.com/stock/news/2888363/opendoor-expands-u-s-footprint-is-scale-gaining-traction); president Lucas Matheson stepped down 2026-10-21 [CLAIMED] — [HousingWire](https://www.housingwire.com/articles/opendoor-nejatian-president/), accessed 2026-10-23
+- DOS lists OPENDOOR BROKERAGE LLC (Tempe AZ, out of state) as a NY principal office [PRIMARY] — [DOS query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25OPENDOOR%25'), accessed 2026-10-23
+- Offerpad: 27 metros (10-Q, 2026-06-30), none in NY; Orchard: 12 metros, none in NY; Knock Lending: 31 states plus DC, not NY; Homeward: no NY evidence [PRIMARY / CLAIMED] — [Offerpad 10-Q](https://www.sec.gov/Archives/edgar/data/0001825024/000119312526330713/opad-20260630.htm); [orchard.com](https://orchard.com/); [Knock licenses](https://www.knock.com/licenses); [homeward.com](https://www.homeward.com/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] Opendoor gives Hudson Valley sellers a certainty-for-a-fee option (historically about 5% plus repair deductions); it competes for the seller who values speed, not the one who values price.
+
+### Gaps
+- Whether Opendoor has closed any Hudson Valley purchases, and its NY fee level.
+
+### G5. Attorney-led flat-fee models in NY and neighbouring states
+
+### Takeaway
+No scaled attorney-led brokerage exists in New York or its neighbours. The model exists only as solo practices (WA, CA, FL, TN) and one Georgia firm (AgentFree). The 2009 New York attempt left no trace of launching.
+
+### Cited Findings
+- New York Real Estate Advocates (Joseph Ferrara, Esq.): an interview of 2009-10-16 says he was "starting up… a real estate brokerage concept for attorneys"; no website, listing or later news found [SECONDARY] — [Miller Samuel, 2009-10-16](https://millersamuel.com/interview-joseph-ferrara-esq-sellsius-blog-the-clozing-social-media-new-york-real-estate-advocates/), accessed 2026-10-23
+- NYSBA Opinion 1015 (2014-08-04) arose from a lawyer-broker proposing flat broker fees of $300 (MLS only) or $1,500 (full broker services) [PRIMARY] — [NYSBA Op. 1015](https://nysba.org/ethics-opinion-1015/), accessed 2026-10-23
+- Symmes Law Group (Seattle): attorney and managing broker (eXp); buyers $3,500 flat or capped commission with rebate; sellers $3,500 flat or 1.5%/2.5% with minimums [PRIMARY] — [Symmes article, 2025-10-19](https://www.bankruptcy-law-seattle.com/Articles/attorney-broker-in-one-affordable-flat-fee-real-estate-services-in-wa/), accessed 2026-10-23
+- Law Office of Kristina M. Reed (Sacramento): attorney and broker; $5,000 flat for FSBO sellers or buyers; no MLS or showings [PRIMARY] — [kristinareed.com](https://www.kristinareed.com/practice-areas/real-estate-law/fsbo-flat-fee-california/), accessed 2026-10-23
+- Attorneys Realty (Winter Park FL): "staffed exclusively with attorney agents"; $99 / $499 DIY listings [PRIMARY] — [arl.law](https://arl.law/); Rochford Law / Community Realty (Nashville): attorney, broker and title agent; $79 + 0.25% + $550 at closing [PRIMARY] — [rochfordlawyers.com](https://rochfordlawyers.com/flat-fee-listing/), accessed 2026-10-23
+- Keystone Realty Group (Harrisburg PA): non-attorney broker partnered with a law firm; from $995; since 1999 [PRIMARY] — [keystonerealtygroup.com](https://keystonerealtygroup.com/); Massachusetts has an "attorney-broker" licence (no exam, $5,000 bond) but no MA law-firm brokerage selling flat-fee home sales was found [CLAIMED; mass.gov 403] — [mass.gov](https://www.mass.gov/how-to/apply-for-a-real-estate-attorney-broker-license), accessed 2026-10-23
+- No law-firm brokerage was found in New Jersey, Connecticut or Vermont; Westchester attorney-only closing fees run about $995 [CLAIMED] — [ylevinlaw.com](https://ylevinlaw.com/campaign/westchester-real-estate-attorney.html), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The attorney-plus-broker idea is old and has not scaled in any state found; the human-hours ceiling is the likely reason, and software is the one new ingredient.
+- [INFERENCE] The NY ethics opinions (see the gap fill in `why_attempts_failed_and_niche_evidence.md`) explain part of why: a lawyer cannot be a party's lawyer on a deal where he has a stake in the commission, so the "one trusted lawyer does everything" bundle is not available in New York.
+
+### Gaps
+- No registry check was run for "New York Real Estate Advocates"; absence rests on search.
+
+### G6. Portals and incumbents automating the same layer
+
+### Takeaway
+No portal has become the agent; incumbents are automating the transaction layer for their own agents, which raises the bar for an entrant's software.
+
+### Cited Findings
+- Douglas Elliman announced a company-wide AI overhaul and a data-products business, Elius (2026-07-08) [SECONDARY, headline] — [Bloomberg](https://www.bloomberg.com/news/articles/2026-07-08/douglas-elliman-bets-on-ai-to-reinvent-brokerage-business); Compass rolled out an AI "Home Platform"; about 15,000 agents generated 97,000+ AI-assistant conversations within weeks of a July 2026 launch [SECONDARY] — [RISMedia, 2026-07-02](https://www.rismedia.com/2026/07/02/compass-rolls-out-ai-powered-home-platform-across-company-owned-brokerage-brands/); [Fortune, 2026-09-23](https://fortune.com/2026/09/23/compass-ai-assistant-real-estate-agents/), accessed 2026-10-23
+- Realtor.com RealAssist (consumer beta 2026-06-02; agent version 2026-10-06) routes buyers to agents [CLAIMED] — [RISMedia, 2026-10-06](https://www.rismedia.com/2026/10/06/realtor-com-unveils-realassist-ai-for-agents-to-power-a-more-intelligent-workspace/); Real Brokerage's Leo Pro (2026-10-20) [SECONDARY] — [Inman](https://www.inman.com/2026/10/20/real-brokerage-leo-pro/), accessed 2026-10-23
+- Breezy, an AI startup for agents, raised a $10M pre-seed led by Ribbit Capital (2026-02-02); it serves agents rather than replacing them [SECONDARY, headline] — [Axios Pro](https://www.axios.com/pro/fintech-deals/2026/02/02/bravo-afterpay-breezy-real-estate-10-million), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] 2026 venture money is flowing at least as much to agent tools (Breezy $10M) as to agent replacements (Homa $5M); incumbents will have comparable AI soon, so the entrant's edge cannot be the software alone.
+
+### Gaps
+- Zillow Listing Access Standards text (zillow.com blocks reads).
+
+### Still open after gap fill
+- Crunchbase and PitchBook stealth lists: both block automated reads, so pre-press seed rounds remain uncountable.
+- Volume behind AI entrants' claims (Ridley 300+, LocQube 578, TurboHome 388): all company-reported; no MLS data reachable.
+- LocQube's AI-tier uptake and Hudson Valley activity: needs a mystery-shop call or an MLS search by a licensee.
+- Opendoor's Hudson Valley purchase volume and fee: disclosed only per offer.
+- Beycome's plans for its NY (Albany) licence: no public statement found.

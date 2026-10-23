@@ -272,3 +272,174 @@ The base rate for "cheaper agent" ventures is failure or reversion. The only way
 - Whether NY DOS applies the §442-f exemption to a lawyer *supervising salespersons or an associate broker* (versus acting personally) was not confirmed; needs DOS confirmation.
 - No post-2024 ethics opinion specific to lawyer-owned, software-enabled brokerages was found.
 - No hard data on the unit economics of flat-fee legal-plus-brokerage offers in any state.
+
+---
+
+## Gap fill (2026-10-23, VPS session)
+
+Method: fresh web-search budget; primary documents opened directly (NAR 2025 Profile PDF pages 4, 54–56, 95–102, 107–110; NBER and Iowa Law Review abstracts; NYSBA opinions; the Supreme Court docket; the Tenth Circuit opinion; NY Rules of Professional Conduct as amended through 2026-07-01); helper passes on niche evidence and post-settlement developments. Accessed 2026-10-23 unless stated. **CONTRADICTS NOTES ABOVE** marks a correction; the original text is untouched.
+
+### Coverage audit
+
+| Question in the ask (failures and niche part) | Before gap fill | After gap fill |
+|---|---|---|
+| Why previous attempts failed (honest post-mortems) | Full for REX, Homie, Purplebricks, Reali, iBuyers; thin on numbers | Full: CAC denominators checked, Homie's own boycott allegations and court outcome added, Purplebricks' NY-area footprint added |
+| Steering evidence and whether it survives decoupling | Partly (pre-2024 studies only) | Partly: still no post-August-2024 steering study; new mystery-shop evidence that buyer agents still quote 2.5–3% |
+| Legal remedies for an entrant facing boycotts | Partly (REX and Homie pending) | Full: REX certiorari and rehearing denied; Homie affirmed on limitations |
+| Can a locally connected niche launch win: evidence for | Partly (NAR referral data) | Full: plus agents' referral shares, lawyer-trust data, latent demand for low fees |
+| Evidence against | Partly | Full: plus ethics limits on the attorney channel, service fear (82%), Homie's boycott record, the founder's ten-year absence |
+| The attorney channel and what NY ethics rules allow | Partly (Ops. 916, 1015, 753) | Full: Rules 5.7, 1.8(a), 7.2(a), 5.8 and Ops. 1043, 1208, 1237, 1252, 1273, 1289 |
+| Kill criteria K1–K9 stated against evidence | Stated, untested | Tested in the deliverable; evidence below |
+
+### Verification of load-bearing claims
+
+| Claim | Source checked | Result |
+|---|---|---|
+| NAR 2025 Profile: 88% of buyers and 91% of sellers used an agent; FSBO 5% | [NAR 2025 Profile PDF, p. 4 and Exhibit 7-1](https://www.rirealtors.org/clientuploads/documents/NAR/Homebuyers_and_sellers_trend_2025.pdf); [NAR top-10, 2025-11-03](https://www.nar.realtor/news/economists-outlook/top-10-takeaways-from-nars-2025-profile-of-home-buyers-and-sellers) | Confirmed |
+| Sellers: 37% referral + 29% prior agent; 80% contacted one agent; commission the top factor for 4% | PDF Exhibits 7-2, 7-3, 7-7 (pp. 97–102) | Confirmed exactly |
+| Service levels 86% broad / 7% limited / 7% MLS-only | PDF Exhibit 7-5 (p. 100) | Confirmed |
+| FSBO by location: rural 10%, resort 9%, small town 6%, suburb 3% | PDF Exhibit 8-1 (p. 108) | Confirmed; **adds**: FSBO splits 3% "seller knew buyer" and 2% "did not know buyer" |
+| "30% of FSBO sellers already know their buyer" (used in KQ6 above) | PDF Exhibit 8-1 and p. 107; NAR top-10 page | **Corrected**: 60% of FSBOs knew the buyer (3 of 5 points); the 30% figure is the share whose *main reason* was selling to a relative, friend or neighbour |
+| Buyers: 43% referral, 15% prior agent; want help finding the home 50% | PDF Exhibits 4-4, 4-6 (pp. 54, 56) | Confirmed |
+| Barwick, Pathak & Wong: low-commission listings 5% less likely to sell, 12% longer; low-commission new offices grow more slowly | [NBER w21489](https://www.nber.org/papers/w21489) | Confirmed (abstract) |
+| Barry, Fried & Hatfield: lowest-commission listings take ~33% longer and face a 75% greater risk of not selling in a typical market | [Iowa Law Review 110:1473](https://ilr.law.uiowa.edu/volume-110-issue-4-1/2025/05/et-tu-agent-commission-based-steering-residential-real-estate) | Confirmed; the "51% less likely to sell" figure above comes from a university summary, the abstract states the 75% risk figure |
+| NYSBA Op. 1015 (2014-08-04): lawyer may be seller's lawyer and broker only with a fixed, non-refundable, non-contingent broker fee and written informed consent | [NYSBA Op. 1015](https://nysba.org/ethics-opinion-1015/) | Confirmed; **adds** footnote: services can be made "distinct" (separate office, name, staff, phone, written disclaimer) to fall outside the legal-ethics rules |
+| NYSBA Op. 916 (2012-03-27): no free legal services while acting as paid broker; consent cannot cure | [NYSBA Op. 916](https://nysba.org/ethics-opinion-916/) | Confirmed, with nuance: the opinion's own holding is about free legal services; the contingent-commission bar comes from the earlier opinions it cites |
+| A later opinion restates a flat bar | [NYSBA Op. 1043, 2015-01-08](https://nysba.org/ethics-opinion-1043/) | **New**: "a lawyer may not act as a lawyer and a broker in the same real estate transaction, with or without client consent"; it does not mention Op. 1015 |
+| RPL §442-f exempts "attorneys at law" | [NY Senate RPL §442-F](https://www.nysenate.gov/legislation/laws/RPP/442-F) | Confirmed ("Saving clause") |
+| REX certiorari denied October 2025 | [Supreme Court docket 25-326](https://www.supremecourt.gov/docket/docketfiles/html/public/25-326.html) | Confirmed: denied 2025-10-20; rehearing denied 2025-12-15 |
+| Homie's antitrust appeal | [10th Cir. No. 25-4101, filed 2026-08-11](https://www.govinfo.gov/content/pkg/USCOURTS-ca10-25-04101/pdf/USCOURTS-ca10-25-04101-0.pdf) (read by helper pass) | Confirmed affirmed, on the statute of limitations, not on whether steering occurred |
+| Reali shut down citing market and capital conditions | [PR Newswire, 2022-08-24](https://www.prnewswire.com/news-releases/reali-closing-operations-301611949.html) | Confirmed |
+| Homie ended W-2 agent employment April 2024; DelPrete quote | [Salt Lake Tribune, 2024-04-19](https://www.sltrib.com/news/business/2024/04/19/homie-utah-company-meant-disrupt/) | Confirmed |
+| Purplebricks US CAC ~$15,000 vs Redfin ~$730 | [DelPrete, 2019-04-22](https://library.mikedp.com/content/the-rise-and-fall-of-purplebricks) | Confirmed, with a caveat: Purplebricks' denominator is estimated new listings, Redfin's is closed transactions, so the comparison is not like-for-like (and flatters Purplebricks) |
+| LendingTree 2026: 37% would let AI buy with minimal human involvement; 15% used AI for housing | [LendingTree](https://www.lendingtree.com/home/mortgage/ai-housing-survey/) | Confirmed (2,001 adults, 2026-07-02 to 07-08, non-probability) |
+
+### N1. Did any low-fee brokerage win real share in one market?
+
+### Takeaway
+Only by company claim: Homie said it reached about 6% of Salt Lake City in four years and "among the five largest brokerages" in Utah in 2017–2021, using billboards and venture money; its own court filing says that success triggered coordinated refusals by local agents to show its listings, and the business collapsed. **CONTRADICTS NOTES ABOVE** in precision: the 6% is Salt Lake City, not Utah, and comes from a snippet.
+
+### Cited Findings
+- Homie alleged that "at various times between 2017 and 2021" it was "among the five largest brokerages by market share in the state", and that local brokers posted MLS comments refusing to show its listings unless it raised the buyer-agent commission and "used Facebook groups to coordinate boycotts"; the Tenth Circuit affirmed dismissal as time-barred [PRIMARY court record; share and boycott are Homie's allegations] — [10th Cir. opinion, 2026-08-11](https://www.govinfo.gov/content/pkg/USCOURTS-ca10-25-04101/pdf/USCOURTS-ca10-25-04101-0.pdf), accessed 2026-10-23
+- Co-founder, 2020: "zero market share to about 6% market share in just four years in Salt Lake City" [CLAIMED, snippet; page 402] — [Vegas Inc, 2020-08-24](https://vegasinc.lasvegassun.com/news/2020/aug/24/new-firm-aims-to-reinvent-the-way-homes-are-bought), accessed 2026-10-23
+- Homie was sold in February 2025 and runs fewer than two dozen agents in Utah and Arizona [CLAIMED, snippet; page 403] — [Inman, 2025-05-19](https://www.inman.com/2025/05/19/once-on-a-path-for-expansion-homie-now-a-shell-of-its-former-self/), accessed 2026-10-23
+- Trelora (Denver) claimed about 800 closings a year with six agents at a $2,500 flat fee (circa 2017) and 8,000+ closings by 2022 when Houwzer bought it [CLAIMED] — [BusinessDen](https://businessden.com/?p=21749); [Newfound release, 2022-12-12](https://newfoundgroup.com/houwzer-acquires-competitor-trelora/), accessed 2026-10-23
+- Houwzer's flat fee rose from $995 (2015) to $2,500 (2019) to $5,000, then to today's 1%; it bought a paid sports sponsorship [CLAIMED] — [Inman, 2020-02-05](https://www.inman.com/2020/02/05/flat-fee-brokerage-houwzer-hustles-up-9-5m-in-series-a-funding/); [BusinessWire, 2022-04-11](https://www.businesswire.com/news/home/20220411005106/en/Houwzer-Named-Official-Real-Estate-Partner-of-the-Philadelphia-76ers), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The only low-fee firm that claimed meaningful single-market share did it with paid media and venture capital, and says the incumbents' agents then boycotted it; nothing shows a low-fee local entrant holding meaningful share for more than about five years.
+- [INFERENCE] Every flat-fee survivor raised its fee over time (Houwzer, Homa, Redfin), which suggests the "very cheap" price point did not cover the human work.
+
+### Gaps
+- No independent MLS-based share study for any low-fee brokerage.
+
+### N2. Acquisition cost and how agents actually get business
+
+### Takeaway
+Paid acquisition is expensive (Purplebricks ~$15,000 per listing; portal referral fees 25–40% of the commission), while established agents get about half their business from repeat and referral clients and new agents get none.
+
+### Cited Findings
+- Redfin FY2024: marketing $114.5M; 48,982 brokerage transactions; websites and apps are "our primary channels for meeting new customers" [PRIMARY] — [Redfin 10-K FY2024](https://www.sec.gov/Archives/edgar/data/1382821/000138282125000046/rdfn-20241231.htm), accessed 2026-10-23
+- iBuyer acquisition cost $3,000–$4,000 per home in a normal year for Opendoor, about $3,000 for Offerpad [SECONDARY, analyst] — [DelPrete, 2021-03-24](https://library.mikedp.com/content/cac-attack-the-cost-of-ibuyer-customer-acquisition); Zillow Flex success fee rose from 35% to 40% in some markets (2023) [SECONDARY] — [DelPrete, 2023-10-12](https://www.mikedp.com/articles/2023/10/12/zillow-flex-fee-rises-to-40-percent); Realtor.com referral fees reported at 28–40% [CLAIMED] — [Clever](https://listwithclever.com/real-estate-blog/everything-you-need-to-know-about-opcitys-referral-fee/), accessed 2026-10-23
+- NAR 2026 Member Profile (2025 data): typical agent 9 sides; median 28% of business from repeat clients and 22% from past-client referrals; agents with 2 years or less: median 2 sides, 0% repeat, 0% referral; agents with 16+ years: 49% repeat, 32% referral [PRIMARY / SECONDARY] — [NAR tables in the 2026 Florida oversample](https://www.floridarealtors.org/sites/default/files/basic-page/attachments/2026-08/2026%20Florida%20Member%20Profile%20Oversample.pdf); [HousingWire, 2026-06-25](https://www.housingwire.com/articles/nar-2026-member-profile-experience/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] A low flat fee cannot absorb a 35–40% portal referral fee or a Purplebricks-scale acquisition cost; the only affordable channel is the founder's own sphere and word of mouth, which makes the sphere's real size the crux (see N7).
+
+### Gaps
+- No Hudson Valley lead-price data.
+
+### N3. The attorney channel: what NY ethics rules allow
+
+### Takeaway
+The rules let the attorney own a brokerage and tell people about it, but they bar him from being anyone's lawyer on a deal in which he has a stake in the commission, forbid taking closing referrals from his own brokerage's agents, and wrap any hand-off of his own law clients in written disclosures and consents. The provisional plan (he is broker of record and not either party's lawyer) is the structure the opinions support.
+
+### Cited Findings
+- Rule 5.7(a)(3)–(4): a lawyer who owns an entity providing nonlegal services is subject to the Rules for those services if the customer "could reasonably believe" a client-lawyer relationship exists, a belief presumed unless the lawyer advises "in writing that the services are not legal services and that the protection of a client-lawyer relationship does not exist"; comments say a conflict "will nearly always arise" where legal and nonlegal services are in the same matter [PRIMARY rule text; comments are NYSBA's] — [NYSBA NY Rules, as amended through 2026-07-01, pp. 200–205](https://nysba.org/wp-content/uploads/2026/09/NYSBA-NY-Rules-of-Professional-Conduct-as-amended-through-July-1-2026.pdf), accessed 2026-10-23
+- Rule 1.8(a) (business transactions with a client: fair terms in writing, advice to seek independent counsel, signed informed consent) and Rule 7.2(a) ("shall not compensate or give anything of value to a person or organization to recommend or obtain employment by a client") [PRIMARY] — [same, pp. 62, 224](https://nysba.org/wp-content/uploads/2026/09/NYSBA-NY-Rules-of-Professional-Conduct-as-amended-through-July-1-2026.pdf), accessed 2026-10-23
+- Op. 1043 (2015-01-08): "a lawyer may not act as a lawyer and a broker in the same real estate transaction, with or without client consent", whether or not the lawyer charges for legal services [PRIMARY] — [NYSBA Op. 1043](https://nysba.org/ethics-opinion-1043/), accessed 2026-10-23
+- Op. 1237 (2022-03-03): a lawyer who owns a brokerage "may not accept the referral of real estate closings from a real estate agent" at that brokerage where they split commissions, even if his company waives its share; a per se non-waivable conflict and a Rule 7.2(a) breach [PRIMARY] — [NYSBA Op. 1237](https://nysba.org/ethics-opinion-1237/), accessed 2026-10-23
+- Op. 1273 (2024-08-28) reaffirms the per se lawyer-and-broker bar, citing 916, 933, 1015, 1043 and 1237 [PRIMARY] — [NYSBA Op. 1273](https://nysba.org/ethics-opinion-1273-referral-of-real-estate-matters-to-lawyer-from-real-estate-broker-who-is-also-employed-by-lawyer-as-an-associate/); Op. 1252 (2023-01-13): a bar member working only as a broker, with a written 5.7 disclaimer, is outside Rules 1.7 and 1.8 for that work [PRIMARY] — [NYSBA Op. 1252](https://nysba.org/ethics-opinion-1252/); Op. 1289 (2025-12-23): an attorney-owned nonlegal entity with a 5.7 disclaimer may share revenue with a nonlawyer [PRIMARY] — [NYSBA Op. 1289](https://nysba.org/wp-content/uploads/2025/12/Opn-1289-with-Letterhead.pdf), accessed 2026-10-23
+- NAR's survey has no "attorney" category for how buyers or sellers found their agent ("Other" is 11% for sellers, 7% for buyers) [PRIMARY] — [NAR 2025 Profile, Exhibits 7-2, 4-6](https://www.rirealtors.org/clientuploads/documents/NAR/Homebuyers_and_sellers_trend_2025.pdf), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] Op. 1015's fixed-fee exception has not been withdrawn, but Op. 1043 (five months later) states the bar "with or without client consent" without mentioning it, and later opinions cite 1015 only for the general rule; relying on it would need ethics counsel. This strengthens the provisional choice that he is not either party's lawyer.
+- [INFERENCE] The most natural trust channel (his own estate, divorce and other law clients who must sell) is the most regulated: written 5.7 disclaimer, Rule 1.7/1.8 consents for the ongoing legal matter, no acting as their lawyer on the sale, and no use of law-client confidences for leads.
+
+### Gaps
+- No data on how often NY buyers or sellers pick a broker on a lawyer's recommendation.
+
+### N4. Does trust in a known professional transfer to a low-fee model?
+
+### Takeaway
+There is latent demand for cheaper service (42% would probably or definitely use a 1.5% broker) but a dominant fear that discounters cut service (82%), and the legal profession carries no trust premium over agents. Personal reputation is what wins listings.
+
+### Cited Findings
+- Consumer Policy Center survey of 588 homeowners: 82% worried a discount broker would not provide all needed services; 42% would "definitely" or "probably" use a broker charging 1.5%; 24% think the best way to sell is FSBO or a discount/flat-fee broker [SECONDARY] — [HousingWire, 2025-06-16](https://www.housingwire.com/articles/low-fee-brokerage-firms-home-sellers-savings-consumer-policy-center/), accessed 2026-10-23
+- Anytime Estimate survey of 1,000 likely sellers: 91% plan to use an agent; 70% of those hiring trust agents (down from 81%); 36% would accept a below-market sale to avoid commission [SECONDARY] — [HousingWire, 2025-04-09](https://www.housingwire.com/articles/most-homesellers-still-rely-on-agents-in-2025-but-trust-issues-linger/), accessed 2026-10-23
+- Gallup (December 2025): real estate agents 17% high/very high honesty; lawyers about 20% (snippet); bankers, lawyers and agents "modestly negative on balance" [PRIMARY / SECONDARY / CLAIMED] — [Gallup, 2026-01-12](https://news.gallup.com/poll/700736/nurses-continue-lead-honesty-ethics-ratings.aspx); [The Close, 2026-09-07](https://theclose.com/news-real-estate-agent-trust/), accessed 2026-10-23
+- Top 1,000 brokerages held 64.1% of US sales volume in 2024 (58.8% in 2022); top 10 firms' share rose from 14.3% (2017) to 27.2% (2024) [SECONDARY] — [Real Estate News, 2025-04-10](https://www.realestatenews.com/2025/04/10/brokerages-boosted-sales-in-2024-despite-tough-market); [Real Estate News, 2025-12-22](https://www.realestatenews.com/2025/12/22/trends-2026-the-brokerage-feeding-frenzy-and-market-concentration), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The pitch that wins is "a known, accountable licensed person does the important parts, and software does the rest for less", not "software replaces your agent"; the second runs straight into the 82% service fear.
+
+### Gaps
+- No study tests whether trust in a known professional transfers to a new low-fee brokerage.
+
+### N5. What changed after the settlement (2025–2026)
+
+### Takeaway
+Buyer-agent pay has barely moved, agent use did not fall, no study yet measures steering after decoupling, and the antitrust route is closed in practice. New York has applied existing advertising law to AI-altered photos but has no rule on AI performing licensed acts.
+
+### Cited Findings
+- Redfin: average buyer-agent commission 2.42% in Q3 2025 (2.36% a year earlier); under $500k 2.52% [PRIMARY] — [Redfin, 2025-12-08](https://redfin.com/news/commissions-q3-2025/); no 2026 Redfin commission report found, accessed 2026-10-23
+- Consumer Policy Center mystery shop (July–September 2025; 281 buyer agents in 26 metros): 95% quoted 2.5–3% [CLAIMED, snippets] — [HousingWire](https://www.housingwire.com/articles/buyers-agents-resist-commission-negotiations/); [Inman, 2025-11-03](https://www.inman.com/2025/11/03/its-difficult-for-buyers-to-negotiate-lower-commission-rates-watchdog-says/), accessed 2026-10-23
+- DOJ statement of interest in Davis v. Hanna Holdings (late December 2025): trade-association policies "can constitute concerted action"; no other 2025–2026 DOJ action found [SECONDARY] — [HousingWire, 2026-01-06](https://www.housingwire.com/articles/antitrust-real-estate-commissions/), accessed 2026-10-23
+- NY DOS "Trend Alert" (2025-11-13) on AI-generated listing images applies existing law (RPL §441-c misleading advertising; 19 NYCRR §175.25(c)(9) honest depiction; GBL §§349–350) [PRIMARY] — [NY DOS release](https://apps.cio.ny.gov/apps/mediacontact/public/view.cfm?backButton=&parm=EBC83D37-EA70-CE93-3E596A7DF20C5D6A); bill A.11635 on disclosing altered listing images introduced [SECONDARY] — [Post-Journal, 2026-08-24](https://www.post-journal.com/news/top-stories/2026/08/limits-on-ai-in-real-estate-photos-introduced/), accessed 2026-10-23
+- HUD withdrew its 2024 guidance on AI and algorithmic advertising (effective 2025-09-17); the Fair Housing Act itself is unchanged [CLAIMED] — [Orrick, 2026-04-10](https://infobytes.orrick.com/2026-04-10/hud-withdraws-eight-fair-housing-guidance-documents-as-part-of-deregulatory-review/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] With buyer agents still quoting 2.5–3% and no post-settlement evidence clearing steering, a listing that offers cooperating agents much less still risks the pre-settlement penalty (5% lower sale odds and 12% longer in Massachusetts; up to 75% greater risk of not selling nationally for the lowest offers).
+- [INFERENCE] An entrant facing an informal boycott in 2026 has no realistic court remedy on NAR-rule theories (REX and Homie both lost for good).
+
+### Gaps
+- No 2026 Redfin, RealTrends or AccountTECH commission series; no measure of low-fee buyer agreements' share.
+
+### N6. Purplebricks' end-state and the AI walk-back
+
+### Takeaway
+Purplebricks entered the New York market area (including the Mid and Lower Hudson Valley) with a flat fee and heavy brand spend and left within about fifteen months; in the UK it ended as a £1 sale and has since dropped its free-listing model. Among AI entrants, the same lesson repeats: pure software was walked back to software plus a licensed human.
+
+### Cited Findings
+- January 2018: Purplebricks announced its NY Designated Market Area launch (31 counties, "more than 7.4 million homes"); US losses doubled to £34.1m in the year to April 2019 and the exit was announced in July 2019 [PRIMARY RNS / SECONDARY] — [Investegate RNS](https://www.investegate.co.uk/announcement/rns/purplebricks-group--purp/purplebricks-to-launch-in-new-york/5157443); [Mortgage Solutions, 2019-07-03](https://www.mortgagesolutions.co.uk/news/2019/07/03/purplebricks-exits-us-as-losses-reach-52m/), accessed 2026-10-23
+- UK: Strike's accounts and Purplebricks' were overdue in mid-2026; founder Michael Bruce rejoined Strike as a director in June 2026 [SECONDARY] — [PropertyWire, 2026-07-21](https://www.propertywire.com/news/dunstone-ownership-changes-at-purplebricks-parent-strike/), accessed 2026-10-23
+- Homa's founders said their fully AI DIY vision "didn't hold up in testing", so they moved to a hybrid with human agents [SECONDARY] — [Real Estate News, 2025-12-27](https://www.realestatenews.com/2025/12/27/an-ai-driven-homebuying-model-is-picking-up-steam); a Hudson Valley seller who used Gemini instead of an agent saved money by his estimate but the AI gave at least one bad piece of advice he had to catch [SECONDARY] — [Newser, 2026-05-30](https://www.newser.com/story/390069/tech-writers-experiment-doesnt-bode-well-for-realtors.html), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] Purplebricks is direct evidence against a paid-media, low-fee entry into this exact region.
+
+### Gaps
+- No Purplebricks results specific to New York.
+
+### N7. The founder's absence and the niche thesis (new fact, Joe, 2026-10-23)
+
+### Takeaway
+The father-in-law has not lived or worked in New York for almost ten years. That weakens the brief's central niche asset: his network is a decade old, a large minority of today's owners arrived after he left, and the referral data reward the person who is present and recently used, not a remembered name.
+
+### Cited Findings
+- In the eight counties, 13.2% of owner households moved in during 2020 or later and 42.5% in 2010 or later (ACS 2024 5-year, B25038; shares calculated) [PRIMARY data] — [Census Reporter API](https://api.censusreporter.org/1.0/data/show/latest?table_ids=B25038&geo_ids=05000US36111,05000US36027,05000US36071,05000US36021,05000US36039,05000US36079,05000US36105,05000US36087), accessed 2026-10-23
+- Sellers choose an agent they used before (29%) or one referred by friends, neighbours or relatives (37%); 51% of sellers use the same agent to buy and sell, 72% when moving 10 miles or less [PRIMARY] — [NAR 2025 Profile, Exhibits 7-2, 7-4](https://www.rirealtors.org/clientuploads/documents/NAR/Homebuyers_and_sellers_trend_2025.pdf), accessed 2026-10-23
+- Agents with 2 years or less get 0% of business from repeat or referral clients; 16+ years, 49% and 32% [SECONDARY] — [HousingWire, 2026-06-25](https://www.housingwire.com/articles/nar-2026-member-profile-experience/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] As a broker he will start closer to a newcomer than to a 16-year local agent: his reputation is real but old, his "used before" relationships are law clients (ethically constrained, N3), and nobody has referred a home sale to him in a decade.
+- [INFERENCE] The niche thesis survives only if he (or a trusted local licensee) is visibly present in the region again, at listing appointments and in the community; a remote attorney-broker with software is the Purplebricks and Redfin model, not the local-trust model.
+
+### Gaps
+- His current contacts, registration status and willingness to be physically present: only he can answer.
+
+### Still open after gap fill
+- Post-August-2024 steering study: none published; only measurable locally with MLS data or after launch.
+- Attorney-to-broker referral frequency in NY: no data exists; local closing attorneys could be asked.
+- Unit economics of flat-fee legal-plus-brokerage offers: no published data; solo practices disclose no volumes.
+- Whether DOS lets an attorney who holds no separate broker licence supervise salespersons: WS2's question, needs DOS.

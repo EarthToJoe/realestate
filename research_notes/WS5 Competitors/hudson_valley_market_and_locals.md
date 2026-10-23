@@ -220,3 +220,186 @@ Entrenchment is real but uneven: the two or three large firms per county bundle 
 - Sponsorship presence (local events, youth sports, chamber memberships) not surveyed.
 - OneKey MLS board of managers page was unavailable (404), so OneKey's own governance by brokerage is unknown.
 - Share of listings currently marketed as "coming soon"/office exclusive in these counties: not published.
+
+---
+
+## Gap fill (2026-10-23, VPS session)
+
+Method: fresh web-search budget; NY Department of State (DOS) open-data queries run directly against the Socrata API (datasets nsde-gcv2 offices, yg7h-zjbf licensees, n9v6-gdp6 active corporations); company pages; ACS census data through the Census Reporter API; helper passes on the Hudson Valley and on discount firms. Accessed 2026-10-23 unless stated. DOS counts follow the county of the office a licence hangs at, not where the agent works. **CONTRADICTS NOTES ABOVE** marks a correction; the original text above is untouched.
+
+### Coverage audit
+
+| Question in the ask (Hudson Valley part) | Before gap fill | After gap fill |
+|---|---|---|
+| Which national discount brokers operate in the counties today | Partly (Redfin DOS only) | Full: Redfin (fee, footprint, Orange County hiring), Opendoor (statewide), Hauseit (Base plan only), Clever/HomeLight/Digs (referral or remote) |
+| Which flat-fee MLS-entry services reach the counties | Partly (OneKey yes; HVCR unknown) | Mostly full: OneKey counties covered by many; no provider verifiably participates in HVCR MLS for Columbia/Greene/northern Dutchess |
+| Local attorney-brokers | Partly (DOS names) | Full for what public data shows: three law-named broker offices north of Westchester, none marketing brokerage |
+| Local independent discount brokers | Partly (one Walden licence) | Full: 845 Realty Guys ($9,995 flat), NY Flat Fee Realty ($3,000 / 1%), Netrealtynow, DIYFlatFee, Flat Fee MLS NY, Long Island Flat Fee, NestEdge |
+| Dominant local brokerages by share | Partly (head-count only) | Partly: one RealTrends sides figure (KW Hudson Valley Upstate Network 2,154 sides, 2025) and firms' own share claims; MLS share data still not public |
+| How entrenched (numbers) | Mostly full | Full: plus settlements paid by parents, cloud-brokerage head-counts, Redfin history |
+| Local fee norms | Partly | Full as far as public data goes: NY survey (n=25), Redfin NY terms, local discount anchors, HGAR line, no NY buyer-agreement statute |
+| History of discount entrants in the region | Not answered | Answered: Purplebricks (NY DMA, 2018–2019), REX (NY closed Oct 2021), Redfin (Westchester 2009, "Hudson Valley" 2017, Ulster 2021) |
+| Whether the founder's local network still reaches current owners | Not asked (new fact: away ~10 years) | Answered with census move-in data |
+
+### Verification of load-bearing claims
+
+| Claim | Source checked | Result |
+|---|---|---|
+| Redfin's only office in the nine counties is White Plains; licensees Westchester 68 | [DOS offices](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25REDFIN%25'&$limit=50); [DOS licensee counts](https://data.ny.gov/resource/yg7h-zjbf.json?$select=county,count(*)&$where=upper(business_name)%20like%20'%25REDFIN%25'&$group=county) | Confirmed: principal office White Plains; branches Jericho, Manhattan, Rochester; rows Westchester 68, Nassau 57, New York 12, Monroe 8 (67 individuals at White Plains once the office row is excluded) |
+| Attorney-held broker licences north of Westchester are one-person shells | [DOS law-named offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=(upper(business_name)%20like%20'%25ESQ%25'%20OR%20upper(business_name)%20like%20'%25LAW%20%25'%20OR%20upper(business_name)%20like%20'%25ATTORNEY%25'%20OR%20upper(business_name)%20like%20'%25LEGAL%25')%20AND%20county%20in('DUTCHESS','ULSTER','ORANGE','COLUMBIA','GREENE','PUTNAM','SULLIVAN','ROCKLAND','WESTCHESTER')&$limit=100) | Confirmed: James Kleinbaum Attorney at Law PC (Chatham), Paul Quartararo Esq PLLC (Millbrook), plus VKT Legal Team Inc (Glen Spey, Sullivan; nature unknown); 11 in Westchester |
+| Only locally licensed flat-fee firm is NY Flat Fee Realty (Walden) | [DOS flat/discount/rebate name query](https://data.ny.gov/resource/nsde-gcv2.json?$where=(upper(business_name)%20like%20'%25FLAT%25'%20OR%20upper(business_name)%20like%20'%25DISCOUNT%25'%20OR%20upper(business_name)%20like%20'%25REBATE%25'%20OR%20upper(business_name)%20like%20'%25BY%20OWNER%25')%20AND%20county%20in('DUTCHESS','ULSTER','ORANGE','COLUMBIA','GREENE','PUTNAM','SULLIVAN','ROCKLAND','WESTCHESTER')&$limit=100) | Confirmed by name, plus BROKER BY OWNER LLC (Scarsdale); but name searches miss 845 Realty Guys (Poughkeepsie, flat fee) — see H3 |
+| Hauseit Hudson Valley plans $399 / $699 / $1,199; Columbia and Greene not covered | [Hauseit agent-assisted FSBO](https://www.hauseit.com/agent-assisted-fsbo/) | **Corrected**: Core and Pro are NYC-only; HV gets Base $399. Covered: Westchester, Orange, Putnam, Dutchess, Ulster, Rockland, Sullivan; Columbia and Greene not mentioned (not explicitly excluded) |
+| Clever's NY roster has 22 flat-fee companies | [Clever NY flat-fee list](https://listwithclever.com/flat-fee-mls-listing/new-york/) | **Corrected**: 27 services ("Updated September 3, 2026") |
+| NY commission 4.62% (2.41% listing, 2.21% buyer) | [Clever NY commission page](https://listwithclever.com/average-real-estate-commission-rate/new-york/) | Confirmed, with a **caveat the notes lack**: the NY figure rests on 25 NY agents in an August 2026 survey of 434 |
+| HGAR ~11,000 members; co-owns OneKey with LIBOR | [HGAR about](https://www.hgar.com/about-us/) | Confirmed; page also inconsistent on the Bronx Manhattan North merger year (2020 vs 2021) |
+| Columbia-Greene and Ulster boards merged into HVCRR in November 2024 | [HVCRR, The Association](https://hvcrr.com/the-association/) | Confirmed |
+| Rand: 1984, 26 offices, 1,200 / 1,000 agents, No. 1 Rockland and Orange | [Rand Realty about](https://randrealty.com/about-us) | Confirmed as company claims ("by market share", undated) |
+| OneKey rejected Compass's listing-sharing demand, 2026-10-20 | [OneKey release](https://corporate.onekeymls.com/news/onekey-mls-rejects-compass-demand-defends-the-open-real-estate-marketplace) | Confirmed; the CEO quote I found differs from the one in the notes ("A truly competitive real estate marketplace relies on shared, cooperative infrastructure…"); the notes' quote could not be located on the page |
+| OneKey 2025 year-end figures | [OneKey year-end release](https://corporate.onekeymls.com/news/onekey-mls-annual-market-analysis-highlights-uneven-but-stabilizing-conditions-across-the-new-york-metro-housing-market) | Partly confirmed: regional median $675,000 (+5.9%), Putnam sales +15.6%, Ulster +8.3%; other county figures not on the HTML page |
+| Pattern for Progress 2025 county table | [Pattern PDF](https://www.pattern-for-progress.org/wp-content/uploads/2026/01/2025-Q4-Annual-Housing-Report-.pdf) | Could not verify: the PDF is image-only (Canva export) and yields no text |
+
+### H1. Which online, discount and AI brands hold licences in the counties (DOS, 2026-10-23)
+
+### Takeaway
+No online, discount or AI brokerage has a licensed office north of Westchester. Redfin works from White Plains; Hauseit, Yoreevo, Prevu and LocQube are licensed in NYC; Beycome, HomeLight, Opendoor, Homecoin, ListWithFreedom, Unreal Estate and Get Listed Realty (ISoldMyHouse) hold NY principal licences at Albany or out-of-state addresses. Cloud brokerages (eXp, Compass, HomeSmart) do have local branches.
+
+### Cited Findings
+- Brand licences (rows include the office row): Hauseit LLC, 99 Wall St, 16 rows (1 LLC broker, 4 associate brokers, 10 salespersons); Hauseit Realty Corporation 2 rows; Yoreevo LLC 6; Prevu Real Estate LLC 6; HomeLight Inc (Scottsdale) 3; Beycome Brokerage Realty LLC (Albany) 2; Trelora Realty Inc (out of state) 2; Unreal Estate Brokerage LLC (Womelsdorf PA) 3; Cavestone Realty Inc (Franklin Square, Nassau) 10; Get Listed Realty LLC (Hartford CT) 2; Homecoin.com (San Diego) 3; ListWithFreedom.com (Boynton Beach FL) 2; Opendoor Brokerage LLC (Tempe AZ) 4; none for Houzeo, Ideal Agent, UpNest, Landian, Ridley, reAlpha, TurboHome, Houwzer, Brokerless, Offerpad [PRIMARY] — [DOS licensee query](https://data.ny.gov/resource/yg7h-zjbf.json?$select=business_name,county,count(*)&$where=upper(business_name)%20like%20'%25HAUSEIT%25'%20OR%20upper(business_name)%20like%20'%25YOREEVO%25'%20OR%20upper(business_name)%20like%20'%25PREVU%25'%20OR%20upper(business_name)%20like%20'%25HOMELIGHT%25'%20OR%20upper(business_name)%20like%20'%25BEYCOME%25'%20OR%20upper(business_name)%20like%20'%25OPENDOOR%25'&$group=business_name,county&$limit=500); [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25HAUSEIT%25'%20OR%20upper(business_name)%20like%20'%25PREVU%25'%20OR%20upper(business_name)%20like%20'%25OPENDOOR%25'&$limit=100), accessed 2026-10-23
+- LOCQUBE NEW YORK INC (Bronx), 845 REALTY GUYS (Poughkeepsie), SPOTLIGHT REALTY INC, BEYCOME BROKERAGE REALTY LLC (Albany) and UNREAL ESTATE BROKERAGE LLC (out of state) hold principal-office licences [PRIMARY] — [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25LOCQUBE%25'%20OR%20upper(business_name)%20like%20'%25845%25'%20OR%20upper(business_name)%20like%20'%25SPOTLIGHT%25'%20OR%20upper(business_name)%20like%20'%25UNREAL%25'%20OR%20upper(business_name)%20like%20'%25BEYCOME%25'&$limit=100), accessed 2026-10-23
+- Cloud brokerages, individuals in the nine counties: Compass Greater NY LLC — Westchester 347, Dutchess 48, Ulster 48, Putnam 7, Columbia 4; eXp Realty — Westchester 408, Dutchess 40, Ulster 65, Orange 35; HomeSmart Homes and Estates — Westchester 56, Dutchess 7, Orange 116; Fathom Realty NY — Westchester 27; Real Broker NY — branch row in Bronxville, 0 individuals; LPT entities coded out of state; Compass branches in Hudson, Wappingers Falls, Millbrook, Beacon, Cold Spring, Accord, Kingston; eXp in Beacon, Middletown, New Paltz; HomeSmart principal office Montgomery [PRIMARY] — [DOS individuals query](https://data.ny.gov/resource/yg7h-zjbf.json?$select=upper(business_name)%20as%20b,county,count(*)&$where=(upper(business_name)%20like%20'%25COMPASS%20GREATER%25'%20OR%20upper(business_name)%20like%20'EXP%20REALTY%25'%20OR%20upper(business_name)%20like%20'%25HOMESMART%25'%20OR%20upper(business_name)%20like%20'%25FATHOM%25')%20AND%20license_type%20not%20like%20'%25OFFICE%25'&$group=b,county&$limit=500), accessed 2026-10-23
+- Statewide "discount"/"rebate"-named firms exist (Advantage Discount Realty, Monroe; Rebate Realty and Real Estate Rebate Team, Manhattan; Flat Rate Realty of Queens, Nassau) but none has an office in the nine counties [PRIMARY] — [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25DISCOUNT%25'%20OR%20upper(business_name)%20like%20'%25REBATE%25'%20OR%20upper(business_name)%20like%20'%25FLAT%20RATE%25'&$limit=500), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The national low-fee players serve these counties remotely or through partners; none has the physical, local, licensed presence a known local broker would have.
+
+### Gaps
+- Brands that license under another legal name (Clever, Houzeo, UpNest partner brokers) are invisible to name searches.
+
+### H2. Redfin north of Westchester, and Opendoor statewide
+
+### Takeaway
+Redfin has served Westchester since 2009, has branded its service "Hudson Valley" since at least 2017, extended to parts of Ulster in 2021, and in August 2026 advertised a full-time agent role for Orange County; its New York price is 2% with a $6,000 minimum. Opendoor now buys statewide, including the Poughkeepsie market.
+
+### Cited Findings
+- Redfin New York row: listing fee 2.0%, Concierge 3.0%, minimum $6,000; +1% if the buyer is unrepresented; 1% only with a Redfin purchase within 365 days; "Updated September 2025" [PRIMARY] — [Redfin disclaimer](https://www.redfin.com/disclaimer), accessed 2026-10-23
+- Redfin's 2017 expansion of its 1% fee included "NY – Hudson Valley" with a $4,500 minimum [PRIMARY] — [Redfin news, 2017-10-02](https://www.redfin.com/news/?p=59608); extension to parts of Ulster on 2021-11-15 [SECONDARY repost of release] — [StockTitan](https://www.stocktitan.net/news/RDFN/redfin-expands-real-estate-brokerage-to-new-vacation-home-6o2jgk2bubcd.html); Westchester since 2009-04-22 [SECONDARY] — [HousingWire](https://www.housingwire.com/articles/online-brokerage-redfin-expands-coverage), accessed 2026-10-23
+- Rocket Companies posted "Real Estate Agent - Orange County (Middletown/Woodbury/Newburg)" on 2026-08-29 (now closed): full-time, commission-based, about 100 Redfin.com customers a year, with coordinator and showing-agent support [PRIMARY job posting] — [purpose.jobs](https://www.purpose.jobs/discover/companies/rocket-companies/jobs/91624291-real-estate-agent-orange-county-middletown-woodbury-newburg), accessed 2026-10-23
+- Redfin partner agents appear in search snippets for Middletown, Newburgh, Poughkeepsie and "Westchester, Rockland, Orange, Putnam, Sullivan, Dutchess & Ulster" (profile pages return HTTP 405) [CLAIMED] — [Redfin agent profile](https://www.redfin.com/real-estate-agents/jacqueline-siracuse), accessed 2026-10-23
+- Opendoor: cash offers "anywhere in New York"; Poughkeepsie named a top market; NY closing attorney on every deal [PRIMARY] — [Opendoor NY](https://www.opendoor.com/sell/new_york_other), accessed 2026-10-23. **CONTRADICTS** the national notes' statement that no iBuyer buys in NY.
+
+### Inferences
+- [INFERENCE] Redfin is the one national brand likely to deepen its own agent presence in Orange County; it competes at 2%, not at a flat fee.
+
+### Gaps
+- Whether the Orange County hire happened; whether Redfin's Hudson Valley agents are employees or partners.
+
+### H3. Local human discount and flat-fee firms
+
+### Takeaway
+The local discount layer is thin and human: 845 Realty Guys (Poughkeepsie) at a $9,995 flat fee capped at five new listings a month, NY Flat Fee Realty (Walden) at $3,000 or 1%, plus remote MLS-entry vendors at $69–$1,499. None publishes volume; none uses AI; none covers the buyer side in a packaged way.
+
+### Cited Findings
+- 845 Realty Guys, "a division of Hudson Property Services, LLC", 695 Dutchess Turnpike, Poughkeepsie: $9,995 flat ($495 at setup, $495 at contract, $9,005 at closing) "regardless of sales price"; Dutchess, Ulster, Orange, Putnam, Westchester; seller-only, refers buyers out; broker Matthew Cave, in the Hudson Valley since 2004; intake capped at 5 new homes a month; no volume figures [PRIMARY] — [845realtyguys.com](https://845realtyguys.com/); DOS licence 10991242218 [PRIMARY] — [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25845%25'), accessed 2026-10-23
+- NY Flat Fee Realty (NYFFR): $3,000 flat up to $299,999, 1% of price from $300,000; includes MLS, photography, lockbox, sign; serves NYC, Hudson Valley and Catskills; principal broker Anthony Smith, licence 10491212246; buyer representation "call"; years operating not stated [PRIMARY] — [nyffr.com](https://www.nyffr.com/), accessed 2026-10-23
+- Netrealtynow: OneKey flat fee $299, $549+ with StreetEasy, NY "Full Support" $1,499; buyer rebate 1–1.5%; "Hudson Valley & Westchester" page [PRIMARY] — [netrealtynow.com](https://netrealtynow.com/); DIYFlatFee: $349 + 0.25% or $399 + 1% success fee, NY statewide [PRIMARY] — [diyflatfee.com NY](https://www.diyflatfee.com/flat-fee-mls-listing/new-york); Flat Fee MLS NY: $95 / $125 / $150 (Statewide Properties LLC) [PRIMARY] — [flatfeemlsny.com](https://www.flatfeemlsny.com/); Long Island Flat Fee: $69 / $199, Orange, Putnam, Rockland, Westchester, since 2004 [PRIMARY] — [longislandflatfee.com](https://longislandflatfee.com/); NestEdge Realty (Chappaqua): buyer rebates, lower seller commission (unstated), Westchester, Putnam, Dutchess [PRIMARY] — [nestedgerealty.com](https://nestedgerealty.com/), accessed 2026-10-23
+- Hauseit's 1% full service has a $7,500 minimum and $300 upfront for media [PRIMARY] — [Hauseit pricing](https://www.hauseit.com/pricing/); Digs Realty claims Hudson Valley and Catskills service with up to 67% buyer rebates [CLAIMED] — [digsrealtynyc.com](https://digsrealtynyc.com/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The local "full-service discount" anchor is about 1–2% of price on the listing side ($9,995 is about 2% on a $500,000 home); an attorney-brokered offer has to beat roughly 1% plus a buyer rebate to look clearly cheaper.
+- [INFERENCE] 845 Realty Guys' five-homes-a-month cap is the human-capacity ceiling that software could remove.
+
+### Gaps
+- No volume data for any local discount firm (needs MLS sold-by-office data).
+
+### H4. Entrenchment numbers and fee norms
+
+### Takeaway
+The incumbents' scale is large (one Keller Williams franchise in New City did 2,154 sides in 2025) and their commission-lawsuit settlements were paid at parent level with no local practice changes. Public data show no Hudson Valley-specific commission rate; the best NY figure (4.62%) rests on 25 agents. No NY statute on buyer agreements has passed.
+
+### Cited Findings
+- Keller Williams Hudson Valley Upstate Network (New City): 2,154 sides and $1.18B in 2025; volume rank 268, sides rank 305; 476 active licensed agents [PRIMARY: RealTrends Verified profile] — [RealTrends](https://www.realtrends.com/brokerage-profile/keller-williams-hudson-valley-upstate-network-formerly-group-new-city-ny/), accessed 2026-10-23
+- Houlihan Lawrence: 32 offices, 1,450+ agents across Westchester, Putnam, Dutchess, Columbia, Ulster, Orange and Fairfield CT [CLAIMED, snippet] — [HousingWire](https://www.housingwire.com/articles/houlihan-lawrence-yonkers-agents/); BHHS Hudson Valley Properties: 367 agents, 12 offices [CLAIMED, snippet] — [RealTrends](https://www.realtrends.com/brokerage-profile/berkshire-hathaway-homeservices-hudson-valley-properties-lagrangeville-ny), accessed 2026-10-23
+- Settlements paid by parents: HomeServices of America (Houlihan Lawrence's parent) $250M (2024); Compass $57.5M; Keller Williams $70M; Douglas Elliman $7.75M plus up to $10M contingent; Hanna Holdings (Howard Hanna, parent of Rand) $32M, preliminary approval 2025-10-03 [SECONDARY / CLAIMED] — [Real Estate News, 2025-10-03](https://www.realestatenews.com/2025/10/03/5-more-settlements-granted-preliminary-approval-in-gibson); [Real Estate News, 2024-04-26](https://www.realestatenews.com/2024/04/26/homeservices-makes-usd250-million-deal-to-settle-commissions-lawsuits); [NowBAM](https://nowbam.com/compass-settles-commission-lawsuits-for-57-5-million-joins-nar-keller-williams-anywhere-and-re-max/), accessed 2026-10-23
+- Goldstein v. Houlihan Lawrence: class certified 2022-01-24 for buyers and sellers in Westchester, Putnam and Dutchess represented on both sides by Houlihan Lawrence 2011–2018, alleging undisclosed dual agency in about 10,000 sales; a 2024 summary-judgment decision exists but its outcome was not read [SECONDARY] — [Westfair, 2022-02-17](https://westfaironline.com/145330/judge-certifies-class-action-in-houlihan-lawrence-dual-agency-lawsuit/), accessed 2026-10-23
+- HGAR's CEO (2024-08-07): "commission compensations are always negotiable"; seller offers to the buyer's agent cannot be shared on an MLS [SECONDARY] — [Westfair](https://westfaironline.com/combined/new-real-estate-broker-rules-go-into-effect-in-wake-of-nar-settlement/); HVCR MLS's then-president said the antitrust complaint "didn't really apply to how we do business in New York" [SECONDARY] — [Upstate House](https://upstatehouse.com/?p=35273), accessed 2026-10-23
+- Clever NY: 4.62% total (2.41% / 2.21%), "based on responses we've received from 25 agents in New York" (August 2026 survey of 434) [SECONDARY, small sample] — [Clever NY commission](https://listwithclever.com/average-real-estate-commission-rate/new-york/), accessed 2026-10-23
+- S9564 / A8910 (written buyer-broker agreements with a "not set by law and negotiable" disclosure) introduced 2026-03-25, in Senate Judiciary, not passed; RPL §442 expressly permits rebates to buyers and sellers [PRIMARY] — [NY Senate S9564](https://www.nysenate.gov/legislation/bills/2025/S9564); [RPL §442](https://www.nysenate.gov/legislation/laws/RPP/442), accessed 2026-10-23
+- The Eighth Circuit affirmed the NAR settlement 2026-08-19; rehearing for objectors March and Friedman denied (reported 2026-09-28) [CLAIMED, snippets] — [Duane Morris blog](https://blogs.duanemorris.com/classactiondefense/2026/08/20/eighth-circuit-affirms-landmark-billion-dollar-class-action-settlement-in-real-estate-broker-commission-antitrust-litigation/); [HousingWire](https://www.housingwire.com/articles/eighth-circuit-sitzer-rehearing-denied/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] Locally, buyer agreements and seller concessions replaced the MLS compensation field; nothing public shows total commissions in the Hudson Valley falling much below about 5%, and the 4.62% NY figure is too thin to plan on.
+
+### Gaps
+- MLS-based share of sides by brokerage and county (needs OneKey/HVCR access); the Goldstein 2024 outcome (nycourts.gov 403).
+
+### H5. Flat-fee coverage of Columbia, Greene and northern Dutchess (HVCR MLS)
+
+### Takeaway
+Flat-fee vendors clearly reach OneKey counties. None checked verifiably participates in the Hudson Valley Catskill Region MLS (still reached at cgndmls.com), which carries Columbia, Greene and northern Dutchess listings; that is a structural gap a locally licensed HVCR participant could fill.
+
+### Cited Findings
+- Hauseit names only OneKey counties; Columbia and Greene are not mentioned [PRIMARY] — [Hauseit](https://www.hauseit.com/agent-assisted-fsbo/); nyflatfee.com lists Columbia and Greene under OneKey and a "New York State Alliance MLS", never HVCR, and names no broker [CLAIMED] — [nyflatfee.com](https://nyflatfee.com/); ISoldMyHouse's table puts Columbia and Greene under "Columbia Northern Dutchess MLS" (an old name) [CLAIMED] — [ISoldMyHouse NY](https://www.isoldmyhouse.com/?p=17252), accessed 2026-10-23
+- HVCRR's MLS page calls it the "Columbia Greene Northern Dutchess MLS" (CGNDMLS.com); no rules, limited-service policy or fees posted; cgndmls.com failed with a self-signed certificate error [PRIMARY / observation] — [HVCRR MLS page](https://hvcrr.com/member-center/mls/), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] In Columbia and Greene, a seller using an online flat-fee vendor may reach only OneKey, not the MLS local buyer agents use most; a local HVCR participant has an edge there.
+
+### Gaps
+- HVCR MLS rules on limited-service or entry-only listings (not public; a call to the HVCR MLS office would settle it).
+
+### H6. Attorney-brokers and the old "Hudson Valley Partners" name
+
+### Takeaway
+Three law-named broker offices exist north of Westchester and none markets brokerage or a commission-saving bundle; no Hudson Valley law firm markets "save on commission" home-sale packages. One active corporation named "Hudson Valley Partners Inc." (Rockland, 1995) exists, with a chairman who is not obviously the father-in-law; his old business cannot be identified without his name.
+
+### Cited Findings
+- James Kleinbaum (Chatham): attorney directories show closings, traffic, criminal and collections work, admitted 1995, no brokerage marketing [CLAIMED, snippet] — [lawyers.com](https://www.lawyers.com/chatham/new-york/james-e-kleinbaum-411072-a/); Paul Quartararo (Millbrook, also Fishkill): no brokerage marketing found [CLAIMED, snippet] — [Justia](https://lawyers.justia.com/lawyer/paul-m-quartararo-1198035), accessed 2026-10-23
+- Active corporations: HUDSON VALLEY PARTNERS INC., DOS ID 1897649, filed 1995-02-24, Rockland, chairman Michael P Lagana (Pearl River); HUDSON VALLEY PARTNERS I, LLC (2021, New York County); 25 active "Hudson Valley Real Estate/Realty" entities filed 1993–2026; the dataset excludes dissolved entities [PRIMARY] — [DOS corporations query](https://data.ny.gov/resource/n9v6-gdp6.json?$where=upper(current_entity_name)%20like%20'HUDSON%20VALLEY%20PARTNERS%25'&$limit=50), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] An attorney-led, low-fee brokerage would be new to the region rather than a revival of a local model.
+
+### Gaps
+- The DOS public corporation search failed (ECONNRESET), so dissolved entities could not be checked.
+
+### H7. History of discount entrants in the region
+
+### Takeaway
+National discounters have entered and left: Purplebricks covered the New York market area including the Mid and Lower Hudson Valley from April 2018 and quit the US in July 2019; REX shut "all parts of New York" in October 2021; Redfin stayed but never opened an office north of Westchester. No failure was specific to Hudson Valley consumers; all were national cash-burn stories.
+
+### Cited Findings
+- Purplebricks' NY market: the 31-county New York Designated Market Area, including "the city of New York, Long Island and the Mid and Lower Hudson Valley" [SECONDARY, snippet] — [The Negotiator](https://thenegotiator.co.uk/purplebricks-launches-in-new-york-three-months-ahead-of-schedule/); January 2018 announcement of the NY DMA launch [PRIMARY company RNS] — [Investegate](https://www.investegate.co.uk/announcement/rns/purplebricks-group--purp/purplebricks-to-launch-in-new-york/5157443), accessed 2026-10-23
+- REX: in October 2021 it said it was "shutting down operations in Chicago and all parts of New York" [SECONDARY, snippet] — [RealTrends, 2021-10-11](https://www.realtrends.com/blog/2021/10/11/rex-undergoes-second-round-of-layoffs/), accessed 2026-10-23
+- No active DOS office for Help-U-Sell, Purplebricks, ZipRealty, REX or Homie; Assist-2-Sell only in Utica and Shirley [PRIMARY] — [DOS offices query](https://data.ny.gov/resource/nsde-gcv2.json?$where=upper(business_name)%20like%20'%25HELP%20U%20SELL%25'%20OR%20upper(business_name)%20like%20'%25ASSIST%202%20SELL%25'%20OR%20upper(business_name)%20like%20'%25PURPLEBRICKS%25'&$limit=100), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] The region has seen low-fee brands come and go without leaving a local office; none of them had a local, trusted principal.
+
+### Gaps
+- Whether Purplebricks or REX closed any deals in these counties (DOS shows only active licences).
+
+### H8. Does the founder's network still reach today's owners? (new fact: away from NY for almost ten years)
+
+### Takeaway
+The father-in-law has not lived or worked in New York for almost ten years (Joe, 2026-10-23). Census data show that about 13% of owner-occupied homes in the eight counties changed householder in 2020 or later and about 42% in 2010 or later, so a large minority of today's owners arrived around or after he left; and in the higher-priced northern counties buyers are mostly from NYC, outside any local network.
+
+### Cited Findings
+- ACS 2024 5-year (2020–2024), table B25038, owner-occupied units and householders who moved in 2020 or later / 2010 or later: Columbia 20,315 (12.3% / 43.7%); Dutchess 80,447 (12.8% / 41.8%); Greene 14,422 (12.1% / 40.8%); Orange 94,002 (14.8% / 45.7%); Putnam 29,778 (15.0% / 41.9%); Rockland 70,564 (12.0% / 39.9%); Sullivan 21,178 (15.1% / 43.0%); Ulster 51,924 (11.7% / 41.6%); eight-county total 382,630 owner households, 50,606 (13.2%) moved in 2020 or later, 162,690 (42.5%) in 2010 or later [PRIMARY data via API; shares are my calculation] — [Census Reporter API, B25038](https://api.censusreporter.org/1.0/data/show/latest?table_ids=B25038&geo_ids=05000US36111,05000US36027,05000US36071,05000US36021,05000US36039,05000US36079,05000US36105,05000US36087), accessed 2026-10-23
+- One Ulster/Dutchess/Columbia/Greene brokerage says 75–80% of its clients come from NYC, Long Island and New Jersey [CLAIMED] — [KeyCrew, 2026-06-19](https://keycrew.co/journal/how-the-hudson-valley-became-one-of-new-yorks-most-sought-after-second-home-markets/); in Shandaken, Denning and Hardenburgh "between 33 and 66% of homes" are second residences [SECONDARY] — [Spectrum News, 2026-03-10](https://spectrumlocalnews.com/nys/hudson-valley/news/2026/03/10/legislation-would-provide-tax-exemption-for-full-time-ulster-county-residents), accessed 2026-10-23
+- Sellers had owned their homes a median of 11 years before selling (an all-time high) [PRIMARY] — [NAR top-10 takeaways, 2025-11-03](https://www.nar.realtor/news/economists-outlook/top-10-takeaways-from-nars-2025-profile-of-home-buyers-and-sellers), accessed 2026-10-23
+- A NY attorney who registers as "retired" may not practise law anywhere and must re-register to resume [PRIMARY rule, via search summary] — [NY Courts, Part 118](https://www.nycourts.gov/rules/part-118-registration-attorneys-house-counsel-and-foreign-legal-consultants), accessed 2026-10-23
+
+### Inferences
+- [INFERENCE] Because the typical seller has owned for about 11 years, many 2026–2028 sellers bought around 2015, roughly when he was still local, so his network still touches sellers more than buyers; but it is a decade-old network, closer to a newcomer's sphere than to an active broker's.
+- [INFERENCE] The buyer side in Columbia, northern Dutchess and Ulster is dominated by NYC-origin buyers whom no local network reaches; the buyer half of the "replace both agents" idea gets no help from local trust there.
+- [INFERENCE] Whether he is still an active (not "retired") registered NY attorney matters to the "known local lawyer" positioning and to the licensing path; that is for WS2 and for him to confirm.
+
+### Gaps
+- No measure exists of how many of his former contacts still own homes in the region; only he can answer that.
+
+### Still open after gap fill
+- Sales-based market share by brokerage and county: needs OneKey/HVCR MLS data, which a licensed participant (or a friendly local broker) can pull.
+- Local steering evidence for low-fee listings: not published; measurable only with MLS data or after launch.
+- HVCR MLS limited-service rules and fees: not online; a phone call to the HVCR MLS office would answer it.
+- Redfin's and Opendoor's actual Hudson Valley volume: not disclosed.
+- Volume of 845 Realty Guys and NY Flat Fee Realty: not disclosed.

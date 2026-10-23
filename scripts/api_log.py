@@ -15,6 +15,14 @@ except Exception as e:
     print(f"[api-run] exit={rc}; output was not JSON ({e}); see {p}")
     sys.exit(0)
 cost = d.get("total_cost_usd"); u = d.get("usage", {})
+# a resumed session reports its cumulative cost (found 2026-10-23): subtract what earlier runs of it logged
+try:
+    prior = sum(json.loads(l).get("cost_usd") or 0 for l in open("/srv/realestate/spend.jsonl")
+                if json.loads(l).get("session") == d.get("session_id"))
+except FileNotFoundError:
+    prior = 0
+if cost is not None and prior:
+    cost = round(cost - prior, 4)
 rec = {"ts": ts, "tag": tag, "cost_usd": cost, "input": u.get("input_tokens"), "output": u.get("output_tokens"),
        "cache_read": u.get("cache_read_input_tokens"), "cache_write": u.get("cache_creation_input_tokens"),
        "turns": d.get("num_turns"), "duration_ms": d.get("duration_ms"), "exit": int(rc),
