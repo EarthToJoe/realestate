@@ -1,5 +1,36 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), end of night: research, plan and summary done
+
+**Done tonight (all on hughesnode, house login: https://realestate.hughesnode.com):**
+- Six research deliverables, each with a gap fill, a coverage audit and primary-source checks of its key claims:
+  WS1 (89 agent functions: 22 automatable, 46 partly, 21 licence or human), WS2 (62 legal constraints), WS3
+  (listing access: a person keys each listing into OneKey; portals follow free), WS4 (lean year one ~$8.2k,
+  break-even 2 closings; realistic ~$62.6k, 25), WS5 (~70 competitors; closest LocQube, none local), WS6 (drop the
+  free inspection as pitched; capped seller-hired pilot).
+- Independent fact-check on a different model: ~60 checks, 8 corrections in place; the fixed-fee route to being
+  seller's lawyer and broker together is confirmed (NYSBA Ops. 1015, 1117).
+- Memo for the father-in-law; POC architecture spec and traceability matrix (stack locked, ~$0.16 per live demo
+  run); demo-house data for 146 Rt 292, Holmes NY (8 comparables, $610k to $650k broker-review range).
+- `ASSUMPTIONS.md` statuses, `PLAN.md`, `EXECUTIVE-SUMMARY.md`, questions Q13 to Q42 with a "start here" triage.
+
+**Kill criteria, plainly:** A3 (no lawyer), A6 (buyer tours with no human) and A9 (free inspection as pitched) are
+hit; K1 partly (sellers save about a third when the buyer has an agent); K2 open but hit the day the firm must buy
+customers; K4 hit only if pitched as "replaces the agent"; K7 hit only in the full build-out. New top risk: A12,
+whether his network still produces listings after ten years away. The venture survives as a narrower, seller-first,
+attorney-brokered flat-fee firm; the first test is ten seller calls.
+
+**Incidents, fixed:** background helpers cut off by the headless wait limit (WS5, salvaged and resumed); an in-place
+edit of the job runner broke cost logging for running jobs (logged by hand; runner now edit-safe); a resumed job
+double-counted its first run (corrected; logger fixed); first wave spent ~$125 in 35 minutes (caps, high effort and
+a $15 demo reserve since).
+
+**Disk:** 21 GB free (checked at start; nothing large written since).
+
+**Spend:** $156.07 of $200; $15 reserved for the demo; about $29 usable.
+
+**Waiting on Joe:** Q26 (build on Max or add credit; #1 on his to-do list). Then the build starts (2026-10-25 plan).
+
 ## 2026-10-23 (day 1, VPS session), late night: night plan
 
 **Signed off:** success criteria (Joe: "i sign off"). **Demo house:** 146 Rt 292, Holmes, NY 12531 (decision 18).
