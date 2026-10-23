@@ -7,7 +7,10 @@ parties can edit the DOCX in Word. Party names are inserted here only; the calle
 
 from __future__ import annotations
 
+import hashlib
 import io
+import threading
+from collections import OrderedDict
 
 from app.brokerage import brokerage
 from app.disclosures import pcds
@@ -25,10 +28,67 @@ def contract_html(deal: Deal, st: dict, mapping: dict[str, str], pcds_answers: d
         saved=pcds_answers or {}, demo_note=pcds.DEMO_NOTE, attach_pcds=bool(pcds_answers))
 
 
-def contract_pdf(html: str) -> bytes:
-    from weasyprint import HTML
+# Each version's PDF is built once and kept in memory (never on disk: it carries the parties' names), keyed by a hash
+# of its exact HTML, so a change of names, signatures or disclosures builds a new one. The contract screen warms it in
+# the background, so the meeting never waits on WeasyPrint (over 30 s on the loaded server).
+_PDF_CACHE: OrderedDict[str, bytes] = OrderedDict()
+_BUILDING: dict[str, threading.Event] = {}
+_LOCK = threading.Lock()
+CACHE_SIZE = 12
 
-    return HTML(string=html).write_pdf()
+
+def _key(html: str) -> str:
+    return hashlib.sha256(html.encode()).hexdigest()
+
+
+def contract_pdf(html: str) -> bytes:
+    key = _key(html)
+    with _LOCK:
+        if key in _PDF_CACHE:
+            _PDF_CACHE.move_to_end(key)
+            return _PDF_CACHE[key]
+        ev = _BUILDING.get(key)
+        mine = ev is None
+        if mine:
+            ev = _BUILDING[key] = threading.Event()
+    if not mine:  # another request or the warm-up is building this exact PDF: wait for it
+        ev.wait(timeout=180)
+        with _LOCK:
+            if key in _PDF_CACHE:
+                return _PDF_CACHE[key]
+    try:
+        from weasyprint import HTML
+
+        data = HTML(string=html).write_pdf()
+        with _LOCK:
+            _PDF_CACHE[key] = data
+            while len(_PDF_CACHE) > CACHE_SIZE:
+                _PDF_CACHE.popitem(last=False)
+        return data
+    finally:
+        if mine:
+            with _LOCK:
+                _BUILDING.pop(key, None)
+            ev.set()
+
+
+def cached(html: str) -> bool:
+    with _LOCK:
+        return _key(html) in _PDF_CACHE or _key(html) in _BUILDING
+
+
+def warm(html: str) -> None:
+    """Build the PDF in the background if it is not built or building yet."""
+    if cached(html):
+        return
+    threading.Thread(target=lambda: _quiet(html), daemon=True, name="contract-pdf-warm").start()
+
+
+def _quiet(html: str) -> None:
+    try:
+        contract_pdf(html)
+    except Exception:  # noqa: BLE001 (a warm-up failure only means the request builds it)
+        pass
 
 
 def _field(run, instr: str) -> None:

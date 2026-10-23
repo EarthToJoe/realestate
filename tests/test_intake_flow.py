@@ -8,21 +8,20 @@ from tests.conftest import as_persona, demo_intake
 
 
 def test_demo_form_is_prefilled(client):
-    r = client.get("/intake?demo=1")
+    """A new sale opens with the demo house filled in (decision 50); no "Use the demo house" button."""
+    r = client.get("/intake")
     assert r.status_code == 200
-    assert 'value="146 Route 292"' in r.text
-    assert "DEMONSTRATION" in r.text
+    assert 'value="146 Route 292"' in r.text and 'id="use-demo"' not in r.text
+    assert 'data-clear-form="intake-form"' in r.text
+    assert "Demonstration" in r.text
 
 
 def test_profile_shows_all_three_source_chips(client, session):
-    demo_intake(client)
+    demo_intake(client)  # the AI fills the gaps as soon as step 1 is saved (decision 49: it does everything else)
     r = client.get("/intake/profile")
     assert r.status_code == 200
     assert 'data-source="public_record"' in r.text and 'data-source="seller"' in r.text
-    r = client.post("/intake/infer", headers={"HX-Request": "true"})
-    assert r.status_code == 200
     assert 'data-source="inferred"' in r.text
-    assert 'data-mode="fake"' in r.text  # the badge always says which mode answered
     # every fact row carries a chip
     rows = re.findall(r'<tr data-field="[^"]+" data-source="([a-z_]+)"', r.text)
     assert len(rows) >= 30 and set(rows) == {"public_record", "seller", "inferred"}
@@ -46,10 +45,10 @@ def test_client_decisions_block_until_made(client, session):
     assert client.post("/intake/accept", follow_redirects=False).status_code == 303
     as_persona(client, "seller")
     r = client.post("/intake/sign", data={"decision": "sign"})
-    assert r.status_code == 409 and "CP-01" in r.text
-    # pricing (step 2) refuses to start before CP-03
-    r = client.get("/step/2")
-    assert 'id="gate"' in r.text and "CP-03" in r.text
+    assert r.status_code == 409 and "agency disclosure form" in r.text and "CP-01" not in r.text.split('id="refused"')[1][:600]
+    # the price (step 4) waits for the listing agreement: the "not yet" card says what and where
+    r = client.get("/pricing")
+    assert 'id="gate-card"' in r.text and 'data-missing="agency"' in r.text
     # CP-01 is the seller's: the presenter and the buyer are refused server-side
     for p in ("presenter", "buyer"):
         as_persona(client, p)
@@ -63,15 +62,17 @@ def test_client_decisions_block_until_made(client, session):
     deal = current_deal(session)
     session.expire_all()
     assert records.is_done(session, deal.id, "CP-01") and records.is_done(session, deal.id, "CP-03")
-    assert 'id="gate"' not in client.get("/step/2").text
+    assert 'id="gate-card"' not in client.get("/pricing").text
     # CP-04 stays pending (it blocks contract signing in slice 3) until the seller answers
     assert records.latest(session, deal.id, "CP-04").status == "pending"
 
 
-def test_pcds_checklist_links_to_the_full_form(client):
+def test_checklist_is_on_the_research_screen_and_the_pcds_waits_for_the_contract(client):
     demo_intake(client)
-    r = client.get("/intake/disclosures")
-    assert 'id="pcds-link"' in r.text and "56-question form" in r.text and 'id="rec-CP-04"' in r.text
+    r = client.get("/intake/disclosures")  # the old screen lands on step 2's checklist
+    assert r.url.path == "/intake/profile" and 'id="checklist"' in r.text
+    assert 'data-kind="pcds"' in r.text and "before the contract is signed (step 11)" in r.text
+    assert "waiting for a decision" not in r.text
 
 
 def test_cp02_marker_shows_rule_who_ids_and_link(client):
@@ -79,7 +80,7 @@ def test_cp02_marker_shows_rule_who_ids_and_link(client):
     client.post("/intake/accept")
     r = client.get("/intake/onboarding")
     block = r.text[r.text.index('id="rec-CP-02"'):]
-    block = block[:block.index("does not stop the flow")]
+    block = block[:block.index("Read the finding") + 200]
     assert "NY law today" in r.text
     assert "licensed broker" in block.lower()
     assert "A licensed real estate broker" in block  # who
@@ -106,8 +107,8 @@ def test_timeline_shows_records_in_their_colours(client):
     for code in ("CP-01", "CP-02", "CP-03", "CP-04", "CP-24", "CP-35", "CP-20", "CP-34"):
         assert f'data-code="{code}"' in r.text, code
     assert 'id="hurdle-map"' in r.text
-    # CP-35 standing marker is in the identity block on every page
-    assert "none in this demonstration" in client.get("/intake/profile").text
+    # the standing CP-35 marker: one line in the footer of every page, linked to the timeline
+    assert "No licensed broker of record" in client.get("/intake/profile").text
 
 
 def test_unknown_address_still_works(client):
@@ -120,12 +121,12 @@ def test_unknown_address_still_works(client):
 
 def test_reset_starts_a_fresh_demo_and_keeps_spend(client, session):
     demo_intake(client)
-    client.post("/intake/infer")
     from app.models import ModelCall
 
     before = session.query(ModelCall).count()
+    assert before >= 1
     r = client.post("/demo/reset", follow_redirects=False)
-    assert r.status_code == 303 and r.headers["location"] == "/intake?demo=1&started=1"
+    assert r.status_code == 303 and r.headers["location"] == "/intake"
     session.expire_all()
     assert current_deal(session) is None
     assert session.query(ModelCall).count() == before

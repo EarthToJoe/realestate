@@ -5,17 +5,17 @@
   {% for c in p.claims %}
   <div class="finding finding-{{ c.tier }}" data-rule="{{ c.rule_id }}">
     <span class="tag {{ 'is-danger' if c.tier == 'block' else 'is-warning' }} is-light">{{ 'refused' if c.tier == 'block' else 'warning' }}</span>
-    "<i>{{ c.phrase }}</i>": {{ c.what }}<br><small class="muted"><b>Why:</b> {{ c.basis }}</small>
+    "<i>{{ c.phrase }}</i>": {{ c.what }}<br><small class="muted"><b>Why:</b> {{ c.basis | plain }}</small>
   </div>
   {% endfor %}
   {% if res %}
     {% for f in res.findings %}
     <div class="finding finding-{{ f.tier }}" data-rule="{{ f.rule_id }}">
       <span class="tag {{ 'is-danger' if f.tier == 'block' else 'is-warning' }} is-light">{{ 'blocks publishing' if f.tier == 'block' else 'warning' }}</span>
-      "<i>{{ f.phrase }}</i>": {{ f.explanation }}<br><small class="muted"><b>Legal basis:</b> {{ f.basis }} · rule {{ f.rule_id }}</small>
+      "<i>{{ f.phrase }}</i>": {{ f.explanation }}<br><small class="muted"><b>Legal basis:</b> {{ f.basis | plain }}</small>
     </div>
     {% endfor %}
     {% if not res.findings and not p.claims %}<p>No findings.</p>{% endif %}
-    <p class="help">Fair housing: written rules {{ res.rules_version }}, then a model review pass{% if res.model_mode %} ({{ res.model_mode }}){% endif %}. Claims: code checks for "licensed", replacing agents or lawyers, telling anyone they do not need a lawyer, reviews and guarantees (L54, L23).</p>
+    <p class="help" title="Rules {{ res.rules_version }}">Fair housing: the written rules, then a model review. Claims: code checks for "licensed", replacing agents or lawyers, telling anyone they do not need a lawyer, reviews and guarantees.</p>
   {% endif %}
 </details>

@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% from "components.html" import law_marker, ai_badge with context %}
 {% block content %}
-{% if error %}<div class="notification is-danger is-light" id="refusal">{{ error }}</div>{% endif %}
-{% if ai_error %}<div class="notification is-light"><b>Not recorded:</b> {{ ai_error }}</div>{% endif %}
+{# One more thing, after the finale (decision 51): the AI markets the firm itself. Not a step of the sale. The
+   campaign, who sees the ad and the publication on one screen; the presenter's demo devices only when presenting. #}
+{% if refusal %}<div class="notification is-warning is-light" id="refusal" role="alert"><b>Refused by code.</b> {{ refusal | plain }}</div>{% endif %}
 {% if not panels %}
 <div class="outcome" id="ai-panel">
   <h1 class="page-title">The AI markets the firm itself</h1>
   <p>A landing page for home sellers, one local ad and a free guide for sellers, written by the AI and checked like
-  every other piece of copy.</p>
-  <form method="post" action="/brand/draft"><button class="button is-info" id="ai-campaign">Let the AI write the campaign</button></form>
+  every other piece of copy, plus a check on what the firm may claim. Then the AI chooses who sees the ad and
+  publishes it (simulated).</p>
 </div>
 {% else %}
 {% set passed = panels | selectattr('art.status', 'in', ['passed', 'ready']) | list %}
 <div class="outcome {{ 'is-done' if st.published }}" id="campaign-outcome">
   <p class="ai-by">Written by the AI · {{ ai_badge(panels[0].art.mode, (st.draft or {}).recorded_at, panels[0].art.model) }}</p>
-  <h1 class="page-title">{% if st.published %}The firm's campaign is published (simulated){% else %}The AI wrote the firm's campaign: {{ passed | length }} of {{ panels | length }} pieces pass both checks{% endif %}</h1>
+  <h1 class="page-title">{% if st.published %}The firm's campaign is published (simulated){% elif passed | length == panels | length %}The AI wrote the firm's campaign: every piece passed both checks{% else %}The AI wrote the firm's campaign: {{ passed | length }} of {{ panels | length }} pieces pass both checks{% endif %}</h1>
   <p>Every piece went through the fair-housing check and a check on what the firm may claim. Only pieces that pass
-  both can be published.</p>
-  <div class="actions" style="margin-bottom:0"><a class="button is-next" href="/brand/targeting" id="to-targeting">Next: who sees the ad &rarr;</a></div>
+  both can be published, and the ad may only pick people by place.</p>
 </div>
 
 {% for p in panels %}{% set parts = p.parts %}
@@ -31,7 +31,7 @@
     {% if p.marked %}<div class="copy-text">{{ p.marked }}</div>{% else %}
     <p class="lp-headline">{{ founder(parts.headline) }}</p>
     {% for para in parts.body %}<p>{{ founder(para) }}</p>{% endfor %}
-    <p class="lp-cta"><span>{{ founder(parts.cta) }}</span></p>{% endif %}
+    <p class="lp-cta"><span class="mock-button" aria-hidden="true">{{ founder(parts.cta) }}</span><small>(the landing page's button, shown as a picture)</small></p>{% endif %}
     <details class="rec-more" id="notices"><summary>The notices the page carries ({{ notices | selectattr('present') | list | length }} of {{ notices | length }})</summary>
       <ul class="plain">{% for n in notices %}<li data-notice="{{ n.id }}"><span class="{{ 'check-ok' if n.present else 'check-fail' }}">{{ '✔' if n.present else '✖' }}</span> <b>{{ n.title }}.</b> {{ n.text }}
         {% for label, url in n.links or [] %}<br><a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a>{% endfor %}
@@ -54,15 +54,49 @@
   </div>
   {% endif %}
   {% include "brand/_checks.html" %}
-  <div class="buttons">
-    {% if p.art.status == 'blocked' %}
-    <form method="post" action="/brand/piece/{{ p.art.id }}/fix"><button class="button is-info fix-btn">Let the AI remove it and re-check</button></form>
-    {% elif p.art.channel == 'brand_landing' and not st.published %}
+  {% if p.art.status == 'blocked' %}
+  <form method="post" action="/brand/piece/{{ p.art.id }}/fix" class="buttons"><button class="button is-info is-light fix-btn">Let the AI remove it and check again</button></form>
+  {% elif presenting and p.art.channel == 'brand_landing' and not st.published %}
+  <details class="presenter-tools"><summary>Presenter's tools</summary>
     <form method="post" action="/brand/piece/{{ p.art.id }}/plant"><button class="button is-small is-danger is-light plant-btn" title="Adds: {{ planted }}">Try a bolder headline (demo)</button></form>
-    {% endif %}
-  </div>
+    <p class="help">Adds "{{ planted }}" under the headline; the claims check refuses it.</p>
+  </details>
+  {% endif %}
 </section>
 {% endfor %}
+
+<h2 class="section-title" id="targeting">Who sees the ad</h2>
+{% if st.targeting %}
+<div class="ai-panel" id="targeting-panel">
+  <p class="ai-by">The AI's targeting: by place, never by who people are</p>
+  <dl class="kv">{% for t in st.targeting %}<dt>{{ t.label }}</dt><dd data-allowed="{{ t.id }}"><b>{{ t.value }}</b><br><small class="muted">{{ t.why | plain }}</small></dd>{% endfor %}</dl>
+  {% if st.draft and st.draft.targeting_reason %}<p><b>Why:</b> {{ st.draft.targeting_reason }}</p>{% endif %}
+</div>
+{% else %}
+<p>Housing ads may not pick people by age, gender, family, ZIP code or a lookalike of past clients. The code offers the
+AI only the criteria that are allowed, and refuses the rest.</p>
+{% endif %}
+
+{% if st.published %}
+<div class="notification is-success is-light" id="published"><b>Published:</b>
+  <ul>{% for w in st.published.where %}<li>{{ w | plain }}</li>{% endfor %}</ul></div>
+{% endif %}
 {% if cp19 %}{{ law_marker(cp19) }}{% endif %}
+
+<details class="working" id="blocked-criteria" {{ 'open' if refusal and 'targeted' in refusal }}>
+  <summary>What the code will not let the AI do <span class="sum-note">{{ blocked | length }} kinds of targeting refused</span></summary>
+  <div class="working-body">
+  <ul class="plain">{% for id, label, why in blocked %}<li data-blocked="{{ id }}"><span class="check-fail">✖</span> <b>{{ label }}.</b> <small>{{ why }}</small></li>{% endfor %}</ul>
+  {% if st.refused %}<p class="help">Refused so far: {{ st.refused | length }} attempt{{ 's' if st.refused | length != 1 }}, each logged.</p>{% endif %}
+  </div>
+</details>
+{% if presenting %}
+<details class="presenter-tools" {{ 'open' if refusal and 'targeted' in refusal }}><summary>Presenter's tools: try a targeting the law bars</summary>
+  <form method="post" action="/brand/targeting/try">
+    <input type="hidden" name="criterion" value="age">
+    <button class="button is-small is-danger is-light" id="try-age">Try to target ages 25 to 44 (demo)</button>
+  </form>
+</details>
+{% endif %}
 {% endif %}
 {% endblock %}

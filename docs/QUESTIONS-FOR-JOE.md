@@ -203,6 +203,14 @@ marketing and other data at once, and the signed records when the three years en
 works, and its confirm screen says so. A lawyer's view on where the line falls would settle it. *Unblocks:* nothing for
 the demo.
 
+**Q51. You play the seller and the buyer: OK?** In the rebuilt demo (decision 49) the "View as Presenter / Seller /
+Buyer" switch is gone from the screens. Whoever opens the link presses the seller's and the buyer's decisions
+themselves: every amber button says whose decision it is ("Seller: sign the listing agreement", "Buyer: send this
+offer") and records it as that client's. The AI still can never make a client's decision (a test proves it), and a
+panel shows what each side's AI can see. The switch is still in the menu for anyone who wants it. *Default: yes.*
+*Unblocks:* nothing; it is built that way. Say "no" if you would rather the visitor watch while a presenter plays the
+two clients.
+
 ## Answered (newest first)
 
 - **2026-10-23, closed by decision 21 or merged into Q44 (the father-in-law bundle):**

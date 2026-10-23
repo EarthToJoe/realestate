@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Every demo screen at phone width (390 x 844, a current iPhone) in headless Chromium: the compact step bar is on
-screen without scrolling, every visible button is at least 44 px tall, and nothing scrolls sideways. Checked twice:
-right after "Start demo" (the gate cards) and with the deal fast-forwarded through every built step (full screens).
+"""Every screen of the path at phone width (390 x 844, a current iPhone) in headless Chromium: the one top bar is on
+screen and the content starts within 90 px of the top, the action bar's primary button is on screen without
+scrolling, every visible button is at least 44 px tall, and nothing scrolls sideways. Checked twice: right after
+Start (the "not yet" cards) and with the sale played to the end (the presenter's "Do this screen for me", turned on
+for that request only).
 
   .venv/bin/python scripts/phone-check.py                       a local app on recorded replays (no key, $0)
   .venv/bin/python scripts/phone-check.py https://realestate.hughesnode.com   the live site (house login; it
@@ -33,10 +35,15 @@ MEASURE = """() => {
   const small = [...document.querySelectorAll('button, .button, select, input[type=submit]')].filter(vis)
     .map(e => [Math.round(e.getBoundingClientRect().height), (e.innerText || e.value || e.name || e.tagName).trim().slice(0, 40)])
     .filter(([h]) => h < 44);
-  const bar = document.querySelector('.stepbar');
+  const bar = document.querySelector('.topbar');
   const r = bar ? bar.getBoundingClientRect() : null;
+  const main = document.getElementById('main');
+  const p = document.getElementById('ab-primary');
+  const pr = p ? p.getBoundingClientRect() : null;
   return {scrollWidth: document.documentElement.scrollWidth, wide, small,
-          bar: r ? {visible: vis(bar), bottom: Math.round(r.bottom), pills: bar.querySelectorAll('a').length} : null};
+          bar: r ? {visible: vis(bar), bottom: Math.round(r.bottom)} : null,
+          contentTop: main ? Math.round(main.getBoundingClientRect().top + scrollY) : null,
+          primary: pr ? (pr.top >= 0 && pr.bottom <= innerHeight) : null};
 }"""
 
 
@@ -62,28 +69,34 @@ def local_server() -> str:
 def main() -> int:
     from playwright.sync_api import sync_playwright
 
-    from app.web import steps
+    from app.web import stops
 
     base = sys.argv[1].rstrip("/") if len(sys.argv) > 1 else local_server()
     # the house login (blank username), read from a root-only file; never written in the repo
     creds = ({"username": "", "password": open("/srv/realestate/secrets/HOUSE_PASSWORD").read().strip()}
              if base.startswith("https://") else None)
-    routes = ["/", "/demo/start"] + [sc["route"] for st in steps() for sc in st["screens"]]
+    routes = ["/"] + [st["route"] for st in stops()]
     fail = 0
     with sync_playwright() as p:
         browser = p.chromium.launch()
         ctx = browser.new_context(viewport={"width": W, "height": H}, device_scale_factor=3, is_mobile=True,
                                   has_touch=True, http_credentials=creds)
+        ctx.set_default_timeout(180_000)
+        ctx.set_default_navigation_timeout(180_000)
         page = ctx.new_page()
-        for phase in ("after Start demo", "every built step walked"):
-            if phase == "after Start demo":
+        for phase in ("after Start", "the whole sale played"):
+            if phase == "after Start":
                 page.goto(base + "/demo/start")
-                page.click("#confirm-reset")
+                if page.query_selector("#confirm-reset"):
+                    page.click("#confirm-reset")
+                    page.wait_for_load_state("load")
             else:
-                page.goto(base + "/timeline")
-                # the whole walk, step 10 included ("Do this screen for me" on the last screen)
-                page.request.post(base + "/demo/play", form={"route": steps()[-1]["screens"][-1]["route"]})
-            if phase != "after Start demo":
+                # the whole sale and the firm's campaign: "Do this screen for me" on the last screen, presenting on
+                # for that request only
+                page.request.post(base + "/demo/presenting", form={"on": "on", "back": "/"}, timeout=180_000)
+                page.request.post(base + "/demo/play", form={"route": stops()[-1]["route"]}, timeout=600_000)
+                page.request.post(base + "/demo/presenting", form={"on": "off", "back": "/"}, timeout=180_000)
+            if phase != "after Start":
                 page.goto(base + "/contract")
                 if not page.query_selector("#signed"):
                     print("FAIL the deal was not walked to the signed contract")
@@ -100,7 +113,11 @@ def main() -> int:
                 if m["small"]:
                     problems.append(f"buttons under 44 px: {m['small'][:4]}")
                 if not m["bar"] or not m["bar"]["visible"] or m["bar"]["bottom"] > H:
-                    problems.append(f"step bar not on screen: {m['bar']}")
+                    problems.append(f"top bar not on screen: {m['bar']}")
+                if m["contentTop"] is not None and m["contentTop"] > 90:
+                    problems.append(f"the content starts {m['contentTop']} px down (over 90)")
+                if m["primary"] is False:
+                    problems.append("the primary button is not on screen without scrolling")
                 fail |= bool(problems)
                 print(f"{'ok  ' if not problems else 'FAIL'} {route:22} width {m['scrollWidth']}"
                       f"{'' if not problems else '  ' + '; '.join(problems)}")

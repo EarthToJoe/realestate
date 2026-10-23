@@ -32,8 +32,7 @@ class StubLive(prov.AnthropicProvider):
 
 
 def test_fake_call_is_logged_with_cost_fields(client, session):
-    demo_intake(client)
-    client.post("/intake/infer")
+    demo_intake(client)  # saving step 1 is followed at once by the AI's one call (it fills the gaps)
     row = session.query(ModelCall).one()
     assert (row.module, row.task, row.mode, row.side) == ("intake", "intake.infer_gaps", "fake", "seller")
     assert row.model == "claude-haiku-5-5" and row.request_hash and row.prompt_version == "infer_gaps.v1"
@@ -97,7 +96,7 @@ def test_audit_chain_and_append_only(client, session):
 
 def test_review_pages_keep_their_addresses(client):
     home = client.get("/")
-    assert home.status_code == 200 and "Start demo" in home.text and 'href="/index.html"' in home.text
+    assert home.status_code == 200 and 'id="start-demo"' in home.text and 'href="/index.html"' in home.text
     assert "review home" in client.get("/index.html").text
     assert client.get("/docs-success-criteria.html").status_code == 200
     assert client.get("/healthz").json()["ok"] is True
@@ -108,8 +107,8 @@ def test_identity_block_and_demo_mark_on_every_page(client):
     for path in ("/", "/intake", "/intake/profile", "/intake/disclosures", "/intake/onboarding", "/timeline",
                  "/step/5"):
         t = client.get(path).text
-        assert "DEMONSTRATION" in t, path
-        assert "Licensed broker of record: required by NY law; none in this demonstration" in t, path
+        assert "Demonstration: fictional people, nothing is sent" in t, path
+        assert "No licensed broker of record (New York law requires one)" in t, path
         assert "Hudson Valley AI Realty" in t, path
 
 
@@ -129,6 +128,6 @@ def test_shipped_replay_answers_the_demo_intake(settings):
 
     store = prov.ReplayStore(settings.data_dir / "replays", read_dirs=[prov.SHIPPED_REPLAYS])
     c = TestClient(create_app(settings, prov.ReplayProvider(store)))
-    demo_intake(c)
-    r = c.post("/intake/infer", headers={"HX-Request": "true"})
-    assert 'data-mode="replay"' in r.text and "Recorded run" in r.text and 'data-source="inferred"' in r.text
+    demo_intake(c)  # saving step 1 lets the AI fill the gaps at once, on the recorded answer
+    r = c.get("/intake/profile")
+    assert "Recorded run" in r.text and 'data-source="inferred"' in r.text

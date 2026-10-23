@@ -1,79 +1,75 @@
 {% extends "base.html" %}
-{% from "components.html" import human_required, ids, decide_as with context %}
+{% from "components.html" import decision, human_required, ids with context %}
 {% block content %}
 {% if gate %}
-<h1 class="page-title">Marketing plan</h1>
-{# the gate card in base.html shows what is missing #}
+{% if not walk_gate %}<div class="notification is-warning is-light" id="gate"><b>Not yet:</b> {{ gate | plain }}</div>{% endif %}
 {% else %}
-<div class="outcome">
-  <h1 class="page-title">{% if cp07.status != 'done' %}Where the house will be marketed: the seller decides first{% elif not cp08 %}The plan is signed; the MLS entry comes next{% else %}The house is on the market on {{ cards | length }} channels (simulated){% endif %}</h1>
-  <p>Each card says honestly what happens on that channel and who does it: <span class="chip chip-automated"><b>AI</b></span> the AI,
-  <span class="chip chip-human_required"><b>A person</b></span> a step no software can do today, and "fed from the MLS" where the portal
-  copies the MLS entry by itself.</p>
+{% set signed = cp07 and cp07.status == 'done' %}
+{% set fed = cards | selectattr('kind', 'equalto', 'fed') | list %}
+{% set vendors = cards | selectattr('kind', 'equalto', 'vendor') | list %}
+{% set by_id = {} %}{% for c in cards %}{{ by_id.update({c.id: c}) or '' }}{% endfor %}
+<div class="outcome {{ 'is-done' if cp08 }}">
+  <h1 class="page-title">{% if cp08 %}The house is on the market{% elif cp07 and cp07.status == 'declined' %}The seller declined the marketing plan{% elif signed %}The plan is signed: a person at the firm keys the listing into the MLS next{% else %}Where the house will be advertised: the seller decides first{% endif %}</h1>
+  <p>Each line says honestly who does the work on that channel: the AI, a person, or the MLS feeding the portals by
+  itself. {% if cp08 %}Everything here is simulated: nothing is really listed.{% else %}In this demonstration every step is simulated.{% endif %}</p>
 </div>
 
-{% set mine = (persona == 'seller') %}
-<div class="rec rec-decision {{ 'is-done' if cp07.status == 'done' }}" data-code="CP-07" id="rec-CP-07">
-  <div class="rec-head"><span class="rec-badge">{{ whose('seller') }}</span> <span class="rec-status">{{ decision_label(cp07) }}</span></div>
-  <p class="rec-title">{{ cp07.title }}</p>
-  <p class="rec-advice"><b>The AI's advice:</b> "Publish to Internet" with all three authorisations: the widest exposure,
-    and the MLS entry, the lockbox and the photos all depend on them.</p>
+{% call decision(cp07, change='authorise', advice="Publish to Internet, with all three permissions: the widest exposure, and the MLS entry, the lockbox and the photos all depend on them.", waiting="Press the amber button at the bottom to sign it for the seller (a simulated e-signature).") %}
   {% if cp07.status == 'pending' %}
-  <form method="post" action="/channels/authorise">
-    <p class="label" style="margin:8px 0 4px">How widely to show the listing</p>
+  <form method="post" action="/channels/authorise" id="authorise-form" data-guard>
+    <input type="hidden" name="as" value="seller">
+    <p class="label" style="margin:8px 0 0">How widely to show the listing</p>
     {% for name, what in exposures.items() %}
-    <label class="radio"><input type="radio" name="exposure" value="{{ name }}" {{ 'checked' if loop.first }} {{ 'disabled' if not mine }}> <span><b>{{ name }}</b>: {{ what }}</span></label>
+    <label class="radio"><input type="radio" name="exposure" value="{{ name }}" {{ 'checked' if name == chosen_exposure }}> <span><b>{{ name }}</b>: {{ what }}</span></label>
     {% endfor %}
-    <p class="label" style="margin:10px 0 4px">What the seller authorises</p>
+    <p class="label" style="margin:10px 0 0">What the seller allows</p>
     {% for key, label, rule in authorisations %}
-    <label class="checkbox" title="{{ rule }}"><input type="checkbox" name="granted" value="{{ key }}" checked {{ 'disabled' if not mine }}> <span>{{ label }}</span></label>
+    <label class="checkbox"><input type="checkbox" name="granted" value="{{ key }}" {{ 'checked' if key in chosen_granted }}> <span>{{ label }}</span></label>
     {% endfor %}
-    <div class="buttons">
-      <button class="button is-warning" name="decision" value="sign" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Sign (simulated e-sign)</button>
-      <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Decline</button>
-    </div>
   </form>
-  {% if not mine %}{{ decide_as('seller', persona, 'rec-CP-07') }}{% endif %}
   {% else %}
-  <p><b>{{ cp07.reason }}.</b> Decided by the {{ cp07.decided_by }}{% if cp07.decided_at %}, {{ cp07.decided_at | et }}{% endif %}.</p>
+  <p id="plan-chosen"><b>{{ cp07.reason | plain }}.</b></p>
   {% endif %}
-  <details class="rec-more"><summary>Why this is the seller's</summary>
-    <p class="rec-rule">{{ cp07.rule_text }}</p>
-    <p class="rec-ids">Record CP-07. {{ ids(cp07) }} <a href="{{ cp07.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
-  </details>
-</div>
+{% endcall %}
 
-<h2 class="section-title">The channels</h2>
-<div class="channel-board">
-{% for c in cards %}
-  <div class="card-ch kind-{{ c.kind }}" id="card-{{ c.id }}" data-kind="{{ c.kind }}">
-    <p class="ch-name">{% if c.kind == 'human_required' %}&#9995; {% endif %}<b>{{ c.name }}</b></p>
-    <p class="ch-status"><span class="muted">{{ {'human_required': 'A person does this', 'fed': 'Fed from the MLS', 'automated': 'The AI', 'vendor': 'Vendor booking', 'owner': 'The owner hosts'}[c.kind] }}:</span> <b>{{ c.status }}</b></p>
-
-    {% if c.action == 'mls' %}
-    <form method="post" action="/channels/mls-entry"><button class="button is-small is-light" id="mls-entry"
-      {% if persona != 'presenter' %}disabled title="Only the Presenter records a simulated human step"{% endif %}>Record the MLS entry (simulated)</button></form>
-    <p style="margin-top:6px"><small><a href="/copy/mls">See the package the AI prepared</a></small></p>
-    {% endif %}
-    <details class="rec-more"><summary>How it works</summary>
-      {% if c.human_step %}<p><small>&#9995; <b>A person does this:</b> {{ c.human_step }}.</small></p>{% endif %}
-      <p><small>{{ c.detail }}</small></p>
-      <p class="rec-ids">{% for i in c.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ c.link }}" target="_blank" rel="noopener">Read the finding</a></p>
-    </details>
-  </div>
-{% endfor %}
-</div>
-{% if cp08 %}{{ human_required(cp08) }}{% else %}
+{% if cp08 %}{{ human_required(cp08, simulated_label=True) }}{% else %}
 <div class="rec rec-human" data-code="CP-08" id="rec-CP-08">
-  {% set e = cards[0] %}
-  <div class="rec-head"><span class="rec-badge">&#9995; A person does this</span></div>
+  {% set m = by_id.get('mls') %}
+  <div class="rec-head"><span class="rec-badge">A person does this</span><span class="rec-status">{{ m.status | plain if m }}</span></div>
   <p class="rec-plain">{{ plain_of('CP-08') }}</p>
+  <p><a href="/copy#mls">See the package the AI prepared for them</a></p>
   <details class="rec-more"><summary>Why</summary>
-    <p class="rec-rule">{{ e.detail }}</p>
-    <p class="rec-ids">Record CP-08: listing keyed into OneKey MLS from the AI's package. {% for i in e.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ e.link }}" target="_blank" rel="noopener">Read the finding</a></p>
+    <p class="rec-rule">{{ m.detail if m }}</p>
+    <p class="rec-ids">Record CP-08: listing keyed into the MLS from the AI's package. {% for i in (m.ids if m else []) %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ m.link if m }}" target="_blank" rel="noopener">Read the finding</a></p>
   </details>
 </div>
 {% endif %}
-{% if cp08 %}<div class="actions"><a class="button is-next" href="/inbox">Next: communications &rarr;</a></div>{% endif %}
+
+<h2 class="section-title">Where the house appears, and who does it</h2>
+<ul class="ch-list plain" id="channel-board">
+  {% macro row(id, kind, name, status, detail) %}{% set who = {'human_required': 'A person', 'fed': 'Automatic, from the MLS', 'automated': 'The AI', 'vendor': 'A vendor', 'owner': 'The owner'} %}
+  <li class="ch-row kind-{{ kind }}" id="card-{{ id }}" data-kind="{{ kind }}">
+    <div class="ch-main"><b class="ch-name">{{ name }}</b> <span class="ch-who">{{ who[kind] }}</span></div>
+    <div class="ch-status">{{ status }}</div>
+    {% if detail %}<details class="rec-more"><summary>How it works<span class="sr-only">: {{ name }}</span></summary>{{ detail }}</details>{% endif %}
+  </li>
+  {% endmacro %}
+  {% set mls = by_id.get('mls') %}
+  {% if mls %}{% set d %}<p>{{ mls.detail }}</p><p class="rec-ids">{% for i in mls.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ mls.link }}" target="_blank" rel="noopener">Read the finding</a></p>{% endset %}
+  {{ row('mls', 'human_required', 'The MLS (OneKey)', mls.status | plain, d) }}{% endif %}
+  {% if fed %}{% set d %}<ul class="plain">{% for c in fed %}<li data-portal="{{ c.id }}"><b>{{ c.name }}</b>: {{ c.status | plain }}. {{ c.detail }}{% if c.human_step %} <i>A person does this once: {{ c.human_step }}.</i>{% endif %}</li>{% endfor %}</ul>
+    <p class="rec-ids">{% for c in fed %}<span class="tag is-light">{{ c.ids[0] }}</span> {% endfor %}<a href="{{ fed[0].link }}" target="_blank" rel="noopener">Read the finding</a></p>{% endset %}
+  {% set st = fed[0].status | plain %}
+  {{ row('portals', 'fed', 'Zillow, Realtor.com, Redfin, Homes.com and OneKey\'s own sites', 'listed' if st == 'fed from the MLS' else st, d) }}{% endif %}
+  {% for cid, label in [('web', "The firm's website"), ('social', 'Social: Facebook, Instagram, Nextdoor'), ('gbp', 'Google Business Profile')] if by_id.get(cid) %}{% set c = by_id[cid] %}
+  {% set d %}<p>{{ c.detail }}{% if c.human_step %} <i>A person does this: {{ c.human_step }}.</i>{% endif %}</p><p class="rec-ids">{% for i in c.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ c.link }}" target="_blank" rel="noopener">Read the finding</a></p>{% endset %}
+  {{ row(cid, c.kind, label, c.status | plain, d) }}{% endfor %}
+  {% if vendors %}{% set d %}<ul class="plain">{% for c in vendors %}<li data-vendor="{{ c.id }}"><b>{{ c.name }}</b>: {{ c.status | plain }}. {{ c.detail }}</li>{% endfor %}</ul>
+    <p class="rec-ids"><span class="tag is-light">WS3-R3</span> <span class="tag is-light">WS3-R8</span> <a href="{{ vendors[0].link }}" target="_blank" rel="noopener">Read the finding</a></p>{% endset %}
+  {% set waiting = vendors | rejectattr('status', 'equalto', 'booked (simulated)') | list %}
+  {{ row('vendors', 'vendor', 'Photos, yard sign and lockbox', ('booked' if not waiting else (waiting | length) ~ ' waiting for the seller\'s permission'), d) }}{% endif %}
+  {% if by_id.get('open_house') %}{% set c = by_id['open_house'] %}{% set d %}<p>{{ c.detail }}</p><p class="rec-ids">{% for i in c.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}</p>{% endset %}
+  {{ row('open_house', 'owner', 'Open house', 'the owner opens the door', d) }}{% endif %}
+</ul>
 {% endif %}
 {% endblock %}

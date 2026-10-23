@@ -1,4 +1,5 @@
-"""Step 3 Listing copy screens: drafts with the fair-housing panel; MLS pre-check and package; the flyer."""
+"""Step 5 of the path, The listing (decision 51): the AI's copy with its fair-housing checks and the MLS pre-check and
+package, on one screen; the flyer. Every action redirects back to the screen (Post/Redirect/Get)."""
 
 from __future__ import annotations
 
@@ -6,12 +7,13 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse, Response
 
 from app.db import get_session
+from app.demo import path
 from app.fairhousing import check as fh
 from app.model.provider import ReplayMiss, SpendCapReached
 from app.modules.listing_copy import pdf, service
 from app.records import service as records
 from app.records.service import GateError
-from app.web import current_deal, gate_page, render
+from app.web import current_deal, gate_page, redirect, render
 
 router = APIRouter()
 
@@ -34,91 +36,88 @@ def _panel(s, art) -> dict:
             "flyer": service.parse_flyer(art.text) if art.channel == "flyer" else None}
 
 
-def _page(request, s, deal, status_code=200, **extra):
-    arts = service.artifacts(s, deal)
-    return render(request, s, "copy/drafts.html", status_code=status_code, gate=_gate(s, deal),
-                  panels=[_panel(s, a) for a in arts], rules_version=fh.load_rules().version,
-                  cp06=records.records(s, deal.id, "CP-06"), cp26=records.records(s, deal.id, "CP-26"),
-                  planted=service.PLANTED, **extra)
-
-
 @router.get("/copy")
-def drafts(request: Request, s=Depends(get_session)):
+def listing(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
         return gate_page(request, s)
-    return _page(request, s, deal)
+    gate = _gate(s, deal)
+    arts = [] if gate else service.artifacts(s, deal)
+    remarks = next((a for a in arts if a.channel == "mls_remarks"), None)
+    res = fh.latest_result(s, "copy_artifact", remarks.id) if remarks else None
+    return render(request, s, "copy/listing.html", gate=gate, panels=[_panel(s, a) for a in arts],
+                  rules_version=fh.load_rules().version, cp06=records.records(s, deal.id, "CP-06"),
+                  planted=service.PLANTED, remarks=remarks,
+                  checks=service.remarks_checks(remarks.text) if remarks else [], fh_res=res,
+                  package=service.mls_package(s, deal) if arts else [])
+
+
+def _deal_or_gone(s):
+    deal = current_deal(s)
+    return deal, (None if deal else RedirectResponse("/intake", status_code=303))
 
 
 @router.post("/copy/draft")
 def draft(request: Request, s=Depends(get_session)):
-    deal = current_deal(s)
-    if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+    deal, gone = _deal_or_gone(s)
+    if gone:
+        return gone
+    provider = request.app.state.provider
     try:
-        service.draft(s, deal, request.app.state.provider)
+        service.draft(s, deal, provider)
     except (ReplayMiss, SpendCapReached) as e:
-        return _page(request, s, deal, ai_error=str(e))
-    return RedirectResponse("/copy", status_code=303)
+        s.rollback()
+        return redirect("/copy", path.plain_failure(e, provider.mode == "replay"))
+    return redirect("/copy", "The AI wrote the listing and checked every piece for fair housing.")
 
 
-def _artifact_action(request, s, artifact_id: int, action: str):
-    deal = current_deal(s)
-    if deal is None:
-        return RedirectResponse("/intake", status_code=303)
-    if _gate(s, deal):
-        return _page(request, s, deal, status_code=409)
-    art = service.get(s, deal, artifact_id)
-    error = None
-    try:
-        if action == "check":
-            service.check(s, deal, art, request.app.state.provider)
-        elif action == "plant":
-            service.plant(s, deal, art, request.app.state.provider)
-        elif action == "fix":
-            service.apply_fix(s, deal, art, request.app.state.provider)
-        elif action == "ready":
-            service.mark_ready(s, deal, art)
-    except fh.FairHousingBlocked as e:
-        error = f"Not marked ready to publish: {e}"
-    except (ValueError, ReplayMiss, SpendCapReached) as e:
-        error = str(e)
-    if request.headers.get("HX-Request"):
-        return render(request, s, "copy/_artifact.html", p=_panel(s, art), error=error, planted=service.PLANTED,
-                      status_code=200)
-    if error:
-        return _page(request, s, deal, status_code=409 if action == "ready" else 422, error=error)
-    return RedirectResponse(f"/copy#art-{art.id}", status_code=303)
+ACTION_DONE = {"check": "The AI checked {t} again", "plant": "Planted a violation in {t}: the check caught it",
+               "fix": "The AI applied the fix to {t} and checked it again", "ready": "The AI marked {t} ready to publish"}
 
 
 @router.post("/copy/{artifact_id}/{action}")
 def artifact_action(artifact_id: int, action: str, request: Request, s=Depends(get_session)):
-    if action not in ("check", "plant", "fix", "ready"):
+    if action not in ACTION_DONE:
         return Response(status_code=404)
-    return _artifact_action(request, s, artifact_id, action)
+    deal, gone = _deal_or_gone(s)
+    if gone:
+        return gone
+    gate = _gate(s, deal)
+    if gate:
+        raise GateError("CP-05", gate)
+    art = service.get(s, deal, artifact_id)
+    provider = request.app.state.provider
+    was_ready = art.status == "ready"
+    if action == "ready":  # refused (409, in plain words) unless the newest check passed on this exact text
+        service.mark_ready(s, deal, art)
+    else:
+        try:
+            {"check": service.check, "plant": service.plant, "fix": service.apply_fix}[action](s, deal, art, provider)
+        except (ValueError, ReplayMiss, SpendCapReached) as e:
+            s.rollback()
+            return redirect(f"/copy#art-{artifact_id}", path.plain_failure(e, provider.mode == "replay"))
+    flash = ACTION_DONE[action].format(t=art.title.lower() if art.title[:3] != "MLS" else art.title)
+    if action == "check":
+        flash += ": it still passes and stays ready to publish" if was_ready and art.status == "ready" else (
+            ": it passes" if art.status == "passed" else ": it is blocked until fixed")
+    elif action in ("plant", "fix") and art.status != "ready":
+        flash += (". The text changed, so it needs marking ready again" if art.status == "passed" else "")
+    return redirect(f"/copy#art-{artifact_id}", flash + ".")
 
 
 @router.post("/copy/ready-all")
 def ready_all(request: Request, s=Depends(get_session)):
-    deal = current_deal(s)
-    if deal is None:
-        return RedirectResponse("/intake", status_code=303)
-    if _gate(s, deal):
-        return _page(request, s, deal, status_code=409)
+    deal, gone = _deal_or_gone(s)
+    if gone:
+        return gone
+    gate = _gate(s, deal)
+    if gate:
+        raise GateError("CP-05", gate)
     done, refused = service.mark_all_ready(s, deal)
-    return _page(request, s, deal, marked_now=done, refused=refused)
-
-
-@router.get("/copy/mls")
-def mls(request: Request, s=Depends(get_session)):
-    deal = current_deal(s)
-    if deal is None:
-        return gate_page(request, s)
-    remarks = next((a for a in service.artifacts(s, deal) if a.channel == "mls_remarks"), None)
-    res = fh.latest_result(s, "copy_artifact", remarks.id) if remarks else None
-    return render(request, s, "copy/mls.html", gate=_gate(s, deal), remarks=remarks,
-                  checks=service.remarks_checks(remarks.text) if remarks else [], fh_res=res,
-                  package=service.mls_package(s, deal))
+    flash = f"The AI marked {len(done)} piece{'s' if len(done) != 1 else ''} ready to publish"
+    if refused:
+        flash += "; not " + ", ".join(a.title.lower() for a, _ in refused) + ": its check has not passed"
+    return redirect("/copy", flash + ".")
 
 
 @router.get("/copy/flyer")

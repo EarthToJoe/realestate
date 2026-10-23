@@ -21,13 +21,16 @@ def test_form_is_the_full_2025_form():
 
 
 def test_every_field_starts_blank(client):
-    demo_intake(client)
-    as_persona(client, "seller")
-    r = client.get("/disclosures/pcds")
-    assert r.text.count('class="pcds-q"') == 56
-    assert " checked" not in r.text.split('id="pcds-form"')[1]
-    for m in re.finditer(r'<input class="input is-small" name="(q[0-9_a-z]+)" value="([^"]*)"', r.text):
-        assert m.group(2) == "", f"{m.group(1)} must start blank"
+    from tests.flows import agreed_b
+    agreed_b(client)
+    r = client.get("/disclosures/pcds")  # now part of the contract step (decision 51)
+    assert r.url.path == "/contract" and r.text.count('class="pcds-q"') == 56
+    form = r.text.split('id="pcds-form"')[1].split("</form>")[0]
+    assert " checked" not in form
+    found = re.findall(r'<input class="input" name="(q[0-9_a-z]+)" value="([^"]*)"', form)
+    assert found
+    for name, value in found:
+        assert value == "", f"{name} must start blank"
 
 
 def test_prepared_answers_validate():
@@ -42,7 +45,7 @@ def test_only_the_seller_submits_and_explanations_are_required(client, session):
     assert client.post("/disclosures/pcds/prepared").status_code == 403
     as_persona(client, "seller")
     r = client.post("/disclosures/pcds", data={**answers, "q35_explain": ""})
-    assert r.status_code == 422 and "Question 35" in r.text
+    assert r.status_code == 422 and "Question 35" in r.text and 'id="pcds-error"' in r.text
     r = client.post("/disclosures/pcds", data={**answers, "q21_leaking": ""})
     assert r.status_code == 422 and "Question 21" in r.text
     # "if municipal" is not asked of a well
@@ -53,8 +56,8 @@ def test_only_the_seller_submits_and_explanations_are_required(client, session):
     assert records.is_done(session, deal.id, "CP-04")
     saved = pcds.answers_of(session, deal)
     assert saved["_form_version"] == "2025-07-01" and saved["q36_type"] == "Septic"
-    r = client.get("/disclosures/pcds")
-    assert 'id="pcds-done"' in r.text and 'id="pcds-body"' in r.text
+    r = client.get("/disclosures/pcds/print")
+    assert 'id="pcds-body"' in r.text
 
 
 def test_prepared_answers_are_labelled_fiction(client, session):

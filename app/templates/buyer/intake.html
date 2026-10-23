@@ -1,67 +1,135 @@
 {% extends "base.html" %}
-{% from "components.html" import law_marker, decision, chip with context %}
+{% from "components.html" import law_marker, human_required, decision, wall as wall_panel, field_error, recorded_note with context %}
 {% block content %}
-{% if not has_buyer %}
-<div class="outcome">
-  <h1 class="page-title">A buyer signs up with the firm</h1>
-  <p>The same system, the buyer's side. The AI becomes the buyer's agent: a separate AI that never sees the
-  seller's limits, as the seller's AI never sees the buyer's (the information wall).</p>
-  <a class="button is-light" href="/buyer?demo=1" id="use-demo-buyer">Use the demo buyer (fictional)</a>
+{% if not walk_gate %}
+{% set signed = cp16 and cp16.status == 'done' %}
+{% set consented = cp17 and cp17.status == 'done' %}
+<div class="outcome {{ 'is-done' if consented }}">
+  <h1 class="page-title">{% if consented %}The buyer is a client, has toured the house, and both sides consented{% elif bstate.tour %}Tour booked: {{ bstate.tour.when | slot }}, {{ bstate.tour.kind }}{% elif signed %}The buyer signed the buyer agreement{% elif saved %}The buyer joined the firm: the buyer agreement is waiting{% else %}A buyer signs up with the firm{% endif %}</h1>
+  <p>{% if not saved %}The buyer tells the firm about the home they want and the money. The demo buyer is filled in; this
+  form never asks about family, religion or any protected trait.{% elif not signed %}The AI took the buyer on as a client and sent the notices and a buyer agreement with a stated, negotiable fee. Signing it is the buyer's decision.{% elif not consented %}The AI searched for homes and booked a tour of the firm's own listing. The firm now acts for both sides, so the buyer and the seller each consent (simulated e-signatures).{% else %}Next: the buyer's AI drafts an offer.{% endif %}</p>
 </div>
-{% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
-<form method="post" action="/buyer" id="buyer-form">
-  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">About you</legend>
+
+{% if show_form %}
+{% if errors %}<div class="notification is-danger is-light" id="form-errors" role="alert"><b>Some answers are missing.</b> Each one is marked below.</div>{% endif %}
+<p><a href="#" data-clear-form="buyer-form" class="clear-link" id="clear-buyer-form">Clear the form to type your own</a>
+  {% if editing %} · <a href="/buyer" class="clear-link">Keep the saved answers</a>{% endif %}</p>
+{% if recorded %}<p class="recorded-note">This recorded demo has the AI's answers for the demo buyer's wishes and money; the name, e-mail and phone can be anything. Other answers work in the live demo.</p>{% endif %}
+<form method="post" action="/buyer" id="buyer-form" data-guard novalidate>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">About the buyer</legend>
   <div class="field-row">
-    <label>Name <input class="input" name="name" value="{{ demo.name if demo }}"></label>
-    <label>E-mail <input class="input" name="email" value="{{ demo.email if demo }}" inputmode="email"></label>
-    <label>Phone <input class="input" name="phone" value="{{ demo.phone if demo }}" inputmode="tel"></label>
+    <label>Name <input class="input {{ 'is-danger' if errors.name }}" name="name" value="{{ data.name }}" {% if errors.name %}aria-invalid="true" aria-describedby="err-name"{% endif %}>{{ field_error(errors, 'name') }}</label>
+    <label>E-mail <input class="input {{ 'is-danger' if errors.email }}" name="email" value="{{ data.email }}" inputmode="email" {% if errors.email %}aria-invalid="true" aria-describedby="err-email"{% endif %}>{{ field_error(errors, 'email') }}</label>
+    <label>Phone <input class="input" name="phone" value="{{ data.phone }}" inputmode="tel"></label>
   </div></fieldset>
-  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">The home you want</legend>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">The home they want</legend>
   <div class="field-row">
-    <label>Bedrooms, at least <input class="input" name="beds_min" value="{{ demo.beds_min if demo }}" inputmode="numeric"></label>
-    <label>Acres, at least <input class="input" name="acres_min" value="{{ demo.acres_min if demo }}" inputmode="decimal"></label>
+    <label>Bedrooms, at least <input class="input" name="beds_min" value="{{ data.beds_min }}" inputmode="numeric"></label>
+    <label>Acres, at least <input class="input" name="acres_min" value="{{ data.acres_min }}" inputmode="decimal"></label>
   </div>
-  <p class="label" style="margin-bottom:4px">Towns</p>
-  <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">{% for t in towns %}<label class="checkbox" style="flex-direction:row;font-weight:400"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if demo and t in demo.towns }}> {{ t }}</label>{% endfor %}</div>
+  <p class="label" style="margin-bottom:0">Towns</p>
+  <div class="radio-row">{% for t in towns %}<label class="checkbox"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if t in (data.towns or []) }}> {{ t }}</label>{% endfor %}</div>
   <div class="field-row">
-    <label>Must-haves (the home itself) <input class="input" name="must_haves" value="{{ demo.must_haves if demo }}"></label>
-    <label>Timeline <input class="input" name="timeline" value="{{ demo.timeline if demo }}"></label>
+    <label>Must-haves (the home itself) <input class="input" name="must_haves" value="{{ data.must_haves }}"></label>
+    <label>Timeline <input class="input" name="timeline" value="{{ data.timeline }}"></label>
   </div></fieldset>
   <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">Money</legend>
   <div class="field-row">
-    <label>Pre-approved for a mortgage? <span class="select"><select name="preapproved"><option value="yes" {{ 'selected' if demo and demo.preapproved == 'yes' }}>Yes</option><option value="no">No</option></select></span></label>
-    <label>Pre-approval amount ($) <input class="input" name="preapproval_amount" value="{{ demo.preapproval_amount if demo }}" inputmode="numeric"></label>
+    <label>Pre-approved for a mortgage? <span class="select"><select name="preapproved"><option value="yes" {{ 'selected' if data.preapproved == 'yes' }}>Yes</option><option value="no" {{ 'selected' if data.preapproved == 'no' }}>No</option></select></span></label>
+    <label>Pre-approval amount ($) <input class="input" name="preapproval_amount" value="{{ data.preapproval_amount }}" inputmode="numeric"></label>
   </div>
-  <p class="label" style="margin:8px 0 4px">Private, for your AI only</p>
+  <p class="label" style="margin:8px 0 0">Private, for the buyer's AI only</p>
   <p class="help">Never in an offer, never shown to the seller's side.</p>
   <div class="field-row">
-    <label>The most you would pay ($) <input class="input" name="max_price" value="{{ demo.max_price if demo }}" inputmode="numeric"></label>
-    <label>Private notes <input class="input" name="private_notes" value="{{ demo.private_notes if demo }}"></label>
+    <label>The most the buyer would pay ($) <input class="input {{ 'is-danger' if errors.max_price }}" name="max_price" value="{{ data.max_price }}" inputmode="numeric" {% if errors.max_price %}aria-invalid="true" aria-describedby="err-max_price"{% endif %}>{{ field_error(errors, 'max_price') }}</label>
+    <label>Private notes <input class="input" name="private_notes" value="{{ data.private_notes }}"></label>
   </div>
   <p class="help">This form asks about the home and the money only. It never asks about family, children, religion,
     national origin, disability, age or any other protected characteristic, and the search has no school-rating or
-    neighbourhood filter (fair housing, L37).</p></fieldset>
-  <div class="actions"><button class="button is-warning">Become a client of the firm</button></div>
+    neighbourhood filter (fair housing).</p></fieldset>
+  {% if editing %}<button class="button is-primary" id="save-buyer-edit">Save the buyer's answers</button>{% endif %}
 </form>
-{% else %}
-{% set signed = cp16 and cp16.status == 'done' %}
-<div class="outcome {{ 'is-done' if signed }}">
-  <h1 class="page-title">{% if signed %}The buyer is a client of the firm{% else %}The buyer signs up: the agreement is waiting{% endif %}</h1>
-  <div class="box" id="buyer-profile" style="margin:8px 0 0">
-    <p><b>Buyer:</b> {% if buyer %}{{ buyer.legal_name }}{% else %}the buyer (the name is shown to the buyer's side only){% endif %}.
-      <b>Wants:</b> at least {{ needs.beds_min }} bedrooms and {{ needs.acres_min }} acres in {{ needs.towns | join(', ') }};
-      {{ needs.must_haves }}. <b>Pre-approved:</b> {{ 'yes' if needs.preapproved else 'no' }}{% if needs.preapproved %} ({{ needs.preapproval_amount | money }}){% endif %}.</p>
-    {% if private %}<p id="buyer-private"><b>Private to the buyer's side:</b> the most they would pay is {{ private.maximum_price | money }}; {{ private.notes }}</p>
-    {% else %}<p id="buyer-private-hidden" class="muted"><i>The buyer's private limits are hidden from the {{ persona }} (information wall).</i></p>{% endif %}
-  </div>
-  {% if signed %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/buyer/search">Next: search and alerts &rarr;</a></div>{% endif %}
+{% endif %}
+
+{% if saved %}
+{% if not editing %}
+<div class="box" id="buyer-answers">
+  <p class="rec-title">The buyer's answers</p>
+  <dl class="answers">
+    <div><dt>Buyer</dt><dd>{{ saved.name }}</dd></div>
+    <div><dt>Wants</dt><dd>At least {{ saved.beds_min }} bedrooms and {{ saved.acres_min }} acres in {{ saved.towns | join(', ') }}; {{ saved.must_haves }}</dd></div>
+    <div><dt>Money</dt><dd>Pre-approved: {{ saved.preapproved | yesno }}{% if saved.preapproved == 'yes' %} ({{ saved.preapproval_amount | money }}){% endif %}</dd></div>
+  </dl>
+  <p class="decided"><a href="/buyer?edit=1" class="change-link" data-change="buyer_needs">Change<span class="sr-only"> the buyer's answers</span></a></p>
 </div>
-{% if cp16 %}{{ decision(cp16, persona, '/buyer/sign', labels={'sign': 'Acknowledge the agency form and sign the buyer agreement', 'decline': 'Decline'}) }}{% endif %}
-<details class="working" id="buyer-agreement" {{ 'open' if not signed }}>
-  <summary>The buyer agreement <span class="sum-note">simulated e-sign; before any tour</span></summary>
-  <div class="working-body"><ul>{% for t in agreement_terms.terms %}<li>{{ t }}</li>{% endfor %}</ul></div>
-</details>
+{% endif %}
+
+{{ wall_panel(wall) }}
+
 {% if cp30 %}{{ law_marker(cp30) }}{% endif %}
-<p>Sent at first contact (simulated): {% for c in cp24 %}{{ chip(c) }} {% endfor %}</p>
+
+{% if cp16 %}
+<div id="buyer-agreement">
+{% call decision(cp16, change='buyer_agreement', waiting="Press the amber button at the bottom to sign it for the buyer (a simulated e-signature).") %}
+  <ul>{% for t in agreement_terms.terms %}<li>{{ t | plain }}</li>{% endfor %}</ul>
+{% endcall %}
+</div>
+{% endif %}
+{% if cp24 %}<p class="help">Sent to the buyer at first contact: {% for c in cp24 %}{{ (c.reason or '') | replace('Sent to the buyer: ', '') | plain }}{{ '; ' if not loop.last }}{% endfor %}.</p>{% endif %}
+
+<h2 class="section-title" id="search">The search</h2>
+{% set firm_match = matches | selectattr('firm_listing') | list %}
+<p>{% if bstate.search %}The buyer's AI saved the search and sent an alert: {{ matches | length }} home{{ '' if matches | length == 1 else 's' }} match{{ 'es' if matches | length == 1 }}{% if firm_match %}, including this firm's listing{% endif %}.{% else %}{{ matches | length }} home{{ '' if matches | length == 1 else 's' }} match the buyer's answers{% if firm_match %}, including this firm's listing{% endif %}.{% endif %}
+  The search filters on the home's facts only ({{ filters | join(', ') | replace('_', ' ') }}): no school-rating, neighbourhood or people filter, so it cannot steer.</p>
+<details class="working">
+  <summary>The homes that match <span class="sum-note">fictional listings and the firm's own</span></summary>
+  <div class="working-body">
+  <table class="table is-narrow is-fullwidth is-striped" id="matches">
+    <thead><tr><th>Listing</th><th>Price</th><th>Home</th><th>Systems</th><th>Days listed</th></tr></thead>
+    <tbody>
+    {% for x in matches %}
+    <tr data-listing="{{ x.id }}" class="{{ 'firm' if x.firm_listing }}"><td><b>{{ x.label }}</b><br><small class="muted">{{ x.street }}, {{ x.town }}</small>
+      {% if x.firm_listing %}<br><span class="tag is-warning is-light">the firm's own listing: dual agency if the buyer pursues it</span>{% else %}<br><span class="tag is-light">fictional</span>{% endif %}</td>
+      <td data-label="Price"><b>{{ x.price | money }}</b></td><td data-label="Home">{{ x.beds }} bed / {{ x.baths }} bath, {{ '{:,}'.format(x.sqft) }} sq ft, {{ x.acres }} acres; {{ x.style }}, {{ x.year_built }}</td>
+      <td data-label="Systems"><small>{{ x.heat }}; {{ x.water_sewer }}</small></td><td data-label="Days listed">{{ x.days_on_market }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</details>
+{% set alerts = msgs | selectattr('topic', 'equalto', 'alert') | list %}
+{% if alerts %}
+<details class="working" id="alerts">
+  <summary>The alert the buyer's AI sent <span class="sum-note">fair-housing checked</span></summary>
+  <div class="working-body">
+  {% for m in alerts %}
+  <div class="msg msg-out" data-status="{{ m.status }}" data-topic="{{ m.topic }}" style="max-width:none">
+    <p class="msg-head"><b>The buyer's AI, to the buyer</b>{% if m.created_at %} · {{ m.created_at | et }}{% endif %}
+      · {{ 'sent' if m.status == 'sent' else m.status }} · fair-housing check {{ m.extra.fair_housing }}</p>
+    <p style="white-space:pre-line">{{ m.body | plain }}</p>
+    <p class="identity-block"><small>{{ m.extra.identity_block }}</small></p>
+  </div>
+  {% endfor %}
+  </div>
+</details>
+{% endif %}
+
+<h2 class="section-title" id="tour">The tour</h2>
+{% if bstate.tour %}
+<p id="booked"><b>Booked: {{ bstate.tour.when | slot }}, {{ bstate.tour.kind }}</b> at {{ listing.street | replace(' (DEMONSTRATION: not for sale through this firm)', '') }}, the firm's own listing at {{ listing.price | money }}.
+  {% if bstate.tour.kind == 'self-guided' %}Self-guided, because the seller allowed it on step 7: the buyer gets a one-time smart-lock code for that hour.{% else %}The owner opens the door.{% endif %}
+  The seller's AI booked it inside the seller's showing hours; the buyer's AI confirmed it to the buyer.</p>
+{% if cp28 and bstate.tour.kind == 'self-guided' %}{{ law_marker(cp28) }}{% endif %}
+{% if cp10 and bstate.tour.kind == 'owner-hosted' %}{{ human_required(cp10) }}{% endif %}
+{% elif signed %}
+<p>The AI books a tour of the firm's own listing once the buyer agreement is signed.</p>
+{% else %}
+<p class="help">No tour before a signed buyer agreement: the code refuses it.</p>
+{% endif %}
+
+{% if cp17 %}
+{{ decision(cp17, change='dual_agency', advice="Dual agency means one firm acts for both of you on this house: each side keeps its own AI and its own confidences, and neither AI may tell the other side's limits. Either of you may decline; the buyer could then use another firm.", waiting="The buyer and the seller each consent: press the amber button at the bottom for each of them.") }}
+{% endif %}
+{% endif %}
 {% endif %}
 {% endblock %}

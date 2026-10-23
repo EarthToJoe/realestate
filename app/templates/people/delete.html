@@ -4,7 +4,7 @@
 <h1 class="page-title">Erase the {{ p.role }}'s personal data?</h1>
 <div class="notification is-warning is-light" id="erase-confirm">
   <p><b>This erases the {{ p.role }}'s name, e-mail, phone, address and any financial details.</b> Documents
-  never stored names, so they will show "[erased]". {{ retention }} The erase is recorded in the audit log.</p>
+  never stored names, so they will show "[erased]". {{ retention | plain }} The erase is recorded in the audit log.</p>
 </div>
 <div class="rec rec-human" id="erase-hurdle">
   <div class="rec-head"><span class="rec-badge">A rule to weigh</span></div>

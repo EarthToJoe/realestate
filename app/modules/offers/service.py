@@ -46,7 +46,7 @@ TERM_KEYS = ("price", "deposit_pct", "financing", "mortgage_days", "inspection_d
 
 # Offer A is a common kind of weaker paper: a higher price, but 10% down, a long closing and a contingency on the
 # sale of the buyer's current home (demonstration fixture).
-OFFER_A = {"label": "A", "party": "Buyer's agent for Prospect B (simulated other firm)", "side": "outside",
+OFFER_A = {"label": "A", "party": "Another firm's buyer (through their own agent; simulated)", "side": "outside",
            "price": 630000, "deposit_pct": 10, "financing": "Conventional mortgage, 10% down; pre-approval attached",
            "mortgage_days": 45, "inspection_days": 10, "closing_days": 75,
            "contingencies": ["mortgage commitment", "home inspection", "well and septic tests",

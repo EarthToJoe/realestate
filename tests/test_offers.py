@@ -14,20 +14,18 @@ from tests.conftest import as_persona
 from tests.flows import agreed_b, countered_b, inbox_approved, offer_b, offers_advised
 
 
-def test_offers_wait_for_cp27(client):
+def test_offers_wait_for_the_buyers_offer(client):
     from tests.conftest import listed, priced
     listed(client)
     priced(client)
     r = client.get("/offers")
-    assert 'id="gate"' in r.text and "CP-27" in r.text
+    assert r.status_code == 200 and 'id="gate-card"' in r.text and "data-offer=" not in r.text
 
 
 def test_advice_waits_for_offer_b(client, session):
     inbox_approved(client)
-    r = client.get("/offers")
-    assert r.text.count("data-offer=") == 1 and 'id="waiting-b"' in r.text
-    r = client.post("/offers/advise")
-    assert 'id="not-ready"' in r.text and "Offer B" in r.text
+    r = client.post("/offers/advise")  # Post/Redirect/Get: the screen opens with the reason, in plain words
+    assert r.status_code == 200 and 'id="flash"' in r.text and "Offer B" in r.text
     assert records.latest(session, current_deal(session).id, "CP-11") is None
 
 
@@ -35,8 +33,10 @@ def test_two_offers_compared_and_advised_with_cp11(client, session, provider):
     offers_advised(client)
     r = client.get("/offers")
     assert r.text.count("data-offer=") == 2 and 'id="net-A"' in r.text and 'id="net-B"' in r.text
-    assert "dual agency: the firm acts for both" in r.text
+    assert "The firm acts for both sides here" in r.text and 'id="wall"' in r.text
     assert "Not binding until a formal contract" in r.text and 'id="recommendation"' in r.text
+    assert "Offer A, from another firm&#39;s buyer" in r.text and "Offer B, from the firm&#39;s own buyer" in r.text
+    assert "Prospect B" not in r.text and "Buyer 1" not in r.text
     deal = current_deal(session)
     assert records.latest(session, deal.id, "CP-11").status == "done" and 'id="rec-CP-11"' in r.text
     assert records.latest(session, deal.id, "CP-12").status == "pending"
@@ -87,6 +87,8 @@ def test_counter_outside_the_decision_is_refused_by_code(client, session, terms,
 
 def test_hand_counter_outside_the_decision_is_refused_on_screen(client, session):
     countered_b(client)
+    assert client.post("/offers/counter", data={"price": "600000"}).status_code == 403  # a presenter's tool only
+    client.cookies.set("presenting", "on")
     before = len(records.records(session, current_deal(session).id, "CP-13"))
     r = client.post("/offers/counter", data={"price": "600000"})
     assert r.status_code == 409 and "below the lowest price the seller allowed" in r.text
@@ -138,3 +140,55 @@ def test_back_to_the_seller_when_nothing_inside_the_decision_is_left(client, ses
     session.commit()
     st = offers.state(deal)
     assert "back_to_seller" in st and records.latest(session, deal.id, "CP-12").status == "pending"
+
+
+def test_a_decision_is_recorded_as_the_client_the_button_names(client, session):
+    """Decision 49: the amber button records the seller's decision whoever is viewing; nobody else can be named."""
+    offers_advised(client)
+    for who in ("ai", "presenter", "buyer"):
+        r = client.post("/offers/decide", data={"as": who, "decision": "reject", "offer": "A"}, follow_redirects=False)
+        assert r.status_code == 403, who
+    r = client.post("/offers/decide", data={"as": "seller", "decision": "reject", "offer": "A"},
+                    follow_redirects=False)
+    assert r.status_code == 303
+    session.expire_all()
+    cp = records.latest(session, current_deal(session).id, "CP-12")
+    assert cp.status == "declined" and cp.decided_by == "seller"
+
+
+def test_a_figure_the_recordings_do_not_cover_is_refused_in_plain_words(client, session):
+    """Fresh-eyes audit 4: in a recorded demo an off-script counter never reaches a model and never sticks the deal."""
+    offers_advised(client)
+    client.app.state.provider.mode = "replay"
+    try:
+        from app.demo import walk
+        rd = walk.recorded_decision(current_deal(session))
+        form = {"as": "seller", "decision": "counter", "offer": rd["offer_label"], "counter_price": "640000",
+                "lowest_price": str(rd["lowest_price"]), "closing_days": str(rd["closing_days"]),
+                "closing_min": "30", "closing_max": "60", "inspection_max": "10", "mortgage_max": "45"}
+        r = client.post("/offers/decide", data=form)
+        assert r.status_code == 409 and "Not in the recorded demo" in r.text and 'id="put-back"' in r.text
+        assert "No recorded answer" not in r.text
+        session.expire_all()
+        assert records.latest(session, current_deal(session).id, "CP-12").status == "pending"
+        r = client.post("/offers/decide", data={**form, "counter_price": str(rd["counter_price"])},
+                        follow_redirects=False)
+        assert r.status_code == 303
+    finally:
+        client.app.state.provider.mode = "fake"
+
+
+def test_the_agreed_screen_says_why_from_the_recorded_advice(client, session):
+    agreed_b(client)
+    r = client.get("/offers")
+    st = offers.state(current_deal(session))
+    assert 'id="why-accepted"' in r.text and 'id="accepted"' in r.text
+    advice = next(v["advice"] for v in st["advice"]["offers"] if v["label"] == st["accepted"]["label"])
+    assert advice.split(".")[0].split("'")[0] in r.text  # the AI's own words, not a reason made up for the screen
+    assert 'href="/path/change/agreed"' in r.text and 'href="/path/change/seller_decision"' in r.text
+
+
+def test_refresh_after_an_action_lands_on_the_screen(client):
+    offers_advised(client)
+    r = client.get("/offers/decide", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == "/offers"

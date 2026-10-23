@@ -25,7 +25,7 @@
   <div class="working-body">
   <table class="table is-fullwidth is-narrow">
     <thead><tr><th>When</th><th>Viewed as</th><th>Whose</th><th>Fields</th><th>Why</th><th>Screen</th></tr></thead>
-    <tbody>{% for a in log %}<tr data-access="{{ a.id }}"><td data-label="When">{{ a.ts | et }}</td><td data-label="Viewed as">{{ a.persona | capitalize }}</td>
+    <tbody>{% for a in log %}<tr data-access="{{ a.id }}"><td data-label="When">{{ a.ts | et }}</td><td data-label="Viewed as">{{ personas.get(a.persona, a.persona) }}</td>
       <td data-label="Whose">{% for p in people if p.id == a.person_id %}The {{ p.role }}{% else %}Person {{ a.person_id }}{% endfor %}</td>
       <td data-label="Fields">{{ a.fields | join(', ') }}</td><td data-label="Why">{{ a.purpose }}</td><td data-label="Screen"><code>{{ a.route }}</code></td></tr>
     {% else %}<tr><td colspan="6" class="muted">No views yet.</td></tr>{% endfor %}</tbody>

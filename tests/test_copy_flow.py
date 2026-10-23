@@ -2,6 +2,7 @@
 piece, MLS pre-check, the flyer PDF with the DEMONSTRATION mark on every page."""
 
 import json
+import re
 import shutil
 import subprocess
 
@@ -21,27 +22,58 @@ def test_ai_writes_six_pieces_and_checks_each(client, session):
     assert all(a.status in ("passed", "blocked") for a in arts)
     r = client.get("/copy")
     assert r.status_code == 200 and r.text.count('class="copy-artifact"') == 6
-    assert "FH-RULES" in r.text and "Plant a violation" in r.text
+    # the demo devices are the presenter's tools, not the product (decision 50)
+    assert "Plant a violation" not in r.text and "pass record" not in r.text
+    client.cookies.set("presenting", "on")
+    assert "Plant a violation" in client.get("/copy").text
+    client.cookies.delete("presenting")
     # the fake portal copy says "master bedroom": a warn, rewritten by the AI, still a pass
     portal = next(a for a in arts if a.channel == "portal")
     assert portal.status == "passed" and 'data-rule="FH-SEX-02"' in r.text and "rewritten" in r.text
     assert len(records.records(session, deal.id, "CP-26")) == 6
+    # every button on the screen has words (fresh-eyes audit 22)
+    assert not re.search(r"<button[^>]*>\s*</button>", r.text)
 
 
 def test_ready_all_marks_only_passing_copy_and_writes_cp06(client, session):
     drafted(client)
     deal = current_deal(session)
     portal = next(a for a in copy_service.artifacts(session, deal) if a.channel == "portal")
-    client.post(f"/copy/{portal.id}/plant")
-    r = client.post("/copy/ready-all")
-    assert 'id="refused-list"' in r.text and "Portal description" in r.text
+    assert client.post(f"/copy/{portal.id}/plant", follow_redirects=False).status_code == 303
+    r = client.post("/copy/ready-all", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == "/copy"  # Post/Redirect/Get
+    r = client.get(r.headers["location"])
+    assert "not portal description" in r.text  # the confirmation names what was not marked
     session.expire_all()
     arts = copy_service.artifacts(session, deal)
     assert {a.channel for a in arts if a.status == "ready"} == {"mls_remarks", "social_1", "social_2", "social_3", "flyer"}
     cp06 = records.records(session, deal.id, "CP-06")
     assert len(cp06) == 5 and all(c.kind == "law_marker" and c.law_actor == "L" for c in cp06)
+    assert r.text.count('id="rec-CP-06"') == 1 and "recorded 5 times" in r.text
     block = r.text[r.text.index('id="rec-CP-06"'):]
-    assert "A licensed real estate broker" in block and ">L10<" in block and "does not stop the flow" in block
+    assert "A licensed real estate broker" in block and ">L10<" in block
+    # one honest headline: how many are ready and what is left
+    assert "5 of them are ready to publish" in r.text and 'id="copy-left"' in r.text
+
+
+def test_refresh_after_an_action_lands_on_the_screen(client):
+    """A refresh or Back after "mark copy ready" never shows Method Not Allowed (fresh-eyes audit 5)."""
+    drafted(client)
+    client.post("/copy/ready-all")
+    r = client.get("/copy/ready-all")
+    assert r.status_code == 200 and r.url.path == "/copy" and "Method Not Allowed" not in r.text
+
+
+def test_recheck_keeps_passing_copy_ready(client, session):
+    """Re-checking unchanged copy keeps "ready to publish" (fresh-eyes audit 9)."""
+    drafted(client)
+    client.post("/copy/ready-all")
+    deal = current_deal(session)
+    remarks = next(a for a in copy_service.artifacts(session, deal) if a.channel == "mls_remarks")
+    r = client.post(f"/copy/{remarks.id}/check")
+    assert "stays ready to publish" in r.text
+    session.expire_all()
+    assert remarks.status == "ready"
 
 
 def test_mls_precheck_rules():
@@ -56,9 +88,11 @@ def test_mls_precheck_rules():
 def test_mls_package_page(client, session):
     drafted(client)
     client.post("/copy/ready-all")
-    r = client.get("/copy/mls")
-    assert r.status_code == 200
-    assert 'id="mls-checks"' in r.text and 'id="mls-package"' in r.text
+    r = client.get("/copy/mls")  # merged into step 5: the old address lands on its section
+    assert r.status_code == 200 and r.url.path == "/copy"
+    assert 'id="mls"' in r.text and 'id="mls-checks"' in r.text and 'id="mls-package"' in r.text
+    # one headline: the checks pass, and what the package still waits for is named
+    assert "needs attention" not in r.text and "The remarks pass all 6 checks" in r.text
     for field in ("ListPrice", "ParcelNumber", "PublicRemarks", "Photos"):
         assert f'data-field="{field}"' in r.text
 

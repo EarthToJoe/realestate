@@ -1,19 +1,17 @@
+{# One piece of copy with its fair-housing panel. The demo devices (re-check, plant a violation) are the presenter's
+   tools; the AI's fix stays visible whenever a piece is blocked. #}
 {% set art = p.art %}{% set res = p.res %}
 <div class="box">
-<div class="rec-head" style="justify-content:space-between">
-  <h3 style="margin:0">{{ art.title }}{% if art.extra and art.extra.platform %} <span class="muted" style="font-weight:400">({{ art.extra.platform }})</span>{% endif %}</h3>
-  <span class="tag status-{{ art.status }} {{ {'ready': 'is-success', 'passed': 'is-info is-light', 'blocked': 'is-danger', 'draft': 'is-light'}[art.status] }}">{{ {'ready': 'ready to publish', 'passed': 'check passed', 'blocked': 'blocked', 'draft': 'not checked'}[art.status] }}</span>
-</div>
-<p class="help" style="margin:2px 0 8px">Version {{ art.version }}{% if art.edited_by != 'ai' %}, edited by {{ art.edited_by }}{% else %}, written by the AI{% endif %}{% if p.marked %} · findings highlighted{% endif %}</p>
-{% if error %}<div class="notification is-danger is-light refusal">{{ error }}</div>{% endif %}
+<p class="help" style="margin:0 0 8px">Version {{ art.version }}{% if art.edited_by == 'ai' %}, written by the AI{% elif art.edited_by == 'ai_fix' %}, the AI's fixed version{% else %}, with the presenter's planted sentence{% endif %}{% if p.marked %} · findings highlighted{% endif %}
+  · <b>{{ {'ready': 'ready to publish', 'passed': 'check passed: to be marked ready', 'blocked': 'blocked until fixed', 'draft': 'not checked yet'}[art.status] }}</b></p>
 <div class="copy-text">{% if p.marked %}{{ p.marked }}{% else %}{{ art.text }}{% endif %}</div>
 <details class="rec-more fh-panel" data-passed="{{ 'yes' if res and res.passed else 'no' }}" {{ 'open' if res and not res.passed }}>
   <summary>{% if not res %}Fair-housing check: not run yet{% elif res.passed %}<span class="check-ok">&#10003;</span>&nbsp;Fair-housing check passed{% if res.findings %} ({{ res.findings | length }} note{{ 's' if res.findings | length > 1 }}){% endif %}{% else %}<span class="check-fail">&#10007;</span>&nbsp;Fair-housing check: blocked{% endif %}</summary>
-    {% if res %}<p class="help">Written rules {{ res.rules_version }}, then a model review pass{% if res.model_mode %} ({{ res.model_mode }}){% else %} (did not run){% endif %}.</p>{% endif %}
+    {% if res %}<p class="help">Written rules (version {{ res.rules_version }}) for every federal and New York protected class, then a review by a second AI model{% if not res.model_mode %} (which did not run){% endif %}.</p>{% endif %}
     {% if not res %}
       <p>Not checked for this version yet.</p>
     {% else %}
-      {% if res.model_error %}<p class="has-text-danger">Model review pass unavailable: {{ res.model_error }} The gate stays shut.</p>{% endif %}
+      {% if res.model_error %}<p class="has-text-danger">The model review did not run: {{ res.model_error }} The piece stays unpublished.</p>{% endif %}
       {% if not res.findings %}<p><b>Passed:</b> no findings.</p>{% endif %}
       {% for f in res.findings %}
       <div class="finding finding-{{ f.tier }}" data-rule="{{ f.rule_id }}">
@@ -31,24 +29,23 @@
       {% endif %}
     {% endif %}
     {% if p.mls_checks %}
-      <p class="help" style="margin-top:6px">MLS remarks pre-check</p>
+      <p class="help" style="margin-top:6px">The MLS's own rules for the public remarks</p>
       <ul class="mls-checks">{% for c in p.mls_checks %}<li class="{{ 'has-text-danger' if c.status == 'fail' }}">{{ '✔' if c.status == 'ok' else '✖' }} {{ c.check }}: {{ c.detail }} <small class="muted">({{ c.rule }})</small></li>{% endfor %}</ul>
     {% endif %}
 </details>
-<div class="buttons">
-  {% set tgt = '#art-' ~ art.id %}
-  {% if res and res.fixed_text and res.fixed_text != art.text %}
-  <form method="post" action="/copy/{{ art.id }}/fix" hx-post="/copy/{{ art.id }}/fix" hx-target="{{ tgt }}" hx-swap="innerHTML">
-    <button class="button is-info fix-btn">Let the AI apply the fix and re-check</button></form>
-  {% endif %}
-  {% if art.status != 'ready' %}
-  <form method="post" action="/copy/{{ art.id }}/ready" hx-post="/copy/{{ art.id }}/ready" hx-target="{{ tgt }}" hx-swap="innerHTML">
-    <button class="button is-info is-light ready-btn">Let the AI mark it ready to publish</button></form>
-  {% endif %}
-  <form method="post" action="/copy/{{ art.id }}/check" hx-post="/copy/{{ art.id }}/check" hx-target="{{ tgt }}" hx-swap="innerHTML">
-    <button class="button is-small is-light">Re-check</button></form>
-  <form method="post" action="/copy/{{ art.id }}/plant" hx-post="/copy/{{ art.id }}/plant" hx-target="{{ tgt }}" hx-swap="innerHTML">
-    <button class="button is-small is-danger is-light plant-btn" title="Adds: {{ planted }}">Plant a violation (demo)</button></form>
-  <span class="htmx-indicator thinking">The AI is checking</span>
-</div>
+{% if res and res.fixed_text and res.fixed_text != art.text and not res.passed %}
+<form method="post" action="/copy/{{ art.id }}/fix" class="buttons">
+  <button class="button is-info fix-btn" data-working>Let the AI apply the fix and check it again</button></form>
+{% endif %}
+{% if presenting %}
+<details class="presenter-tools">
+  <summary>Presenter's tools</summary>
+  <div class="buttons">
+    <form method="post" action="/copy/{{ art.id }}/plant"><button class="button is-small is-danger is-light plant-btn" title="Adds: {{ planted }}">Plant a violation (demo)</button></form>
+    <form method="post" action="/copy/{{ art.id }}/check"><button class="button is-small is-light recheck-btn">Check it again</button></form>
+    {% if art.status == 'passed' %}<form method="post" action="/copy/{{ art.id }}/ready"><button class="button is-small is-info is-light ready-btn">Let the AI mark it ready to publish</button></form>{% endif %}
+  </div>
+  <p class="help">Plant a violation adds "{{ planted }}": the check catches it, and the AI offers a fix.</p>
+</details>
+{% endif %}
 </div>

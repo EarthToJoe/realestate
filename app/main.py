@@ -146,9 +146,20 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     async def http_error(request: Request, exc: StarletteHTTPException):
         """A GET to an action's address (a refresh or Back after a form) lands on its screen, never on
         {"detail": "Method Not Allowed"} (fresh-eyes audit 5)."""
-        if exc.status_code == 405 and request.method == "GET":
+        # The review pages' mount on "/" answers a GET to an action's address with 404 before FastAPI's 405: an
+        # address that only an action (POST) route serves is treated the same way.
+        posted = any(getattr(r, "path", None) == request.url.path and "POST" in (getattr(r, "methods", None) or ())
+                     for r in app.routes) or request.url.path.startswith("/path/")
+        if (exc.status_code == 405 or (exc.status_code == 404 and posted)) and request.method == "GET":
             from app.web import screen_for
 
+            # an action's address names its screen by prefix (/copy/ready-all is /copy); step 1's actions belong
+            # to the screens they act on
+            special = {"/intake/agency": "/intake/onboarding", "/intake/accept": "/intake/onboarding",
+                       "/intake/sign": "/intake/onboarding", "/intake/infer": "/intake/profile",
+                       "/disclosures/pcds/prepared": "/contract", "/inbox/answers": "/inbox"}
+            if request.url.path in special:
+                return RedirectResponse(special[request.url.path], status_code=303)
             parts = request.url.path.rstrip("/").split("/")
             for i in range(len(parts), 1, -1):
                 st, _ = screen_for("/".join(parts[:i]))

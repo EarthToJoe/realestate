@@ -116,8 +116,8 @@ def _portal(session):
 def test_planted_violation_demo(client, session):
     drafted(client)
     deal, art = _portal(session)
-    r = client.post(f"/copy/{art.id}/plant", headers={"HX-Request": "true"})
-    assert r.status_code == 200
+    r = client.post(f"/copy/{art.id}/plant")
+    assert r.status_code == 200 and r.url.path == "/copy"
     assert 'data-rule="FH-FAM-01"' in r.text and "familial status" in r.text and "42 U.S.C. §3604(c)" in r.text
     assert 'data-rule="FH-REL-02"' in r.text  # the landmark is a warn
     assert '<mark class="fh-block"' in r.text and "fixed version" in r.text
@@ -127,7 +127,7 @@ def test_planted_violation_demo(client, session):
     r = client.post(f"/copy/{art.id}/ready", follow_redirects=False)
     assert r.status_code == 409 and "FH-FAM-01" in r.text
     # apply the AI's fix: re-check passes, then it can be marked ready
-    r = client.post(f"/copy/{art.id}/fix", headers={"HX-Request": "true"})
+    r = client.post(f"/copy/{art.id}/fix")
     session.expire_all()
     assert art.status == "passed", r.text
     assert "young family" not in art.text.lower() and "church" not in art.text.lower()

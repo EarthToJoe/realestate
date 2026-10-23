@@ -5,13 +5,46 @@
 /* end 4-5 */
 
 /* ---- 6-7 On the market, enquiries ---- */
+.ch-list { margin: 0 0 16px !important; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.ch-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; padding: 8px 14px; border-top: 1px solid var(--line);
+  border-left: 4px solid #b8b6ae; max-width: none !important; }
+.ch-row:first-child { border-top: 0; border-top-left-radius: var(--radius); }
+.ch-row:last-child { border-bottom-left-radius: var(--radius); }
+.ch-row.kind-human_required { border-left-color: var(--hum); } .ch-row.kind-fed { border-left-color: var(--accent); }
+.ch-row.kind-automated { border-left-color: var(--ai); }
+.ch-row .ch-who { display: block; color: var(--muted); font-size: .9375rem; }
+.ch-row .ch-status { align-self: center; text-align: right; font-weight: 600; }
+.ch-row .rec-more { grid-column: 1 / -1; margin: 0; }
+.seller-card { border: 0; padding: 0; }
+.seller-card legend { font-weight: 400; margin-bottom: 2px; }
+@media (max-width: 760px) {
+  .ch-row { grid-template-columns: 1fr; }
+  .ch-row .ch-status { text-align: left; }
+}
 /* end 6-7 */
 
 /* ---- 8-9 The buyer ---- */
+#buyer-answers .answers { margin-bottom: 0; }
+#booked { background: var(--ai-bg); border-left: 4px solid var(--ai); border-radius: 8px; padding: 10px 14px; }
+#offer-form .field-row { max-width: 320px; }
+#draft-offer th[scope=row] { color: var(--muted); font-weight: 600; }
 /* end 8-9 */
 
 /* ---- 10-11 The seller decides, the contract ---- */
+#why-accepted, #rec-first { font-size: 1.0625rem; }
+#negotiation .tl-log li { font-size: 1rem; }
+#pcds-form .radio-row { align-items: center; }
+#pcds-form .pcds-q { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 8px; }
+#pcds-error ul { margin: 6px 0 0 1.2rem; }
 /* end 10-11 */
 
 /* ---- finale and the firm's campaign ---- */
+.finale-lines { list-style: none !important; margin: 4px 0 0 !important; padding: 0; }
+.finale-lines li { max-width: 72ch; padding-left: 1.4em; text-indent: -1.4em; }
+.finale-lines li[data-done="no"] { color: var(--muted); padding-left: 0; text-indent: 0; }
+.finale-more { margin: 4px 0 0 !important; }
+.tl-row { margin-top: 1rem !important; }
+.tl-row small { font-weight: 400; margin-left: 6px; }
+.tl-log li.is-superseded { color: var(--muted); }
+.brand-piece .presenter-tools { margin-top: 8px; }
 /* end finale */

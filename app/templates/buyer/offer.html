@@ -1,91 +1,58 @@
 {% extends "base.html" %}
-{% from "components.html" import law_marker, ai_badge, decide_as, ids with context %}
+{% from "components.html" import law_marker, decision, ai_badge, wall as wall_panel, recorded_note with context %}
 {% block content %}
-<div class="outcome {{ 'is-done' if bstate.agreed }}">
-  <h1 class="page-title">{% if bstate.agreed %}Agreed: {{ bstate.agreed.final_price | money }}, closing in {{ bstate.agreed.closing_days }} days{% elif bstate.offer %}The buyer's offer is with the seller: {{ bstate.offer.price | money }}{% elif bstate.advice and see_private %}The buyer's AI suggests offering {{ bstate.advice.recommended_price | money }}{% else %}The buyer's offer{% endif %}</h1>
-  <p>The buyer's AI advises on price and terms and drafts the offer from the buyer's own answers; the buyer decides.
-  It sees the buyer's private limit and the house's public facts, never the seller's limits.</p>
-  {% if bstate.agreed %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/contract">Next: the contract &rarr;</a></div>{% endif %}
+{% if not walk_gate %}
+{% set adv = bstate.advice %}
+{% set sent = bstate.offer %}
+<div class="outcome {{ 'is-done' if sent }}">
+  <h1 class="page-title">{% if sent %}The buyer sent the offer: {{ sent.price | money }}{% elif adv %}The buyer's AI suggests offering {{ adv.recommended_price | money }}{% else %}The buyer's offer{% endif %}</h1>
+  <p>{% if sent %}It reaches the seller as offer B, closing in {{ sent.closing_days }} days. The seller decides on step 10.{% else %}The buyer's AI advises on price and terms and drafts the offer from the buyer's own answers and the public sales. Sending it is the buyer's decision.{% endif %}</p>
 </div>
-{% if not see_private %}<div class="notification is-light" id="wall-note">You are viewing as the {{ persona }}. The buyer's AI's advice and
-  the buyer's private limits are hidden from the seller's side (the information wall between the two AIs).</div>
-{% else %}
-{% set mine = (persona == 'buyer') %}
+
+{{ wall_panel(wall) }}
+
 <div class="ai-panel" id="advice">
-{% if bstate.advice %}
-  <p class="ai-by">The buyer's AI advises · {{ ai_badge(bstate.advice.mode, bstate.advice.recorded_at, bstate.advice.model) }}</p>
-  <p>{{ bstate.advice.advice }}</p>
-  <p class="help">{{ bstate.advice.walk_away_note }}</p>
-  <details class="rec-more" open><summary>The drafted offer</summary>
-  <table class="table is-narrow is-fullwidth" id="draft-offer"><tbody>
-    <tr><td class="muted">Price</td><td data-label="Price"><b>{{ bstate.advice.recommended_price | money }}</b> (list {{ listing.price | money }})</td></tr>
-    <tr><td class="muted">Deposit</td><td data-label="Deposit">{{ bstate.advice.deposit_pct }}%, held in escrow</td></tr>
-    <tr><td class="muted">Financing</td><td data-label="Financing">{{ bstate.advice.financing }}</td></tr>
-    <tr><td class="muted">Conditions</td><td data-label="Conditions">{{ bstate.advice.contingencies | join('; ') }}; inspection {{ bstate.advice.inspection_days }} days; mortgage commitment {{ bstate.advice.mortgage_days }} days</td></tr>
-    <tr><td class="muted">Closing</td><td data-label="Closing">{{ bstate.advice.closing_days }} days from signing</td></tr>
-    <tr><td class="muted">Requests</td><td data-label="Requests">{{ bstate.advice.requests | join('; ') or 'None' }}</td></tr>
-    <tr><td class="muted">Risks</td><td data-label="Risks">{{ bstate.advice.risks | join('; ') }}</td></tr>
-  </tbody></table>
-  </details>
+{% if adv %}
+  <p class="ai-by">The buyer's AI advises the buyer · {{ ai_badge(adv.mode, adv.recorded_at, adv.model) }}</p>
+  <p>{{ adv.advice | plain }}</p>
+  {% if adv.walk_away_note %}<p class="help">{{ adv.walk_away_note | plain }}</p>{% endif %}
+  <table class="table is-narrow is-fullwidth terms" id="draft-offer">
+    <caption class="sr-only">The drafted offer</caption>
+    <tbody>
+    <tr><th scope="row">Price</th><td data-label="Price"><b>{{ adv.recommended_price | money }}</b> (list {{ listing.price | money }})</td></tr>
+    <tr><th scope="row">Deposit</th><td data-label="Deposit">{{ adv.deposit_pct }}%, held in escrow</td></tr>
+    <tr><th scope="row">Financing</th><td data-label="Financing">{{ adv.financing }}</td></tr>
+    <tr><th scope="row">Conditions</th><td data-label="Conditions">{{ adv.contingencies | join('; ') }}; inspection {{ adv.inspection_days }} days; mortgage commitment {{ adv.mortgage_days }} days</td></tr>
+    <tr><th scope="row">Closing</th><td data-label="Closing">{{ adv.closing_days }} days from signing</td></tr>
+    <tr><th scope="row">Requests</th><td data-label="Requests">{{ adv.requests | join('; ') or 'None' }}</td></tr>
+    <tr><th scope="row">Risks</th><td data-label="Risks">{{ adv.risks | join('; ') }}</td></tr>
+    </tbody>
+  </table>
   <p class="help">Not binding until a formal contract of sale is signed by both parties.</p>
 {% elif cp17 and cp17.status == 'done' %}
-  <form method="post" action="/buyer/offer/advise"><button class="button is-info" id="buyer-ai-advise">Let the buyer's AI advise and draft the offer</button></form>
+  <p>The buyer's AI drafts the offer once both clients have consented to dual agency.</p>
 {% else %}
-  <p class="notification is-warning is-light" id="offer-blocked">An offer on the firm's own listing waits for both clients' consent to dual agency (on the <a href="/buyer/tour">tour screen</a>).</p>
+  <p id="offer-blocked">An offer on the firm's own listing waits for both clients' consent to dual agency (<a href="/buyer#rec-CP-17">step 8</a>).</p>
 {% endif %}
 </div>
 
-{% if cp18 and cp18.status == 'pending' and not bstate.offer %}
-<div class="rec rec-decision" data-code="CP-18" id="rec-CP-18">
-  <div class="rec-head"><span class="rec-badge">{{ whose('buyer') }}</span> <span class="rec-status">{{ decision_label(cp18) }}</span></div>
-  <p class="rec-title">{{ cp18.title }}</p>
-  <form method="post" action="/buyer/offer/approve" class="buttons">
-    <label class="label" style="width:100%;margin:0">Offer ($)</label>
-    <input class="input" name="price" style="max-width:200px" inputmode="numeric" value="{{ bstate.advice.recommended_price if bstate.advice }}" {{ 'disabled' if not mine }}>
-    <button class="button is-warning" name="decision" value="approve" {% if not mine %}disabled title="Only the buyer can decide this"{% endif %}>Approve and send the offer</button>
-    <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Not now</button>
+{% if cp18 %}
+{% call decision(cp18, change='offer', waiting="Press the amber button at the bottom to send it for the buyer, or change the figure first.") %}
+  {% if cp18.status == 'pending' and adv %}
+  <form method="post" action="/buyer/offer/approve" id="offer-form" data-guard>
+    <input type="hidden" name="as" value="buyer">
+    <div class="field-row">
+      <label>Offer price ($) <input class="input" name="price" id="offer-price" inputmode="numeric" value="{{ adv.recommended_price }}"></label>
+    </div>
+    {{ recorded_note() }}
   </form>
-  {% if not mine %}{{ decide_as('buyer', persona, 'rec-CP-18') }}{% endif %}
-  <details class="rec-more"><summary>Why this is the buyer's</summary><p class="rec-rule">{{ cp18.rule_text }}</p><p class="rec-ids">Record CP-18. {{ ids(cp18) }}</p></details>
-</div>
+  {% elif sent %}
+  <p id="offer-sent">Sent to the seller as offer B: {{ sent.price | money }}, closing in {{ sent.closing_days }} days.</p>
+  {% endif %}
+{% endcall %}
 {% endif %}
-{% for c in cp31 %}{% if loop.first %}{{ law_marker(c) }}{% endif %}{% endfor %}
-{% if bstate.offer %}<div class="notification is-success is-light" id="offer-sent">Offer sent to the seller's side as offer B: {{ bstate.offer.price | money }},
-  closing in {{ bstate.offer.closing_days }} days. The seller's AI presents it to the seller (<a href="/offers">step 7</a>).</div>{% endif %}
 
-<h2 class="section-title" id="counter">The seller's counter and the buyer's reply</h2>
-<ol class="tl-log">
-{% for c in bstate.counters or [] %}
-<li data-counter="{{ loop.index }}"><b>Seller's counter {{ loop.index }}:</b> {{ c.price | money }}, closing in {{ c.closing_days }} days, inspection {{ c.inspection_days }} days,
-  mortgage commitment {{ c.mortgage_days }} days{% if c.requests %}, requests kept: {{ c.requests | join('; ') }}{% else %}, no requests{% endif %}.
-{% if (bstate.replies or []) | length >= loop.index %}{% set r = bstate.replies[loop.index0] %}<br><b>Buyer's reply {{ loop.index }}</b> (approved by the buyer): {{ r.action | replace('_', ' ') }} at {{ r.price | money }}, closing in {{ r.closing_days }} days.{% endif %}</li>
-{% else %}<li class="help">No counter yet.</li>{% endfor %}
-</ol>
-{% if bstate.counters and (bstate.replies or []) | length < bstate.counters | length and not bstate.agreed %}
-  {% if bstate.counter_advice %}
-  <div class="ai-panel" id="counter-advice"><p class="ai-by">The buyer's AI on the counter · {{ ai_badge(bstate.counter_advice.mode, bstate.counter_advice.recorded_at) }}</p>
-    <p>{{ bstate.counter_advice.advice }}</p>
-    <p><b>Drafted reply:</b> {{ bstate.counter_advice.action | replace('_', ' ') }} at {{ bstate.counter_advice.price | money }}, closing in {{ bstate.counter_advice.closing_days }} days,
-      inspection {{ bstate.counter_advice.inspection_days }} days, mortgage commitment {{ bstate.counter_advice.mortgage_days }} days.</p></div>
-  {% if cp18 and cp18.status == 'pending' %}
-  <div class="rec rec-decision" data-code="CP-18" id="rec-CP-18-reply">
-    <div class="rec-head"><span class="rec-badge">{{ whose('buyer') }}</span> <span class="rec-status">{{ decision_label(cp18) }}</span></div>
-    <p class="rec-title">Approve the reply</p>
-    <form method="post" action="/buyer/counter/approve" class="buttons">
-      <label class="label" style="width:100%;margin:0">Reply price ($)</label>
-      <input class="input" name="price" style="max-width:200px" inputmode="numeric" value="{{ bstate.counter_advice.price }}" {{ 'disabled' if not mine }}>
-      <button class="button is-warning" name="decision" value="approve" {% if not mine %}disabled title="Only the buyer can decide this"{% endif %}>Approve; the AI sends it</button>
-      <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Not this</button>
-    </form>
-    {% if not mine %}{{ decide_as('buyer', persona, 'rec-CP-18-reply') }}{% endif %}
-  </div>
-  {% endif %}
-  {% else %}
-  <form method="post" action="/buyer/counter/advise"><button class="button is-info" id="buyer-ai-counter">Let the buyer's AI advise on the counter</button></form>
-  {% endif %}
-{% endif %}
-{% for c in cp13 %}{% if loop.last %}{{ law_marker(c) }}{% endif %}{% endfor %}
-{% if bstate.agreed %}<div class="notification is-success is-light" id="buyer-agreed">Agreed: {{ bstate.agreed.final_price | money }}, closing in {{ bstate.agreed.closing_days }} days.
-  Not binding until both sign the contract (<a href="/contract">step 8</a>).</div>{% endif %}
+{% for c in cp31 %}{% if loop.last %}{{ law_marker(c) }}{% endif %}{% endfor %}
+{% if bstate.agreed %}<p class="notification is-success is-light" id="buyer-agreed">Agreed on step 10: {{ bstate.agreed.final_price | money }}, closing in {{ bstate.agreed.closing_days }} days. Not binding until both sign the contract (step 11).</p>{% endif %}
 {% endif %}
 {% endblock %}

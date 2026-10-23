@@ -353,3 +353,97 @@ with a dated line.
     Second, "[Founder's name]" in brackets read as a bug on the landing page: the campaign now renders the [FOUNDER]
     token as a dotted fill-in chip labelled "Founder's name" with the tooltip "Named once the founder agrees; see Q49".
     Q49's rule stands: no real person is named without consent. The campaign has no PDF; the chip is the only rendering.
+47. **One path, one button (2026-10-23, BUILD-PATH; Joe: "it needs to be made more user friendly and simple, and
+    self explanatory").** The sale is a single path of screens walked in order (`app/demo/steps.yaml`). Every screen
+    ends in one sticky action bar: "← Back" on the left, one primary button on the right, always in the same place
+    and the only "next" on the screen. The button comes from the walk (`app/demo/path.py`, `primary`), never from a
+    template: while the screen has something to do it does the next undone milestone, worded for what it does ("Let
+    the AI price the house", "Seller: list at $625,000"); when nothing is left it reads "Continue: <next screen>".
+    Removed: the side panel's Next, the notes' Next, the step bar's arrows, the screen tabs and every hard-coded
+    "Next:" button, so two "nexts" can no longer disagree. A secondary choice (decline, accept as offered) is a quiet
+    button beside the primary. A button whose press makes the AI work disables itself and reads "The AI is working…"
+    (`app/static/app.js`). After every action the next page opens with a one-line confirmation of what happened
+    (a cookie read once, never stored). **The AI does its own work as soon as what it waits for is done**: after each
+    client decision, the AI's next acts run at once, up to the next decision a client or a person must make (the
+    "pump"), so the visitor presses only the clients' decisions, the one simulated person's step and Continue. Each
+    AI act is still its own record, shown on its own screen with its "Show the working" folds; if one cannot run
+    (a recorded demo meets a new situation, or the spend cap), the confirmation says so in plain words and the bar
+    offers the AI's own button. Every action redirects to its screen (Post/Redirect/Get), and a GET to an action's
+    address lands on its screen, never on `{"detail":"Method Not Allowed"}`. Borrowed from the GOV.UK Design System
+    (MIT; patterns only, not its look): question pages (a Back link at the top of every page, one Continue button
+    aligned left, the browser's Back keeps working, never ask twice and pre-fill what is known), check answers (a
+    Change link beside every answer; changed pages show what was entered before) and the task list (honest statuses:
+    done, in progress, not started).
+48. **Nothing is lost, and everything can be changed (2026-10-23, BUILD-PATH).** Every form re-opens filled in with
+    what was saved: the seller's intake, the buyer's intake, the buyer's offer, the counter, the seller's disclosure
+    answers. Sending step 1 again updates the same house and the same deal, never a second one: contact details at
+    once (nothing else redone), the house's address or facts only after a confirm that names exactly what will be
+    redone (`walk.DEPS`, `path.change_plan`). Typing and then leaving by any link, button or the browser asks "Leave
+    without saving?". Every client decision shows a "Change" link once made: the confirm names what re-opens ("the
+    listing copy (step 5)"), then only that re-opens: **records are superseded, never deleted** (`records.supersede`,
+    `records.reopen`; a new pending record replaces the old, which stays on the timeline as "changed"), module state
+    is cleared for the undone milestones only, and the change itself is an event on the timeline ("Changes"). There is
+    no fallback to resetting the demo. Pages are sent `Cache-Control: no-store`, so the browser's Back shows the page
+    as saved now. In a recorded demo, every free figure (the price, the buyer's offer, the counter's figures and
+    limits, the buyer's reply, the house and the buyer's needs) is the recorded one, with one line saying so; a
+    different figure is refused in plain words before anything is saved or any model asked, with "Put the recorded
+    figure back" (`app/demo/recorded.py`), so the deal is never stuck. With the live AI any figure works within the
+    $12 cap.
+49. **You play the seller and the buyer; the AI does everything else (2026-10-23, BUILD-PATH; Q51).** "View as
+    Presenter / Seller / Buyer" is off the main screens. Every client-decision button is always active and names whose
+    decision it is ("Seller: acknowledge the agency form", "Buyer: send this offer"); pressing it records the decision
+    as that client's (the form field `as`). The record service still refuses a decision recorded for the wrong client
+    or by anyone else, and **the AI never records a client decision**: the AI's endpoints and the pump call no
+    decision function, which a test proves by walking the whole sale with `records.decide` forbidden while the AI
+    works. SC impact: the old guarantee "a Presenter's attempt to decide for the seller is refused (403)" is replaced
+    by "a decision is recorded as the client the button names; a decision sent as the buyer, the presenter or the AI
+    is refused (403); the AI's own endpoints and plays cannot decide" (`tests/test_demo_usability.py`). The persona
+    stays in the code for the access log and "People and their data", and "View as" moved to the menu. The
+    information wall stays visible: on the buyer's sign-up, the buyer's offer and the offers, a panel "What each side's
+    AI can see" shows the two sides next to each other (the buyer's ceiling shown on the buyer's side, hidden on the
+    seller's). Said once, on the home page and step 1's line: "You play the seller and the buyer. The amber buttons
+    are their decisions. The AI does everything else."
+50. **The visitor's layer is the default; the presenter's is opt-in (2026-10-23, BUILD-PATH).** Anyone who opens
+    the link sees the product only: no presenter notes, no "Guided demo · screen 6 of 20", no fast-forward icons, no
+    "Do this screen for me", no record codes outside the "Why" folds. Each screen opens with one or two plain
+    sentences for the visitor (`explain` in steps.yaml, written for the audience, separate from the presenter's
+    "say"). Forms open pre-filled with the demo house and the demo buyer, with "Clear the form to type your own".
+    "I'm presenting" in the menu (a cookie kept a year on that device) turns on the presenter's notes (a drawer
+    beside the content on a laptop, which narrows the content column; a bottom sheet that starts closed on a phone),
+    "Do this screen for me", the spotlight and skip ahead (in the menu and on the "not yet" card), and the demo
+    devices (plant a violation, a bolder headline, a refused ad target, a counter by hand) in a "Presenter's tools"
+    fold. Decisions the demo plays for a client are marked "(played by the demo)" on their card and on the timeline
+    (`checkpoint.played`, added to existing databases by a one-column migration in `db.create_all`). One clock (deal
+    times only; a recording's time is in the tooltip) and one counter ("Step n of 11").
+51. **The path, the chrome and the ending (2026-10-23, BUILD-PATH).** Eleven steps of the sale, then the finale,
+    then one more thing (20 screens before):
+
+    | Step | Screen (route) | Built from |
+    |---|---|---|
+    | 1 | The seller signs up (`/intake`) | Address and facts |
+    | 2 | The AI researches the house (`/intake/profile`) | Property profile + disclosure checklist |
+    | 3 | The seller hires the firm (`/intake/onboarding`) | Seller onboarding |
+    | 4 | The price (`/pricing`) | Comparable sales + the AI's price advice |
+    | 5 | The listing (`/copy`) | Drafts and the fair-housing check + MLS pre-check and package |
+    | 6 | On the market (`/channels`) | Marketing plan |
+    | 7 | Enquiries and showings (`/inbox`) | Communications |
+    | 8 | The buyer signs up (`/buyer`) | Buyer intake + search and alerts + tour and dual-agency consent |
+    | 9 | The buyer's offer (`/buyer/offer`) | The buyer's offer |
+    | 10 | The seller decides (`/offers`) | Offers, with the negotiation and the buyer's replies |
+    | 11 | The contract (`/contract`) | Contract draft and signing + the seller's disclosure form |
+    | Finale | The whole sale, start to finish (`/timeline`) | Deal timeline |
+    | After | One more thing: how the firm finds sellers (`/brand`) | The firm's campaign + who sees the ad |
+
+    Old routes redirect to their new screen and anchor (`steps.yaml` `merged`), so the review pages, the tests and
+    any saved link still land. The step list is a progress list: done ✓, "You are here", in progress, or not
+    started; a done step opens with its saved state; a not-started step opens the "not yet" card naming the step that
+    is missing. Step 1 is done once the seller has saved it; the seller's disclosure form belongs to the contract step.
+    Chrome: a one-line demonstration notice, a slim top bar (brand, "Step 3 of 11 · The price" on a phone, the menu),
+    the progress list on a laptop with only "Start over" under it; the footer is one line (the firm's demonstration
+    name and "No licensed broker of record (New York law requires one)" with its link). The spend, the research link,
+    the data link, "Recorded run" and "View as" are in the menu. Each screen carries the visitor's line, the outcome,
+    the one decision or action, the red and grey notes that belong to it, and "Show the working" folds. "Recorded on
+    the deal timeline; it does not stop the flow" is said once (home and finale); every "NY law today" marker still
+    renders on its screen and is still recorded. The finale says what the visitor just saw, with the totals, and
+    offers "Start over", "Read the plan" and "One more thing". Marketing the firm comes after the finale, not as a
+    step of the sale; SC10 stays met.

@@ -47,7 +47,7 @@ from app.sanitize import clean_model
 
 PROMPTS = Path(__file__).with_name("prompts")
 THREAD = "BUYER"
-PARTY = "Buyer 1 (the firm's buyer client)"
+PARTY = "The buyer (the firm's buyer client)"
 BUYER_AGENCY_NOTE = ("Attached: the New York agency disclosure form (I act for you as your buyer's agent), the New "
                      "York State Housing and Anti-Discrimination Notice, and the \"these are not legal services\" "
                      "notice.")
@@ -124,7 +124,7 @@ def start(s: Session, deal: Deal, data: dict) -> Person:
     s.add(ClientInstructions(deal_id=deal.id, side="buyer", fact_sheet=needs, authority={},
                              confidential={"maximum_price": int(data["max_price"]),
                                            "notes": (data.get("private_notes") or "").strip()}))
-    records.mark_law(s, deal.id, "CP-30", reason="The AI took Buyer 1 on as a client and recorded the agency "
+    records.mark_law(s, deal.id, "CP-30", reason="The AI took the buyer on as a client and recorded the agency "
                                                   "relationship: buyer's agent. The firm also lists 146 Route 292, "
                                                   "so an interest in it makes this dual agency (CP-17)",
                      attached_to=f"person:{buyer.id}")
@@ -143,7 +143,7 @@ def start(s: Session, deal: Deal, data: dict) -> Person:
     records.open_decision(s, deal.id, "CP-16", attached_to=f"document:{doc.id}")
     _save(s, deal, {"needs": needs, "started_at": now().isoformat()})
     record_event(s, actor="ai", kind="ai_action", entity="deal", entity_id=deal.id,
-                 summary="Buyer side: the AI took Buyer 1 on as a client; notices and buyer agreement sent")
+                 summary="Buyer side: the AI took the buyer on as a client; notices and buyer agreement sent")
     return buyer
 
 
@@ -261,16 +261,16 @@ def request_tour(s: Session, deal: Deal, provider: ModelProvider, *, self_guided
     day, (start_h, _) = next(iter((seller_auth.get("showing_windows") or {"Sat": [10, 16]}).items()))
     when = f"{day} at {start_h}:00"
     guided = self_guided and bool(seller_auth.get("self_guided_tours"))
-    records.record_auto(s, deal.id, "CP-29", reason=f"Tour of the firm's listing booked for Buyer 1, {when}: "
+    records.record_auto(s, deal.id, "CP-29", reason=f"Tour of the firm's listing booked for the buyer, {when}: "
                         + ("self-guided" if guided else "owner-hosted") + "; access and feedback requests sent "
                         "(simulated)", attached_to="buyer:tour", step=8)
     if guided:
-        records.mark_law(s, deal.id, "CP-28", reason=f"The AI arranged a self-guided tour for Buyer 1, {when}",
+        records.mark_law(s, deal.id, "CP-28", reason=f"The AI arranged a self-guided tour for the buyer, {when}",
                          attached_to="buyer:tour", step=8)
         body = (f"Your tour is booked: {when}, self-guided. You will get a one-time smart-lock code for that hour "
                 "only; lockbox keys and PINs are never lent. Please tell me afterwards what you thought.")
     else:
-        records.record_human(s, deal.id, "CP-10", reason=f"The seller (owner) opens the door for Buyer 1's tour, "
+        records.record_human(s, deal.id, "CP-10", reason=f"The seller (owner) opens the door for the buyer's tour, "
                                                          f"{when}", step=8)
         body = f"Your tour is booked: {when}. The owner will open the door. Please tell me afterwards what you thought."
     m = inbox.send(s, deal, provider, thread=THREAD, party=PARTY, body=body, topic="showing", discusses_listing=True,
@@ -321,7 +321,7 @@ def advise_offer(s: Session, deal: Deal, provider: ModelProvider) -> dict:
     st["advice"] = {**adv.model_dump(), "mode": result.mode, "model": result.model,
                     "recorded_at": result.recorded_at}
     _save(s, deal, st)
-    records.mark_law(s, deal.id, "CP-31", reason=f"The buyer's AI advised Buyer 1 on price and terms and drafted "
+    records.mark_law(s, deal.id, "CP-31", reason=f"The buyer's AI advised the buyer on price and terms and drafted "
                                                   f"the offer (${adv.recommended_price:,}; {result.mode}, "
                                                   f"{result.model})", attached_to="buyer:offer")
     if not _pending_cp18(s, deal):
@@ -358,7 +358,7 @@ def approve_offer(s: Session, deal: Deal, persona: str, decision: str, price: in
                        else "")) if decision == "approve" else "The buyer declined to make the offer")
     if decision != "approve":
         return None
-    offers.receive_offer_b(s, deal, terms, party="The firm's own buyer (Buyer 1)")
+    offers.receive_offer_b(s, deal, terms, party="The firm's own buyer")
     st = state(deal)
     st["offer"] = terms
     _save(s, deal, st)
@@ -394,7 +394,7 @@ def advise_counter(s: Session, deal: Deal, provider: ModelProvider) -> dict:
     st["counter_advice"] = {**adv.model_dump(), "mode": result.mode, "model": result.model,
                             "recorded_at": result.recorded_at}
     _save(s, deal, st)
-    records.mark_law(s, deal.id, "CP-31", reason=f"The buyer's AI advised Buyer 1 on the seller's counter and "
+    records.mark_law(s, deal.id, "CP-31", reason=f"The buyer's AI advised the buyer on the seller's counter and "
                                                   f"drafted the reply ({adv.action}, ${adv.price:,})",
                      attached_to="buyer:counter")
     if not _pending_cp18(s, deal):
@@ -430,7 +430,7 @@ def approve_reply(s: Session, deal: Deal, persona: str, decision: str, price: in
     st.setdefault("replies", []).append(reply)
     st.pop("counter_advice", None)
     _save(s, deal, st)
-    records.mark_law(s, deal.id, "CP-13", reason=f"The buyer's AI sent Buyer 1's reply to the seller's counter: "
+    records.mark_law(s, deal.id, "CP-13", reason=f"The buyer's AI sent the buyer's reply to the seller's counter: "
                                                   f"{reply['action'].replace('_', ' ')} at ${reply['price']:,}",
                      attached_to="offers:buyer", step=8)
     offers.receive_reply(s, deal, reply, frm="buyer's AI")

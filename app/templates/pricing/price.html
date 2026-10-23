@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, decision, ai_badge, field_error, recorded_note with context %}
+{# Step 4, The price (decision 51): the comparables and the AI's advice on one screen, leading on the
+   recommendation; the reasoning and the sales are folded. The seller's choice is the action bar's button. #}
+{% block content %}
+<p class="label-strip" id="cma-label">{{ label }}</p>
+{% if not gate %}
+{% set sm = pa.summary %}
+<div class="outcome {{ 'is-done' if chosen }}" id="ai-panel">
+{% if advice %}
+  <p class="ai-by">The AI's price advice · {{ ai_badge(pa.mode, pa.recorded_at, pa.model) }}</p>
+  <h1 class="page-title">{% if chosen %}The seller lists at {{ chosen | money }}{% else %}The AI suggests listing at <span id="recommended">{{ advice.recommended_price | money }}</span>{% endif %}</h1>
+  {% if chosen %}<p>The AI suggested <span id="recommended">{{ advice.recommended_price | money }}</span>.</p>{% endif %}
+  <p class="lead">Eight nearby sales put this house between <b>{{ sm.range_low | money }}</b> and <b>{{ sm.range_high | money }}</b>.
+    {% if advice.inside_range %}The AI's figure sits inside that range.{% else %}The AI's figure sits outside that range; its reasons are under "Why this price".{% endif %}</p>
+  {% if not chosen %}<p>The price is the seller's decision.</p>{% endif %}
+{% else %}
+  <h1 class="page-title">Nearby sales put this house between {{ sm.range_low | money }} and {{ sm.range_high | money }}</h1>
+  <p>The AI has not recommended a list price yet. It explains the eight sales and recommends a price, as a listing
+  agent would: press "Let the AI price the house" below.</p>
+{% endif %}
+</div>
+
+{% if cp05 %}
+{% call decision(cp05, change='price', advice=("list at " ~ (advice.recommended_price | money) ~ ". The price is the seller's to choose.") if advice else None,
+                 waiting="Press the amber button at the bottom to choose this price for the seller, or change the figure first.") %}
+  {% if cp05.status == 'pending' %}
+  <form method="post" action="/pricing/choose" id="price-form" data-guard novalidate>
+    <input type="hidden" name="as" value="seller"><input type="hidden" name="ui" value="1">
+    <div class="field-row"><label for="price-input">List price ($)
+      <input class="input {{ 'is-danger' if errors.price }}" name="price" id="price-input" inputmode="numeric" style="max-width:220px"
+        value="{{ price_input if price_input is defined else ((deal.list_price or advice.recommended_price) if advice else '') }}"
+        {% if errors.price %}aria-invalid="true" aria-describedby="err-price"{% endif %}>{{ field_error(errors, 'price') }}</label></div>
+    {{ recorded_note() }}
+  </form>
+  {% else %}
+  <p id="chosen-price"><b>List price: {{ deal.list_price | money }}</b></p>
+  {% endif %}
+{% endcall %}
+{% endif %}
+
+{% if cp25 %}{{ law_marker(cp25) }}{% endif %}
+
+{% if net_rec %}
+{% set net = net_chosen or net_rec %}
+<p class="lead" id="keeps">The seller would keep about <b>{{ net.net_before_mortgage | money }}</b> at {{ net.price | money }}, before paying off any mortgage.</p>
+{% endif %}
+
+<h2 class="section-title">Show the working</h2>
+{% if advice %}
+<details class="working" id="advice">
+  <summary>Why this price <span class="sum-note">the AI's reasoning</span></summary>
+  <div class="working-body">
+  <p>{{ advice.reasoning }}</p>
+  {% if advice.weak_comps %}<p><b>Sales that count for less:</b></p>
+  <ul>{% for w in advice.weak_comps %}<li>Sale {{ w.rank }}: {{ w.why }}</li>{% endfor %}</ul>{% endif %}
+  <p><b>What would change it:</b></p>
+  <ul>{% for t in advice.things_that_would_change_it %}<li>{{ t }}</li>{% endfor %}</ul>
+  </div>
+</details>
+<details class="working">
+  <summary>How the AI worked it out <span class="sum-note">the method, and three other checks</span></summary>
+  <div class="working-body">
+  <p>{{ advice.method_plain }}</p>
+  {% if advice.reconciliation %}<p id="reconciliation"><b>The sales against the other checks.</b> {{ advice.reconciliation }}</p>{% endif %}
+  </div>
+</details>
+{% endif %}
+{% if net_rec %}
+<details class="working">
+  <summary>What the seller would keep, line by line <span class="sum-note">an estimate</span></summary>
+  <div class="working-body">
+  <table class="table is-narrow is-fullwidth" id="net-sheet">
+    <thead><tr><th>Cost</th><th>At {{ net_rec.price | money }} (the AI's price)</th>
+      {% if net_chosen and net_chosen.price != net_rec.price %}<th>At {{ net_chosen.price | money }} (the seller's choice)</th>{% endif %}<th>Note</th></tr></thead>
+    <tbody>
+    {% for line in net_rec.lines %}
+    <tr><td><b>{{ line.item }}</b></td><td data-label="At {{ net_rec.price | money }}">−${{ '{:,}'.format(line.amount) }}</td>
+      {% if net_chosen and net_chosen.price != net_rec.price %}<td data-label="At {{ net_chosen.price | money }}">−${{ '{:,}'.format(net_chosen.lines[loop.index0].amount) }}</td>{% endif %}
+      <td data-label="Note"><small class="muted">{{ line.note }}</small></td></tr>
+    {% endfor %}
+    <tr><td><b>What the seller keeps, before any mortgage payoff</b></td><td data-label="At {{ net_rec.price | money }}"><b>${{ '{:,}'.format(net_rec.net_before_mortgage) }}</b></td>
+      {% if net_chosen and net_chosen.price != net_rec.price %}<td data-label="At {{ net_chosen.price | money }}"><b>${{ '{:,}'.format(net_chosen.net_before_mortgage) }}</b></td>{% endif %}<td></td></tr>
+    </tbody>
+  </table>
+  <p class="help">{{ net_rec.tax_note }} {{ net_rec.mortgage_note }} Estimates [INFERENCE] except the transfer tax rate.</p>
+  </div>
+</details>
+{% endif %}
+
+<details class="working" id="comps">
+  <summary>The eight sales, adjusted to this house <span class="sum-note">from {{ sm.adjusted_range_low | money }} to {{ sm.adjusted_range_high | money }} each</span></summary>
+  <div class="working-body">
+  <p>Real sales of one-family homes from the Dutchess County public sales records, within about 4 miles and the
+  last 18 months; only sales between unrelated people (an "arm's-length" sale), not family transfers. Code, not the
+  AI, adjusts each sale's price toward this house: what that sale would have fetched had it been this house.</p>
+  <p><b>Why the range is narrower than the adjusted sales.</b> One by one, the adjusted sales run from
+  {{ sm.adjusted_range_low | money }} to {{ sm.adjusted_range_high | money }}. The suggested range,
+  {{ sm.range_low | money }} to {{ sm.range_high | money }}, keeps the middle: it weights the sales that needed the
+  smallest changes most, and sets them beside three other checks (below). The single best estimate between them is
+  {{ sm.indicated_value | money }} (half from the sales, half from the other checks).</p>
+  <div class="box" id="subject">
+  <p style="margin:0"><b>This house:</b> {{ sm.subject.style }}, built {{ sm.subject.year_built }}, {{ '{:,}'.format(sm.subject.living_area_sqft) }} sq ft
+  plus a {{ sm.subject.finished_basement_sqft }} sq ft finished lower level, {{ sm.subject.bedrooms }} bedrooms,
+  {{ sm.subject.bathrooms_full }} full baths, {{ sm.subject.acres }} acres, central air: {{ 'yes' if sm.subject.central_air else 'no' }},
+  garage: {{ 'yes' if sm.subject.garage else 'no' }}.</p>
+  {% if sm.subject.full_market_value_2026 %}<p class="help" style="margin:4px 0 0">The 2026 tax roll's full market value is
+  {{ sm.subject.full_market_value_2026 | money }} (a tax formula, not an appraisal).</p>{% endif %}
+  </div>
+  <table class="table is-narrow is-fullwidth is-striped" id="comps-table">
+    <thead><tr><th>Sale</th><th>Sold</th><th>Price</th><th>Home</th><th>Changes</th><th>Adjusted</th><th>Weight</th></tr></thead>
+    <tbody>
+    {% for c in pa.comps %}
+    <tr data-rank="{{ c.rank }}" class="{{ 'weak' if c.weak }}">
+      <td><b>{{ c.rank }}. {{ c.address }}</b><br><small class="muted">{{ c.distance_mi }} mi away · {{ c.deed }}</small>
+        {% for w in c.weak %}<br><span class="tag is-warning is-light">{{ w }}</span>{% endfor %}</td>
+      <td data-label="Sold">{{ c.sale_date }}</td><td data-label="Sale price">{{ c.sale_price | money }}</td>
+      <td data-label="Home">{{ c.style }}, {{ '{:,}'.format(c.living_area_sqft) }} sq ft, {{ c.acres }} acres, {{ c.bedrooms }} bed / {{ c.baths }} bath</td>
+      <td data-label="Changes">{{ '{:+,}'.format(c.net_adjustment) }} in all; {{ c.gross_pct }}% of the price changed</td>
+      <td data-label="Adjusted price"><b>{{ c.adjusted_price | money }}</b></td><td data-label="Weight">{{ c.weight }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="help">"In all" is the net change (the "net adjustment"); "% of the price changed" adds every change
+  regardless of direction (the "gross adjustment"). A sale needing changes of more than a quarter of its price counts
+  for less.</p>
+  <details class="rec-more" id="adjustments"><summary>Every change, line by line</summary>
+  {% for c in pa.comps %}
+  <p style="margin-top:8px"><b>{{ c.rank }}. {{ c.address }}</b>: {{ c.sale_price | money }} → {{ c.adjusted_price | money }}</p>
+  <table class="table is-narrow is-fullwidth"><tbody>
+  {% for a in c.adjustments %}<tr><td><b>{{ a.factor }}</b></td><td data-label="Amount">{{ '{:+,}'.format(a.amount) }}</td><td data-label="Why"><small>{{ a.why }}</small></td></tr>{% endfor %}
+  </tbody></table>
+  {% endfor %}
+  </details>
+  {% if sm.cross_checks %}
+  <p style="margin-top:12px"><b>The other checks</b> (middle figure {{ sm.cross_check_median | money }})</p>
+  <table class="table is-narrow is-fullwidth" id="cross-checks">
+    <thead><tr><th>Method</th><th>Value</th><th>How</th></tr></thead>
+    <tbody>
+    <tr><td><b>The adjusted sales</b> (weighted, above)</td><td data-label="Value"><b>{{ sm.adjusted_indicated | money }}</b></td>
+      <td data-label="How"><small>adjusted prices {{ sm.adjusted_range_low | money }} to {{ sm.adjusted_range_high | money }} ({{ sm.adjusted_range_rule }})</small></td></tr>
+    {% for x in sm.cross_checks %}
+    <tr data-check="{{ x.key }}"><td><b>{{ x.name }}</b></td><td data-label="Value">{{ x.value | money }}</td><td data-label="How"><small>{{ x.how }}</small></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  <p class="help" id="range"><b>Suggested range:</b> {{ sm.range_low | money }} to {{ sm.range_high | money }}, {{ sm.range_rule }}.
+  Rates used [INFERENCE, demonstration rates stated here, re-examined against the sales 2026-10-23]:
+  date +{{ sm.rates.time_pct_per_month }}% a month; living area ${{ sm.rates.living_area_per_sqft }} a sq ft; finished lower level
+  ${{ sm.rates.finished_basement_per_sqft }} a sq ft (only between sales of the same style); lot ${{ '{:,}'.format(sm.rates.lot_per_acre) }} an acre (first {{ sm.rates.lot_cap_acres }} acres of
+  difference); age ${{ '{:,}'.format(sm.rates.year_built_per_year) }} a year; bedroom ${{ '{:,}'.format(sm.rates.bedroom) }}; full bath
+  ${{ '{:,}'.format(sm.rates.full_bath) }}; half bath ${{ '{:,}'.format(sm.rates.half_bath) }}; central air ${{ '{:,}'.format(sm.rates.central_air) }};
+  garage ${{ '{:,}'.format(sm.rates.garage) }}; other styles {{ sm.rates.style_pct }}%. As of {{ sm.as_of }}.</p>
+  </div>
+</details>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, ai_badge with context %}
+{# Step 5, The listing (decision 51): the AI's copy with its fair-housing checks, then the MLS pre-check and package
+   (merged from the old "MLS pre-check and package" screen). Nothing for the visitor to decide here. #}
+{% block content %}
+{% if not gate %}
+{% if not panels %}
+<div class="outcome" id="ai-panel">
+  <h1 class="page-title">The AI has not written the listing yet</h1>
+  <p>It writes the MLS remarks, the portal description, three social posts and a one-page flyer from the house's
+  facts and the seller's price ({{ deal.list_price | money }}), and checks every piece for fair housing. Press
+  "Let the AI write the listing" below.</p>
+</div>
+{% else %}
+{% set ready = panels | selectattr('art.status', 'equalto', 'ready') | list %}
+{% set blocked = panels | selectattr('art.status', 'equalto', 'blocked') | list %}
+{% set passed = panels | selectattr('art.status', 'equalto', 'passed') | list %}
+{% set all_ready = ready | length == panels | length %}
+<div class="outcome {{ 'is-done' if all_ready }}" id="copy-outcome">
+  <p class="ai-by">Written by the AI · {{ ai_badge(panels[0].art.mode, None, panels[0].art.model) }}</p>
+  <h1 class="page-title">{% if all_ready %}The AI wrote {{ panels | length }} pieces of copy; all passed the fair-housing check and are ready to publish{% else %}The AI wrote {{ panels | length }} pieces of copy; {{ ready | length }} of them {{ 'is' if ready | length == 1 else 'are' }} ready to publish{% endif %}</h1>
+  {% if not all_ready %}<p id="copy-left"><b>Still to do:</b>
+    {% if blocked %}{{ blocked | length }} blocked by the fair-housing check until the AI's fix is applied ({{ blocked | map(attribute='art.title') | join(', ') | lower }}){% endif %}{% if blocked and passed %}; {% endif %}
+    {% if passed %}{{ passed | length }} passed and waiting to be marked ready ({{ passed | map(attribute='art.title') | join(', ') | lower }}){% endif %}.</p>{% endif %}
+  <p>Every piece went through the fair-housing check: written rules for every protected class, then a review by a
+  second AI model. Only copy that passes can be marked ready to publish. Nothing is posted anywhere: this step is simulated.
+  <a href="/copy/flyer.pdf" target="_blank" rel="noopener" id="flyer-pdf">Open the flyer (PDF)</a></p>
+</div>
+{% if cp06 %}{{ law_marker(cp06[-1], times=cp06 | length) }}{% endif %}
+
+<h2 class="section-title">The copy</h2>
+{% for p in panels %}
+<details class="working" data-channel="{{ p.art.channel }}" {{ 'open' if p.art.status == 'blocked' }}>
+  <summary>{{ p.art.title }}{% if p.art.extra and p.art.extra.platform %} ({{ p.art.extra.platform }}){% endif %} <span class="sum-note">{{ {'ready': '✓ ready to publish', 'passed': 'check passed', 'blocked': 'blocked until fixed', 'draft': 'not checked'}[p.art.status] }}</span></summary>
+  <div class="working-body"><div class="copy-artifact" id="art-{{ p.art.id }}" data-channel="{{ p.art.channel }}">{% include "copy/_artifact.html" %}</div></div>
+</details>
+{% endfor %}
+
+{% if remarks %}
+{% set fails = checks | selectattr('status', 'equalto', 'fail') | list %}
+{% set fh_ok = fh_res and fh_res.passed and fh_res.version == remarks.version %}
+{% set missing = package | selectattr('required') | rejectattr('ok') | list %}
+{% set why = {'ListingExposure': "the seller's marketing choice (step 6)", 'Photos': 'the photos (the photographer is booked on step 6)', 'PublicRemarks': 'the remarks marked ready to publish', 'ListingAgreement': 'the signed listing agreement (step 3)'} %}
+{% set total = checks | length + 1 %}{% set ok_n = total - fails | length - (0 if fh_ok else 1) %}
+<section id="mls">
+<h2 class="section-title">The MLS package</h2>
+<div class="outcome {{ 'is-done' if not fails and fh_ok and not missing }}" id="mls-outcome">
+  <p class="lead" style="margin:0 0 6px">{% if fails or not fh_ok %}The MLS remarks need fixing before anyone keys them in: {{ ok_n }} of {{ total }} checks passed.
+    {% elif missing %}The remarks pass all {{ total }} checks. The package is complete except for {% for r in missing %}{{ why.get(r.field, r.label | lower) }}{{ ', ' if not loop.last and loop.revindex > 2 else (' and ' if not loop.last else '') }}{% endfor %}.
+    {% else %}The remarks pass all {{ total }} checks, and the package is ready for a licensed MLS member to key in (step 6).{% endif %}</p>
+  <p>The AI checked the public remarks against the MLS's own rules and put every field in the MLS's input order. A
+  licensed MLS member keys it in and stays responsible for every field.</p>
+</div>
+<details class="working" {{ 'open' if fails or not fh_ok }}>
+  <summary>The checks on the remarks <span class="sum-note">{{ ok_n }} of {{ total }} passed</span></summary>
+  <div class="working-body">
+  <div class="copy-text" style="margin-bottom:12px">{{ remarks.text }}</div>
+  <table class="table is-narrow is-fullwidth" id="mls-checks">
+    <thead><tr><th>Check</th><th>Result</th><th>Rule</th></tr></thead>
+    <tbody>
+    {% for c in checks %}<tr class="{{ 'has-text-danger' if c.status == 'fail' }}"><td><b>{{ c.check }}</b></td><td data-label="Result">{% if c.status == 'ok' %}<span class="check-ok">✔</span>{% else %}<span class="check-fail">✖</span>{% endif %} {{ c.detail }}</td><td data-label="Rule"><small class="muted">{{ c.rule }}</small></td></tr>{% endfor %}
+    <tr><td><b>Fair-housing check of the remarks</b></td>
+      <td data-label="Result">{% if fh_ok %}<span class="check-ok">✔</span> passed{% else %}<span class="check-fail">✖</span> not passed for this version{% endif %}</td>
+      <td data-label="Rule"><small class="muted">OneKey Rule 306.3(b) (WS3-R7); spec section 5</small></td></tr>
+    </tbody>
+  </table>
+  </div>
+</details>
+<details class="working">
+  <summary>The package, field by field <span class="sum-note">{{ package | length }} fields{% if missing %}, {{ missing | length }} to come{% endif %}</span></summary>
+  <div class="working-body">
+  <table class="table is-narrow is-fullwidth" id="mls-package">
+    <thead><tr><th>Field</th><th>Value</th><th></th></tr></thead>
+    <tbody>
+    {% for r in package %}<tr data-field="{{ r.field }}"><td><b>{{ r.label }}</b>{% if r.required %} *{% endif %}<br><small class="muted"><code>{{ r.field }}</code></small></td>
+      <td data-label="Value">{{ r.value | yesno if r.value else '—' }}{% if r.note %}<br><small class="muted">{{ r.note }}</small>{% endif %}</td>
+      <td>{% if r.ok %}<span class="check-ok">✔</span>{% elif r.required %}<span class="muted">to come</span>{% endif %}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  <p class="help">* required. Field order: [INFERENCE] grouped as OneKey's input screens are (WS3-C1). Field names are the RESO standard's.</p>
+  </div>
+</details>
+</section>
+{% endif %}
+{% endif %}
+{% endif %}
+{% endblock %}

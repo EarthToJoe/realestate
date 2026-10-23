@@ -96,7 +96,7 @@ def board(s: Session, deal: Deal) -> list[dict]:
     elif not cp07 or cp07.status != "done":
         mls_status = "waiting for the seller's authorisations"
     elif "mls_remarks" not in ready:
-        mls_status = "waiting for the remarks to be marked ready (step 3)"
+        mls_status = "waiting for the remarks to be marked ready"
     else:
         mls_status = "package ready; waiting for a licensed MLS participant to key it"
     cards.append({"id": "mls", "name": "OneKey MLS", "kind": "human_required", "status": mls_status, "cp": cp08,
@@ -121,7 +121,7 @@ def board(s: Session, deal: Deal) -> list[dict]:
                   "detail": web_detail, "ids": ["WS3-C13", "WS3-R1"], "link": WS3})
     social_ready = sorted(c for c in ready if c.startswith("social_"))
     if not social_ready:
-        social_status = "waiting for posts marked ready (step 3)"
+        social_status = "waiting for posts marked ready"
     elif cp08:
         social_status = f"{len(social_ready)} post(s) drafted and scheduled (simulated)"
     else:
@@ -133,9 +133,9 @@ def board(s: Session, deal: Deal) -> list[dict]:
                             "(Meta).", "human_step": "A person posts from the scheduled drafts",
                   "ids": ["WS3-C15"], "link": WS3})
     cards.append({"id": "gbp", "name": "Google Business Profile", "kind": "automated",
-                  "status": "draft post ready (stub)" if "portal" in ready else "waiting for copy (step 3)",
+                  "status": "draft post ready" if "portal" in ready else "waiting for the listing copy",
                   "detail": "The AI drafts the post from the portal description; posting by API is optional and "
-                            "stubbed in the demo.", "ids": ["WS3-C14"], "link": WS3})
+                            "not used in the demo.", "ids": ["WS3-C14"], "link": WS3})
     auth = (cp07.reason or "") if cp07 and cp07.status == "done" else ""
     for cid, name, needs, detail in (
         ("photos", "Photos", "photographer", "A licensed photographer (OneKey Rule 603); AI-altered images are "
@@ -146,9 +146,9 @@ def board(s: Session, deal: Deal) -> list[dict]:
     ):
         ok = needs is None or (needs == "photographer" and "photographer" in auth) or (needs == "lockbox" and "lockbox" in auth)
         cards.append({"id": cid, "name": name, "kind": "vendor",
-                      "status": "vendor booking (simulated)" if ok else "waiting for the seller's authorisation",
+                      "status": "booked (simulated)" if ok else "waiting for the seller's authorisation",
                       "detail": detail, "ids": ["WS3-R3", "WS3-R8"] if cid == "photos" else ["WS3-R3"], "link": WS3})
-    cards.append({"id": "open_house", "name": "Open house", "kind": "owner", "status": "owner hosts (step 5)",
+    cards.append({"id": "open_house", "name": "Open house", "kind": "owner", "status": "the owner opens the door",
                   "detail": "Someone must open the door; the owner may show their own home.",
                   "ids": ["F39", "F40", "L19", "WS3-R4"], "link": WS3})
     return cards

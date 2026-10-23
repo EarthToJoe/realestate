@@ -128,7 +128,10 @@ def draft(s: Session, deal: Deal, provider: ModelProvider) -> ModelResult | None
 def check(s: Session, deal: Deal, art: CopyArtifact, provider: ModelProvider) -> FairHousingResult:
     res = fh.run(s, text=art.text, provider=provider, entity="copy_artifact", entity_id=art.id,
                  version=art.version, deal_id=deal.id, channel=art.channel)
-    art.status = "passed" if res.passed else "blocked"
+    # Re-checking copy already marked ready keeps it ready while it still passes: the text cannot have changed, since
+    # every edit makes a new version with status "draft" (fresh-eyes audit 9). A failing re-check blocks it.
+    if not (res.passed and art.status == "ready"):
+        art.status = "passed" if res.passed else "blocked"
     if res.passed:
         warns = len(res.findings)
         records.record_auto(s, deal.id, "CP-26",

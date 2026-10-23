@@ -3,7 +3,7 @@
 {% block content %}
 <div class="outcome {{ 'is-done' if p.erased_at }}" id="person" data-erased="{{ 'yes' if p.erased_at else 'no' }}">
   <h1 class="page-title">{% if p.erased_at %}The {{ p.role }}'s personal data is erased{% else %}The {{ p.role }}'s personal data{% endif %}</h1>
-  <p>{% if p.erased_at %}Erased {{ p.erased_at | et }}, on request. {{ retention }}{% else %}{{ p.persona_label }}. Opening this page was logged.{% endif %}</p>
+  <p>{% if p.erased_at %}Erased {{ p.erased_at | et }}, on request. {{ retention | plain }}{% else %}{{ p.persona_label }}. Opening this page was logged.{% endif %}</p>
   <div class="actions" style="margin-bottom:0">
     <a class="button is-primary" href="/people/{{ p.id }}/export" id="export">Export everything (JSON)</a>
     {% if not p.erased_at %}<a class="button is-danger is-light" href="/people/{{ p.id }}/delete" id="delete">Erase this person's data</a>{% endif %}
@@ -20,7 +20,7 @@ are put back only on the screen and in the documents.</p>
   <div class="working-body">
   <table class="table is-fullwidth is-narrow">
     <thead><tr><th>When</th><th>Viewed as</th><th>Fields</th><th>Why</th><th>Screen</th></tr></thead>
-    <tbody>{% for a in log %}<tr><td data-label="When">{{ a.ts | et }}</td><td data-label="Viewed as">{{ a.persona | capitalize }}</td><td data-label="Fields">{{ a.fields | join(', ') }}</td><td data-label="Why">{{ a.purpose }}</td><td data-label="Screen"><code>{{ a.route }}</code></td></tr>
+    <tbody>{% for a in log %}<tr><td data-label="When">{{ a.ts | et }}</td><td data-label="Viewed as">{{ personas.get(a.persona, a.persona) }}</td><td data-label="Fields">{{ a.fields | join(', ') }}</td><td data-label="Why">{{ a.purpose }}</td><td data-label="Screen"><code>{{ a.route }}</code></td></tr>
     {% else %}<tr><td colspan="5" class="muted">No views yet.</td></tr>{% endfor %}</tbody>
   </table>
   </div>

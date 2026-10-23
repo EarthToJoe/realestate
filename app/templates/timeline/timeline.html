@@ -1,45 +1,32 @@
 {% extends "base.html" %}
 {% from "components.html" import chip, law_marker, human_required with context %}
 {% block content %}
+{# The finale (decision 51): the end of the path, not a numbered step. What the visitor just saw in four lines, the
+   totals, then everything else in folds. Built only from the records the other screens wrote. #}
 {% set c = tl.counts %}
-{% set built = tl.rows | selectattr('built') | list %}
-{% set done = namespace(n=0) %}{% for row in built %}{% if row.n in done_steps and row.n not in waiting_steps %}{% set done.n = done.n + 1 %}{% endif %}{% endfor %}
-<div class="outcome">
-  <h1 class="page-title">The sale so far: {{ done.n }} of {{ tl.rows | length }} steps done</h1>
-  <p>Built only from the records the other screens wrote; nothing here is drawn by hand.</p>
+<div class="outcome {{ 'is-done' if tl.finished }}">
+  <h1 class="page-title">The whole sale, start to finish</h1>
+  <ul class="finale-lines" id="finale-lines">
+  {% for line, ok in tl.story %}<li data-done="{{ 'yes' if ok else 'no' }}">{% if ok %}<span class="check-ok">&#10003;</span> {% endif %}{{ line }}</li>{% endfor %}
+  </ul>
   <div class="tl-totals" id="tl-counts" style="margin:12px 0 0">
     <div class="t-ai" data-count="automated"><span class="big-number">{{ c.automated }}</span> things the AI did</div>
-    <div class="t-dec" data-count="decisions"><span class="big-number">{{ c.decisions_done }}</span> client decisions{% if c.decisions_pending %}, {{ c.decisions_pending }} waiting{% endif %}</div>
+    <div class="t-dec" data-count="decisions"><span class="big-number">{{ c.decisions_done }}</span> decisions by the seller and the buyer{% if c.decisions_pending %}, {{ c.decisions_pending }} waiting{% endif %}</div>
     <div class="t-law" data-count="markers"><span class="big-number">{{ c.markers }}</span> places NY law today needs a licensed broker ({{ c.markers_L }}) or a lawyer ({{ c.markers_A }})</div>
     <div class="t-hum" data-count="people"><span class="big-number">{{ c.human_required + c.third_party }}</span> steps for a person ({{ c.human_required }}) or another firm ({{ c.third_party }} planned)</div>
   </div>
-</div>
-
-<div class="tl-grid" id="timeline-summary">
-{% for row in tl.rows %}
-  {% set k = {'automated': 0, 'client_decision': 0, 'law_marker': 0, 'human_required': 0, 'third_party': 0} %}
-  {% for cp in row.records %}{{ k.update({cp.kind: k[cp.kind] + 1}) or '' }}{% endfor %}
-  <a class="tl-step {{ '' if row.built else 'later' }}" href="#tl-step-{{ row.n }}" data-step="{{ row.n }}">
-    <div class="tl-n">Step {{ row.shown }}{% if row.n in waiting_steps %} · <span style="color:var(--dec)">waiting</span>{% elif row.n in done_steps %} · <span style="color:var(--accent)">&#10003; done</span>{% elif not row.built %} · coming soon{% endif %}</div>
-    <div class="tl-t">{{ row.title }}</div>
-    <div class="tl-c">
-      {% if k.automated %}<span><i class="dot dot-ai"></i>{{ k.automated }} AI</span>{% endif %}
-      {% if k.client_decision %}<span><i class="dot dot-wait"></i>{{ k.client_decision }} decision{{ 's' if k.client_decision > 1 }}</span>{% endif %}
-      {% if k.law_marker %}<span><i class="dot dot-law"></i>{{ k.law_marker }} law</span>{% endif %}
-      {% if k.human_required %}<span><i class="dot"></i>{{ k.human_required }} person</span>{% endif %}
-      {% if k.third_party %}<span><i class="dot"></i>{{ k.third_party }} planned</span>{% endif %}
-      {% if not row.records %}<span>nothing yet</span>{% endif %}
-    </div>
-  </a>
-{% endfor %}
+  <p style="margin-top:12px">Every red note was recorded on the deal timeline; it does not stop the flow.{% if c.decisions_played %} {{ c.decisions_played }} of the decisions were played by the demo, and say so.{% endif %}</p>
+  <p class="finale-more"><a href="/demo/start" id="finale-start-over" class="clear-link">Start over</a> ·
+    <a href="{{ review_url.rsplit('/', 1)[0] }}/docs-executive-summary.html" id="finale-plan" class="clear-link">Read the plan (executive summary)</a></p>
 </div>
 
 {% for cp in tl.standing %}{{ law_marker(cp) }}{% endfor %}
 
+<h2 class="section-title">Show the working</h2>
 <details class="working" id="closing">
   <summary>The road to closing <span class="sum-note">{{ tl.road | length }} planned steps{% if tl.signed_on %}, dated from the signing{% endif %}</span></summary>
   <div class="working-body">
-  <p class="help">{% if tl.signed_on %}Dated from the contract signed {{ tl.signed_on.strftime('%a %-d %b %Y') }} and its agreed terms.{% else %}Dates appear once the contract is signed (step {{ shown(7) }}).{% endif %} Planned, not acted in the demo: each is a firm or a person outside the software.</p>
+  <p class="help">{% if tl.signed_on %}Dated from the contract signed {{ tl.signed_on.strftime('%a %-d %b %Y') }} and its agreed terms.{% else %}Dates appear once the contract is signed (step 11).{% endif %} Planned, not acted in the demo: each is a firm or a person outside the software.</p>
   <ol class="tl-log road">
   {% for it in tl.road %}
     <li data-road="{{ (it.record.attached_to or '').replace('closing:', '') }}" data-code="{{ it.record.code }}">{{ chip(it.record) }} <b>{{ it.what }}</b>{% if it.when %} <span class="when">· by {{ it.when.strftime('%a %-d %b') }}</span>{% endif %}<br><small class="muted">{{ it.who }}</small></li>
@@ -52,11 +39,11 @@
   <summary>The hurdle map <span class="sum-note">every NY law today note and every step for a person, by step</span></summary>
   <div class="working-body">
 {% for row, hs in tl.hurdles %}
-  <h3>Step {{ row.shown }}. {{ row.title }}</h3>
+  <h3>{% if row.n == 'firm' %}{{ row.title }}{% else %}Step {{ row.n }}. {{ row.title }}{% endif %}</h3>
   {% for h in hs %}{% set cp = h.record %}
   <div class="hurdle" data-code="{{ cp.code }}">
-    {% if h.times > 1 %}<p class="help hurdle-times">Recorded {{ h.times }} times on this step{% if cp.code == 'CP-09' %}: once for each message{% endif %}.</p>{% elif cp.status == 'planned' %}<p class="help hurdle-times">Planned: after the inspection.</p>{% endif %}
-    {% if cp.kind == 'law_marker' %}{{ law_marker(cp) }}{% else %}{{ human_required(cp) }}{% endif %}
+    {% if cp.status == 'planned' %}<p class="help hurdle-times">Planned: after the inspection.</p>{% endif %}
+    {% if cp.kind == 'law_marker' %}{{ law_marker(cp, times=h.times) }}{% else %}{{ human_required(cp) }}{% endif %}
   </div>
   {% endfor %}
 {% endfor %}
@@ -68,30 +55,39 @@
   <div class="working-body">
   <ol class="tl-log">
   {% for row, cp in tl.acts %}
-    <li data-code="{{ cp.code }}"><span class="chip chip-law_marker"><b>Step {{ row.shown }}</b>{% if cp.law_actor %}: {{ law_actor_label[cp.law_actor] }}{% endif %}</span> {{ cp.reason or cp.title }} <span class="when">· {{ cp.created_at | et }}</span></li>
+    <li data-code="{{ cp.code }}"><span class="chip chip-law_marker"><b>{% if row.n == 'firm' %}The firm{% else %}Step {{ row.n }}{% endif %}</b>{% if cp.law_actor %}: {{ law_actor_label[cp.law_actor] }}{% endif %}</span> {{ (cp.reason or cp.title) | plain }} <span class="when">· {{ cp.created_at | et }}</span></li>
   {% else %}<li class="muted">Nothing yet.</li>{% endfor %}
   </ol>
   <p class="help">Besides these, the AI did {{ c.automated }} things New York law does not reserve (notices sent, fair-housing checks passed, showings booked, documents assembled).</p>
   </div>
 </details>
 
-<h2 class="section-title">The full record, step by step</h2>
-<div id="timeline-rows">
-{% for row in tl.rows %}
-<details class="working tl-row" data-step="{{ row.n }}" id="tl-step-{{ row.n }}">
-  <summary>{{ row.shown }}. {{ row.title }} <span class="sum-note">{% if row.records %}{{ row.records | length }} record{{ 's' if row.records | length != 1 }}{% elif not row.built %}coming soon{% else %}no records yet{% endif %}</span></summary>
+{% if tl.changes %}
+<details class="working" id="changes">
+  <summary>Changes <span class="sum-note">{{ tl.changes | length }} recorded: a decision re-opened, and what it re-opened</span></summary>
   <div class="working-body">
-  <ul class="tl-log">
-  {% for cp in row.records %}
-    <li>{{ chip(cp) }} {{ cp.title }}{% if cp.decided_by %} · by the {{ cp.decided_by }}{% endif %}{% if cp.kind == 'client_decision' and cp.status == 'done' %} · {{ decision_label(cp) | lower }}{% endif %}
-      {% if cp.status != 'planned' %}<span class="when">· {{ (cp.decided_at or cp.created_at) | et }}</span>{% endif %}
-      {% if cp.reason and cp.kind != 'client_decision' %}<br><small class="muted">{{ cp.reason | truncate(160) }}</small>{% endif %}</li>
-  {% else %}
-    <li class="muted">No records yet.</li>
-  {% endfor %}
-  </ul>
+  <ol class="tl-log">
+  {% for e in tl.changes %}<li data-event="{{ e.seq }}">{{ e.summary | plain }} <span class="when">· {{ e.ts | et }}</span></li>{% endfor %}
+  </ol>
+  <p class="help">A changed decision stays on the record below, marked "changed"; nothing is deleted.</p>
   </div>
 </details>
+{% endif %}
+
+<details class="working" id="timeline-rows">
+  <summary>The full record, step by step <span class="sum-note">{{ c.records }} records{% if c.superseded %}, {{ c.superseded }} changed{% endif %}</span></summary>
+  <div class="working-body">
+{% for row in tl.rows + [tl.firm] %}
+  <h3 class="tl-row" data-step="{{ row.n }}" id="tl-step-{{ row.n }}">{% if row.n == 'firm' %}{{ row.title }}{% else %}{{ row.n }}. {{ row.title }}{% endif %}
+    <small class="muted">{% if row.records %}{{ row.standing | length }} record{{ 's' if row.standing | length != 1 }}{% else %}nothing yet{% endif %}</small></h3>
+  <ul class="tl-log">
+  {% for cp in row.records %}
+    <li class="{{ 'is-superseded' if cp.status == 'superseded' }}">{{ chip(cp) }} {{ cp.title | plain }}{% if cp.decided_by %} · by the {{ cp.decided_by }}{% endif %}{% if cp.kind == 'client_decision' and cp.status == 'done' %} · {{ decision_label(cp) | lower }}{% endif %}{% if cp.played %} <span class="played">(played by the demo)</span>{% endif %}
+      {% if cp.status != 'planned' %}<span class="when">· {{ (cp.decided_at or cp.created_at) | et }}</span>{% endif %}
+      {% if cp.reason and cp.kind != 'client_decision' %}<br><small class="muted">{{ cp.reason | plain | truncate(160) }}</small>{% endif %}</li>
+  {% endfor %}
+  </ul>
 {% endfor %}
-</div>
+  </div>
+</details>
 {% endblock %}

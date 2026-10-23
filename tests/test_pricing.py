@@ -14,11 +14,12 @@ from tests.conftest import as_persona, demo_intake, listed, priced, recommended_
 def test_pricing_refuses_before_the_listing_agreement(client):
     demo_intake(client)
     r = client.get("/pricing")
-    assert 'id="gate"' in r.text and "CP-03" in r.text
+    assert 'id="gate-card"' in r.text and 'data-missing="agency"' in r.text
     assert client.post("/pricing/recommend").status_code == 409
 
 
 def test_comps_table_adjustments_and_range(client):
+    """Step 4 (decision 51): the comparables and the advice on one screen; the sales are folded, in plain words."""
     listed(client)
     r = client.get("/pricing")
     assert r.status_code == 200
@@ -27,6 +28,10 @@ def test_comps_table_adjustments_and_range(client):
     assert len(ranks) >= 3
     assert 'id="adjustments"' in r.text and "Suggested range" in r.text
     assert "Dutchess County public sales records" in r.text
+    # the adjusted sales' spread is explained beside the narrower range, never left to contradict it
+    assert "Why the range is narrower than the adjusted sales" in r.text
+    # the old address still lands here
+    assert client.get("/pricing/advice").url.path == "/pricing"
 
 
 def test_adjustment_arithmetic_is_code():
@@ -59,20 +64,26 @@ def test_range_reconciles_with_demo_house_cross_checks():
 
 def test_ai_recommends_with_reasoning_and_cp25_marker(client, session):
     listed(client)
-    r = client.post("/pricing/recommend", headers={"HX-Request": "true"})
-    assert r.status_code == 200
-    assert 'id="recommended"' in r.text and "The method in plain words" in r.text and "Why this price" in r.text
+    r = client.post("/pricing/recommend", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == "/pricing"  # Post/Redirect/Get
+    r = client.get("/pricing")
+    assert 'id="recommended"' in r.text and "How the AI worked it out" in r.text and "Why this price" in r.text
     assert 'id="net-sheet"' in r.text and "transfer tax" in r.text
+    # the screen leads on the recommendation; the jargon stays in the folds
+    head = r.text[r.text.index('id="ai-panel"'):r.text.index("Show the working")]
+    for word in ("Reconciled", "arm's-length", "gross"):
+        assert word not in head, word
     block = r.text[r.text.index('id="rec-CP-25"'):]
-    block = block[:block.index("does not stop the flow")]
+    block = block[:block.index("Read the finding")]
     assert "NY law today" in block and "A licensed real estate broker" in block
     for i in ("F22", "L6", "L18", "WS3-D5"):
         assert f">{i}<" in block
-    assert 'href="https://realestate.hughesnode.com/docs-research-ws2-legal-licensing.html"' in block
     deal = current_deal(session)
     cp25 = records.latest(session, deal.id, "CP-25")
     assert cp25.kind == "law_marker" and not cp25.blocking
     assert records.latest(session, deal.id, "CP-05").status == "pending"
+    # the seller's decision card holds the price form the action bar's button submits
+    assert 'id="price-form"' in r.text and 'form="price-form"' in r.text and "Seller: list at" in r.text
 
 
 def test_cp05_seller_chooses_and_copy_waits(client, session):
@@ -80,22 +91,63 @@ def test_cp05_seller_chooses_and_copy_waits(client, session):
     client.post("/pricing/recommend")
     # copy refuses before the seller chooses
     r = client.get("/copy")
-    assert 'id="gate"' in r.text and "CP-05" in r.text
+    assert 'id="gate-card"' in r.text and 'data-missing="price"' in r.text
     assert client.post("/copy/draft").status_code == 409
-    # only the seller decides
+    # the AI and the other client can never record the seller's decision (decision 49)
     for p in ("presenter", "buyer"):
         as_persona(client, p)
         assert client.post("/pricing/choose", data={"price": "650000"}).status_code == 403
-    as_persona(client, "seller")
-    assert client.post("/pricing/choose", data={"price": "1"}).status_code == 422
-    assert client.post("/pricing/choose", data={"price": "$655,000"}, follow_redirects=False).status_code == 303
+    assert client.post("/pricing/choose", data={"price": "650000", "as": "ai"}).status_code == 403
+    assert client.post("/pricing/choose", data={"price": "650000", "as": "buyer"}).status_code == 403
+    as_persona(client, "presenter")
+    r = client.post("/pricing/choose", data={"price": "1", "as": "seller"})
+    assert r.status_code == 422
+    r = client.post("/pricing/choose", data={"price": "lots", "as": "seller"})
+    assert r.status_code == 422 and 'id="err-price"' in r.text and "whole number of dollars" in r.text
+    # the button names the seller: recorded as the seller's, whoever is viewing
+    assert client.post("/pricing/choose", data={"price": "$655,000", "as": "seller"},
+                       follow_redirects=False).status_code == 303
     session.expire_all()
     deal = current_deal(session)
-    assert deal.list_price == 655000 and records.is_done(session, deal.id, "CP-05")
-    assert "655,000" in records.latest(session, deal.id, "CP-05").reason
-    assert 'id="gate"' not in client.get("/copy").text
-    # the net sheet now shows both prices
-    assert "your choice" in client.get("/pricing/advice").text
+    cp05 = records.latest(session, deal.id, "CP-05")
+    assert deal.list_price == 655000 and cp05.status == "done" and cp05.decided_by == "seller"
+    assert "655,000" in cp05.reason
+    assert 'id="gate-card"' not in client.get("/copy").text
+    # the net sheet now shows both prices; the card shows the price and Change
+    page = client.get("/pricing").text
+    assert "the seller's choice" in page and 'id="chosen-price"' in page and 'href="/path/change/price"' in page
+
+
+def test_recorded_demo_refuses_an_off_script_price(client, app, session):
+    """In a recorded demo the price is the recorded one: another figure is refused in plain words before anything
+    is saved, with a way to put it back (fresh-eyes audit 4)."""
+    listed(client)
+    client.post("/pricing/recommend")
+    rec = recommended_price()
+    app.state.provider.mode = "replay"
+    try:
+        r = client.post("/pricing/choose", data={"price": str(rec + 15000), "as": "seller"})
+        assert r.status_code == 409 and "Not in the recorded demo" in r.text and 'id="put-back"' in r.text
+        session.expire_all()
+        assert records.latest(session, current_deal(session).id, "CP-05").status == "pending"
+        assert client.post("/pricing/choose", data={"price": f"{rec:,}", "as": "seller"},
+                           follow_redirects=False).status_code == 303
+    finally:
+        app.state.provider.mode = "fake"
+
+
+def test_choosing_from_the_action_bar_lets_the_ai_write_the_listing(client, session):
+    """From the action bar (`ui`), the AI does its own work after the seller's decision (decision 47)."""
+    listed(client)
+    client.post("/pricing/recommend")
+    r = client.post("/pricing/choose", data={"price": str(recommended_price()), "as": "seller", "ui": "1"})
+    assert r.status_code == 200 and r.url.path == "/pricing"
+    assert "The seller chose to list at" in r.text and "the AI wrote the listing" in r.text
+    session.expire_all()
+    from app.modules.listing_copy import service as copy_service
+
+    arts = copy_service.artifacts(session, current_deal(session))
+    assert len(arts) == 6 and all(a.status == "ready" for a in arts)
 
 
 def test_pricing_model_context_has_no_pii_or_confidential(client, provider):
@@ -112,5 +164,5 @@ def test_recommended_price_from_fake_is_inside_range(client):
     listed(client)
     client.post("/pricing/recommend")
     rec = recommended_price()
-    r = client.get("/pricing/advice")
-    assert f"${rec:,}" in r.text and "outside the computed range" not in r.text
+    r = client.get("/pricing")
+    assert f"${rec:,}" in r.text and "outside that range" not in r.text

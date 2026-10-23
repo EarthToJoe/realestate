@@ -38,17 +38,17 @@ def test_contract_waits_for_an_agreed_offer(client):
     from tests.flows import offers_advised
     offers_advised(client)
     r = client.get("/contract")
-    assert 'id="gate"' in r.text and "no agreed offer" in r.text
+    assert 'id="gate-card"' in r.text and 'data-missing=' in r.text
 
 
 def test_memorandum_draft_and_cp14_marker_with_launch_route(client, session, provider):
     drafted(client)
     deal = current_deal(session)
     r = client.get("/contract")
-    assert "sent to both parties (simulated)" in r.text and "$620,000" in r.text
+    assert "sent to both parties first (simulated)" in r.text and "$620,000" in r.text
     assert any("memorandum" in (c.reason or "") for c in records.records(session, deal.id, "CP-32"))
     block = r.text[r.text.index('id="rec-CP-14"'):]
-    block = html.unescape(block[:block.index("does not stop the flow")])
+    block = html.unescape(block[:block.index('id="pcds"')])
     assert "NY law today: only a lawyer may draft a contract of sale for another" in block
     assert "Judiciary Law" in block and "decision 26" in block
     assert 'id="launch-CP-14"' in block and "the firm's paper, subject to each party's attorney's approval" in block
@@ -107,9 +107,10 @@ def test_code_checks_block_wrong_numbers(client, session, provider):
 def test_signing_refused_until_the_seller_completes_the_pcds(client, session):
     drafted(client)
     r = client.get("/contract")
-    assert 'id="pcds-waiting"' in r.text and 'id="pcds-open"' in r.text
+    assert 'id="rec-CP-04"' in r.text and 'id="pcds-open"' in r.text and 'id="pcds-form"' in r.text
     r = client.post("/contract/open-signing")
-    assert r.status_code == 409 and "CP-04" in r.text
+    assert r.status_code == 409 and "Disclosure Statement" in r.text
+    assert "CP-04" not in r.text.split('id="refused"')[1][:600]  # plain words on the audience layer
     assert records.latest(session, current_deal(session).id, "CP-33") is None
     seller_pcds(client)
     assert client.post("/contract/open-signing", follow_redirects=False).status_code == 303
@@ -172,3 +173,29 @@ def test_no_attorney_screen_or_persona_anywhere(client):
     paths = [getattr(r, "path", "") for r in client.app.routes]
     assert not [p for p in paths if "attorney" in p or "lawyer" in p]
     _ = create_app
+
+
+def test_documents_without_a_sale_or_a_draft_never_error(client):
+    """The print view, PDF and Word copy: the "not yet" card, never a server error (site audit)."""
+    for url in ("/contract/print", "/contract/draft.pdf", "/contract/draft.docx", "/disclosures/pcds/print"):
+        r = client.get(url)
+        assert r.status_code == 200 and 'id="gate-card"' in r.text, url
+    from tests.conftest import demo_intake
+    demo_intake(client)
+    for url in ("/contract/print", "/contract/draft.pdf", "/contract/draft.docx"):
+        r = client.get(url)
+        assert r.status_code == 200 and 'id="gate-card"' in r.text and 'id="flash"' in r.text, url
+
+
+def test_each_pdf_version_is_built_once():
+    from app.modules.contract import documents
+
+    html_doc = "<html><body><p>DEMONSTRATION cache test</p></body></html>"
+    first = documents.contract_pdf(html_doc)
+    assert documents.cached(html_doc) and documents.contract_pdf(html_doc) is first
+    documents.warm(html_doc)  # already built: nothing to do
+
+
+def test_the_disclosure_form_lives_on_the_contract_step(client):
+    r = client.get("/disclosures/pcds", follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == "/contract#pcds"
