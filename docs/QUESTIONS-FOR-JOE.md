@@ -9,8 +9,9 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 > until you answer.
 > - **For the meeting with your father-in-law:** Q44, one short bundle of five questions only he can answer (bar
 >   registration, where he lives and an office, broker of record, ten people by 2026-11-06, the contract route).
-> - **Quick confirms for the demo, defaults hold if you say nothing:** Q23 the software drafts the full contract,
->   marked subject to each party's attorney's approval; Q25 recorded replay at the meeting with a live switch; Q43 the
+> - **Quick confirms for the demo, defaults hold if you say nothing:** Q23 in the demo the software drafts the full
+>   contract with no attorney-approval clause, under a red "NY law today" marker that names the lawful launch route
+>   (the firm's paper subject to each party's attorney's approval; decision 26); Q25 recorded replay at the meeting with a live switch; Q43 the
 >   free inspection shown as his idea with the research's findings.
 > - **After the meeting:** everything else (fees, tours, counties, marketing, lockboxes, scope).
 > - **Closed today by decision 21 or merged into Q44:** Q11, Q13 to Q17, Q37 (see Answered).
