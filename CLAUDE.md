@@ -49,5 +49,7 @@
   never store other people's listing photos or copy.
 - **Git:** commit at every milestone with a meaningful message; `git add <paths>`, never `git commit -a`
   blindly; push to `origin main` (GitHub is the sync). Secrets never enter the repo (`.gitignore` covers
-  `secrets/`, `*.env`, `*.key`).
+  `secrets/`, `*.env`, `*.key`). **The GitHub repo was found public on 2026-10-23**, after a build job had committed the
+  house password into two scripts: treat every committed byte as public. Scripts read the house login from
+  `/srv/realestate/secrets/HOUSE_PASSWORD`; no password, key or token appears in code, docs or commit messages.
 - **Spend log:** every milestone, update `docs/SPEND-LOG.md` (the app's own call log plus Console totals).
