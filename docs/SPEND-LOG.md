@@ -112,6 +112,7 @@ Live calls on the hosted app, by task:
 | BUILD-3 | Slice 3, first half: pricing reconciled with the demo-house research ($610k to $650k), Step 5 Communications, Step 6 Offers | 3.95 | API credit |
 | BUILD-3 | Slice 3, second half: full PCDS form, Step 8 Buyer side, the offers rework, Step 7 Contract, models, replays, live walk; resumed with its context | notional (see `scripts/spend-summary.sh`) | Max plan |
 | BUILD-FIX | Demo usability fix: gate cards instead of redirects, fast-forward, "Decide as", phone layout; app live spend $0 (all replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
+| BUILD-UX | Redesign from the UI audit (Joe: "looks weird, not user friendly"; "so crowded"): results first, notes hidden, phone-first | see `scripts/spend-summary.sh` | Max plan |
 | BUILD-4 | Slice 4: step 10, guided demo, finished timeline, PII export and delete, walk-order numbering, end-to-end browser run, polish; app live spend about $0.01 (step 10's replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
 | BUILD-POLISH | Content fixes from the slice-4 review: fees match the plan ($4,500 / $3,500), founder placeholder as a styled chip; app live spend $0.3149 (8 re-recorded replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
 
@@ -122,3 +123,8 @@ own live calls so far: $0.001 (two Haiku calls recording the replay).
 live calls so far: about $0.35 (recording replays). That leaves about $16 on the key: the $15 reserve for the demo's
 live calls at the meeting, and $1.36 the runner will not start a job with. From here every job runs on the Max plan
 (decision 22); `scripts/spend-summary.sh` shows their notional cost separately.
+
+**End of day 1 (2026-10-23, 15:20 UTC), the whole build:** API credit $183.64 on jobs plus about $1.6 of the app's own
+recordings, so about $14.7 is left on the key for the meeting's live calls (the hosted demo replays at $0). Max plan,
+notional: BUILD-3 second half $21.95, BUILD-UX $10.22, BUILD-4 $18.92, BUILD-FIX $6.73, BUILD-POLISH $2.84; total
+$60.66 (what the API would have charged; the plan bills nothing extra).

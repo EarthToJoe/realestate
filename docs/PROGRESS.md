@@ -1,5 +1,21 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), end of day: the demo is built, five days early
+
+**State:** all ten steps and the guided demo are live at https://realestate.hughesnode.com (house login): press
+**Start demo**, then use the Presenter notes' Next and "Do this screen for me". 165 tests pass; a browser walk of every
+screen at phone and laptop width passes; the hosted demo replays recorded AI answers at $0. The chat session reviewed
+the screens itself after Joe's "looks weird, not user friendly" and "so crowded": the audit, the redesign and two
+rounds of fixes followed (docs/build/ui-audit-2026-10-23.md).
+
+**Waiting on Joe:** to-do #1, make the public GitHub repo private and say "change it" or "keep it" for the house
+password (it was in two scripts for about 2.5 hours; removed); the click-through (any time before the meeting; it was
+planned for 10-28); the father-in-law package (to-do); Q45 to Q50 have defaults.
+
+**Next:** fixes from Joe's click-through; a timed rehearsal; the meeting about 2026-10-30.
+
+**Disk:** 11 GB free (shared caches and build images; two stale realestate images removed).
+
 ## 2026-10-23 (day 1), night: two content fixes from the slice-4 review (BUILD-POLISH)
 
 - **The fees now match the plan:** $4,500 for the seller, $3,500 for the buyer, paid at closing (WS4's figures, as
