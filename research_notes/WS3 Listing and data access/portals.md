@@ -259,3 +259,186 @@ None of the four allows an unattended bot to post property listings: Facebook bu
 - Meta's current Help Center text on real-estate Marketplace listings and any 2024–2026 changes to it were not opened (Help Center pages are login-gated to automated readers); the 2023 change is the latest documented.
 - Nextdoor's current real-estate listings product and any partner feed in 2025–2026: not found.
 - Whether Craigslist charges for brokered for-sale real-estate posts in New York (its terms refer to a separate fee FAQ): not checked.
+
+## Gap fill (2026-10-23, VPS session)
+
+Method: headless VPS job on 2026-10-23 with a fresh web budget (about 75 searches and fetches by the lead researcher plus four parallel helper passes of 118 to 192 calls each, on the Hudson Valley MLS map, Zillow, the other portals, and photo/AI/listing-input rules). Findings that conclusions rest on were re-opened at the primary source where the source allowed it; helper findings that could not be re-opened are labelled by what was actually seen (a fetched page, or only a search snippet) and marked "(helper)". All sources accessed 2026-10-23 unless another date is given. Access limits this pass: zillow.com, zillow.zendesk.com and Zillow's feed, Showcase and Preview pages returned HTTP 403; realtor.com, move.com and listhub.com are refused by the fetch tool; homes.com, support.redfin.com, inman.com and rismedia.com returned 403; Redfin county pages returned 405. OneKey support articles return 403 as web pages but were read through OneKey's public Help Center JSON endpoint (support.onekeymls.com/api/v2/help_center/en-us/articles/ID.json); they are cited below by their normal article URL.
+
+### Coverage audit
+
+| # | Question from the WS3 ask (portal side) | Before this pass | After this pass |
+|---|---|---|---|
+| 1 | Can software create a listing on Zillow/Trulia? Route? API? | Partly (Zillow's own pages unread; trade press only) | Full: no self-serve write API; the MLS feed is the route; the broker "direct feed" exports the firm's own MLS listings; Zillow Preview is manual entry in Zillow Workspace for enrolled brokerages; FSBO is owner-only; agent manual entry ended in 2017. Zillow's own standards text still unreadable (403). |
+| 2 | Zillow memberships/subscriptions and cost | Partly | Mostly full: all listing routes free; paid add-ons (Showcase, Premier Agent, Preferred) have no published rate card; reported figures labelled CLAIMED. |
+| 3 | Zillow's rules for off-MLS listings | Partly (secondary) | Full in substance (March 2026 test; superseded October 2025 PDF read; Chicago court record); the current Zillow text itself only seen in snippets. |
+| 4 | Realtor.com route, API, FSBO | Partly | Full: MLS feed (OneKey has its own Keystone switches for Realtor.com); 2026 pre-market routes via Zillow Preview and Zenlist; no FSBO route found. |
+| 5 | Realtor.com cost and lead routing | Not answered | Partly: prices and routing on ordinary listings only from third parties (CLAIMED); Preview routing is primary. |
+| 6 | Redfin route, FSBO, API | Partly | Full: MLS/IDX feeds; FSBO only via Fizber.com and FSBO.com; no broker API; Compass pre-market deal is exclusive. |
+| 7 | Redfin cost and lead routing | Not answered | Full: Partner Agent referral-fee schedule (PRIMARY, August 2025). |
+| 8 | Homes.com route, FSBO, feed spec | Partly | Mostly full: MLS IDX feeds; opt-in pre-market since March 2026; no FSBO route found; OneKey mechanism inferred, not documented. |
+| 9 | Homes.com cost | Not answered | Partly: average $3,400 a year (CoStar via The Real Deal); Boost about $260 per listing (press); no rate card. |
+| 10 | Syndication feeds (ListHub etc.) | Partly | Full in substance: no evidence OneKey uses ListHub; ListHub now licenses broker data via MLS Grid; free to brokers. |
+| 11 | Portal data OUTPUT terms (APIs, scraping, AI) | Not answered | Full: Zillow MLS Listings API at each MLS's discretion; Zestimate API by request; Zillow, Redfin and Homes.com terms ban scraping; Realtor.com terms unread (CLAIMED only). |
+| 12 | How OneKey's distribution feeds each portal | Partly | Mostly full: Keystone switches (Realtor.com on/off-market, OneKeyMLS.com, Crexi, Data Partnerships, IDX); IDX via MLS Grid inferred for Zillow, Redfin, Homes.com; out-of-area listings syndicate; Coming Soon not syndicated. |
+| 13 | Secondary channels (Meta, Craigslist, Nextdoor, Google Business Profile, StreetEasy) | Full (2023 data) | Full: no 2026 change found; Craigslist for-sale real-estate posts free; StreetEasy is NYC-only. |
+| 14 | Changes in 2025 to 2026 the notes predate | Partly | Full: Zillow v. MRED preliminary injunction denied (16 Sep 2026); Preview at 400+ brokerages and on Realtor.com (17 Sep 2026); Redfin–Compass exclusivity; Homes.com spending cut; ListHub via MLS Grid. |
+
+### Verification of load-bearing claims
+
+| # | Claim in the notes above | Source re-checked | Result |
+|---|---|---|---|
+| 1 | Zillow revised its Listing Access Standards on 17 Mar 2026 to a "broadly accessible to the general public" test with no MLS requirement | Zillow page (403); Real Estate News 19/20 Mar 2026; snippet of Zillow's page | Could not verify on Zillow's own page; consistent across secondary sources and Zillow snippets |
+| 2 | Zillow Preview launched 17 Mar 2026 with about 60 partners; brokerages send listings "directly" | Zillow releases of 25 Mar 2026 (PDF, helper) and 17 Sep 2026 (fetched) | **Corrected**: "More than 400 brokerage partners" by 17 Sep 2026; agents create Preview listings in Zillow Workspace after linking their MLS membership (snippet of Zillow's page), not a bulk feed; Preview listings live on Realtor.com since 17 Sep 2026 |
+| 3 | Compass dismissed its suit 18 Mar 2026 | CourtListener docket S.D.N.Y. 1:25-cv-05201 (helper) | Confirmed |
+| 4 | Zillow v. MRED/Compass: hearing July 2026, outcome unknown | Opinion, N.D. Ill. 1:26-cv-05451, ECF 141, p. 53 (read directly) | **Corrected**: preliminary injunction denied; TRO dissolved; claims against MRED stayed pending arbitration; claim against Compass stayed (filed 16 Sep 2026) |
+| 5 | On an ordinary Zillow listing, buyer inquiries go to paying agents, not the listing agent | Zillow Q2 2026 shareholder letter, SEC exhibit 99.2 (helper) | Confirmed in direction and updated: Zillow targets "more than 75% of our connections going to Preferred partners" (pay at close) by end-2026 |
+| 6 | Showcase about $300 to $750 per listing at retail | RE/MAX FAQ (helper, partial load) | Could not verify against Zillow (no rate card); remains CLAIMED |
+| 7 | Zillow FSBO free, owner only, up to 72 h moderation, separate tab | Zillow help pages (403); snippets | Could not verify on primary; snippets consistent. Snippet wording calls the tab "Other listings" and says brokerage-feed listings also land there |
+| 8 | ListHub: brokers cannot type listings in; free; MLS-connected | listhub.com refused by tool; GRAR and RANW association pages (helper) | Confirmed in substance; **updated**: ListHub now takes a broker's data licence through MLS Grid |
+| 9 | Realtor.com takes listings only from MLS feeds | Zillow release 17 Sep 2026; eXp release 18 Mar 2026 (helper) | **Corrected**: since 2026 Realtor.com also takes some pre-market listings outside the MLS (Zillow Preview; Zenlist, eXp first) |
+| 10 | Redfin: no FSBO or non-MLS path found | Redfin data-quality page, "Updated September 2025" (fetched) | **Corrected**: "The for-sale-by-owner inventory on Redfin comes from Fizber.com and FSBO.com" |
+| 11 | Redfin credits "OneKey MLS as distributed by MLS Grid" and HVCRMLS | Redfin terms-of-use disclaimers dated 22 Oct 2026 (helper) | Confirmed |
+| 12 | Homes.com shows only the listing agent ("Your Listing, Your Lead") | Homes.com pages (403); CoStar statements 2025 (secondary) | Confirmed; no 2026 change found |
+| 13 | Homes.com Membership price unpublished | The Real Deal via Yahoo, 29 Apr 2026 (helper) | **Updated**: average $3,400 a year by CoStar's own figure; increase for new members from 1 May 2026 |
+| 14 | OneKey Keystone Listing Distribution switches | OneKey article 42913600864404 via JSON (created 3 Nov 2025, updated 3 Dec 2025) | Confirmed: Realtor.com On-Market and Off-Market, OneKeyMLS.com, Crexi, Data Partnerships, IDX; "Any 'no' or 'off' setting will overrule an indication of yes"; no Zillow, Homes.com, Redfin or ListHub switch |
+| 15 | Meta business Pages cannot post real-estate Marketplace listings since 30 Jan 2023 | PayProp 2023 (helper); no 2026 notice found | Confirmed (no later change found) |
+| 16 | OneKey publicly rejected Compass's demand, 20 Oct 2026 | OneKey release (fetched); HousingWire 20 Oct 2026 (fetched) | Confirmed; HousingWire adds that Compass has sued CRMLS and plans to sue Unlock MLS, not OneKey |
+
+**Gap theme P1: Zillow — routes, Preview, standards, courts, fees, data**
+
+### Takeaway
+There is still no way for a brokerage's software to post a for-sale listing to Zillow through an API. The routes are: the MLS feed (default); a free "direct feed" of the brokerage's own MLS listings via MLS Grid; Zillow Preview (pre-market, manual entry in Zillow Workspace, only for brokerages enrolled with Zillow, 400+ by 17 Sep 2026, free); and FSBO (owners only). Zillow's March 2026 standards no longer require MLS entry but still block "gated" listings; the Chicago court found Zillow had never enforced them there and denied Zillow's injunction (16 Sep 2026). Buyer inquiries on ordinary listings increasingly go to pay-at-close Preferred agents.
+
+### Cited Findings
+- Preview eligibility: "Zillow Preview is available to brokerages that believe listings should be widely visible to the public… Access is unlocked at the brokerage level" — [Zillow release PDF, 25 Mar 2026](https://s25.q4cdn.com/975009107/files/doc_news/Zillow-Preview-gains-rapid-momentum-as-dozens-of-new-brokerages-sign-on-2026.pdf) [PRIMARY], accessed 2026-10-23 (helper)
+- Preview scale and Realtor.com: "More than 400 brokerage partners"; benefits "available at no cost to sellers or agents participating through an enrolled brokerage"; "Consumers have the choice to connect with the listing agent or with a local buyer's agent"; those connections "are free for the listing agent" — [Zillow release, 17 Sep 2026](https://zillow.mediaroom.com/2026-09-17-Zillow-PreviewSM-listings-are-now-live-on-Realtor-com-R-,-offering-the-same-early-access-on-the-two-most-visited-real-estate-platforms-in-the-country) [PRIMARY], accessed 2026-10-23
+- Preview mechanics: "Agents at participating brokerages who have signed an agreement with Zillow can publish a Zillow Preview listing through Zillow Workspace"; "Verify your identity and link your MLS membership" — [Zillow "How Preview works" (403; search snippet)](https://www.zillow.com/pro/zillow-preview-work/) [CLAIMED], accessed 2026-10-23 (helper)
+- Preview and MLS rules: "Once a listing goes active for sale, it should be entered into an agent's MLS consistent with local rules" — [Zillow release, 25 Mar 2026](https://s25.q4cdn.com/975009107/files/doc_news/Zillow-Preview-gains-rapid-momentum-as-dozens-of-new-brokerages-sign-on-2026.pdf) [PRIMARY]; snippet: "If a local MLS does not permit public pre-marketing, agents and brokers should follow that policy and refrain from publishing a listing in Zillow Preview" — [zillow.com/pro/preview (403)](https://www.zillow.com/pro/preview/) [CLAIMED], accessed 2026-10-23 (helper)
+- The Zillow–Realtor.com Preview deal covers "every US market except New York City" — [Online Marketplaces, ~5 May 2026](https://www.onlinemarketplaces.com/articles/zillow-and-realtor-com-forge-pre-market-pact-to-counter-compass-redfin/) [SECONDARY], accessed 2026-10-23 (helper)
+- Zillow v. MRED (N.D. Ill. 1:26-cv-05451): "Zillow's motion for a preliminary injunction is denied"; "the temporary restraining order is dissolved"; "Zillow's claims against MRED in this Court are stayed pending arbitration… this case is also stayed as to the claim against Compass"; "Despite the ongoing dispute, Zillow has never enforced its Standard in Chicagoland" — [Opinion, ECF 141, filed 16 Sep 2026, pp. 52–53](https://storage.courtlistener.com/recap/gov.uscourts.ilnd.500474/gov.uscourts.ilnd.500474.141.0.pdf) [PRIMARY], accessed 2026-10-23
+- No filings after 16 Sep 2026 on the RECAP docket (archive incomplete) — [CourtListener docket](https://www.courtlistener.com/docket/73327933/) [PRIMARY], accessed 2026-10-23 (helper)
+- Superseded October 2025 standard: "Publicly marketed listings should be entered in the MLS within one business day and published on Zillow" — [Zillow LAS PDF, 10 Oct 2025](https://grow.zillow.com/hubfs/Zillow-Listing-Access-Standards.pdf) [PRIMARY, superseded], accessed 2026-10-23 (helper)
+- 2026 standard (snippet of Zillow's page): listings in "a broker program, private listing network or another marketing strategy that publicly markets to buyers the existence of a broker's exclusive inventory of listings, or restricts public access to those listings by gating them behind a registration wall or requiring consumers to work with a specific brokerage, do not align with the standards"; the third non-compliant listing and later ones "will be blocked from appearing on Zillow and Trulia for the life of the listing agreement" — [Zillow LAS page (403)](https://www.zillow.com/c/info/zillow-listing-access-standards/) [CLAIMED, snippet], accessed 2026-10-23 (helper)
+- Direct feed: Zillow's page asks brokers to "Ensure listings stay on Zillow Group websites with a PDAP (Participant Data Access Policy) feed" — [Real Estate News, 14 May 2026](https://www.realestatenews.com/2026/05/14/zillow-looks-to-bypass-mred-with-direct-feed) [SECONDARY]; snippet: "Setting up a direct feed agreement with Zillow is free" — [zillow.com/agents/listing-feed (403)](https://www.zillow.com/agents/listing-feed/) [CLAIMED], accessed 2026-10-23 (helper)
+- Zillow ended agent manual listing entry on 1 May 2017 — [Inman, 15 Feb 2017 (snippet)](https://inman.com/2017/02/15/zillow-group-nixes-manual-listing-entry-real-estate-agents-doubles-direct-listing-feeds) [SECONDARY], accessed 2026-10-23 (helper)
+- FSBO: "To advertise a property as FSBO or FRBO you must be the owner of that property"; "Only the contracted exclusive listing agent, the owner, or the rental manager may advertise a listing" — [Zillow listing quality page (403; snippet)](https://www.zillow.com/corporate/quality/) [CLAIMED], accessed 2026-10-23 (helper); a brokerage guide warns that using the FSBO tool for an agent-represented listing "risks an account ban" — [Kale Realty, 18 May 2026](https://joinkale.com/mred-pulls-zillow-feed-how-to-get-listings-back) [CLAIMED]
+- Lead routing and fees: Zillow targets "more than 75% of our connections going to Preferred partners" by year-end 2026, and Showcase "is now on about 5% of all new listings" — [Zillow Q2 2026 shareholder letter, SEC exhibit 99.2](https://www.sec.gov/Archives/edgar/data/0001617640/000161764026000050/exhibit992.htm) [PRIMARY], accessed 2026-10-23 (helper); Showcase retail "$300–750 per listing" on a 6–12 month contract with at least one listing a month — [RE/MAX FAQ](https://resources.remax.com/remax-and-zillowpreview-faq/) [CLAIMED], accessed 2026-10-23 (helper)
+- Data out: Zillow's MLS Listings API — "All data access is at the discretion of our individual MLS partners" — [Zillow Group developers](https://www.zillowgroup.com/developers/api/mls-broker-data/mls-listings/) [PRIMARY]; Zestimate API "really for commercial use cases by businesses", by request — [Zillow Group developers](https://www.zillowgroup.com/developers/api/zestimate/zestimates-api/) [PRIMARY]; Terms of Use bar automated queries and scraping — [Zillow terms (403; snippet)](https://www.zillow.com/corporate/terms-of-use/) [CLAIMED], all accessed 2026-10-23 (helper)
+- Zillow appears in OneKey's office directory as "Zillow Inc in New York, NY" — [OneKey office page](https://www.onekeymls.com/realtor/offices/Zillow-Inc/ZILLOW) [PRIMARY, minimal], accessed 2026-10-23 (helper)
+- Realtracs' August 2026 licence with Zillow adds "guardrails on how listing content may be used in artificial intelligence, large language model applications" — [Realtracs, 5 Aug 2026](https://www.realtracs.com/info/realtracs-and-zillow-enter-new-licensing-agreement/) [PRIMARY], accessed 2026-10-23 (helper)
+
+### Inferences
+- Zillow Preview does not fit OneKey's rules for a normal listing: a Preview listing is public marketing, so OneKey Rule 302.2 requires MLS entry within one business day, and once in OneKey as "Coming Soon" it may not be syndicated "to advertising websites" (Rule 302.3(f)(1)). A OneKey brokerage could use Preview only inside that one-day window, which makes it of little value here. Ask OneKey before relying on Preview. [INFERENCE from OneKey Rules 2026C and the Zillow releases]
+- Zillow's display of OneKey listings almost certainly comes through Zillow's own OneKey participation (IDX via MLS Grid) under the Keystone "IDX" switch; no OneKey or Zillow page states the mechanism. [INFERENCE]
+- For a flat-fee firm, ordinary buyer inquiries on its own listings go to other agents on Zillow unless it pays (Showcase) or used Preview. [INFERENCE]
+
+### Gaps
+- Current text of Zillow's Listing Access Standards and Listing Feed Terms (403 throughout).
+- Whether a brand-new one-broker brokerage would be accepted into Preview (no size or fee condition found).
+- Any appeal or new MRED feed cut after 16 Sep 2026.
+
+**Gap theme P2: Realtor.com**
+
+### Takeaway
+Ordinary listings reach Realtor.com from the MLS; OneKey sends them under two broker-level Keystone switches (Active; Pending/Sold), apparently not via ListHub. Since 2026 Realtor.com also takes some pre-market listings outside the MLS through Zillow Preview and through Zenlist (eXp first). No FSBO route was found. Buyer inquiries on ordinary listings reportedly go to agents who pay for leads; prices are not published.
+
+### Cited Findings
+- OneKey Keystone: "Realtor.com On-Market – Select whether your listings in an Active status will be provided for display on the Realtor.com site. This does not include Coming Soon status"; Off-Market covers Pending and Sold; "Any 'no' or 'off' setting will overrule an indication of yes" — [OneKey support article 42913600864404](https://support.onekeymls.com/hc/en-us/articles/42913600864404) [PRIMARY, created 3 Nov 2025, updated 3 Dec 2025], accessed 2026-10-23 via the JSON endpoint
+- eXp Coming Soon listings go to Realtor.com, Homes.com and ComeHome from 15 Apr 2026, "distributed through an integrated third-party listing distribution platform, Zenlist", "subject to compliance with the rules and guidelines of their local MLS" — [eXp release, 18 Mar 2026](https://www.agnt.inc/press-releases/exp-realty-coming-soon-syndication) [PRIMARY], accessed 2026-10-23 (helper)
+- Lead routing on ordinary listings: the inquiry form "is sent to agents who pay Realtor.com for buyer leads, not to the seller or the listing agent" — [Listed Simply FAQ, about 2024](https://faq.listedsimply.com/en/articles/4932413-how-your-contact-information-appears-on-consumer-real-estate-websites) [CLAIMED]; Connections Plus "roughly $200 a month for shared leads and $1,000 or more for exclusive ZIP codes"; ReadyConnect Concierge "roughly 28–40% of your commission" — [Clever, updated 14 Sep 2026](https://listwithclever.com/real-estate-blog/realtor-com-leads-reviews-costs-pros-cons/) [CLAIMED], accessed 2026-10-23 (helper)
+- Status: "Realtor.com® is operated by News Corp … subsidiary Move, Inc." — [Zillow release, 17 Sep 2026](https://zillow.mediaroom.com/2026-09-17-Zillow-PreviewSM-listings-are-now-live-on-Realtor-com-R-,-offering-the-same-early-access-on-the-two-most-visited-real-estate-platforms-in-the-country) [PRIMARY]; Move FY2026 revenue $610M (+11%), average monthly users down 6% to 68M — [HousingWire, 6 Aug 2026](https://www.housingwire.com/articles/move-fy2026-revenue-realpro/) [SECONDARY], accessed 2026-10-23 (helper)
+- Terms unreadable (domain refused by the fetch tool); third parties say they prohibit scraping, robots, text and data mining — [ScrapeOps](https://scrapeops.io/websites/realtor/) [CLAIMED], accessed 2026-10-23 (helper)
+
+### Inferences
+- For the POC, Realtor.com needs no integration: one Keystone setting at setup, then automatic display. [INFERENCE]
+
+### Gaps
+- Realtor.com's own FSBO policy, Spotlight and Listing Toolkit prices, and its terms (domain refused).
+
+**Gap theme P3: Redfin**
+
+### Takeaway
+Redfin shows every MLS listing it receives (in the Hudson Valley, OneKey "as distributed by MLS Grid" and HVCRMLS) and FSBO homes only if posted on Fizber.com or FSBO.com. There is no broker submission route or API. Its Compass deal makes Compass the only brokerage whose Coming Soon listings Redfin shows. Redfin's Partner Agent referral fee is 33% to 40% of commission on sales of $100,000 and up.
+
+### Cited Findings
+- "All broker-listed homes from the Multiple Listing Service (MLS)" appear; "The for-sale-by-owner inventory on Redfin comes from Fizber.com and FSBO.com"; "70% of new US listings in MLS® feeds received by Redfin will post within 5 minutes" — [Redfin data quality, updated September 2025](https://www.redfin.com/about/data-quality) [PRIMARY], accessed 2026-10-23
+- Disclaimers: "New York MLS (OneKey)… Based on information submitted to the MLS GRID as of 10/22/2026"; a Hudson Valley Catskill Region MLS disclaimer also appears — [Redfin terms of use](https://www.redfin.com/about/terms-of-use) [PRIMARY], accessed 2026-10-23 (helper)
+- Terms: "You may not automatedly crawl or query the Services for any purpose or by any means" without "prior express written permission"; data mining prohibited; information for "personal, non-commercial use" — [Redfin terms of use, updated 29 Sep 2025](https://www.redfin.com/about/terms-of-use) [PRIMARY], accessed 2026-10-23 (helper)
+- Compass alliance: "'Coming Soon' listings will appear immediately on Redfin," with "'Private Exclusive' properties to follow" — [Rocket release, 26 Feb 2026](https://ir.rocketcompanies.com/news-and-events/press-releases/press-release-details/2026/Compass-and-Rocket-Form-Historic-Alliance-to-Dramatically-Increase-Home-Listing-Inventory-on-Redfin/default.aspx) [PRIMARY]; "The deal is mutually exclusive, meaning that Redfin cannot display the coming soon listings of other brokerages" — [HousingWire, 10 Apr 2026](https://www.housingwire.com/articles/premarketing-listings-compass-zillow-exp/) [SECONDARY], accessed 2026-10-23 (helper)
+- Partner referral fees: $100 flat under $50,000; $200 flat $50,000–99,999; 33% for $100,000–499,999; 35% for $500,000–899,999; 40% for $900,000+ — [Redfin Partner proof-of-commission form, August 2025](https://partneragents.redfin.com/hc/en-us/article_attachments/38904718960141) [PRIMARY], accessed 2026-10-23 (helper)
+- "Homebuyer leads in 'Early Access' will go to the listing agent" — [Real Estate News, 18 May 2026](https://www.realestatenews.com/2026/05/18/redfin-debuts-early-access-giving-homesellers-more-control) [SECONDARY], accessed 2026-10-23 (helper)
+
+### Inferences
+- A brokered listing reaches Redfin only through the MLS; the Fizber/FSBO.com route is for owners selling without a broker. [INFERENCE]
+
+### Gaps
+- Whether Compass Private Exclusives shipped on Redfin after May 2026; current Redfin agent coverage in Dutchess, Ulster and Orange.
+
+**Gap theme P4: Homes.com**
+
+### Takeaway
+Homes.com displays MLS listings (it claims 650+ MLS IDX feeds), shows only the listing agent and sends that agent the leads free. Since March 2026 it also takes pre-market listings when the listing agent opts in under seller instruction. No FSBO upload route was found. Paid Membership averages $3,400 a year (CoStar's figure, April 2026); Boost is about $260 per listing.
+
+### Cited Findings
+- Pre-market: "Pre-market listings will appear on Homes.com only when a listing agent opts in under seller instruction and in accordance with applicable local and state regulations" — [CoStar release text via StockTitan, 18 Mar 2026](https://www.stocktitan.net/news/EXPI/homes-com-expands-early-access-to-pre-market-bop82hz2kvar.html) [PRIMARY], accessed 2026-10-23 (helper)
+- Price: "Average annual subscription costs $3,400"; CoStar will "raise subscription fees for new members beginning May 1" — [The Real Deal via Yahoo Finance, 29 Apr 2026](https://finance.yahoo.com/markets/stocks/articles/costar-ceo-andy-florance-defends-173757873.html) [SECONDARY]; Boost "normally $260 per listing" — [Inman, 16 Jul 2025 (snippet)](https://inman.com/2025/07/16/homes-com-sent-direct-mailers-to-sellers-across-the-country-asking-them-to-pay-to-boost-their-homes) [SECONDARY], accessed 2026-10-23 (helper)
+- Homes.com spending cut by about $300M in 2026 after investor pressure; directors re-elected — [Inman, 6 Feb 2026](https://www.inman.com/2026/02/06/costar-continues-homes-com-defense-amid-investor-pushback/) [SECONDARY], accessed 2026-10-23 (helper)
+- Terms bar scraping and database-building without express written permission (snippet) — [Homes.com terms (403)](https://www.homes.com/about/homesterms-of-use/) [CLAIMED], accessed 2026-10-23 (helper)
+
+### Inferences
+- OneKey listings probably reach Homes.com through the IDX switch (MLS Grid); OneKey's Keystone has no Homes.com switch. [INFERENCE]
+- Homes.com is the only major portal where the firm's own listing produces its own buyer leads without paying. [INFERENCE]
+
+### Gaps
+- Homes.com's feed specification for OneKey and its own price list (403).
+
+**Gap theme P5: ListHub and OneKey's own distribution**
+
+### Takeaway
+No evidence was found that OneKey uses ListHub; its Keystone switches name Realtor.com directly. ListHub still runs, free to brokers, and now takes a broker's own-listing data licence through MLS Grid, which may let a OneKey broker reach ListHub publishers (unconfirmed). OneKey also feeds its own consumer site (OneKeyMLS.com, powered by Broker Public Portal) and the national Cribio site, both with opt-outs. OneKey "out of area" listings still syndicate to Zillow and Realtor.com.
+
+### Cited Findings
+- ListHub "now gets each company's data through MLS Grid"; a firm-specific feed costs that MLS $50 setup and $10 a month — [RANW ListHub page (©2026)](https://ranw.org/mls/mls-partners/listhub/) [PRIMARY, association], accessed 2026-10-23 (helper); broker registration "at no cost" — [GRAR ListHub page](https://www.grar.org/listhub/) [PRIMARY, association], accessed 2026-10-23 (helper)
+- OneKey offers "a feed of your own listings… with no usage restrictions" — [OneKey data delivery](http://corporate.onekeymls.com/benefits-data-delivery) [PRIMARY], accessed 2026-10-23
+- OneKeyMLS.com search powered by Broker Public Portal; listings also appear on Cribio, with participant and seller opt-outs — [OneKey news, 10 Feb 2026](http://corporate.onekeymls.com/news/onekey-mls-advances-consumer-search-strategy-through-partnership-with-broker-public-portal) [PRIMARY], accessed 2026-10-23
+- Out-of-area listings "will still syndicate to major platforms, including Zillow & Realtor.com"; "the Broker must be properly licensed and have jurisdiction to buy and/or sell real estate in the location of the listing" — [OneKey support article 47838690968340 (created 2 Apr 2026, updated 18 Aug 2026)](https://support.onekeymls.com/hc/en-us/articles/47838690968340) [PRIMARY], accessed 2026-10-23 via the JSON endpoint
+- "The MLS will not, nor are any Participants or Subscribers permitted to, syndicate 'Coming Soon' listings to advertising websites" — [OneKey Rules 2026C, Rule 302.3(f)(1)](https://support.onekeymls.com/hc/article_attachments/49417630758548) [PRIMARY], accessed 2026-10-23
+- MLS Only listings are not shared to IDX or third parties and "Will not be displayed on the listing brokerage's website, unless behind authentication" — [OneKey CCP/MLS Only FAQ (created 21 Mar 2025, updated 24 Jun 2026)](https://support.onekeymls.com/hc/en-us/articles/35871094849812) [PRIMARY], accessed 2026-10-23 via the JSON endpoint
+
+### Inferences
+- Portal reach is decided by three settings the broker controls: the per-listing Listing Exposure field (Publish to Internet), the office-level Keystone distribution switches, and the status (Coming Soon is not syndicated). The POC should show all three on a "where this listing will appear" panel. [INFERENCE]
+
+### Gaps
+- ListHub's current publisher list and whether a OneKey broker can opt into ListHub via MLS Grid (listhub.com refused by the tool; ListHub 877-560-0171).
+
+**Gap theme P6: Secondary channels update**
+
+### Takeaway
+No 2026 change found to the 2023 Meta rule (business Pages cannot post real-estate Marketplace listings). Craigslist for-sale real-estate posts are free (fees apply to NYC apartment rentals and commercial real estate). StreetEasy covers NYC (plus parts of New Jersey and the Hamptons), not the Hudson Valley. CoStar retired Homesnap in 2023.
+
+### Cited Findings
+- "All craigslist postings are free, except for…" (paid categories include NYC apartment rentals and US commercial real estate at $5) — [Craigslist posting fees](https://www.craigslist.org/about/help/posting_fees) [PRIMARY], accessed 2026-10-23 (helper)
+- From 30 Jan 2023 agents "will no longer be able to post for-sale or rental listings to Facebook Marketplace through their business profiles" — [PayProp, 24 Jan 2023](https://www.payprop.com/blog/facebook-marketplace-changes-real-estate) [SECONDARY], accessed 2026-10-23 (helper)
+- StreetEasy required manual entry from 1 Jan 2020 and is NYC-focused — [The Real Deal, 24 Dec 2019](https://therealdeal.com/2019/12/24/elliman-lambasts-streeteasys-move-to-manual-entry) [SECONDARY], accessed 2026-10-23 (helper)
+- CoStar retired Homesnap — [The Real Deal, 6 Jun 2023](https://therealdeal.com/national/2023/06/06/homesnap-heads-to-the-scrapheap/) [SECONDARY], accessed 2026-10-23 (helper)
+
+### Inferences
+- Craigslist being free does not change the automation verdict: its terms (quoted in KQ8 above) forbid posting software, so any Craigslist post is a manual human step. [INFERENCE]
+
+### Gaps
+- Meta Help Center text for 2026 (login-gated).
+
+### Contradictions with the notes above (stated here, original text not edited)
+- KQ2 said Realtor.com has no owner-upload path and implied MLS-only ingestion; the 2026 pre-market deals (Zillow Preview on Realtor.com from 17 Sep 2026; eXp via Zenlist from 15 Apr 2026) mean Realtor.com now also takes some non-MLS pre-market listings from enrolled brokerages. Still no FSBO path found.
+- KQ3 said no Redfin FSBO path was found; Redfin's own page says its FSBO inventory comes from Fizber.com and FSBO.com.
+- KQ1 described Zillow Preview as brokerages sending listings directly, with about 60 partners; Zillow's own material shows manual creation in Zillow Workspace, more than 400 brokerage partners by 17 Sep 2026, and display on Realtor.com.
+- KQ1's "outcome unknown" for Zillow v. MRED/Compass is superseded: preliminary injunction denied and case stayed (16 Sep 2026).
+- KQ7 listed Ulster among OneKey's Hudson Valley counties "per OneKey's site"; OneKey's own Rule 201 (ver. 2026C) omits Ulster (see the gap fill in mls_access.md).
+
+### Still open after gap fill
+- Zillow's current Listing Access Standards text and Listing Feed Terms: every zillow.com page returned 403; read them in a browser before relying on details.
+- Whether a new one-broker firm can enrol in Zillow Preview, and whether OneKey treats a Preview listing as a Coming Soon syndication breach: no public statement; ask Zillow and OneKey.
+- How OneKey's data reaches Zillow, Redfin and Homes.com (IDX via MLS Grid is inferred, not documented): ask OneKey support.
+- Realtor.com lead routing and prices on ordinary listings: only third-party claims; the site blocks automated readers.
+- Homes.com rate card and feed specification: sales-quoted; pages returned 403.
+- ListHub opt-in for a OneKey broker via MLS Grid: unconfirmed; call ListHub.
