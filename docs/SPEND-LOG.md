@@ -72,7 +72,14 @@ steps 1 to 4, from the recorded replays at no cost (its footer reads $0.0000); t
 | RESPEC-B | Executive summary, plan, assumptions, questions rewritten around the original idea; contract-route research | 4.31 | API credit |
 | BUILD-1 | Slice 1: skeleton, Step 1 Intake, first timeline, docker hosting, T1 to T8 | 8.31 | API credit |
 | setup | Smoke test of a job on the Max login | 0.00 notional | Max plan |
-| BUILD-2 | Slice 2 (running): pricing, listing copy and fair-housing pipeline, marketing plan; cap trimmed to the last $13.74 above the reserve, then continues on Max | running | API credit, then Max |
+| BUILD-2 | Slice 2: pricing, listing copy and the fair-housing pipeline (39/39 planted phrases caught), marketing plan | 8.43 | API credit |
+| BUILD-3 | Slice 3, first half: pricing reconciled with the demo-house research ($610k to $650k), Step 5 Communications, Step 6 Offers | 3.95 | API credit |
+| BUILD-3 | Slice 3, second half (running): Step 7 Contract, Step 8 Buyer side; resumed with its context | running | Max plan |
 
 **Credit after BUILD-1: $171.26 spent; $15 reserved for the demo's own calls; $13.74 left for BUILD-2.** The app's
 own live calls so far: $0.001 (two Haiku calls recording the replay).
+
+**The credit is used down to its reserve (2026-10-23, 11:47 UTC).** Headless jobs: $183.64 of $200. The app's own
+live calls so far: about $0.35 (recording replays). That leaves about $16 on the key: the $15 reserve for the demo's
+live calls at the meeting, and $1.36 the runner will not start a job with. From here every job runs on the Max plan
+(decision 22); `scripts/spend-summary.sh` shows their notional cost separately.
