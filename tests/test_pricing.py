@@ -44,6 +44,19 @@ def test_adjustment_arithmetic_is_code():
     assert sm["range_low"] % 5000 == 0 and sm["count"] == 8
 
 
+def test_range_reconciles_with_demo_house_cross_checks():
+    """docs/specs/demo-house.md section 4: A $649,782, B $617,652, C $610,864; suggested $610,000 to $650,000."""
+    subj = dict(address="x", style="Raised ranch", year_built=1995, living_area_sqft=2520, finished_basement_sqft=840,
+                bedrooms=3, bathrooms_full=3, bathrooms_half=0, acres=4.18, central_air=False, garage=False)
+    comps = [pricing.adjust(c, subj) for c in FixtureRecords().data["comparables"]]
+    sm = pricing.summarise(comps)
+    assert [x["value"] for x in sm["cross_checks"]] == [649782, 617652, 610864]
+    assert (sm["range_low"], sm["range_high"]) == (610000, 650000)
+    assert sm["indicated_value"] == 625000 and sm["adjusted_indicated"] == 635000
+    # basement is inside the style rate: no basement line on a sale of another style
+    assert all(a["factor"] != "Finished basement" for c in comps if not c["same_style"] for a in c["adjustments"])
+
+
 def test_ai_recommends_with_reasoning_and_cp25_marker(client, session):
     listed(client)
     r = client.post("/pricing/recommend", headers={"HX-Request": "true"})

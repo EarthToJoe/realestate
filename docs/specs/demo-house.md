@@ -188,6 +188,14 @@ What would move it, for the broker to weigh (none of this is adjusted in the num
   implies about 8% town-wide value growth between valuation dates (29.61 ÷ 27.35 = 1.083). Sales from mid-2025
   may therefore understate today's level by a few percent. Not adjusted here; the broker's call.
 
+**How the pricing screen uses this (2026-10-23, BUILD-3; decision 30 note).** Step 2 shows methods A to C beside
+its adjusted comparables. The adjusted sales (demonstration rates: +2% a year, $75 a sq ft, $2,500 an acre for the
+first 3 acres, −8% for another style, finished basement adjusted only between same-style sales) give $635,000
+weighted ($590,000 to $700,000 across the sales). The screen reconciles adjusted sales and cross-checks half and
+half (**$625,000**) and shows the range from the lower to the higher of the four results: **$610,000 to $650,000**,
+the same as above. The AI recommends **$640,000** and says which adjustments push the adjusted figure away from
+the cross-checks.
+
 ## 5. Neighbourhood facts for listing copy
 
 Places and distances only, never people. The school district appears as a name only, with no claims about

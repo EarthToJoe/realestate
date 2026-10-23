@@ -32,18 +32,26 @@ from app.records import service as records
 from app.sanitize import clean_model
 
 PROMPTS = Path(__file__).with_name("prompts")
-PROMPT_VERSION = "recommend.v1"
+PROMPT_VERSION = "recommend.v2"
 AS_OF = date(2026, 10, 23)  # the analysis date: the demo-house records were read on this day
 
 # Adjustment rates (USD), applied to each comparable toward the subject. [INFERENCE] demonstration rates for
 # rural Dutchess County one-family homes, set by us from the fixture's own evidence and stated on screen; a
 # production CMA would derive them by paired-sales analysis.
+# Re-examined 2026-10-23 against docs/specs/demo-house.md (decision 30, dated note):
+# - time: the equalisation-rate move (29.61 -> 27.35, about +8%) falls between the two rolls' valuation dates,
+#   before most of these sales; the fixture's own sales show no trend after it (Pawling sale / 2026 full market
+#   value: Jul 2025 1.034, Aug 2025 1.049, Sep 2025 1.033, Mar 2026 1.029). Cut from +4% to +2% a year.
+# - basement: the -8% style rate was measured on raised ranches that have finished lower levels, so for a sale of
+#   another style it already prices the subject's basement; adjusting both counted it twice (+$21,000 on five
+#   sales). Now adjusted only between sales of the same style.
+# - lot: the fixture shows no acreage premium (the 6.55-acre sale had the lowest price a foot, $222); cut from
+#   $5,000 to $2,500 an acre.
 RATES = {
-    "time_pct_per_month": 0.33,  # Pawling's equalisation rate moved 29.61 -> 27.35 (about +8% a year, all
-    # property types); we use about half, +4% a year, because the rate lags the market
+    "time_pct_per_month": 0.17,  # about +2% a year
     "living_area_per_sqft": 75,  # about 30% of the comparables' median $258/sq ft: added area is worth less
-    "finished_basement_per_sqft": 25,
-    "lot_per_acre": 5000, "lot_cap_acres": 3.0,  # rural acreage beyond a building lot adds little
+    "finished_basement_per_sqft": 25, "basement_same_style_only": True,
+    "lot_per_acre": 2500, "lot_cap_acres": 3.0,  # rural acreage beyond a building lot adds little
     "year_built_per_year": 1000,
     "bedroom": 5000, "full_bath": 10000, "half_bath": 5000,
     "central_air": 8000, "garage": 15000,
@@ -96,6 +104,8 @@ def adjust(comp: dict, subj: dict) -> dict:
     d_area = subj["living_area_sqft"] - comp["living_area_sqft"]
     add("Living area", d_area * RATES["living_area_per_sqft"], f"{d_area:+,} sq ft at ${RATES['living_area_per_sqft']}")
     d_bsmt = subj["finished_basement_sqft"] - (comp.get("finished_basement_sqft") or 0)
+    if RATES["basement_same_style_only"] and comp["style"].lower() != subj["style"].lower():
+        d_bsmt = 0  # inside the style rate (measured on raised ranches with finished lower levels)
     add("Finished basement", d_bsmt * RATES["finished_basement_per_sqft"],
         f"{d_bsmt:+,} sq ft at ${RATES['finished_basement_per_sqft']}")
     d_acres = subj["acres"] - comp["acres"]
@@ -146,6 +156,28 @@ def _round(v: float, to: int = 5000) -> int:
     return int(round(v / to) * to)
 
 
+def cross_checks() -> list[dict]:
+    """The three cross-checks of docs/specs/demo-house.md section 4, from the fixture's reference arithmetic."""
+    ref = FixtureRecords().data["cma_reference"]
+    a, b, c = (ref["method_a_price_per_sqft_all"], ref["method_b_same_style"],
+               ref["method_c_assessment_ratio_pawling"])
+    area = ref["subject_living_area_sqft"]
+    return [
+        {"key": "A", "name": "Median price a foot, all 8 sales", "value": a["median_value"],
+         "how": f"median ${a['median']}/sq ft x {area:,} sq ft"},
+        {"key": "B", "name": "Same style only (the two raised ranches)", "value": b["value"],
+         "how": f"${b['mean_price_per_sqft']}/sq ft x {area:,} sq ft; only two sales"},
+        {"key": "C", "name": "Town assessment ratio (four Pawling sales)", "value": c["value"],
+         "how": f"median sale/assessment {c['median_ratio']} x ${ref['subject_full_market_value_2026']:,}; "
+                "Pawling assessments scatter about 13%, so a cross-check only"},
+    ]
+
+
+# Reconciliation: half weight on the adjusted sales, half on the median of the three cross-checks (each is an
+# unadjusted method with its own weakness; the adjusted sales rest on demonstration rates). Stated on screen.
+RECONCILE_WEIGHT_ADJUSTED = 0.5
+
+
 def summarise(comps: list[dict]) -> dict:
     """Weights favour comparables needing less adjustment and of the same style; the range spans the
     adjusted prices of the comparables not flagged weak (all of them if fewer than three are strong)."""
@@ -161,13 +193,26 @@ def summarise(comps: list[dict]) -> dict:
     total = sum(c["weight"] for c in comps)
     indicated = sum(c["adjusted_price"] * c["weight"] for c in comps) / total
     adj = sorted(c["adjusted_price"] for c in basis)
-    low, high = _round(min(adj)), _round(max(adj))
+    checks = cross_checks()
+    check_mid = median(x["value"] for x in checks)
+    reconciled = RECONCILE_WEIGHT_ADJUSTED * indicated + (1 - RECONCILE_WEIGHT_ADJUSTED) * check_mid
+    # the range runs from the lower to the higher of the cross-checks and the adjusted-sales indication, so both
+    # methods' answers sit inside it and the reconciled value sits between them
+    low = _round(min(min(x["value"] for x in checks), indicated), 10000)
+    high = _round(max(max(x["value"] for x in checks), indicated), 10000)
     return {
-        "indicated_value": _round(indicated), "range_low": low, "range_high": high,
+        "indicated_value": _round(reconciled), "adjusted_indicated": _round(indicated),
+        "adjusted_range_low": _round(min(adj)), "adjusted_range_high": _round(max(adj)),
+        "cross_checks": checks, "cross_check_median": int(check_mid),
+        "reconcile_weight_adjusted": RECONCILE_WEIGHT_ADJUSTED,
+        "range_low": low, "range_high": high,
         "median_adjusted": _round(median(c["adjusted_price"] for c in comps)),
-        "range_rule": ("lowest to highest adjusted price of the comparables not flagged weak, rounded to $5,000"
-                       if len(strong) >= 3 else
-                       "lowest to highest adjusted price of the five least-adjusted comparables, rounded to $5,000"),
+        "range_rule": ("from the lower to the higher of the cross-checks and the adjusted-sales indication, "
+                       "rounded to $10,000; the indicated value gives the adjusted sales and the cross-checks "
+                       "half weight each"),
+        "adjusted_range_rule": ("lowest to highest adjusted price of the comparables not flagged weak"
+                                if len(strong) >= 3 else
+                                "lowest to highest adjusted price of the five least-adjusted comparables"),
         "range_basis": [c["rank"] for c in basis], "rates": RATES, "as_of": AS_OF.isoformat(), "label": LABEL,
         "count": len(comps),
     }
@@ -207,8 +252,10 @@ def model_context(s: Session, deal: Deal, pa: PricingAnalysis) -> dict:
                                               "living_area_sqft", "acres", "adjustments", "net_adjustment",
                                               "gross_pct", "adjusted_price", "weak", "weight")}
                           for c in pa.comps]
-    ctx["computed"] = {k: pa.summary[k] for k in ("indicated_value", "range_low", "range_high", "median_adjusted",
-                                                  "range_rule", "rates", "as_of")}
+    ctx["computed"] = {k: pa.summary.get(k) for k in (
+        "indicated_value", "adjusted_indicated", "adjusted_range_low", "adjusted_range_high", "cross_checks",
+        "cross_check_median", "reconcile_weight_adjusted", "range_low", "range_high", "median_adjusted",
+        "range_rule", "rates", "as_of")}
     ctx["not_adjusted_for"] = FixtureRecords().data["cma_reference"]["not_adjusted_for"]
     return ctx
 

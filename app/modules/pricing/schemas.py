@@ -14,6 +14,9 @@ class PricingAdvice(BaseModel):
     method_plain: str = Field(description="The method in plain words for the seller, 3 to 5 sentences: which "
                                           "sales, what was adjusted and why, how the range was formed")
     weak_comps: list[WeakComp] = Field(description="Comparables that are weaker guides, with the reason")
+    reconciliation: str = Field(description="2 to 4 sentences: how the adjusted sales and the three cross-checks "
+                                            "compare, and which adjustments push the adjusted figure away from "
+                                            "the cross-checks and why")
     recommended_price: int = Field(description="The recommended list price in whole dollars, a round figure")
     reasoning: str = Field(description="Why this price, 3 to 6 sentences: where it sits in the range, what "
                                        "the adjustments leave out (pond, condition, state-route frontage), and "

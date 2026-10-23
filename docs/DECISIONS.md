@@ -197,6 +197,18 @@ with a dated line.
     $730,000; indicated $660,000). The model never does the arithmetic: it writes the method, names weak comps and
     recommends a price (Sonnet: $675,000), with the CP-25 marker. The rates are ours [INFERENCE], labelled, and
     Q46 asks for local ones. The net sheet uses the NY transfer tax (0.4%) and labelled estimates.
+    *Note 2026-10-23 (BUILD-3):* that range and the $675,000 sat above all three cross-checks in
+    `docs/specs/demo-house.md` section 4, which a Dutchess broker would test. Rates re-examined against the
+    fixture's evidence: time cut to +2% a year (the sales show no trend after the equalisation-rate move, which
+    falls before most of them); the finished basement is now adjusted only between same-style sales (the −8% style
+    rate was measured on raised ranches with finished lower levels, so adjusting both counted it twice, +$21,000 on
+    five sales); lot cut to $2,500 an acre (the 6.55-acre sale had the lowest price a foot). The screen now shows
+    the three cross-checks (A $649,782, B $617,652, C $610,864) beside the adjusted sales ($635,000 weighted;
+    $590,000 to $700,000), reconciles them half and half (reconciled value $625,000), and the range runs from the
+    lower to the higher of the four, rounded: **$610,000 to $650,000**, the same as the demo-house research. The
+    model must say which adjustments push its figure away from the cross-checks (prompt `recommend.v2`). Sonnet
+    now recommends **$640,000**: above the reconciled value for the pond, the updates and the lot, below the top
+    for no central air, no garage, oil heat and state-route frontage. Replays re-recorded.
 31. **The fair-housing gate needs both passes (2026-10-23, BUILD-2).** Copy is "passed" only when no block finding
     stands *and* the model review ran; a replay miss or the spend cap leaves the gate shut rather than letting the
     rules alone decide. `require_pass` checks the newest result is for exactly the current version and text (hash),

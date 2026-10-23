@@ -7,6 +7,7 @@
     {% if not advice.inside_range %}<span class="tag is-warning">outside the computed range: see the reasoning</span>{% endif %}</p>
   <p><b>Range</b> ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }} · indicated ${{ '{:,}'.format(sm.indicated_value) }}</p>
   <p><b>The method in plain words.</b> {{ advice.method_plain }}</p>
+  {% if advice.reconciliation %}<p id="reconciliation"><b>Adjusted sales against the cross-checks.</b> {{ advice.reconciliation }}</p>{% endif %}
   <p><b>Why this price.</b> {{ advice.reasoning }}</p>
   {% if advice.weak_comps %}<p><b>Weaker comparables:</b></p>
   <ul>{% for w in advice.weak_comps %}<li>#{{ w.rank }}: {{ w.why }}</li>{% endfor %}</ul>{% endif %}

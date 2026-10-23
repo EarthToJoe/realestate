@@ -25,6 +25,9 @@ def default(task: str, context: dict) -> dict:
         return {"method_plain": "We used eight nearby one-family sales from the county's public records and "
                                 "adjusted each toward this house for date, size, lot, age, rooms and style.",
                 "weak_comps": weak, "recommended_price": price,
+                "reconciliation": f"The adjusted sales indicate ${c['adjusted_indicated']:,}, above the "
+                                  f"cross-checks' median of ${c['cross_check_median']:,}; the style and date "
+                                  "adjustments explain most of the gap.",
                 "reasoning": f"${price:,} sits at the weighted indicated value, inside the computed range. The "
                              "adjustments leave out the pond and interior condition.",
                 "things_that_would_change_it": ["A septic or well problem at inspection",

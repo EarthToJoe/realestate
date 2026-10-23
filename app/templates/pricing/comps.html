@@ -43,11 +43,25 @@ using the rates below. The model does not do the arithmetic; it explains it and 
 </tbody></table>
 {% endfor %}
 </details>
+{% if sm.cross_checks %}
+<h2 class="title is-6" style="margin-top:14px">Cross-checks beside the adjusted sales</h2>
+<table class="table is-narrow is-fullwidth" id="cross-checks">
+  <thead><tr><th>Method</th><th>Value</th><th>How</th></tr></thead>
+  <tbody>
+  <tr><td><b>Adjusted sales</b> (weighted, table above)</td><td><b>${{ '{:,}'.format(sm.adjusted_indicated) }}</b></td>
+    <td><small>adjusted prices ${{ '{:,}'.format(sm.adjusted_range_low) }} to ${{ '{:,}'.format(sm.adjusted_range_high) }} ({{ sm.adjusted_range_rule }})</small></td></tr>
+  {% for x in sm.cross_checks %}
+  <tr data-check="{{ x.key }}"><td>{{ x.key }}. {{ x.name }}</td><td>${{ '{:,}'.format(x.value) }}</td><td><small>{{ x.how }}</small></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
 <div class="ai-panel" id="range">
   <p><b>Suggested range:</b> ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }}
-    · <b>indicated value</b> ${{ '{:,}'.format(sm.indicated_value) }} (weighted) · median adjusted ${{ '{:,}'.format(sm.median_adjusted) }}</p>
-  <p><small>Range: {{ sm.range_rule }} (sales {{ sm.range_basis | join(', ') }}). Weights favour sales needing smaller
-  adjustments and of the same style. Rates [INFERENCE, demonstration rates stated here]:
+    · <b>reconciled value</b> ${{ '{:,}'.format(sm.indicated_value) }}{% if sm.adjusted_indicated %} (adjusted sales ${{ '{:,}'.format(sm.adjusted_indicated) }}, cross-check median ${{ '{:,}'.format(sm.cross_check_median) }}){% endif %} · median adjusted ${{ '{:,}'.format(sm.median_adjusted) }}</p>
+  <p><small>Range: {{ sm.range_rule }}. Weights favour sales needing smaller
+  adjustments and of the same style. Finished basement: adjusted only between sales of the same style (the style
+  rate was measured on raised ranches with finished lower levels). Rates [INFERENCE, demonstration rates stated here, re-examined against the sales 2026-10-23]:
   date +{{ sm.rates.time_pct_per_month }}%/month; living area ${{ sm.rates.living_area_per_sqft }}/sq ft; finished basement
   ${{ sm.rates.finished_basement_per_sqft }}/sq ft; lot ${{ '{:,}'.format(sm.rates.lot_per_acre) }}/acre (first {{ sm.rates.lot_cap_acres }} acres of
   difference); age ${{ '{:,}'.format(sm.rates.year_built_per_year) }}/year; bedroom ${{ '{:,}'.format(sm.rates.bedroom) }}; full bath
