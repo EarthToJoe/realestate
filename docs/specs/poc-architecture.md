@@ -391,6 +391,16 @@ source of income; warn-tier terms; and allowed look-alikes that must not be flag
 - `test_no_unchecked_send`: no message or artifact reaches "sent (simulated)" or "ready to publish" without a passing
   `fair_housing_result` (now that the AI sends on its own, this test replaces the human gate as the guarantee).
 
+**Result (2026-10-23, BUILD-2).** Rules file `app/fairhousing/rules.yaml`, version `FH-RULES 2026-10-23.1`: 25 rules
+(20 block, 5 warn) covering the 7 federal and 15 NY classes, steering, blockbusting and source of income; the NY
+class list is the one WS2 records for Executive Law §296(5) (not re-read against the statute text in this job).
+Fixture set: **58 phrases** (39 disallowed, of which 36 the rules must catch and 3 coded phrases only the model is
+expected to catch; 5 warn; 14 allowed look-alikes). Rules alone: 36/36 caught, 0/14 allowed flagged, 5/5 warns
+warn. **Rules + Haiku 5.5 review (live, then replayed): recall 100% (39/39), allowed flagged 0% (0/14).** The
+demo's planted sentence is caught (FH-FAM-01 block, FH-REL-02 warn), the AI's fixed version passes, and only then
+can it be marked ready. A model pass that does not run (replay miss, spend cap) leaves the gate shut. Caveat: the
+set is our own; an outside set (Zillow's FairHome data, Q-WS7-5) is still to come.
+
 ---
 
 ## 6. PII design
@@ -439,6 +449,9 @@ task is in `config/models.yaml`, so slice 1's side-by-side can move any task up 
 | **Full live demo run** | | **~31** | | **≈ $0.26, call it $0.35 with retries** |
 
 [INFERENCE: token counts are estimates; the `model_call` table replaces them with real numbers in slice 2.]
+**Measured in slice 2 (demo house, live):** pricing (Sonnet) 5.5k in / 2.3k out, $0.038; copy (Sonnet) 2.6k in /
+3.7k out, $0.046; fair-housing review (Haiku) about 260 in + 3k cached / 400 out, $0.0003 a call. Slice 2's side-by-
+side kept Sonnet for pricing and copy (`docs/build/model-side-by-side-slice2.md`).
 **Change from the overnight spec:** about $0.26 a run instead of $0.16, because the AI now advises on and negotiates
 both sides (three more Sonnet calls) and the contract is the product's finished draft, not a draft for an attorney
 (longer output). Not material to the plan: the $15 reserve (D19) still covers ~40 live runs, and the $12 app cap

@@ -9,7 +9,7 @@ Written 2026-10-23 from the architecture spec; **revised 2026-10-23 for decision
 sides and performs every agent act, including the functions WS1 classes "human or licence required", each with a
 red "NY law today" marker; the seller and the buyer make their own decisions). Status is updated as the build lands
 (planned → built → tested). Slice 1 statuses set 2026-10-23 (BUILD-1): "tested" means a pytest test and the
-live-site walk (`scripts/live-flow.sh`) check it.
+live-site walk (`scripts/live-flow.sh`) check it. Slice 2 statuses set 2026-10-23 (BUILD-2): steps 2 to 4, same meaning; the live walk now covers steps 1 to 4.
 
 **In the demo** = who performs it in the product: **AI**, **seller**, **buyer**, **third party** (planned, named
 on the timeline), **human required** (a practical step with no software route). **NY law today** = the marker text
@@ -24,19 +24,19 @@ client_decision, LM law_marker, HR human_required, TP third_party, AU automated.
 | `intake` / Onboarding notices (agency form, DOS-2156, not-legal-services) | 1 | F8, F9, F10 | L12, L29, L39 | CP-24 AU; CP-01 CD | AI sends; seller acknowledges | none | tested |
 | `intake` / Listing presentation, flat fee, conflicts check, listing acceptance | 1 | F5, F7, F12 | L1, L5, L14 | CP-02 LM | AI | Accepting a listing for a fee: licensed broker | tested |
 | `intake` / Listing agreement with six-point exclusive-listing explanation | 1 | F13 | L9, L14, L34 | CP-03 CD | AI generates; seller signs | none (the firm is the contracting party; see CP-35) | tested |
-| `pricing` / Comparable sales table, adjustments, range, net sheet ("not an appraisal") | 2 | F21, F25 | L6 (preparatory work), WS3-D5 | none (AI work shown) | AI | none | planned |
-| `pricing` / AI's recommended list price with reasoning | 2 | F22, F24 | L6, L18, WS3-D5 | CP-25 LM | AI | Price advice: listing agent's fiduciary duty (licensed broker) | planned |
-| `pricing` / Seller's list-price choice | 2 | F22, F24 | L9, WS3-R9 | CP-05 CD | seller | none | planned |
-| `copy` / Drafts: MLS remarks, portal description, 3 social posts, flyer (PDF) with DEMONSTRATION mark | 3 | F26, F31 | L9, L10, L54, WS3-R6, WS3-R8 | goes to CP-26, CP-06 | AI | see CP-06 | planned |
-| `fairhousing` / Rules pass + model review + fixed version, planted-violation button, block on fail | 3, 5, 10 | F26, F78, F81 | L36, L37, L41, L58, L59, L61 | CP-26 AU | AI (software gate) | none | planned |
-| `copy` / MLS rule pre-check (required fields, no compensation, not "free") | 3 | F28, F85 | L16, WS3-R6, WS3-R7 | feeds CP-08 | AI | none | planned |
-| `copy` / AI marks passing copy "ready to publish" | 3 | F26, F76 | L10, L18, L36 | CP-06 LM | AI | Only the broker places and approves ads (licensed broker) | planned |
-| `channels` / Channel board: OneKey MLS card with prepared listing package (`MLSConnector` stub) | 4 | F28 | L1, L16, WS3-C1 | CP-08 HR | human required (licensed MLS participant or Administrative User) | MLS participation needs a broker licence (shown in the HR marker) | planned |
-| `channels` / Portal cards fed from MLS (Zillow, Realtor.com, Redfin, Homes.com, OneKeyMLS.com) | 4 | F29 | L16, WS3-C4, C8 to C10, C12, WS3-D7 (never scraped) | one-time setup notes (claim profile, Keystone switches) | AI (status); human required (one-time setup) | none | planned |
-| `channels` / Firm website card with Clear Cooperation clock | 4 | F30 | L20 (pending), WS3-C13, WS3-R1 | none (automatic block until MLS entry recorded) | AI | none | planned |
-| `channels` / Social, Google Business Profile, Meta/Nextdoor cards (drafted, scheduled, posting stubbed) | 4 | F30 | L10, L38, WS3-C14, WS3-C15 | covered by CP-06 | AI | see CP-06 | planned |
-| `channels` / Vendor cards: photos, sign, lockbox; open house | 4 | F20, F27, F31, F38, F40 | L10 (sign names the firm), L19, WS3-R3, WS3-R8 | CP-10 HR for the open house | AI books; third party installs; seller hosts | none for the owner; a non-owner host would be a licensed showing (L19) | planned |
-| `channels` / Marketing-exposure choice and seller authorisations | 4 | F32, F38 | L9, L20 (pending), WS3-R2, WS3-R3 | CP-07 CD | seller | none | planned |
+| `pricing` / Comparable sales table, adjustments, range, net sheet ("not an appraisal") | 2 | F21, F25 | L6 (preparatory work), WS3-D5 | none (AI work shown) | AI | none | tested |
+| `pricing` / AI's recommended list price with reasoning | 2 | F22, F24 | L6, L18, WS3-D5 | CP-25 LM | AI | Price advice: listing agent's fiduciary duty (licensed broker) | tested |
+| `pricing` / Seller's list-price choice | 2 | F22, F24 | L9, WS3-R9 | CP-05 CD | seller | none | tested |
+| `copy` / Drafts: MLS remarks, portal description, 3 social posts, flyer (PDF) with DEMONSTRATION mark | 3 | F26, F31 | L9, L10, L54, WS3-R6, WS3-R8 | goes to CP-26, CP-06 | AI | see CP-06 | tested (flyer PDF: mark on every page, pdftotext check) |
+| `fairhousing` / Rules pass + model review + fixed version, planted-violation button, block on fail | 3, 5, 10 | F26, F78, F81 | L36, L37, L41, L58, L59, L61 | CP-26 AU | AI (software gate) | none | tested (step 3; messages in slice 3, campaign in slice 4) |
+| `copy` / MLS rule pre-check (required fields, no compensation, not "free") | 3 | F28, F85 | L16, WS3-R6, WS3-R7 | feeds CP-08 | AI | none | tested |
+| `copy` / AI marks passing copy "ready to publish" | 3 | F26, F76 | L10, L18, L36 | CP-06 LM | AI | Only the broker places and approves ads (licensed broker) | tested |
+| `channels` / Channel board: OneKey MLS card with prepared listing package (`MLSConnector` stub) | 4 | F28 | L1, L16, WS3-C1 | CP-08 HR | human required (licensed MLS participant or Administrative User) | MLS participation needs a broker licence (shown in the HR marker) | tested |
+| `channels` / Portal cards fed from MLS (Zillow, Realtor.com, Redfin, Homes.com, OneKeyMLS.com) | 4 | F29 | L16, WS3-C4, C8 to C10, C12, WS3-D7 (never scraped) | one-time setup notes (claim profile, Keystone switches) | AI (status); human required (one-time setup) | none | tested |
+| `channels` / Firm website card with Clear Cooperation clock | 4 | F30 | L20 (pending), WS3-C13, WS3-R1 | none (automatic block until MLS entry recorded) | AI | none | tested (held until the MLS entry is recorded; no live countdown) |
+| `channels` / Social, Google Business Profile, Meta/Nextdoor cards (drafted, scheduled, posting stubbed) | 4 | F30 | L10, L38, WS3-C14, WS3-C15 | covered by CP-06 | AI | see CP-06 | tested (posting stays a person's job: card says so) |
+| `channels` / Vendor cards: photos, sign, lockbox; open house | 4 | F20, F27, F31, F38, F40 | L10 (sign names the firm), L19, WS3-R3, WS3-R8 | CP-10 HR for the open house | AI books; third party installs; seller hosts | none for the owner; a non-owner host would be a licensed showing (L19) | tested |
+| `channels` / Marketing-exposure choice and seller authorisations | 4 | F32, F38 | L9, L20 (pending), WS3-R2, WS3-R3 | CP-07 CD | seller | none | tested |
 | `inbox` / Seller's fact sheet and the AI's negotiating authority | 5 | F33, F84 | L9, L18 | CP-27 CD | seller | none | planned |
 | `inbox` / Shared inbox; AI answers and sends (simulated) from the fact sheet, within authority; seller sees only the seller's decisions | 5 | F2, F33, F34, F83 | L18, L23, L37, L59 (same response target for all) | CP-09 LM (per message that discusses the listing, negotiates or advises) | AI; seller decides only seller decisions | Discussing listings with prospects and negotiating: licensed broker | planned |
 | `inbox` / First-contact disclosures attached; firm identity block on every message | 5 | F8, F10 | L10, L12, L39 | CP-24 AU | AI | none | planned |

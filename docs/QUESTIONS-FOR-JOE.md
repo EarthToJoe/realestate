@@ -164,6 +164,13 @@ every screen and message. A web search (2026-10-23) found no company of that nam
 firm later (his old "Hudson Valley Partners" idea, for example, after a name check with the Department of State).
 *Unblocks:* nothing now; the name is one setting in the app's brokerage config.
 
+**Q46. The pricing step's adjustment rates.** The demo adjusts each comparable sale in code at rates we set from the
+demo house's own data and state on screen (for example $75 a square foot of living area, $5,000 an acre for the
+first 3 acres of difference, +4% a year for time, −8% for a style other than a raised ranch). They are demonstration
+rates [INFERENCE], not a broker's or appraiser's. With them the range is $615,000 to $730,000 and the AI recommends
+$675,000. *Provisional:* keep them, labelled; a broker (perhaps your father-in-law's contacts) can replace them with
+local paired-sales rates in `app/modules/pricing/service.py`, one line each. *Unblocks:* nothing for the demo.
+
 ## Answered (newest first)
 
 - **2026-10-23, closed by decision 21 or merged into Q44 (the father-in-law bundle):**

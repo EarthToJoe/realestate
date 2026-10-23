@@ -54,8 +54,15 @@ own model calls (decision 19). Cross-check: the Anthropic Console usage page.
 | 2026-10-23 | local, `scripts/record-replays.py` | intake.infer_gaps | claude-haiku-5-5 | 2,637 / 1,195 / 924 | 0.000875 | Prove the live provider; record the demo-house replay |
 | 2026-10-23 | local, `scripts/record-replays.py` | probe.mask_roundtrip (T6) | claude-haiku-5-5 | 406 / 0 / 123 | 0.000102 | Try-first check T6 (PII tokens round trip) |
 
-**App live spend so far: $0.00098** of the $12 app cap (inside the $15 demo reserve). The hosted app answers the
-demo house from the recorded replay at no cost; tests use the fake provider.
+| 2026-10-23 | local, `scripts/slice2-models.py compare` | pricing.recommend, copy.draft (Haiku run), 6 fairhousing.review, intake | claude-haiku-5-5 | 12,339 in, 3,095 cache write, 19,613 cache read / 12,478 out | 0.008056 | Side-by-side, Haiku arm |
+| 2026-10-23 | local, `scripts/slice2-models.py compare` | pricing.recommend, copy.draft (Sonnet run), 6 fairhousing.review (Haiku), intake | claude-sonnet-5-5 + Haiku | 12,334 in, 2,943 cache write, 19,765 cache read / 9,447 out | 0.086444 | Side-by-side, Sonnet arm |
+| 2026-10-23 | local, `scripts/slice2-models.py record` | the steps 2 to 4 demo run (9 calls, replays committed) | Sonnet + Haiku | not kept (run database rebuilt by the replay check) | 0.0829 | Replays the hosted demo uses |
+| 2026-10-23 | local, `pytest --live` | fairhousing.review on 58 fixture phrases | claude-haiku-5-5 | not kept (pytest temp database) | ~0.02 (estimate) | Fixture replays; A8 measurement |
+| 2026-10-23 | local, first compare attempt | Haiku copy.draft cut off at 4,000 tokens (raised; not logged) | claude-haiku-5-5 | ~4,000 out | ~0.004 (estimate) | Led to `max_tokens` 8,000 |
+
+**App live spend so far: about $0.20** (slice 1 $0.001; slice 2 about $0.20, $0.18 of it logged by the app and the
+rest estimated as marked) of the $12 app cap (inside the $15 demo reserve). The hosted app answers the demo house,
+steps 1 to 4, from the recorded replays at no cost (its footer reads $0.0000); tests use the fake provider.
 
 ## 2026-10-23, morning: original idea re-spec and build slice 1 (credit, then Max: decision 22)
 

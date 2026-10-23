@@ -189,3 +189,24 @@ with a dated line.
     The spend log (`model_call`) also survives "Start demo". The hosted app runs in replay mode: the demo-house
     inputs replay (badge "AI: replay of the run recorded ..."); any changed input goes live once and is recorded.
     Locally, `make run` is live when the key is readable, otherwise replay.
+30. **Pricing is arithmetic in code; the model explains and advises (2026-10-23, BUILD-2).** Eight Dutchess sales
+    from the fixture are adjusted toward the subject at rates printed on the screen (date, living area, finished
+    basement, lot capped at 3 acres of difference, age, rooms, central air, garage, and −8% for a style other than
+    the subject's raised ranch, from the two raised-ranch sales' lower price a foot). Comps over 25% gross
+    adjustment or over 3 miles are flagged weak; the range spans the adjusted prices of the rest ($615,000 to
+    $730,000; indicated $660,000). The model never does the arithmetic: it writes the method, names weak comps and
+    recommends a price (Sonnet: $675,000), with the CP-25 marker. The rates are ours [INFERENCE], labelled, and
+    Q46 asks for local ones. The net sheet uses the NY transfer tax (0.4%) and labelled estimates.
+31. **The fair-housing gate needs both passes (2026-10-23, BUILD-2).** Copy is "passed" only when no block finding
+    stands *and* the model review ran; a replay miss or the spend cap leaves the gate shut rather than letting the
+    rules alone decide. `require_pass` checks the newest result is for exactly the current version and text (hash),
+    so editing after a check always needs a re-check. Warn findings are rewritten by the AI (rule `fix`) and shown
+    with its choice. The AI's fixed version prefers the model's rewrite when the rules pass it, else the rules' own
+    fix (replace the phrase, or drop the sentence). The same gate serves messages in slice 3.
+32. **Module name `listing_copy`, not `copy` (2026-10-23, BUILD-2).** A package named `copy` would shadow Python's
+    standard `copy` module; the spec's `copy` module is `app/modules/listing_copy/`. Routes are still `/copy`.
+33. **Slice 2 models (2026-10-23, BUILD-2).** After a live side-by-side on the demo house
+    (`docs/build/model-side-by-side-slice2.md`): Sonnet 5.5 stays on pricing advice and listing copy (more specific,
+    attributes seller facts; about $0.08 more a run), Haiku 5.5 on the fair-housing review; `copy.draft` gets
+    8,000 output tokens after Haiku was cut off at 4,000. The channel board has no model call: every card is built
+    from the connector stubs and the records, so its honesty does not depend on a model.

@@ -39,7 +39,38 @@ ok "CP-03 refused before CP-01" "CP-01"
 curl -s "${AUTH[@]}" -b "persona=presenter" -X POST "$BASE/intake/agency" -d decision=acknowledge -o "$OUT" -w "%{http_code}\n" | sed 's/^/presenter acknowledges -> HTTP /'
 curl -s "${AUTH[@]}" -b "persona=seller" -X POST "$BASE/intake/agency" -d decision=acknowledge -o /dev/null -w "%{http_code}\n" | sed 's/^/seller acknowledges -> HTTP /'
 curl -s "${AUTH[@]}" -b "persona=seller" -X POST "$BASE/intake/sign" -d decision=sign -o /dev/null -w "%{http_code}\n" | sed 's/^/seller signs -> HTTP /'
+as() { local p=$1; shift; curl -s "${AUTH[@]}" -b "persona=$p" "$@"; }
+# ---- Step 2 Pricing (slice 2)
+c "$BASE/pricing" -o "$OUT"; ok "pricing: comparables table" 'data-rank="8"'; ok "pricing: CMA label" "not an appraisal"
+c -X POST -H "HX-Request: true" "$BASE/pricing/recommend" -o "$OUT"
+ok "pricing: AI recommended price" 'id="recommended"'; ok "pricing: CP-25 marker" 'id="rec-CP-25"'; ok "pricing: net sheet" 'id="net-sheet"'
+grep -o 'AI: [a-z]*[^<]*' "$OUT" | head -1
+PRICE=$(grep -o 'id="recommended">\$[0-9,]*' "$OUT" | grep -o '[0-9,]*$' | tr -d ,); echo "recommended: \$$PRICE"
+as presenter "$BASE/copy" -o "$OUT"; ok "copy refused before CP-05" 'id="gate"'
+as presenter -X POST "$BASE/pricing/choose" -d "price=$PRICE" -o /dev/null -w "%{http_code}\n" | sed 's/^/presenter chooses price -> HTTP /'
+as seller -X POST "$BASE/pricing/choose" -d "price=$PRICE" -o /dev/null -w "%{http_code}\n" | sed 's/^/seller chooses price -> HTTP /'
+# ---- Step 3 Listing copy
+as presenter -X POST "$BASE/copy/draft" -o /dev/null
+as presenter "$BASE/copy" -o "$OUT"; ok "copy: six pieces drafted" 'data-channel="flyer"'
+PORTAL=$(grep -o 'id="art-[0-9]*" data-channel="portal"' "$OUT" | grep -o '[0-9]\+' | head -1)
+as presenter -X POST -H "HX-Request: true" "$BASE/copy/$PORTAL/plant" -o "$OUT"; ok "planted violation caught (FH-FAM-01)" 'data-rule="FH-FAM-01"'
+as presenter -X POST "$BASE/copy/$PORTAL/ready" -o /dev/null -w "%{http_code}\n" | sed 's/^/mark blocked copy ready -> HTTP /'
+as presenter -X POST -H "HX-Request: true" "$BASE/copy/$PORTAL/fix" -o "$OUT"; ok "fix applied, re-check passes" 'data-passed="yes"'
+as presenter -X POST "$BASE/copy/ready-all" -o "$OUT"; ok "CP-06 marker after ready" 'id="rec-CP-06"'
+as presenter "$BASE/copy/mls" -o "$OUT"; ok "MLS pre-check and package" 'id="mls-package"'
+PDF=$(mktemp); as presenter "$BASE/copy/flyer.pdf" -o "$PDF"
+if command -v pdftotext >/dev/null; then n=$(pdftotext "$PDF" - | tr '\f' '\n\f' | grep -c DEMONSTRATION); echo "flyer PDF: DEMONSTRATION appears $n times"; fi
+head -c 4 "$PDF" | grep -q '%PDF' && echo "ok   flyer is a PDF" || { echo "FAIL flyer PDF"; fail=1; }; rm -f "$PDF"
+# ---- Step 4 Marketing plan
+as presenter "$BASE/channels" -o "$OUT"; ok "channels: CP-08 human required, WS3 link" 'docs-research-ws3-listing-data-access.html'
+ok "channels: portals wait for the MLS" "waiting for the MLS entry"
+as seller -X POST "$BASE/channels/authorise" -d decision=sign --data-urlencode "exposure=Publish to Internet" \
+  -d granted=cooperating_brokers -d granted=lockbox -d granted=photographer -o /dev/null -w "%{http_code}\n" | sed 's/^/seller signs CP-07 -> HTTP /'
+as presenter -X POST "$BASE/channels/mls-entry" -o /dev/null -w "%{http_code}\n" | sed 's/^/presenter records MLS entry -> HTTP /'
+as presenter "$BASE/channels" -o "$OUT"; ok "portals fed from the MLS" "fed from the MLS (simulated)"
+grep -o 'Live model spend so far \$[0-9.]*' "$OUT" | head -1
 c "$BASE/timeline" -o "$OUT"
+for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"'; do ok "timeline $k" "$k"; done
 for k in chip-automated chip-client_decision chip-law_marker chip-third_party 'data-code="CP-35"' 'id="hurdle-map"'; do ok "timeline $k" "$k"; done
 grep -o '[0-9]* NY law today markers[^<]*' "$OUT" | head -1
 grep -o '[0-9]* client decisions made, [0-9]* waiting' "$OUT" | head -1

@@ -1,5 +1,44 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), evening: slice 2 is live (pricing, listing copy with the fair-housing checker, marketing plan)
+
+**See it:** https://realestate.hughesnode.com (house login). Press **Start demo**, do step 1, then steps 2 to 4 in
+the step list; `docs/DEMO-SCRIPT.md` says what to click and say on each screen.
+
+**Built (BUILD-2):**
+- **Step 2 Pricing:** eight real Dutchess County sales from public records, each adjusted toward the house in code at
+  rates shown on the screen; weak sales flagged; range $615,000 to $730,000. The AI explains the method in plain
+  words and recommends $675,000 with its reasoning, under a red "NY law today" marker (price advice is a licensed
+  broker's duty). Net sheet. The seller chooses the price; the copy step refuses to start until they do. Labelled
+  "Comparative market analysis, not an appraisal".
+- **Step 3 Listing copy:** the AI writes MLS remarks, a portal description, three social posts and a one-page flyer
+  (PDF, DEMONSTRATION on every page). Every piece goes through the **fair-housing checker**: our written rules for
+  every federal and New York protected class, steering and blockbusting, then a model review for coded language.
+  "Plant a violation" adds "Perfect for a young family, steps from the church": caught with rule, class, legal basis
+  and a fixed version; the AI applies the fix, the re-check passes, and only then can the AI mark it "ready to
+  publish" (red marker: placing ads is a broker's act). MLS pre-check (no contact details, compensation or "free")
+  and the listing package in OneKey order.
+- **Step 4 Marketing plan:** a board of honest channel cards. OneKey MLS is "human required" (no input API; a
+  licensed MLS participant keys it from the AI's package), linked to the WS3 finding; Zillow, Realtor.com, Redfin,
+  Homes.com and OneKeyMLS.com are "fed from the MLS"; the firm's site waits for the MLS entry (Clear Cooperation);
+  social, Google, photos, sign, lockbox and open house each say who does them. The seller signs the exposure choice
+  and authorisations.
+
+**Checked:** 65 fast tests (fake model), including `test_no_unchecked_send` and the fair-housing fixtures; the whole
+of steps 1 to 4 walked on the live site by `scripts/live-flow.sh` (all checks OK, the AI replaying at $0).
+**Fair-housing fixture result (assumption A8):** 58 phrases; rules + model caught **39 of 39** disallowed (100%) and
+flagged **0 of 14** allowed. Passed on our own set; A8 stays open until messages (slice 3) and an outside set.
+
+**Models:** live side-by-side on the demo house; Sonnet kept for price advice and copy, Haiku for the fair-housing
+review (decision 33). **App's own live spend in slice 2: about $0.20** (side-by-side $0.09, recording the demo run
+$0.08, recording the fixture set about $0.02, one cut-off Haiku run about $0.004); the hosted demo replays all of it
+at no cost. Cap $12.
+
+**Questions:** Q46 (the pricing adjustment rates are ours, labelled; a broker can replace them).
+**Deferred:** screenshots and the Playwright run (Playwright is not installed yet; slice 4); OneKey's exact remarks
+length limit (1,000 characters assumed, marked); the NY protected-class list was taken from WS2, not re-read against
+the statute text in this job. **Next:** slice 3 (communications, offers, contract, buyer side). Disk: 19 GB free.
+
 ## 2026-10-23 (day 1), afternoon: slice 1 of the demo is live
 
 **See it:** https://realestate.hughesnode.com (house login). Press **Start demo**. The review pages are where
