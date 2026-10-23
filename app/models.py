@@ -307,5 +307,15 @@ class BuyerState(Base):
     state: Mapped[dict | None] = mapped_column(JSON, info={"source": "buyer"})
 
 
+class ContractState(Base):
+    """Step 7: the accepted-offer memorandum, the AI's contract draft and rider (with party tokens, never names),
+    the code checks on it, the disclosures attached and the signing state, one row per deal."""
+
+    __tablename__ = "contract_state"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    state: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
+
+
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run
 # survives the demo reset and ships with the image. See app/model/provider.py.

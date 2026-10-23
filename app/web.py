@@ -65,6 +65,7 @@ def render(request: Request, s: Session, template: str, status_code: int = 200, 
         "model_mode": request.app.state.provider.mode, "live_spend": float(spend),
         "spend_cap": settings.spend_cap_usd, "review_url": settings.review_url,
         "kind_label": catalogue.KIND_LABEL, "law_actor_label": catalogue.LAW_ACTOR_LABEL,
+        "launch_routes": {c: (e.launch_route, e.launch_link) for c, e in catalogue.load().items() if e.launch_route},
     }
     base.update(ctx)
     return templates.TemplateResponse(request, template, base, status_code=status_code)

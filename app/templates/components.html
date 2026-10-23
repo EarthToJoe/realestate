@@ -14,6 +14,9 @@
   <p><b>Who the law says must act:</b> {{ cp.who_text }}
     {% if cp.law_actor %}<span class="tag is-danger is-light">{{ law_actor_label[cp.law_actor] }}</span>{% endif %}</p>
   {% if cp.reason %}<p><b>What the AI did:</b> {{ cp.reason }}</p>{% endif %}
+  {% set route = launch_routes.get(cp.code) if launch_routes else None %}
+  {% if route %}<p class="rec-launch" id="launch-{{ cp.code }}"><b>The lawful route at launch:</b> {{ route[0] }}
+    <a href="{{ route[1] }}" target="_blank" rel="noopener">The plan's contract route</a></p>{% endif %}
   <p class="rec-ids">{{ ids(cp) }} <a href="{{ cp.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
   <p class="rec-foot">Recorded on the timeline; does not stop the flow.</p>
 </div>

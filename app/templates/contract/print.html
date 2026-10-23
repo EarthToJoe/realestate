@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>{{ body.title }}</title>
+<style>
+  @page { size: letter; margin: 0.95in 0.8in;
+    @top-center { content: "{{ label }}"; font-size: 7.5pt; color: #a00; }
+    @bottom-center { content: "{{ label }}"; font-size: 7.5pt; color: #a00; }
+    @bottom-right { content: "Page " counter(page) " of " counter(pages); font-size: 7.5pt; } }
+  body { font-family: serif; font-size: 10.5pt; line-height: 1.35; }
+  h1 { font-size: 15pt; } h2 { font-size: 12pt; margin-top: 18pt; } h3 { font-size: 10.5pt; margin: 10pt 0 2pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 8.5pt; } td, th { border: 1px solid #999; padding: 3px; vertical-align: top; text-align: left; }
+  .pb { page-break-before: always; }
+</style></head>
+<body>
+<h1>{{ fill(body.title, names) }}</h1>
+<p>Premises: {{ deal.property.street }}, {{ deal.property.city }}, NY {{ deal.property.zip }}. Seller: {{ names['[SELLER_1]'] }}. Buyer: {{ names['[BUYER_1]'] }}.
+  Draft version {{ st.version }} ({{ st.model }}, {{ st.mode }}).</p>
+{% for c in body.sections %}<h3>{{ c.number }}. {{ fill(c.heading, names) }}</h3><p>{{ fill(c.text, names) }}</p>{% endfor %}
+<h2 class="pb">Rider</h2>
+{% for c in body.rider %}<h3>{{ c.number }}. {{ fill(c.heading, names) }}</h3><p>{{ fill(c.text, names) }}</p>{% endfor %}
+<h2>Signatures (simulated e-signature, L34)</h2>
+{% for who in ['[SELLER_1]', '[BUYER_1]'] %}<p>{{ names[who] }}: {% if st.signed_at %}signed electronically {{ st.signed_at[:10] }}{% else %}________________________ Date: __________{% endif %}</p>{% endfor %}
+<h2 class="pb">Side by side with the standard form's structure</h2>
+<p><small>{{ standard_source }}</small></p>
+<table><tr><th>Standard paragraph</th><th>This draft</th><th>Difference</th></tr>
+{% for r in rows %}<tr><td>{{ r.n }}. {{ r.heading }}</td><td>{{ r.draft_ref }}</td><td>{{ r.note }}</td></tr>{% endfor %}</table>
+<h2>Signing map</h2>
+<table><tr><th>Document</th><th>Who</th><th>How</th><th>Law</th><th>When</th></tr>
+{% for r in signing_map %}<tr><td>{{ r.doc }}</td><td>{{ r.who }}</td><td>{{ r.how }}</td><td>{{ r.law }}</td><td>{{ r.when }}</td></tr>{% endfor %}</table>
+{% if attach_pcds %}
+<h2 class="pb">Attached: Property Condition Disclosure Statement</h2>
+{% include "disclosures/_pcds_body.html" %}
+{% endif %}
+</body></html>

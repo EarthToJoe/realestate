@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, human_required, decision, chip, ai_badge with context %}
+{% block content %}
+<h1 class="title is-4">7. Contract: drafted by the AI for both parties</h1>
+<p class="tag is-danger is-light is-medium" id="contract-label" style="white-space:normal;height:auto">{{ label }}</p>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Not yet:</b> {{ gate }}</div>
+{% else %}
+<p style="margin-top:8px">The software drafts the contract of sale and rider for the parties in its own step, from
+the accepted offer and the intake facts. There is no lawyer in this flow; the red marker says what New York law says
+about that today, and where the lawful route at launch is.</p>
+
+<h2 class="title is-6" id="memorandum">Accepted-offer memorandum</h2>
+<div class="box">
+  <p>{{ memo.property }}. Seller {{ memo.seller }}, buyer {{ memo.buyer }}{% if memo.dual_agency %} (the firm acts for both, with both clients' written consent){% endif %}.
+    Price <b>${{ '{:,}'.format(memo.price) }}</b>; deposit ${{ '{:,}'.format(memo.deposit) }} ({{ memo.deposit_pct }}%), held in escrow;
+    {{ memo.financing }}; mortgage commitment {{ memo.mortgage_days }} days; inspection {{ memo.inspection_days }} days;
+    {{ memo.contingencies | join('; ') }}; personal property: {{ memo.requests | join('; ') or 'none' }};
+    closing on or about <b>{{ memo.closing_date }}</b> ({{ memo.closing_days }} days). {{ memo.note }}</p>
+  {% if st.memorandum %}<p><span class="tag is-info is-light">sent to both parties (simulated)</span></p>
+  {% else %}<form method="post" action="/contract/memorandum"><button class="button is-info is-small" id="send-memo">AI: send the memorandum to both parties</button></form>{% endif %}
+</div>
+
+<h2 class="title is-6" id="draft">Contract of sale and rider</h2>
+{% if not st.draft %}
+<form method="post" action="/contract/draft"><button class="button is-info" id="ai-draft">Let the AI draft the contract and rider</button></form>
+<span class="htmx-indicator thinking">The AI is drafting</span>
+{% else %}
+<div class="ai-panel">
+  <p><b>{{ st.draft.title }}</b> · version {{ st.version }} {{ ai_badge(st.mode, st.recorded_at) }} <span class="tag is-light">{{ st.model }}</span>
+    · <a href="/contract/draft.pdf" target="_blank" id="pdf-link">PDF</a> · <a href="/contract/draft.docx" id="docx-link">DOCX (editable)</a> · <a href="/contract/print" target="_blank">print view</a></p>
+  <p><small>Parties appear as [SELLER_1] and [BUYER_1] on screen; their names are inserted only in the PDF and DOCX (that access is logged).</small></p>
+  <div id="code-checks">
+    <p><b>Code checks on the draft</b> (the deal's numbers, the parties, L23 "never say a lawyer is unnecessary", decision 26 "no attorney-approval clause", the side-by-side):
+      {% if st.passed %}<span class="tag is-success" data-passed="yes">passed</span>{% else %}<span class="tag is-danger" data-passed="no">block: signing stays shut</span>{% endif %}</p>
+    {% if st.findings %}<ul>{% for f in st.findings %}<li data-rule="{{ f.rule }}"><span class="tag {{ 'is-danger' if f.tier == 'block' else 'is-warning' }} is-light">{{ f.tier }}</span> {{ f.message }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  <details open><summary><b>The contract ({{ st.draft.sections | length }} clauses)</b></summary>
+    {% for c in st.draft.sections %}<p data-clause="{{ c.number }}"><b>{{ c.number }}. {{ c.heading }}.</b> {{ c.text }}</p>{% endfor %}
+  </details>
+  <details open><summary><b>The rider ({{ st.draft.rider | length }} clauses)</b></summary>
+    {% for c in st.draft.rider %}<p data-clause="{{ c.number }}"><b>{{ c.number }}. {{ c.heading }}.</b> {{ c.text }}</p>{% endfor %}
+  </details>
+  {% if st.draft.notes_to_parties %}<p><b>Notes to both parties:</b></p><ul>{% for n in st.draft.notes_to_parties %}<li>{{ n }}</li>{% endfor %}</ul>{% endif %}
+</div>
+{% if cp14 %}{{ law_marker(cp14) }}{% endif %}
+
+<h2 class="title is-6" id="side-by-side">Side by side with the standard form's structure</h2>
+<p><small>{{ standard_source }}. Headings only; no clause text is used.</small></p>
+<table class="table is-narrow is-fullwidth is-striped" id="sbs-table">
+  <thead><tr><th>Standard paragraph</th><th>This draft</th><th>Difference</th></tr></thead>
+  <tbody>{% for r in rows %}<tr data-n="{{ r.n }}"><td>{{ r.n }}. {{ r.heading }}</td><td>{{ r.draft_ref }}</td><td><small>{{ r.note }}</small></td></tr>{% endfor %}</tbody>
+</table>
+{% endif %}
+
+<h2 class="title is-6" id="disclosures">Disclosures attached to the contract</h2>
+<table class="table is-narrow is-fullwidth" id="disclosure-table">
+  {% for d in disclosures %}<tr data-kind="{{ d.kind }}"><td>{{ d.title }}</td><td><span class="tag is-light">{{ d.l_id }}</span></td>
+    <td>{% if d.ready %}{{ d.status }}{% else %}<b>{{ d.status }}</b> · <a href="/disclosures/pcds?back=/contract" id="pcds-open">open the form</a>{% endif %}</td></tr>{% endfor %}
+</table>
+{% if cp04 and cp04.status != 'done' %}<p class="notification is-warning is-light" id="pcds-waiting">The seller has not completed the Property Condition Disclosure Statement.
+  It must be delivered before the buyer signs (L43), so signing is refused until it is. The software never fills it in.</p>{% endif %}
+{% if st.draft and not (st.attached and st.attached.complete) %}
+<form method="post" action="/contract/attach"><button class="button is-info is-small" id="attach">AI: attach the disclosures</button></form>{% endif %}
+{% for c in cp32 %}{{ chip(c) }} {% endfor %}
+
+<h2 class="title is-6" id="signing-map">Signing map</h2>
+<table class="table is-narrow is-fullwidth" id="signing-map-table">
+  <thead><tr><th>Document</th><th>Who</th><th>How</th><th>Law</th><th>When</th></tr></thead>
+  <tbody>{% for r in signing_map %}<tr class="{{ 'wet-ink' if r.how not in ('e-sign', 'sent') }}"><td>{{ r.doc }}</td><td>{{ r.who }}</td>
+    <td>{% if r.how == 'e-sign' %}<span class="tag is-info is-light">e-sign</span>{% elif r.how == 'sent' %}sent{% else %}<span class="tag is-dark is-light">{{ r.how }}</span>{% endif %}</td>
+    <td>{{ r.law }}</td><td>{{ r.when }}</td></tr>{% endfor %}</tbody>
+</table>
+{% if cp15 %}{{ human_required(cp15) }}{% endif %}
+
+<h2 class="title is-6">Signing (simulated)</h2>
+{% if refused %}<p class="notification is-warning">{{ refused }}</p>{% endif %}
+{% if cp33 %}
+{{ decision(cp33, persona, '/contract/sign', advice="Read the draft and the rider; each of you may have a lawyer of your choice review it before you sign.", labels={'sign': 'Sign (simulated e-signature)', 'decline': 'Decline'}) }}
+{% if cp33.status == 'done' %}<div class="notification is-success is-light" id="signed">Signed by both parties (simulated). In a real deal the contract would now bind; the deposit goes to the escrow holder and the closing steps follow (step 9).</div>{% endif %}
+{% elif st.draft %}
+<form method="post" action="/contract/open-signing"><button class="button is-warning" id="open-signing">Open the contract for signing</button></form>
+{% endif %}
+{% endif %}
+{% endblock %}

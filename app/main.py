@@ -57,10 +57,11 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     from app.modules.offers.routes import router as offers_router
     from app.disclosures.routes import router as pcds_router
     from app.modules.buyer.routes import router as buyer_router
+    from app.modules.contract.routes import router as contract_router
     from app.fairhousing.check import FairHousingBlocked
 
     for r in (intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
-              buyer_router, timeline_router):
+              buyer_router, contract_router, timeline_router):
         app.include_router(r)
 
     @app.exception_handler(FairHousingBlocked)

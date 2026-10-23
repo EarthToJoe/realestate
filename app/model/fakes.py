@@ -51,6 +51,24 @@ def default(task: str, context: dict) -> dict:
                 "suggested_offer": pick["label"], "suggested_action": "counter",
                 "suggested_counter_price": lst, "suggested_lowest_price": lst - 10000,
                 "suggested_closing_days": 45, "suggested_terms": "Keep the inspection at 7 days; no requests."}
+    if task == "contract.draft":
+        t = context["terms"]
+        heads = [h.split(". ", 1)[1] for h in context["standard_form_headings"]]
+        sections = [{"number": str(i), "heading": h, "text": f"{h}: terms between [SELLER_1] and [BUYER_1]."}
+                    for i, h in enumerate(heads, 1)]
+        sections[2]["text"] = (f"The purchase price is ${t['price']:,}, of which ${t['deposit']:,} is paid on signing "
+                               "as a deposit held in escrow.")
+        sections[14]["text"] = f"The closing will take place on or about {t['closing_date']}."
+        rider = [{"number": "R1", "heading": "Mortgage commitment",
+                  "text": f"[BUYER_1] has {t['mortgage_commitment_days']} days to obtain a mortgage commitment."},
+                 {"number": "R2", "heading": "Home inspection",
+                  "text": f"[BUYER_1] may inspect within {t['inspection_days']} days."},
+                 {"number": "R3", "heading": "Disclosures", "text": "The Property Condition Disclosure Statement "
+                                                                  "completed by [SELLER_1] is attached."}]
+        return {"title": "Residential Contract of Sale", "sections": sections, "rider": rider,
+                "side_by_side": [{"standard_number": i, "draft_ref": str(i), "note": "Same substance"}
+                                 for i in range(1, len(heads) + 1)],
+                "notes_to_parties": ["Each of you may have a lawyer of your choice review this draft."]}
     if task == "buyer.alert":
         return {"message": f"{len(context['listings'])} homes match your search.",
                 "notes": [{"id": x["id"], "why": f"{x['beds']} bedrooms on {x['acres']} acres in {x['town']}."}

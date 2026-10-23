@@ -199,8 +199,10 @@ records:
     actor: ai
     law_actor: A
     side: both
-    rule: Drafting a contract of sale for another is the practice of law in New York; only a lawyer may do it, and a company may not practise law at all (Judiciary Law §§478, 484, 495). A broker may only fill non-legal facts into a form marked subject to each party's attorney's approval, and Hudson Valley custom is that the seller's attorney drafts.
+    rule: "NY law today: only a lawyer may draft a contract of sale for another. Drafting one is the practice of law in New York, and a company may not practise law at all (Judiciary Law §§478, 484, 495; L21). A broker may only fill non-legal facts into a form marked subject to each party's attorney's approval (AG Op. 96-F11; L22), and Hudson Valley custom is that the seller's attorney drafts (L25, custom, not law). This draft has no attorney-approval clause (decision 26)."
     who: A lawyer admitted in New York
+    launch_route: "At launch: the firm's paper, subject to each party's attorney's approval. Lawful today if every term is covered by an \"entire contract subject to each party's attorney's approval\" clause, the legend is printed, no fee is charged for it and nobody is discouraged from counsel: the software drafts, each party's lawyer approves with a veto window."
+    launch_link: https://realestate.hughesnode.com/docs-plan.html#the-contract-route-what-new-york-allows-today
     f_ids: [F52]
     l_ids: [L21, L22, L25]
     link: ws2
