@@ -1,5 +1,33 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), late evening: Joe's click-through, a whole-site audit, and a rebuild under way
+
+**Joe's notes:**
+
+> "the demo doesnt save any of the information when you go back a step … it needs to be made more user friendly
+> and simple, and self explanatory … the user simplicity needs to improve drastically"
+
+and "audit the whole website for issues".
+
+**Causes confirmed:**
+- No "Next" control saves what is on the screen.
+- Step 1 re-opens empty once sent.
+- Sending step 1 again silently starts a second deal.
+- No decision can be changed.
+
+**The audit:** `docs/build/site-audit-2026-10-23.md`, published under "Demo build". It is the chat session's own
+walk of all 20 screens at both widths plus scripted checks, and a separate first-time-visitor review
+(`docs/build/audit-fresh-eyes-2026-10-23.md`, AUDIT-FRESH, $11.78 notional on Max).
+
+**Two jobs are running on the Max plan:**
+- **BUILD-PATH** (`docs/build/jobs/2026-10-23-one-path.md`, decisions 47 to 51): one path of about 12 screens with
+  one button each. Nothing typed or decided is lost, and everything can be changed. The visitor plays the seller and
+  the buyer. The presenter's tools are opt-in, and the demo ends on a finale.
+- **BUILD-SITE** (`docs/build/jobs/2026-10-23-review-site.md`): the research site's links, phone layout, tables of
+  contents, and an index that opens on the demo.
+
+**Disk:** 7 GB free, down from 11 because of other projects' growth. It is near the 6 GB warning line.
+
 ## 2026-10-23 (day 1), end of day: the demo is built, five days early
 
 **State:** all ten steps and the guided demo are live at https://realestate.hughesnode.com (house login): press
