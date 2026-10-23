@@ -43,6 +43,21 @@ if [ "$NAME" = ANTHROPIC_API_KEY ]; then
 [Service]
 EnvironmentFile=-$SEC/claude-code.env
 CONF
+  # Pre-approve the key so Claude Code does not park on "Do you want to use this API key?" at every start.
+  # Claude Code records approvals as the key's last 20 characters in /root/.claude.json.
+  python3 - "$VALUE" <<'APPROVE'
+import json, os, sys, tempfile
+key = sys.argv[1][-20:]
+p = '/root/.claude.json'
+d = json.load(open(p)) if os.path.exists(p) else {}
+r = d.setdefault('customApiKeyResponses', {}); a = r.setdefault('approved', [])
+if key not in a: a.append(key)
+r.setdefault('rejected', [])
+fd, tmp = tempfile.mkstemp(dir=os.path.dirname(p))
+with os.fdopen(fd, 'w') as f: json.dump(d, f, indent=2)
+os.chmod(tmp, 0o600); os.replace(tmp, p)
+print("API key pre-approved in /root/.claude.json")
+APPROVE
   systemctl daemon-reload
   if systemctl is-active --quiet "$UNIT"; then systemctl restart "$UNIT"; fi
   echo "The realestate session now bills the API key (check with /status inside the session: it should say API key)."
