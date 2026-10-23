@@ -28,6 +28,7 @@ records:
 
   CP-02:
     title: AI accepts the listing after a conflicts check
+    plain: "In New York today, only a licensed broker may accept a listing for a fee."
     kind: law_marker
     step: 1
     actor: ai
@@ -84,6 +85,7 @@ records:
 
   CP-06:
     title: AI marks advertising "ready to publish" (copy, flyer, posts)
+    plain: "In New York today, only a licensed broker may approve and place an ad for a listing."
     kind: law_marker
     step: 3
     actor: ai
@@ -112,6 +114,7 @@ records:
 
   CP-08:
     title: Listing keyed into OneKey MLS from the AI's package
+    plain: "Only a licensed MLS member can key the listing into OneKey MLS; software has no way in."
     kind: human_required
     step: 4
     actor: human
@@ -126,6 +129,7 @@ records:
 
   CP-09:
     title: AI sends a message that discusses the listing, negotiates or advises
+    plain: "In New York today, discussing a listing with buyers or negotiating is licensed work."
     kind: law_marker
     step: 5
     actor: ai
@@ -140,6 +144,7 @@ records:
 
   CP-10:
     title: Owner-hosted showing or open house (someone opens the door)
+    plain: "Someone has to open the door: the owner may show their own home."
     kind: human_required
     step: 5
     actor: seller
@@ -153,6 +158,7 @@ records:
 
   CP-11:
     title: AI presents every offer and advises the seller
+    plain: "In New York today, only a licensed broker may present offers and advise the seller on them."
     kind: law_marker
     step: 6
     actor: ai
@@ -180,6 +186,7 @@ records:
 
   CP-13:
     title: AI negotiates the counter with the other side
+    plain: "In New York today, only a licensed broker may negotiate price and terms for a client."
     kind: law_marker
     step: 6
     actor: ai
@@ -194,6 +201,7 @@ records:
 
   CP-14:
     title: AI drafts the contract of sale and rider
+    plain: "In New York today, only a lawyer may draft a contract of sale for someone else."
     kind: law_marker
     step: 7
     actor: ai
@@ -209,6 +217,7 @@ records:
 
   CP-15:
     title: Wet-ink and notary items at closing (deed acknowledgment, POA, smoke-detector affidavit)
+    plain: "Some closing papers must be signed in ink before a notary; e-signature does not cover them."
     kind: human_required
     step: 7
     actor: human
@@ -264,6 +273,7 @@ records:
 
   CP-19:
     title: AI publishes the brokerage campaign (simulated)
+    plain: "In New York today, only a licensed broker may approve the firm's own advertising."
     kind: law_marker
     step: 10
     actor: ai
@@ -277,6 +287,7 @@ records:
 
   CP-20:
     title: Deposit into escrow
+    plain: "The buyer's deposit is held in escrow by a third party, usually the seller's lawyer."
     kind: third_party
     step: 9
     actor: third_party
@@ -290,6 +301,7 @@ records:
 
   CP-21:
     title: Home inspection
+    plain: "A licensed home inspector inspects the house."
     kind: third_party
     step: 9
     actor: third_party
@@ -303,6 +315,7 @@ records:
 
   CP-22:
     title: Mortgage commitment, appraisal and title
+    plain: "The lender, a licensed appraiser and a title company each do their part."
     kind: third_party
     step: 9
     actor: third_party
@@ -316,6 +329,7 @@ records:
 
   CP-23:
     title: Walkthrough and closing; commission paid
+    plain: "The title company and lender run the closing; the deed is signed in ink before a notary."
     kind: third_party
     step: 9
     actor: third_party
@@ -342,6 +356,7 @@ records:
 
   CP-25:
     title: AI advises the seller on list price
+    plain: "In New York today, only a licensed broker may advise a seller on price."
     kind: law_marker
     step: 2
     actor: ai
@@ -383,6 +398,7 @@ records:
 
   CP-28:
     title: AI arranges a self-guided tour
+    plain: "New York has not decided whether a buyer touring alone counts as a licensed showing."
     kind: law_marker
     step: 5
     actor: ai
@@ -411,6 +427,7 @@ records:
 
   CP-30:
     title: AI takes on the buyer as a client and records the agency relationship
+    plain: "In New York today, only a licensed broker may take on a client and set up the agency relationship."
     kind: law_marker
     step: 8
     actor: ai
@@ -424,6 +441,7 @@ records:
 
   CP-31:
     title: AI advises the buyer on offer price and terms and drafts the offer
+    plain: "In New York today, only a licensed broker may advise a buyer on price and terms."
     kind: law_marker
     step: 8
     actor: ai
@@ -463,6 +481,7 @@ records:
 
   CP-34:
     title: AI negotiates repairs or credits after inspection and writes them into the contract
+    plain: "In New York today, negotiating repairs needs a licensed broker, and changing the contract needs a lawyer."
     kind: law_marker
     step: 9
     actor: ai
@@ -477,6 +496,7 @@ records:
 
   CP-35:
     title: No licensed broker of record supervises this firm
+    plain: "In New York today, a brokerage needs a licensed broker of record who supervises it; this demo has none."
     kind: law_marker
     step: 9
     actor: ai

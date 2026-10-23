@@ -6,6 +6,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
+from app.humanize import et
+
 PORTALS = [
     # name, WS3 ID, note shown on the card, one-time "human required" step (or None)
     ("Zillow / Trulia", "WS3-C4", "Buyer enquiries on Zillow go to the agents who pay Zillow, not to the listing firm.",
@@ -40,6 +42,6 @@ class SimulatedPortals:
             else:
                 due = mls_entered_at + timedelta(hours=48)
                 st, detail = "fed from the MLS (simulated)", (f"Syndicating from OneKey; expected by "
-                                                             f"{due.strftime('%a %d %b %H:%M')} UTC. " + note)
+                                                             f"{et(due)}. " + note)
             out.append(PortalStatus(name=name, ws3_id=ws3, status=st, detail=detail, human_step=human))
         return out

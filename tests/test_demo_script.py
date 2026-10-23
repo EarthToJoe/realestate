@@ -1,6 +1,9 @@
-"""docs/DEMO-SCRIPT.md is generated from steps.yaml and must match it; every built route has a screen."""
+"""docs/DEMO-SCRIPT.md is generated from steps.yaml and must match it; every built route has a screen, with its
+presenter notes (hidden behind the "Presenter notes" button) carrying the script's words."""
 
 import importlib.util
+
+from markupsafe import escape
 
 from app.config import ROOT
 from app.web import steps
@@ -26,4 +29,4 @@ def test_every_step_route_is_served(client):
         for sc in st["screens"]:
             r = client.get(sc["route"])
             assert r.status_code == 200, sc["route"]
-            assert "Narration:" in r.text, sc["route"]
+            assert 'id="presenter-notes"' in r.text and str(escape(sc["say"])) in r.text, sc["route"]

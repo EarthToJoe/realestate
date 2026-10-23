@@ -2,30 +2,32 @@
 
 Generated from `app/demo/steps.yaml` by `scripts/gen-demo-script.py`; do not edit by hand (a test fails if
 this file and the screens drift apart). Open https://realestate.hughesnode.com (house login), press
-**Start demo**, and follow the screens in order. The narration card at the top of each screen says the same.
+**Start demo**, and follow the screens in order. **Presenter notes** (bottom right of each screen) opens the
+same words; the audience sees only the product until you open it.
 
 Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 5 (Communications), step 8 (Buyer side), step 6 (Offers), step 7 (Contract), step 9 (Deal timeline). Target length when all ten
 steps are built: 14.5 minutes plus a 30-second introduction.
 
 **Colours on every screen:** blue = the AI did it; amber = the seller's or buyer's own decision (the next
 step waits for it); red = **NY law today** requires a licensed broker or a lawyer for this act (recorded,
-does not stop the flow); grey = a person or third party outside the software. The persona switcher (top
-right) changes who is acting: Presenter, Seller or Buyer. Only the client whose decision it is can make it.
+does not stop the flow); grey = a person or third party outside the software. **View as** (top right)
+changes who is acting: Presenter, Seller or Buyer. Only the client whose decision it is can make it. Each
+screen leads with its result; tables, drafts and records sit in folds ("Show the working").
 
 **The presenter's controls (phone or laptop):**
 
-- **Start demo** asks first ("This resets the deal to the beginning"), then opens step 1 with the demo house
+- **Start demo** (home) and **Start over** (under the step list) ask first ("This resets the deal to the beginning"), then opens step 1 with the demo house
   filled in and one line saying what to press next.
 - **"As Seller" / "As Buyer" below** means: on the amber card, tap **Decide as the seller** (or buyer). One
   tap switches the persona and comes back to the same card; the decision is recorded as the client's. Tap
   **Back to the Presenter** on the card afterwards. The Presenter can never make a client's decision.
 - **Any step link works at any time.** A step that needs an earlier one shows a card: what is missing, on
   which step, who must do it, and a button to go there.
-- **Fast-forward the demo to here** (on that card, and under each step in the step list): plays the earlier
+- **Fast-forward the demo to here** (on that card, and the ⏩ button beside each step in the step list): plays the earlier
   steps with this script's choices and the recorded AI answers (no cost), each client decision recorded as
   the client's, then opens the step. Use it to jump straight to the part you want to show.
-- **On a phone** the numbered step bar is at the top of every screen ("All steps" opens the full list with
-  the fast-forward buttons at the bottom), and the narration card starts folded: tap it to read.
+- **On a phone** a compact bar at the top of every screen says where you are ("Step 6 of 10: Offers"), with
+  arrows to the previous and next screen; "Steps" opens the full list with the fast-forward buttons.
 
 **Walk order:** 1, 2, 3, 4, 5, 8, 6, 7, 9, 10. The step list on screen stays in number order; the
 buyer's side (step 8) is walked before the offers (step 6) because offer B comes from the firm's own
@@ -42,12 +44,12 @@ buyer, and the buyer's reply to the seller's counter is made on step 8's offer s
 ### 1.2 Property profile (`/intake/profile`)
 
 - **Click:** Click "Let the AI fill the gaps".
-- **Say:** Every fact shows where it came from: green is the public record, amber is what the seller told us, purple is what the AI inferred, with its reason and confidence. The AI fills only facts about the house, never the seller's disclosure answers. The badge says whether this is the AI live or a recorded replay.
+- **Say:** Every fact shows where it came from: grey is the public record, amber is what the seller told us, blue is what the AI inferred, with its reason and confidence. The AI fills only facts about the house, never the seller's disclosure answers. The badge at the top says whether this is the AI live or a recorded run.
 - **Markers and decisions:** none
 
 ### 1.3 Disclosure checklist (`/intake/disclosures`)
 
-- **Click:** Tap "Decide as the seller" on the CP-04 card if you want to show the seller's form; it can wait for step 7.
+- **Click:** Tap "Decide as the seller" on the seller's disclosure card if you want to show the seller's form; it can wait for step 7.
 - **Say:** The AI works out which disclosures this house needs from the facts: lead paint is not required because it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is the seller's own: the software never pre-fills it. That is an amber "Your decision" card: only the seller can complete it, and contract signing waits for it.
 - **Markers and decisions:** CP-04 seller decision (amber, blocks contract signing)
 
@@ -154,7 +156,7 @@ buyer, and the buyer's reply to the seller's counter is made on step 8's offer s
 ### 9.1 Deal timeline and hurdle map (`/timeline`)
 
 - **Click:** Open "Deal timeline" in the step list.
-- **Say:** This page is built only from the records the other screens wrote; nothing is drawn by hand. Blue is what the AI did, amber what the seller or buyer decided, red where New York law today requires a licensed broker or a lawyer, grey the people and third parties outside the software. The red marker at the top stands for the whole firm: New York requires a licensed broker of record, and this demonstration has none. The hurdle map below lists every red marker with its rule and a link to the research.
+- **Say:** This page is built only from the records the other screens wrote; nothing is drawn by hand. The four totals and the ten step cards are the whole sale on one screen: blue is what the AI did, amber what the seller or buyer decided, red where New York law today requires a licensed broker or a lawyer, grey the people and third parties outside the software. The red note below them stands for the whole firm: New York requires a licensed broker of record, and this demonstration has none. Open any step for its full record, or the hurdle map for every red note with its rule and a link to the research.
 - **Markers and decisions:** every record so far; CP-35 standing; CP-20 to CP-23 and CP-34 planned
 
 ## 10. Marketing the business (0.5 min) (slice 4)

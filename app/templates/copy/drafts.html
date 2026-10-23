@@ -1,34 +1,47 @@
 {% extends "base.html" %}
 {% from "components.html" import law_marker, ai_badge with context %}
 {% block content %}
-<h1 class="title is-4">3. Listing copy and the fair-housing check</h1>
 {% if gate %}
+<h1 class="page-title">Listing copy</h1>
 {# the gate card in base.html shows what is missing #}
 {% else %}
 {% if error %}<div class="notification is-danger is-light" id="refusal">{{ error }}</div>{% endif %}
 {% if ai_error %}<div class="notification is-light"><b>Not recorded:</b> {{ ai_error }}</div>{% endif %}
 {% if not panels %}
-<div class="ai-panel" id="ai-panel">
-  <p>The AI writes the MLS remarks, the portal description, three social posts and a one-page flyer from the property
-  profile and the seller's price (${{ '{:,}'.format(deal.list_price) }}). Every piece then goes through the fair-housing
-  check: the written rules ({{ rules_version }}) and a model review pass.</p>
+<div class="outcome" id="ai-panel">
+  <h1 class="page-title">The AI writes the listing copy</h1>
+  <p>The MLS remarks, the portal description, three social posts and a one-page flyer, from the property profile and
+  the seller's price ({{ deal.list_price | money }}). Every piece then goes through the fair-housing check: the written
+  rules and a model review pass.</p>
   <form method="post" action="/copy/draft"><button class="button is-info" id="ai-draft">Let the AI write the copy</button></form>
 </div>
 {% else %}
-<p>Every piece below was written by the AI ({{ ai_badge(panels[0].art.mode) }} <span class="tag is-light">{{ panels[0].art.model }}</span>)
-and checked by the fair-housing pipeline: rules {{ rules_version }}, then the model review pass. Only copy with no
-<span class="tag is-danger is-light">block</span> finding can be marked "ready to publish".
-<a href="/copy/mls">MLS pre-check and package</a> · <a href="/copy/flyer.pdf" target="_blank" rel="noopener" id="flyer-pdf">Flyer (PDF)</a></p>
-<form method="post" action="/copy/ready-all" style="margin:8px 0">
-  <button class="button is-info" id="ai-ready-all">Let the AI mark passing copy "ready to publish"</button></form>
+{% set ready = panels | selectattr('art.status', 'equalto', 'ready') | list %}
+{% set blocked = panels | selectattr('art.status', 'equalto', 'blocked') | list %}
+<div class="outcome {{ 'is-done' if ready | length == panels | length }}">
+  <p class="ai-by">Written by the AI · {{ ai_badge(panels[0].art.mode, None, panels[0].art.model) }}</p>
+  <h1 class="page-title">{% if ready | length == panels | length %}All {{ panels | length }} pieces of copy are ready to publish{% else %}The AI wrote {{ panels | length }} pieces of copy; {{ ready | length }} ready to publish{% endif %}</h1>
+  <p>Each piece passed through the fair-housing check (rules {{ rules_version }}, then a model review). Only copy with no
+  blocking finding can be marked ready.{% if blocked %} <b>{{ blocked | length }} blocked</b> until fixed.{% endif %}</p>
+  <div class="actions" style="margin-bottom:0">
+    {% if ready | length < panels | length %}
+    <form method="post" action="/copy/ready-all"><button class="button is-info" id="ai-ready-all">Let the AI mark passing copy "ready to publish"</button></form>
+    {% else %}<a class="button is-next" href="/copy/mls">Next: the MLS package &rarr;</a>{% endif %}
+    <a class="button is-light" href="/copy/flyer.pdf" target="_blank" rel="noopener" id="flyer-pdf">Open the flyer (PDF)</a>
+  </div>
+</div>
 {% if refused %}<div class="notification is-warning is-light" id="refused-list"><b>The AI could not mark these ready:</b>
 <ul>{% for art, why in refused %}<li>{{ art.title }}: {{ why }}</li>{% endfor %}</ul></div>{% endif %}
 {% if cp06 %}
-<p><b>{{ cp06 | length }}</b> piece(s) marked ready to publish by the AI; <b>{{ cp26 | length }}</b> fair-housing pass record(s).</p>
 {{ law_marker(cp06[-1]) }}
+<p class="help">{{ cp06 | length }} piece{{ 's' if cp06 | length != 1 }} marked ready to publish by the AI; {{ cp26 | length }} fair-housing pass record{{ 's' if cp26 | length != 1 }}.</p>
 {% endif %}
+<h2 class="section-title">The copy</h2>
 {% for p in panels %}
-<div class="copy-artifact" id="art-{{ p.art.id }}" data-channel="{{ p.art.channel }}">{% include "copy/_artifact.html" %}</div>
+<details class="working" {{ 'open' if loop.first or p.art.status == 'blocked' }}>
+  <summary>{{ p.art.title }} <span class="sum-note">{{ {'ready': 'ready to publish', 'passed': 'check passed', 'blocked': 'blocked', 'draft': 'not checked'}[p.art.status] }}</span></summary>
+  <div class="working-body"><div class="copy-artifact" id="art-{{ p.art.id }}" data-channel="{{ p.art.channel }}">{% include "copy/_artifact.html" %}</div></div>
+</details>
 {% endfor %}
 {% endif %}
 {% endif %}

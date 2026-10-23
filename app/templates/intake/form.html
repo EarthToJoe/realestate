@@ -1,42 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="title is-4">1. Intake: address and facts</h1>
-{% if request.query_params.get('started') %}<div class="notification is-info is-light" id="next-hint"><b>The deal is reset.</b>
-  The demo house is filled in below: press <a href="#start-intake">"Start intake"</a> at the bottom of the form.</div>{% endif %}
-<p>The seller gives the address and a few facts the public record leaves out. The AI does the rest.</p>
-<a class="button is-small is-light" href="/intake?demo=1" id="use-demo">Use demo house</a>
+<div class="outcome">
+  <h1 class="page-title">Tell the AI about the house</h1>
+  <p>The seller gives the address and a few facts the public record leaves out. The AI does the rest.</p>
+  {% if request.query_params.get('started') %}<div class="notification is-info is-light" id="next-hint"><b>The sale is reset.</b>
+    The demo house is filled in below: press <a href="#start-intake">"Start intake"</a> at the bottom of the form.</div>{% endif %}
+  <a class="button is-light" href="/intake?demo=1" id="use-demo">Use the demo house</a>
+</div>
 {% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
-<form method="post" action="/intake" id="intake-form" style="margin-top:12px">
-  <div class="columns">
-    <div class="column is-6"><label class="label">Street</label>
-      <input class="input" name="street" required value="{{ data.street if data else '' }}" placeholder="146 Route 292"></div>
-    <div class="column is-4"><label class="label">Town</label>
-      <input class="input" name="city" required value="{{ data.city if data else '' }}" placeholder="Holmes"></div>
-    <div class="column is-2"><label class="label">ZIP</label>
-      <input class="input" name="zip" value="{{ data.zip if data else '' }}" placeholder="12531"></div>
+<form method="post" action="/intake" id="intake-form">
+  <div class="box">
+    <h2 class="section-title" style="margin-top:0">The house</h2>
+    <div class="field-row">
+      <label>Street <input class="input" name="street" required value="{{ data.street if data else '' }}" placeholder="146 Route 292"></label>
+      <label>Town <input class="input" name="city" required value="{{ data.city if data else '' }}" placeholder="Holmes"></label>
+      <label>ZIP <input class="input" name="zip" value="{{ data.zip if data else '' }}" placeholder="12531" inputmode="numeric"></label>
+    </div>
   </div>
-  <fieldset class="box"><legend class="label">Seller (fictional persona; personal data, encrypted and access-logged)</legend>
-    <div class="columns">
-      <div class="column"><label class="label is-small">Name</label><input class="input" name="seller_name" value="{{ data.seller_name if data else '' }}"></div>
-      <div class="column"><label class="label is-small">E-mail</label><input class="input" name="seller_email" value="{{ data.seller_email if data else '' }}"></div>
-      <div class="column"><label class="label is-small">Phone</label><input class="input" name="seller_phone" value="{{ data.seller_phone if data else '' }}"></div>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 4px">The seller</legend>
+    <p class="help">A fictional person. Personal details are encrypted, and every view of them is logged.</p>
+    <div class="field-row">
+      <label>Name <input class="input" name="seller_name" value="{{ data.seller_name if data else '' }}"></label>
+      <label>E-mail <input class="input" name="seller_email" value="{{ data.seller_email if data else '' }}" inputmode="email"></label>
+      <label>Phone <input class="input" name="seller_phone" value="{{ data.seller_phone if data else '' }}" inputmode="tel"></label>
     </div>
   </fieldset>
-  <fieldset class="box"><legend class="label">Facts only the seller knows (tagged "Seller")</legend>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 4px">What only the seller knows</legend>
+    <p class="help">Each of these is marked <span class="src src-seller">Seller</span> in the profile.</p>
+    <div class="field-row">
     {% for key, (field, label, group) in seller_fields.items() %}
-      <label class="label is-small">{{ label }}</label>
-      <input class="input is-small" name="{{ key }}" value="{{ data.facts.get(key, '') if data else '' }}">
+      <label>{{ label }} <input class="input" name="{{ key }}" value="{{ data.facts.get(key, '') if data else '' }}"></label>
     {% endfor %}
+    </div>
   </fieldset>
-  <fieldset class="box"><legend class="label">Four state notice questions (RPL §242, L60)</legend>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 4px">Four questions the state requires</legend>
+    <p class="help">New York Real Property Law §242 (L60).</p>
     {% for key, q in section_242.items() %}
-      <div class="field"><span>{{ q }}</span>
+      <div class="field" style="margin-bottom:12px"><p style="margin-bottom:4px">{{ q }}</p>
+        <div class="buttons" style="margin:0">
         <label class="radio"><input type="radio" name="{{ key }}" value="yes" {{ 'checked' if data and data.facts.get(key) == 'yes' }}> Yes</label>
-        <label class="radio"><input type="radio" name="{{ key }}" value="no" {{ 'checked' if data and data.facts.get(key) == 'no' }}> No</label></div>
+        <label class="radio" style="margin-left:16px"><input type="radio" name="{{ key }}" value="no" {{ 'checked' if data and data.facts.get(key) == 'no' }}> No</label></div></div>
     {% endfor %}
   </fieldset>
-  <button class="button is-primary" id="start-intake">Start intake</button>
-  <p class="help">Submitting is the seller's first substantive contact: the AI sends the fair-housing notice, the
-  agency form and the "not legal services" notice at once (CP-24).</p>
+  <div class="actions"><button class="button is-primary" id="start-intake">Start intake</button></div>
+  <p class="help">Submitting is the seller's first real contact with the firm, so the AI sends the fair-housing
+  notice, the agency form and the "not legal services" notice straight away.</p>
 </form>
 {% endblock %}

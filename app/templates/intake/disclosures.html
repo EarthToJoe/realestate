@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 {% from "components.html" import decision with context %}
 {% block content %}
-<h1 class="title is-4">1. Intake: disclosure checklist</h1>
-<p>The AI worked out which disclosures this house needs from its facts (no model call: these are rules).</p>
-<table class="table is-fullwidth is-narrow" id="checklist">
-  <thead><tr><th>Disclosure</th><th>Law</th><th>When</th><th>Needed?</th><th>Status</th></tr></thead>
+{% set needed = items | selectattr('required') | list %}
+<div class="outcome">
+  <h1 class="page-title">This house needs {{ needed | length }} of the {{ items | length }} disclosures</h1>
+  <p>The AI worked them out from the house's facts, by rule (no model call). The one only the seller can complete is below.</p>
+</div>
+<table class="table is-fullwidth" id="checklist">
+  <thead><tr><th>Disclosure</th><th>Needed?</th><th>When</th><th>Status</th></tr></thead>
   {% for d in items %}
   <tr data-kind="{{ d.kind }}">
-    <td>{{ d.title }}</td><td><span class="tag is-light">{{ d.l_id }}</span></td><td>{{ d.trigger }}</td>
-    <td>{% if d.required %}<b>Yes</b>{% else %}No{% endif %}{% if d.required_reason %}<br><small>{{ d.required_reason }}</small>{% endif %}</td>
-    <td>{% if d.acknowledged_at %}completed / acknowledged{% elif d.delivered_at %}sent by the AI{% elif d.required %}to do{% else %}not needed{% endif %}</td>
+    <td><b>{{ d.title }}</b> <span class="tag is-light" title="Research ID">{{ d.l_id }}</span></td>
+    <td data-label="Needed?">{% if d.required %}<b>Yes</b>{% else %}No{% endif %}{% if d.required_reason %}<br><small class="muted">{{ d.required_reason }}</small>{% endif %}</td>
+    <td data-label="When">{{ d.trigger }}</td>
+    <td data-label="Status">{% if d.acknowledged_at %}<span class="check-ok">&#10003;</span> completed{% elif d.delivered_at %}<span class="check-ok">&#10003;</span> sent by the AI{% elif d.required %}<b>to do</b>{% else %}not needed{% endif %}</td>
   </tr>
   {% endfor %}
 </table>
 
 {{ decision(cp04, persona, '/disclosures/pcds', advice="The software does not help fill this in. Answer from your own knowledge; \"Unkn\" is an allowed answer. It can wait until the contract step, which needs it before anyone signs.", labels={}) }}
-<p><a class="button is-light" href="/disclosures/pcds" id="pcds-link">Open the Property Condition Disclosure Statement (the full {{ questions }}-question form)</a></p>
-<p><a class="button" href="/intake/onboarding">Next: seller onboarding &rarr;</a></p>
+<div class="actions">
+  <a class="button is-next" href="/intake/onboarding">Next: seller onboarding &rarr;</a>
+  <a class="button is-light" href="/disclosures/pcds" id="pcds-link">Open the seller's disclosure form (the full {{ questions }}-question form)</a>
+</div>
 {% endblock %}

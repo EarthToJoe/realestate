@@ -45,7 +45,7 @@ c -X POST -H "HX-Request: true" "$BASE/intake/infer" -o "$OUT"                 #
 ok "profile: public-record chips" 'data-source="public_record"'
 ok "profile: seller chips" 'data-source="seller"'
 ok "profile: inferred chips" 'data-source="inferred"'
-grep -o 'AI: [a-z]*[^<]*' "$OUT" | head -1
+grep -o 'data-mode="[a-z]*"' "$OUT" | head -1
 echo "seconds to a full profile (3 clicks): $(( $(date +%s) - t0 ))"
 c "$BASE/intake/disclosures" -o "$OUT"; ok "checklist: lead paint not needed (built 1995)" "Built 1995: only homes built before 1978"
 c "$BASE/intake/onboarding" -o "$OUT"; ok "CP-24 notices recorded" "Sent to the seller"
@@ -61,7 +61,7 @@ as() { local p=$1; shift; curl -s "${AUTH[@]}" -b "persona=$p" "$@"; }
 c "$BASE/pricing" -o "$OUT"; ok "pricing: comparables table" 'data-rank="8"'; ok "pricing: CMA label" "not an appraisal"
 c -X POST -H "HX-Request: true" "$BASE/pricing/recommend" -o "$OUT"
 ok "pricing: AI recommended price" 'id="recommended"'; ok "pricing: CP-25 marker" 'id="rec-CP-25"'; ok "pricing: net sheet" 'id="net-sheet"'
-grep -o 'AI: [a-z]*[^<]*' "$OUT" | head -1
+grep -o 'data-mode="[a-z]*"' "$OUT" | head -1
 PRICE=$(grep -o 'id="recommended">\$[0-9,]*' "$OUT" | grep -o '[0-9,]*$' | tr -d ,); echo "recommended: \$$PRICE"
 as presenter "$BASE/copy" -o "$OUT"; ok "copy refused before CP-05" 'id="gate"'
 as presenter -X POST "$BASE/pricing/choose" -d "price=$PRICE" -o /dev/null -w "%{http_code}\n" | sed 's/^/presenter chooses price -> HTTP /'
@@ -161,8 +161,8 @@ grep -o 'Live model spend so far \$[0-9.]*' "$OUT" | head -1
 c "$BASE/timeline" -o "$OUT"
 for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"' 'data-code="CP-27"' 'data-code="CP-11"' 'data-code="CP-13"' 'data-code="CP-14"' 'data-code="CP-17"' 'data-code="CP-31"' 'data-code="CP-33"'; do ok "timeline $k" "$k"; done
 for k in chip-automated chip-client_decision chip-law_marker chip-third_party 'data-code="CP-35"' 'id="hurdle-map"'; do ok "timeline $k" "$k"; done
-grep -o '[0-9]* NY law today markers[^<]*' "$OUT" | head -1
-grep -o '[0-9]* client decisions made, [0-9]* waiting' "$OUT" | head -1
+grep -o 'The sale so far: [^<]*' "$OUT" | head -1
+grep -o '[0-9]*</span> places NY law today[^<]*' "$OUT" | sed 's#</span>##' | head -1
 c "$BASE/docs-success-criteria.html" -o "$OUT"; ok "review page still served" "Success criteria"
 rm -f "$JAR" "$OUT"
 [ $fail = 0 ] && echo "LIVE FLOW: OK" || { echo "LIVE FLOW: FAILED"; exit 1; }

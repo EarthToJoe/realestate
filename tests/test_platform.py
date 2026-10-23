@@ -131,4 +131,4 @@ def test_shipped_replay_answers_the_demo_intake(settings):
     c = TestClient(create_app(settings, prov.ReplayProvider(store)))
     demo_intake(c)
     r = c.post("/intake/infer", headers={"HX-Request": "true"})
-    assert "AI: replay of the run recorded" in r.text and 'data-source="inferred"' in r.text
+    assert 'data-mode="replay"' in r.text and "Recorded run" in r.text and 'data-source="inferred"' in r.text

@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="title is-4">2. Pricing: the AI's advice and your price</h1>
-<p class="tag is-warning is-medium" id="cma-label">{{ label }}</p>
+<p class="label-strip" id="cma-label">{{ label }}</p>
 {% if gate %}
+<h1 class="page-title">The AI's price advice</h1>
 {# the gate card in base.html shows what is missing #}
 {% else %}
 {% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}

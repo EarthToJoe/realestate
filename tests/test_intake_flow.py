@@ -22,7 +22,7 @@ def test_profile_shows_all_three_source_chips(client, session):
     r = client.post("/intake/infer", headers={"HX-Request": "true"})
     assert r.status_code == 200
     assert 'data-source="inferred"' in r.text
-    assert "AI: fake" in r.text  # the badge always says which mode answered
+    assert 'data-mode="fake"' in r.text  # the badge always says which mode answered
     # every fact row carries a chip
     rows = re.findall(r'<tr data-field="[^"]+" data-source="([a-z_]+)"', r.text)
     assert len(rows) >= 30 and set(rows) == {"public_record", "seller", "inferred"}

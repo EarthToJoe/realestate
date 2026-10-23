@@ -44,6 +44,7 @@ class Entry:
     standing: bool = False
     launch_route: str | None = None  # for a law marker: the lawful route at launch, in one sentence
     launch_link: str | None = None
+    plain: str = ""  # one plain sentence for the screen (UI audit); the rule above stays in the fold
     extra: dict = field(default_factory=dict)
 
     @property
@@ -78,6 +79,7 @@ def load(path: Path = PATH) -> dict[str, Entry]:
             per_item=bool(e.get("per_item", False)),
             planned=bool(e.get("planned", False)),
             standing=bool(e.get("standing", False)),
+            plain=e.get("plain", ""),
             launch_route=e.get("launch_route"),
             launch_link=links.get(e.get("launch_link", ""), e.get("launch_link")),
         )

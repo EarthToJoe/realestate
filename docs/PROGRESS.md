@@ -1,5 +1,23 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), night: the screens redesigned from the UI audit (BUILD-UX)
+
+Joe: "It looks weird, and it is not user friendly." Every finding in `docs/build/ui-audit-2026-10-23.md` is worked
+through; its new "Fixed" section lists what changed per finding and what is left (decision 40). Live at
+https://realestate.hughesnode.com (house login).
+- **Each screen leads with its result** in plain English ("The AI suggests listing at $640,000"; "Signed by both
+  parties (simulated)") and one main button; tables, drafts and records are folded under "Show the working".
+- **The presenter's script is hidden** behind a "Presenter notes" button, bottom right.
+- **"NY law today" notes are one plain sentence** with a "Why" fold for the rule, the codes and the research link.
+  Every note, decision, gate and record still renders and is recorded.
+- **People and data read like a product:** names on the contract, "Both consented", Yes/No, Eastern times.
+- **Phone first:** a compact step bar, no sideways scrolling, tables stacked as cards, 44 px buttons, 16 px text.
+  The contract went from 21,088 to 4,245 px tall on a phone and the timeline from 18,167 to 4,001.
+- **Plain chrome:** "View as" Presenter / Seller / Buyer, "Recorded run", "Start over", research link in the footer.
+- **Checks:** 137 tests pass (four selectors updated, no behaviour changed); `scripts/live-flow.sh` and
+  `scripts/phone-check.py` pass on the live site; the after screenshots are in `docs/build/screens/after/`. The
+  live deal is left walked through every built step. App live spend unchanged. Disk: 14 GB free.
+
 ## 2026-10-23 (day 1), late: the demo works from a phone (BUILD-FIX)
 
 Joe could not get past step 1 on his phone: after **Start demo** every other step link silently bounced back to

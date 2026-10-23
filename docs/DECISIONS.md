@@ -283,3 +283,16 @@ with a dated line.
       same card. The Presenter deciding directly is still refused (403).
     - Start demo asks first. On a phone a numbered step bar sits at the top, buttons are at least 44 px and nothing
       scrolls sideways, checked on every screen at 390 px by `scripts/phone-check.py`.
+40. **The screens lead with the outcome; the working and the codes are folded (2026-10-23, BUILD-UX).** From the UI
+    audit (`docs/build/ui-audit-2026-10-23.md`, Joe: "It looks weird, and it is not user friendly"). Every screen
+    now opens with its result in plain English and one primary action; tables, drafts and records sit in "Show the
+    working" folds. The presenter's script moved behind a "Presenter notes" button (a bottom sheet, closed by
+    default; slice 4's guided mode builds on it). Each "NY law today" note leads with one plain sentence from a new
+    `plain` field in `app/records/catalogue.yaml`; the rule, who must act, what the AI did, the codes and the
+    research link sit under "Why". Nothing behavioural changed: every marker, decision, gate, record and refusal
+    still renders and is recorded, and the tests only had selectors updated (the badge's `data-mode`, the notes'
+    `id="presenter-notes"`). Display helpers in `app/humanize.py` (Eastern time, Yes/No, decisions in words) change
+    the screen only. The contract screen now shows the parties' fictional names, and each view is access-logged like
+    the PDF; masking stays for model calls and logs. Kept Bulma and the no-build rule (decision 7) with the system
+    font stack, so nothing new is vendored; one accent (green ink) plus the three meaning colours. `tzdata` joins
+    the requirements so Eastern time works in the slim image.

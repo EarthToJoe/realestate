@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="title is-4">AI real estate agent: proof of concept</h1>
-<p>One Hudson Valley sale, start to finish. The AI is the agent on both sides and does every agent act; the seller
-and the buyer make their own decisions. Wherever New York law today requires a licensed broker or a lawyer, a red
-<b>NY law today</b> marker names the rule and links to the research. It is recorded and does not stop the flow.</p>
-<div class="buttons" style="margin-top:12px">
-  <a class="button is-primary" href="/demo/start" id="start-demo">Start demo</a>
-  {% if deal %}<a class="button" href="/intake/profile">Continue the current deal</a>
-  <a class="button" href="/timeline">Deal timeline</a>{% endif %}
-  <a class="button is-light" href="{{ review_url }}" id="review-home">Review documents</a>
+<div class="home-hero">
+  <h1 class="page-title">An AI real estate agent, from listing to signed contract</h1>
+  <p class="lead">One Hudson Valley house sale, start to finish. The AI is the agent on both sides and does every
+  agent's job; the seller and the buyer make their own decisions.</p>
+  <p>Wherever New York law today requires a licensed broker or a lawyer, a red <b>NY law today</b> note says so in
+  one sentence. It is recorded and does not stop the sale.</p>
+  <div class="actions">
+    <a class="button is-primary" href="/demo/start" id="start-demo">Start demo</a>
+    {% if deal %}<a class="button is-light" href="/intake/profile">Continue the current sale</a>
+    <a class="button is-light" href="/timeline">See the deal timeline</a>{% endif %}
+  </div>
+  <p class="help">Start demo asks before it resets the sale, then opens step 1. Any step can be opened at any time:
+  if it needs an earlier step, it says what is missing and offers to fast-forward.</p>
 </div>
-<p class="help">Start demo asks first, then resets the deal to the seed and opens step 1 as the Presenter. Built so
-far: steps 1 to 9; step 10 (marketing the business) arrives in slice 4. Any step link works at any time: a step
-that needs an earlier one says what is missing, who does it, and offers "Fast-forward the demo to here".</p>
-<h2 class="title is-6" style="margin-top:18px">How to read the screens</h2>
-<p><span class="chip chip-automated">AI did it</span>
-   <span class="chip chip-client_decision">Your decision (seller or buyer)</span>
-   <span class="chip chip-law_marker">NY law today: licensed broker or lawyer</span>
-   <span class="chip chip-human_required">Human required / third party</span></p>
-<p><span class="src src-public_record">Public record</span> <span class="src src-seller">Seller</span>
-   <span class="src src-inferred">Inferred</span>: where each property fact came from.</p>
+<h2 class="section-title">How to read the screens</h2>
+<div class="legend">
+  <div><span class="chip chip-automated"><b>AI</b></span> Blue is the AI at work: what it wrote, sent or worked out.</div>
+  <div><span class="chip chip-client_decision"><b>Client decision</b></span> Amber is a decision only the seller or the buyer can make.</div>
+  <div><span class="chip chip-law_marker"><b>NY law today</b></span> Red is where New York law today requires a licensed broker or a lawyer.</div>
+  <div><span class="chip chip-human_required"><b>A person</b></span> Grey is a step a person or another firm does: a notary, an inspector, the owner at the door.</div>
+</div>
+<p class="help" style="margin-top:12px">Where each property fact came from: <span class="src src-public_record">Public record</span>
+  <span class="src src-seller">Seller</span> <span class="src src-inferred">AI inferred</span>.
+  The presenter's script is under <b>Presenter notes</b>, bottom right; "View as" switches between the presenter, the seller and the buyer.</p>
 {% endblock %}

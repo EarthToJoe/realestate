@@ -28,7 +28,15 @@ def contract(request: Request, s=Depends(get_session)):
     except GateError as e:
         gate = e.message
     st = service.state(deal)
+    # The screen shows the parties' fictional names (UI audit 2026-10-23); masking stays for model calls and logs.
+    # Showing them is a read of personal data, so it is access-logged like the PDF and DOCX.
+    names = service.names(deal) if memo or st.get("draft") else {}
+    for pid in (deal.seller_id, deal.buyer_id) if names else ():
+        if pid:
+            log_access(s, persona=persona(request), person_id=pid, fields=["legal_name"],
+                       purpose="Contract screen with the parties' names", route=str(request.url.path))
     return render(request, s, "contract/contract.html", gate=gate, memo=memo, st=st, label=service.LABEL,
+                  names=names, fill=service.fill,
                   rows=service.side_by_side(st["draft"]) if st.get("draft") else [],
                   disclosures=service.disclosures(s, deal) if not gate else [], signing_map=service.SIGNING_MAP,
                   standard_source=service.STANDARD_SOURCE, cp14=records.latest(s, deal.id, "CP-14"),

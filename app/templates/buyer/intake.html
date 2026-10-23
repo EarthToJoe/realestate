@@ -1,51 +1,67 @@
 {% extends "base.html" %}
 {% from "components.html" import law_marker, decision, chip with context %}
 {% block content %}
-<h1 class="title is-4">8. Buyer side: intake and representation</h1>
-<p>The same system, the buyer's side. The AI becomes the buyer's agent: a separate AI context that never sees the
-seller's limits, as the seller's AI never sees the buyer's (information wall, decision 24).</p>
 {% if not has_buyer %}
+<div class="outcome">
+  <h1 class="page-title">A buyer signs up with the firm</h1>
+  <p>The same system, the buyer's side. The AI becomes the buyer's agent: a separate AI that never sees the
+  seller's limits, as the seller's AI never sees the buyer's (the information wall).</p>
+  <a class="button is-light" href="/buyer?demo=1" id="use-demo-buyer">Use the demo buyer (fictional)</a>
+</div>
 {% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
-<p><a class="button is-light is-small" href="/buyer?demo=1" id="use-demo-buyer">Use the demo buyer (fictional)</a></p>
-<form method="post" action="/buyer" class="box" id="buyer-form">
-  <p class="label">About you</p>
-  <div class="columns">
-    <div class="column"><label>Name <input class="input is-small" name="name" value="{{ demo.name if demo }}"></label></div>
-    <div class="column"><label>E-mail <input class="input is-small" name="email" value="{{ demo.email if demo }}"></label></div>
-    <div class="column"><label>Phone <input class="input is-small" name="phone" value="{{ demo.phone if demo }}"></label></div>
+<form method="post" action="/buyer" id="buyer-form">
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">About you</legend>
+  <div class="field-row">
+    <label>Name <input class="input" name="name" value="{{ demo.name if demo }}"></label>
+    <label>E-mail <input class="input" name="email" value="{{ demo.email if demo }}" inputmode="email"></label>
+    <label>Phone <input class="input" name="phone" value="{{ demo.phone if demo }}" inputmode="tel"></label>
+  </div></fieldset>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">The home you want</legend>
+  <div class="field-row">
+    <label>Bedrooms, at least <input class="input" name="beds_min" value="{{ demo.beds_min if demo }}" inputmode="numeric"></label>
+    <label>Acres, at least <input class="input" name="acres_min" value="{{ demo.acres_min if demo }}" inputmode="decimal"></label>
   </div>
-  <p class="label">The home you want</p>
-  <label>Bedrooms, at least <input class="input is-small" name="beds_min" size="3" value="{{ demo.beds_min if demo }}"></label>
-  <label>Acres, at least <input class="input is-small" name="acres_min" size="3" value="{{ demo.acres_min if demo }}"></label>
-  <p>Towns: {% for t in towns %}<label class="checkbox"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if demo and t in demo.towns }}> {{ t }}</label> {% endfor %}</p>
-  <label>Must-haves (the home itself) <input class="input is-small" name="must_haves" value="{{ demo.must_haves if demo }}"></label>
-  <label>Timeline <input class="input is-small" name="timeline" value="{{ demo.timeline if demo }}"></label>
-  <p class="label" style="margin-top:8px">Money</p>
-  <label>Pre-approved for a mortgage? <select name="preapproved"><option value="yes" {{ 'selected' if demo and demo.preapproved == 'yes' }}>Yes</option><option value="no">No</option></select></label>
-  <label>Pre-approval amount $<input class="input is-small" name="preapproval_amount" size="8" value="{{ demo.preapproval_amount if demo }}"></label>
-  <p class="label" style="margin-top:8px">Private, for your AI only (never in an offer, never shown to the seller's side)</p>
-  <label>The most you would pay $<input class="input is-small" name="max_price" size="8" value="{{ demo.max_price if demo }}"></label>
-  <label>Private notes <input class="input is-small" name="private_notes" value="{{ demo.private_notes if demo }}"></label>
+  <p class="label" style="margin-bottom:4px">Towns</p>
+  <div class="field-row" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">{% for t in towns %}<label class="checkbox" style="flex-direction:row;font-weight:400"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if demo and t in demo.towns }}> {{ t }}</label>{% endfor %}</div>
+  <div class="field-row">
+    <label>Must-haves (the home itself) <input class="input" name="must_haves" value="{{ demo.must_haves if demo }}"></label>
+    <label>Timeline <input class="input" name="timeline" value="{{ demo.timeline if demo }}"></label>
+  </div></fieldset>
+  <fieldset class="box"><legend class="section-title" style="margin:0 0 6px">Money</legend>
+  <div class="field-row">
+    <label>Pre-approved for a mortgage? <span class="select"><select name="preapproved"><option value="yes" {{ 'selected' if demo and demo.preapproved == 'yes' }}>Yes</option><option value="no">No</option></select></span></label>
+    <label>Pre-approval amount ($) <input class="input" name="preapproval_amount" value="{{ demo.preapproval_amount if demo }}" inputmode="numeric"></label>
+  </div>
+  <p class="label" style="margin:8px 0 4px">Private, for your AI only</p>
+  <p class="help">Never in an offer, never shown to the seller's side.</p>
+  <div class="field-row">
+    <label>The most you would pay ($) <input class="input" name="max_price" value="{{ demo.max_price if demo }}" inputmode="numeric"></label>
+    <label>Private notes <input class="input" name="private_notes" value="{{ demo.private_notes if demo }}"></label>
+  </div>
   <p class="help">This form asks about the home and the money only. It never asks about family, children, religion,
     national origin, disability, age or any other protected characteristic, and the search has no school-rating or
-    neighbourhood filter (fair housing, L37).</p>
-  <button class="button is-warning" style="margin-top:8px">Become a client of the firm</button>
+    neighbourhood filter (fair housing, L37).</p></fieldset>
+  <div class="actions"><button class="button is-warning">Become a client of the firm</button></div>
 </form>
 {% else %}
-<div class="box" id="buyer-profile">
-  <p><b>Buyer:</b> {% if buyer %}{{ buyer.legal_name }}{% else %}Buyer 1 (name hidden from the {{ persona }}){% endif %}.
-    <b>Needs:</b> at least {{ needs.beds_min }} bedrooms and {{ needs.acres_min }} acres; towns {{ needs.towns | join(', ') }};
-    {{ needs.must_haves }}. Pre-approved: {{ 'yes' if needs.preapproved else 'no' }}{% if needs.preapproved %} (${{ '{:,}'.format(needs.preapproval_amount) }}){% endif %}.</p>
-  {% if private %}<p id="buyer-private"><b>Private to the buyer's side:</b> most they would pay ${{ '{:,}'.format(private.maximum_price) }}; {{ private.notes }}</p>
-  {% else %}<p id="buyer-private-hidden"><i>The buyer's private limits are hidden from the {{ persona }} (information wall).</i></p>{% endif %}
-</div>
-{% if cp30 %}{{ law_marker(cp30) }}{% endif %}
-<p>Sent at first contact (simulated): {% for c in cp24 %}{{ chip(c) }} {% endfor %}</p>
-<div class="box" id="buyer-agreement">
-  <p><b>Buyer agreement</b> (simulated e-sign; L15: before any tour)</p>
-  <ul>{% for t in agreement_terms.terms %}<li>{{ t }}</li>{% endfor %}</ul>
+{% set signed = cp16 and cp16.status == 'done' %}
+<div class="outcome {{ 'is-done' if signed }}">
+  <h1 class="page-title">{% if signed %}The buyer is a client of the firm{% else %}The buyer signs up: the agreement is waiting{% endif %}</h1>
+  <div class="box" id="buyer-profile" style="margin:8px 0 0">
+    <p><b>Buyer:</b> {% if buyer %}{{ buyer.legal_name }}{% else %}the buyer (the name is shown to the buyer's side only){% endif %}.
+      <b>Wants:</b> at least {{ needs.beds_min }} bedrooms and {{ needs.acres_min }} acres in {{ needs.towns | join(', ') }};
+      {{ needs.must_haves }}. <b>Pre-approved:</b> {{ 'yes' if needs.preapproved else 'no' }}{% if needs.preapproved %} ({{ needs.preapproval_amount | money }}){% endif %}.</p>
+    {% if private %}<p id="buyer-private"><b>Private to the buyer's side:</b> the most they would pay is {{ private.maximum_price | money }}; {{ private.notes }}</p>
+    {% else %}<p id="buyer-private-hidden" class="muted"><i>The buyer's private limits are hidden from the {{ persona }} (information wall).</i></p>{% endif %}
+  </div>
+  {% if signed %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/buyer/search">Next: search and alerts &rarr;</a></div>{% endif %}
 </div>
 {% if cp16 %}{{ decision(cp16, persona, '/buyer/sign', labels={'sign': 'Acknowledge the agency form and sign the buyer agreement', 'decline': 'Decline'}) }}{% endif %}
-<p><a class="button is-info" href="/buyer/search">Next: search and alerts &rarr;</a></p>
+<details class="working" id="buyer-agreement" {{ 'open' if not signed }}>
+  <summary>The buyer agreement <span class="sum-note">simulated e-sign; before any tour (L15)</span></summary>
+  <div class="working-body"><ul>{% for t in agreement_terms.terms %}<li>{{ t }}</li>{% endfor %}</ul></div>
+</details>
+{% if cp30 %}{{ law_marker(cp30) }}{% endif %}
+<p>Sent at first contact (simulated): {% for c in cp24 %}{{ chip(c) }} {% endfor %}</p>
 {% endif %}
 {% endblock %}

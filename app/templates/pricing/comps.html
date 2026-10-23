@@ -1,64 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="title is-4">2. Pricing: comparable sales and adjustments</h1>
-<p class="tag is-warning is-medium" id="cma-label">{{ label }}</p>
 {% if gate %}
+<h1 class="page-title">Comparable sales</h1>
 {# the gate card in base.html shows what is missing #}
 {% else %}
 {% set sm = pa.summary %}
-<p style="margin-top:8px">The AI took <b>{{ sm.count }} arm's-length one-family sales</b>
-from the Dutchess County public sales records (ParcelAccess; within about 4 miles, the last 18 months) and adjusted each one toward this house in code,
-using the rates below. The model does not do the arithmetic; it explains it and advises on the next screen.</p>
+<div class="outcome">
+  <p class="label-strip" id="cma-label">{{ label }}</p>
+  <h1 class="page-title">{{ sm.count }} nearby sales put this house at {{ sm.range_low | money }} to {{ sm.range_high | money }}</h1>
+  <p class="lead">Reconciled value <b>{{ sm.indicated_value | money }}</b>.</p>
+  <p>Real arm's-length sales of one-family homes from the Dutchess County public sales records, within about 4 miles
+  and the last 18 months. The code adjusts each one toward this house at the rates shown below; the AI explains
+  the result and advises on the next screen.</p>
+  <div class="actions" style="margin-bottom:0"><a class="button is-next" href="/pricing/advice">Next: the AI's price advice &rarr;</a></div>
+</div>
+
 <div class="box" id="subject">
-  <b>This house:</b> {{ sm.subject.style }}, built {{ sm.subject.year_built }}, {{ '{:,}'.format(sm.subject.living_area_sqft) }} sq ft
-  + {{ sm.subject.finished_basement_sqft }} sq ft finished basement, {{ sm.subject.bedrooms }} bedrooms,
+  <p style="margin:0"><b>This house:</b> {{ sm.subject.style }}, built {{ sm.subject.year_built }}, {{ '{:,}'.format(sm.subject.living_area_sqft) }} sq ft
+  plus a {{ sm.subject.finished_basement_sqft }} sq ft finished lower level, {{ sm.subject.bedrooms }} bedrooms,
   {{ sm.subject.bathrooms_full }} full baths, {{ sm.subject.acres }} acres, central air: {{ 'yes' if sm.subject.central_air else 'no' }},
-  garage: {{ 'yes' if sm.subject.garage else 'no' }}.
-  {% if sm.subject.full_market_value_2026 %}<br><small>Cross-check: the 2026 roll's state full market value is
-  ${{ '{:,}'.format(sm.subject.full_market_value_2026) }} (a tax formula, not an appraisal).</small>{% endif %}
+  garage: {{ 'yes' if sm.subject.garage else 'no' }}.</p>
+  {% if sm.subject.full_market_value_2026 %}<p class="help" style="margin:4px 0 0">Cross-check: the 2026 tax roll's full market value is
+  {{ sm.subject.full_market_value_2026 | money }} (a tax formula, not an appraisal).</p>{% endif %}
 </div>
-<div class="table-container">
-<table class="table is-narrow is-fullwidth is-striped" id="comps-table">
-  <thead><tr><th>#</th><th>Address</th><th>Sold</th><th>Price</th><th>Style</th><th>Sq ft</th><th>Acres</th>
-    <th>Beds / baths</th><th>Net adj.</th><th>Gross</th><th>Adjusted</th><th>Weight</th><th>Flags</th></tr></thead>
-  <tbody>
-  {% for c in pa.comps %}
-  <tr data-rank="{{ c.rank }}" class="{{ 'weak' if c.weak }}">
-    <td>{{ c.rank }}</td><td>{{ c.address }}<br><small>{{ c.distance_mi }} mi · {{ c.deed }}</small></td>
-    <td>{{ c.sale_date }}</td><td>${{ '{:,}'.format(c.sale_price) }}</td><td>{{ c.style }}</td>
-    <td>{{ '{:,}'.format(c.living_area_sqft) }}</td><td>{{ c.acres }}</td><td>{{ c.bedrooms }} / {{ c.baths }}</td>
-    <td>{{ '{:+,}'.format(c.net_adjustment) }}</td><td>{{ c.gross_pct }}%</td>
-    <td><b>${{ '{:,}'.format(c.adjusted_price) }}</b></td><td>{{ c.weight }}</td>
-    <td>{% for w in c.weak %}<span class="tag is-warning is-light">{{ w }}</span> {% endfor %}</td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
-</div>
-<details id="adjustments"><summary><b>Every adjustment, line by line</b></summary>
+
+<h2 class="section-title">Show the working</h2>
+<details class="working">
+  <summary>The {{ sm.count }} sales, adjusted <span class="sum-note">adjusted {{ sm.adjusted_range_low | money if sm.adjusted_range_low else '' }}{{ ' to ' if sm.adjusted_range_low }}{{ sm.adjusted_range_high | money if sm.adjusted_range_high else '' }}</span></summary>
+  <div class="working-body">
+  <table class="table is-narrow is-fullwidth is-striped" id="comps-table">
+    <thead><tr><th>Sale</th><th>Sold</th><th>Price</th><th>Home</th><th>Adjustments</th><th>Adjusted</th><th>Weight</th></tr></thead>
+    <tbody>
+    {% for c in pa.comps %}
+    <tr data-rank="{{ c.rank }}" class="{{ 'weak' if c.weak }}">
+      <td><b>{{ c.rank }}. {{ c.address }}</b><br><small class="muted">{{ c.distance_mi }} mi away · {{ c.deed }}</small>
+        {% for w in c.weak %}<br><span class="tag is-warning is-light">{{ w }}</span>{% endfor %}</td>
+      <td data-label="Sold">{{ c.sale_date }}</td><td data-label="Sale price">{{ c.sale_price | money }}</td>
+      <td data-label="Home">{{ c.style }}, {{ '{:,}'.format(c.living_area_sqft) }} sq ft, {{ c.acres }} acres, {{ c.bedrooms }} bed / {{ c.baths }} bath</td>
+      <td data-label="Adjustments">net {{ '{:+,}'.format(c.net_adjustment) }}; gross {{ c.gross_pct }}%</td>
+      <td data-label="Adjusted price"><b>{{ c.adjusted_price | money }}</b></td><td data-label="Weight">{{ c.weight }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</details>
+<details class="working" id="adjustments"><summary>Every adjustment, line by line <span class="sum-note">date, size, basement, lot, age, rooms, air, style</span></summary>
+<div class="working-body">
 {% for c in pa.comps %}
-<p style="margin-top:8px"><b>{{ c.rank }}. {{ c.address }}</b>: ${{ '{:,}'.format(c.sale_price) }} → ${{ '{:,}'.format(c.adjusted_price) }}</p>
-<table class="table is-narrow"><tbody>
-{% for a in c.adjustments %}<tr><td>{{ a.factor }}</td><td>{{ '{:+,}'.format(a.amount) }}</td><td><small>{{ a.why }}</small></td></tr>{% endfor %}
+<p style="margin-top:8px"><b>{{ c.rank }}. {{ c.address }}</b>: {{ c.sale_price | money }} → {{ c.adjusted_price | money }}</p>
+<table class="table is-narrow is-fullwidth"><tbody>
+{% for a in c.adjustments %}<tr><td><b>{{ a.factor }}</b></td><td data-label="Amount">{{ '{:+,}'.format(a.amount) }}</td><td data-label="Why"><small>{{ a.why }}</small></td></tr>{% endfor %}
 </tbody></table>
 {% endfor %}
+</div>
 </details>
 {% if sm.cross_checks %}
-<h2 class="title is-6" style="margin-top:14px">Cross-checks beside the adjusted sales</h2>
+<details class="working"><summary>Cross-checks beside the adjusted sales <span class="sum-note">median {{ sm.cross_check_median | money if sm.cross_check_median else '' }}</span></summary>
+<div class="working-body">
 <table class="table is-narrow is-fullwidth" id="cross-checks">
   <thead><tr><th>Method</th><th>Value</th><th>How</th></tr></thead>
   <tbody>
-  <tr><td><b>Adjusted sales</b> (weighted, table above)</td><td><b>${{ '{:,}'.format(sm.adjusted_indicated) }}</b></td>
-    <td><small>adjusted prices ${{ '{:,}'.format(sm.adjusted_range_low) }} to ${{ '{:,}'.format(sm.adjusted_range_high) }} ({{ sm.adjusted_range_rule }})</small></td></tr>
+  <tr><td><b>Adjusted sales</b> (weighted, above)</td><td data-label="Value"><b>{{ sm.adjusted_indicated | money }}</b></td>
+    <td data-label="How"><small>adjusted prices {{ sm.adjusted_range_low | money }} to {{ sm.adjusted_range_high | money }} ({{ sm.adjusted_range_rule }})</small></td></tr>
   {% for x in sm.cross_checks %}
-  <tr data-check="{{ x.key }}"><td>{{ x.key }}. {{ x.name }}</td><td>${{ '{:,}'.format(x.value) }}</td><td><small>{{ x.how }}</small></td></tr>
+  <tr data-check="{{ x.key }}"><td><b>{{ x.name }}</b></td><td data-label="Value">{{ x.value | money }}</td><td data-label="How"><small>{{ x.how }}</small></td></tr>
   {% endfor %}
   </tbody>
 </table>
+</div>
+</details>
 {% endif %}
-<div class="ai-panel" id="range">
-  <p><b>Suggested range:</b> ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }}
-    · <b>reconciled value</b> ${{ '{:,}'.format(sm.indicated_value) }}{% if sm.adjusted_indicated %} (adjusted sales ${{ '{:,}'.format(sm.adjusted_indicated) }}, cross-check median ${{ '{:,}'.format(sm.cross_check_median) }}){% endif %} · median adjusted ${{ '{:,}'.format(sm.median_adjusted) }}</p>
+<details class="working" id="range"><summary>How the range is set, and the rates <span class="sum-note">as of {{ sm.as_of }}</span></summary>
+<div class="working-body">
+  <p><b>Suggested range:</b> {{ sm.range_low | money }} to {{ sm.range_high | money }}
+    · <b>reconciled value</b> {{ sm.indicated_value | money }}{% if sm.adjusted_indicated %} (adjusted sales {{ sm.adjusted_indicated | money }}, cross-check median {{ sm.cross_check_median | money }}){% endif %} · median adjusted {{ sm.median_adjusted | money }}</p>
   <p><small>Range: {{ sm.range_rule }}. Weights favour sales needing smaller
   adjustments and of the same style. Finished basement: adjusted only between sales of the same style (the style
   rate was measured on raised ranches with finished lower levels). Rates [INFERENCE, demonstration rates stated here, re-examined against the sales 2026-10-23]:
@@ -68,6 +84,6 @@ using the rates below. The model does not do the arithmetic; it explains it and 
   ${{ '{:,}'.format(sm.rates.full_bath) }}; half bath ${{ '{:,}'.format(sm.rates.half_bath) }}; central air ${{ '{:,}'.format(sm.rates.central_air) }};
   garage ${{ '{:,}'.format(sm.rates.garage) }}; other styles {{ sm.rates.style_pct }}%. As of {{ sm.as_of }}.</small></p>
 </div>
-<p><a class="button is-info" href="/pricing/advice">Next: the AI's advice &rarr;</a></p>
+</details>
 {% endif %}
 {% endblock %}

@@ -1,4 +1,4 @@
-# One entry per step and screen: the step list, the narration cards and docs/DEMO-SCRIPT.md all come from here
+# One entry per step and screen: the step list, the presenter notes and docs/DEMO-SCRIPT.md all come from here
 # (spec section 8). scripts/gen-demo-script.py writes the script; a test fails if the committed file differs.
 # `built: false` steps show a "coming in slice N" screen until their slice lands.
 steps:
@@ -20,13 +20,13 @@ steps:
         title: Property profile
         click: Click "Let the AI fill the gaps".
         say: >-
-          Every fact shows where it came from: green is the public record, amber is what the seller told us,
-          purple is what the AI inferred, with its reason and confidence. The AI fills only facts about the house,
-          never the seller's disclosure answers. The badge says whether this is the AI live or a recorded replay.
+          Every fact shows where it came from: grey is the public record, amber is what the seller told us, blue
+          is what the AI inferred, with its reason and confidence. The AI fills only facts about the house, never
+          the seller's disclosure answers. The badge at the top says whether this is the AI live or a recorded run.
         marker: none
       - route: /intake/disclosures
         title: Disclosure checklist
-        click: Tap "Decide as the seller" on the CP-04 card if you want to show the seller's form; it can wait for step 7.
+        click: Tap "Decide as the seller" on the seller's disclosure card if you want to show the seller's form; it can wait for step 7.
         say: >-
           The AI works out which disclosures this house needs from the facts: lead paint is not required because
           it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is
@@ -250,11 +250,12 @@ steps:
         title: Deal timeline and hurdle map
         click: Open "Deal timeline" in the step list.
         say: >-
-          This page is built only from the records the other screens wrote; nothing is drawn by hand. Blue is
-          what the AI did, amber what the seller or buyer decided, red where New York law today requires a
-          licensed broker or a lawyer, grey the people and third parties outside the software. The red marker at
-          the top stands for the whole firm: New York requires a licensed broker of record, and this demonstration
-          has none. The hurdle map below lists every red marker with its rule and a link to the research.
+          This page is built only from the records the other screens wrote; nothing is drawn by hand. The four
+          totals and the ten step cards are the whole sale on one screen: blue is what the AI did, amber what the
+          seller or buyer decided, red where New York law today requires a licensed broker or a lawyer, grey the
+          people and third parties outside the software. The red note below them stands for the whole firm: New
+          York requires a licensed broker of record, and this demonstration has none. Open any step for its full
+          record, or the hurdle map for every red note with its rule and a link to the research.
         marker: every record so far; CP-35 standing; CP-20 to CP-23 and CP-34 planned
   - n: 10
     title: Marketing the business

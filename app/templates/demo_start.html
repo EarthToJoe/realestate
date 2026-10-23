@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Start demo{% endblock %}
 {% block content %}
-<h1 class="title is-4">Start the demo</h1>
+<h1 class="page-title">Start over?</h1>
 <div class="notification is-warning is-light" id="reset-confirm">
   <p><b>This resets the deal to the beginning.</b> Every step, decision and message in the current deal is removed and
   the demo starts again at step 1, as the Presenter. The model spend log is kept.</p>
 </div>
 <div class="buttons">
-  <form method="post" action="/demo/reset"><button class="button is-primary" id="confirm-reset">Reset and start at step 1</button></form>
+  <form method="post" action="/demo/reset"><button class="button is-primary" id="confirm-reset">Yes, start over at step 1</button></form>
   <a class="button is-light" href="{{ back }}" id="cancel-reset">Cancel</a>
 </div>
 {% endblock %}

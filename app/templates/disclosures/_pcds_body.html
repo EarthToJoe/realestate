@@ -8,7 +8,7 @@
   <tr><th colspan="2">{{ sec.title }}</th></tr>
   {% for q in sec.questions %}
   <tr data-q="{{ q.n }}"><td style="width:62%">{{ q.n }}. {{ q.text }}</td>
-    <td>{% for f in fields(q) %}{% if f.label %}{{ f.label }}: {% endif %}<b>{{ (labels.get((saved.get(f.key) or '').lower()) or saved.get(f.key) or '(not asked)') }}</b>{% if not loop.last %}<br>{% endif %}{% endfor %}
+    <td data-label="Answer">{% for f in fields(q) %}{% if f.label %}{{ f.label }}: {% endif %}<b>{{ (labels.get((saved.get(f.key) or '').lower()) or saved.get(f.key) or '(not asked)') }}</b>{% if not loop.last %}<br>{% endif %}{% endfor %}
       {% if saved.get('q' ~ q.n ~ '_explain') %}<br><small>{{ saved.get('q' ~ q.n ~ '_explain') }}</small>{% endif %}</td></tr>
   {% endfor %}
 {% endfor %}
