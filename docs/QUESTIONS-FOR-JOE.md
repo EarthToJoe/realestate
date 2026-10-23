@@ -5,13 +5,6 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 
 ## Open
 
-**Q7. Sign off the demo's finish line** (`docs/SUCCESS-CRITERIA.md`, or
-https://realestate.hughesnode.com/docs-success-criteria.html). Reply `SIGN-OFF` or the edits you want.
-**This is now the critical path:** with the meeting about a week out (Q5), the build has to start by
-Sunday 2026-10-25 to leave a day for you to click through it and a day to polish.
-- *Provisional:* I write the architecture spec and traceability as soon as workstreams 1 to 3 land (that is
-  planning, not code), so building can start the hour you sign off.
-
 **Q11. Two facts about your father-in-law, now that he lives outside New York** (raised by Joe's 2026-10-23
 answer to Q4). (a) **Where does he live now?** A New York broker must "have and maintain a definite place of
 business within this state" with a sign readable from the sidewalk (RPL 441-a(3)), and must supervise the
@@ -22,16 +15,13 @@ lapsed or he registered as retired, that route may need fixing first.
 - *Provisional:* he lives outside NY, his registration is current or can be made current, and the firm rents
   a small licensed office in the Hudson Valley. The research on his roles will cover both questions.
 
-**Q12. Demo house in Virginia, product in New York.** Joe, 2026-10-23: "Use 4910 John Ticer Dr, Alexandria,
-VA." Glad to. One snag: the product is built for New York (NY contract of sale, NY disclosure forms, NY MLSs),
-so a Virginia address on a New York contract is the first thing a NY lawyer would catch. Two ways to handle it:
-(1) **use the address as given**, with every legal step clearly labelled "New York rules (our launch market)";
-or (2) **use the house's real details but place it in a Hudson Valley town** so every step is consistent.
-Also: is it your house (so the OK to use it is yours)?
-- *Provisional:* (1), the address as given, with the labels; switching to (2) is a one-line change. Only the
-  property's facts are used (rooms, size, year built, features), never an owner's name.
-
 ## Answered (newest first)
+
+- **2026-10-23, Joe, Q7 (sign-off):** "i sign off". The success criteria are the finish line; the build starts
+  as soon as workstreams 1 to 3 land.
+- **2026-10-23, Joe, Q12 (Virginia house, New York product):** "thats fine" to the provisional: use 4910 John
+  Ticer Dr, Alexandria, VA as given, with every legal step labelled "New York rules (launch market)". Not yet
+  answered: whether it is Joe's own house; assumed the OK to use it is his, since he chose it.
 
 - **2026-10-23, Joe, Q4 (father-in-law's status):** (a) broker licence or attorney exemption: "Not sure what
   this means. Perhaps not important at this juncture. He hasn't lived or worked in NY for almost 10 years. He

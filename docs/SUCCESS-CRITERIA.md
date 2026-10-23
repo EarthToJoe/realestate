@@ -1,6 +1,6 @@
 # Success criteria: what "POC done" means
 
-**Status: DRAFT, waiting for Joe's sign-off.** Nothing gets built until this is signed off (Joe's rule:
+**Status: SIGNED OFF by Joe, 2026-10-23** ("i sign off"). This is the finish line the POC is built to (Joe's rule:
 success criteria first). Reply `SIGN-OFF` or edit the lines you want changed. Every item is checkable:
 a person can sit at the demo and tick it.
 
@@ -59,4 +59,8 @@ delivery, identity verification, more than one brokerage, a mobile app. See `doc
 
 ## Sign-off
 
-- [ ] Joe: `SIGN-OFF` (date) or edits requested
+- [x] Joe: "thats fine. i sign off" (2026-10-23, in the realestate chat).
+- 2026-10-23 amendment that came with the sign-off (decision 14, Q12): the demo house is Joe's real address,
+  4910 John Ticer Dr, Alexandria, VA, with every state-specific step labelled "New York rules (launch market)".
+  Wherever this page says "fictional house", read "the demo house"; the people in the demo stay fictional,
+  and only the property's facts are used.

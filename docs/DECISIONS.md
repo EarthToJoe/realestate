@@ -84,3 +84,7 @@ with a dated line.
     except in a narrow fixed-fee, written-consent form. The plan keeps the provisional structure (broker of
     record, not either party's lawyer) until a dedicated memo, written after the WS2 deliverable, sets out
     his options, risks and the out-of-state questions (Q11) for Joe to share with him.
+17. **Success criteria signed off (Joe, 2026-10-23: "i sign off").** The POC is built to
+    `docs/SUCCESS-CRITERIA.md` as written, with decision 14's demo house. Decision 14 is confirmed, no longer
+    provisional (Joe: "thats fine"). Code starts once the WS1 to WS3 deliverables land and the architecture
+    spec and traceability are written from them (Joe's sequencing rule).
