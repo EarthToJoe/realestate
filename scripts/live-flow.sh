@@ -5,7 +5,7 @@
 # Clicks counted for SC1 ("profile with source chips in under 5 minutes of clicking").
 set -uo pipefail
 BASE=${1:-https://realestate.hughesnode.com}
-AUTH=(); [[ $BASE == https://* ]] && AUTH=(-u ":Fibonacci0!")   # house login, blank username
+AUTH=(); [[ $BASE == https://* ]] && AUTH=(-u ":$(cat /srv/realestate/secrets/HOUSE_PASSWORD)")   # house login, blank username; never in the repo
 JAR=$(mktemp); OUT=$(mktemp)
 c() { curl -s "${AUTH[@]}" -b "$JAR" -c "$JAR" "$@"; }
 fail=0

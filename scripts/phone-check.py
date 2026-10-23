@@ -65,7 +65,9 @@ def main() -> int:
     from app.web import steps
 
     base = sys.argv[1].rstrip("/") if len(sys.argv) > 1 else local_server()
-    creds = {"username": "", "password": "Fibonacci0!"} if base.startswith("https://") else None
+    # the house login (blank username), read from a root-only file; never written in the repo
+    creds = ({"username": "", "password": open("/srv/realestate/secrets/HOUSE_PASSWORD").read().strip()}
+             if base.startswith("https://") else None)
     routes = ["/", "/demo/start"] + [sc["route"] for st in steps() for sc in st["screens"]]
     fail = 0
     with sync_playwright() as p:

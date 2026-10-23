@@ -103,7 +103,7 @@ case "$cmd" in
     hn deploy realestate
     ;;
   check)
-    PW='Fibonacci0!'  # the house login from /root/projects/CLAUDE.md (blank username)
+    PW=$(cat /srv/realestate/secrets/HOUSE_PASSWORD)  # the house login (blank username); never written in the repo
     for p in / /intake /timeline /index.html /docs-success-criteria.html /docs-research-ws2-legal-licensing.html /healthz; do
       printf '%-44s %s\n' "$p" "$(curl -s -o /dev/null -w '%{http_code}' -u ":$PW" "https://realestate.hughesnode.com$p")"
     done
