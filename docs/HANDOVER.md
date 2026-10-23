@@ -64,17 +64,19 @@ appending findings to the same files under a dated "Gap fill" heading.
 
 ## The build (from 2026-10-23)
 
-Slices 1 to 3 are live (BUILD-1 to BUILD-3): steps 1 to 9 except step 10 (business marketing, slice 4), docker
-type on hughesnode. The demo is walked 1 to 5, then 8 (buyer side), 6 and 7 (decision 34). See `README.md` ("The
-demo app") for the code map and commands, the architecture spec section 9 for what each slice must pass, and
-decisions 27 to 29 for hosting, try-first results and replays. After changing code: `make test`, commit,
-`bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh` (it walks steps 1 to 8), and for screen changes
-`scripts/phone-check.py https://realestate.hughesnode.com` (390 px). A new step or decision also needs its
-milestone in `app/demo/walk.py` (`WALK` and `NEEDS`), or its gate card and fast-forward will not know it
-(decision 39). The live flow ends with the shared deal walked to the signed contract: leave it that way for Joe's
-links. New model tasks go in
-`config/models.yaml`; record the whole walk's replays with `scripts/slice3-models.py record` (it runs the steps 1
-to 4 path of `scripts/slice2-models.py` first; replay first, misses live and recorded into `replays/`).
+Slices 1 to 4 are live (BUILD-1 to BUILD-4): all ten steps, docker type on hughesnode. The demo walks steps in the
+order 1 to 5, buyer side, offers, contract, timeline, marketing the business, and **the screens number them in that
+order** (decision 42; records, routes and tests keep the SC numbers, `n` in `app/demo/steps.yaml`). See `README.md`
+("The demo app") for the code map and commands, the architecture spec section 9 for the slices, and decisions 27 to
+29 and 39 to 45. After changing code: `make test`, commit, `bash scripts/hosting.sh redeploy`, `bash
+scripts/live-flow.sh` (it walks all ten steps), `scripts/phone-check.py https://realestate.hughesnode.com` for screen
+changes, then **`bash scripts/live-reset.sh`**: Joe begins with Start demo, so leave the live deal at the start.
+`scripts/e2e-demo.py` runs the whole guided demo in a headless browser on replays with no key (screenshots to
+`docs/build/screens/slice4/`, timing to `docs/build/e2e-demo-run.md`). A new step or decision needs its milestone in
+`app/demo/walk.py` (`WALK` and `NEEDS`) and its narration in `steps.yaml` (then `make demo-script`). New model tasks
+go in `config/models.yaml`; record the whole walk's replays with `scripts/slice4-models.py record` (replay first,
+misses live, recorded into `replays/`; `check` fails on any miss with no key). `scripts/app-spend.py` rolls the app's
+own calls into `docs/SPEND-LOG.md`.
 
 ## Rules that are easy to forget
 

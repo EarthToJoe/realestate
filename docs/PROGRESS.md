@@ -1,5 +1,32 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), night: slice 4, the demo is complete (BUILD-4)
+
+All ten steps are built and live at https://realestate.hughesnode.com (house login). The live deal is reset to the
+start: press **Start demo**; any step is one tap away with ⏩ (fast-forward).
+- **Step 10, marketing the business:** the AI writes the firm's landing page, a local ad and a free seller's guide;
+  each passes the fair-housing check and a check on claims. "The AI that replaces your agent and your lawyer" is
+  refused: advertising law bars that claim while the law still needs them (a hurdle, reported). The ad reaches people
+  by place only; targeting by age is refused by code. Publishing records the red note: only a licensed broker may
+  place the firm's ads (decision 43).
+- **Guided demo:** Start demo opens notes on every screen with **Next**, **Do this screen for me** and
+  **Spotlight**; close them and they stay closed. On a phone they sit behind "Notes" in the top bar; on a laptop
+  under the step list. Nothing floats over the content any more (decision 41).
+- **Steps numbered in the order the demo walks them** (6 Buyer side, 7 Offers, 8 Contract), and short tab titles
+  ("Offers · Hudson Valley AI Realty") (Q47, decision 42).
+- **The timeline is finished:** the road to closing (escrow, inspection, repairs, appraisal, mortgage, title,
+  walkthrough, closing) dated from the signing, the hurdle map with every red note, and a list of everything the AI
+  did that NY law reserves (decision 44).
+- **People and their data:** export any person's data, erase it (the screen states the three-year records rule,
+  Q50), and see who viewed it.
+- **Polish from the review:** codes off the screens, the profile's counts agree, the offers, channels and disclosure
+  form open on their outcome with details folded.
+- **Checks:** 163 tests pass, including a headless browser run of the whole guided demo on recorded answers with no
+  key (`scripts/e2e-demo.py`: 20 screens at phone and laptop width, no problems). `scripts/live-flow.sh` (all ten
+  steps) and `scripts/phone-check.py` pass on the live site. Estimated length with the narration: 14.6 minutes
+  (`docs/build/e2e-demo-run.md`). 47 screenshots in `docs/build/screens/slice4/`. App live spend: about $0.01 to record
+  step 10; the hosted app's live total is still $0.0295 of its $12 cap. Disk: 11 GB free.
+
 ## 2026-10-23 (day 1), night: the screens redesigned from the UI audit (BUILD-UX)
 
 Joe: "It looks weird, and it is not user friendly." Every finding in `docs/build/ui-audit-2026-10-23.md` is worked

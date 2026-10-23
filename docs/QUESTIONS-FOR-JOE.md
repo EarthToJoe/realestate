@@ -174,11 +174,13 @@ research beside the adjusted sales and reconciles them: the range is $610,000 to
 *Provisional:* keep them, labelled; a broker (perhaps your father-in-law's contacts) can replace them with
 local paired-sales rates in `app/modules/pricing/service.py`, one line each. *Unblocks:* nothing for the demo.
 
-**Q47. The demo order: the buyer's side before the offers.** The firm's own buyer makes offer B, and the buyer
-answers the seller's counter on the buyer's screen. So the demo goes steps 1 to 5, then 8 (buyer side), then 6
-(offers) and 7 (contract). The step list on screen keeps its numbers (decision 34). *Provisional:* keep that
-order. The other way is to renumber so the buyer's side is step 6, which means changing the success criteria's
-numbers. *Unblocks:* nothing; the click-through on 2026-10-28 will show whether it reads naturally.
+**Q47. The demo order and the numbers on screen: the buyer's side before the offers.** The firm's own buyer
+makes offer B, and the buyer answers the seller's counter on the buyer's screen, so the demo walks the buyer's side
+before the offers and the contract. *New provisional (2026-10-23, the chat session's call; decision 42):* the screens
+number the steps in the order the demo walks them: 1 Intake, 2 Pricing, 3 Listing copy, 4 Marketing plan, 5
+Communications, **6 Buyer side, 7 Offers, 8 Contract**, 9 Timeline, 10 Marketing the business, so you never say
+"now step 8, then step 6". The success criteria keep their own numbers (SC8 is the buyer side); `docs/DEMO-SCRIPT.md`
+gives the mapping once. *Unblocks:* nothing; Wednesday's click-through will show whether it reads naturally.
 
 **Q48. The contract drafts with Opus, and the draft leaves blanks.** After a side-by-side, the contract is drafted
 by Claude Opus 5.5, the strongest model, because a lawyer will read it closely (decision 36). That costs about
@@ -187,6 +189,19 @@ seller's cure-cost limit, test deadlines, the loan amount), the draft leaves a b
 inventing one. *Provisional:* Opus, with blanks. If your father-in-law would rather see a draft with every blank
 filled with a usual Hudson Valley figure, that is a prompt change; it needs his figures. *Unblocks:* nothing for the
 demo.
+
+**Q49. The founder on the firm's own advertising.** Step 10's landing page names the firm's founder, as the
+brief asks; the demo shows a placeholder, "[Founder's name]", because naming a real person in public advertising
+needs that person's consent. *Provisional:* keep the placeholder. If your father-in-law (or you) should be named, tell
+me the name and the one line to say about him; it is one line in `config/brokerage.yaml`. *Unblocks:* nothing for the
+demo.
+
+**Q50. Erasing a person's data versus the three-year records rule.** The demo erases a person's personal data on
+request ("People and their data"). New York requires a brokerage to keep its transaction records (agreements,
+contracts, disclosures and their signed acknowledgments) for three years (L17). *Provisional for production:* erase
+marketing and other data at once, and the signed records when the three years end; the demo erases at once to show it
+works, and its confirm screen says so. A lawyer's view on where the line falls would settle it. *Unblocks:* nothing for
+the demo.
 
 ## Answered (newest first)
 

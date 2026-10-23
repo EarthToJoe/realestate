@@ -507,6 +507,17 @@ the end of its slot. Acceptance checks name the amended SC item they prove.
 | **Wed 10-28** | **Joe clicks through on hughesnode** (afternoon); fixes from his notes the same day where small. | Joe's click-through notes logged in `docs/PROGRESS.md`. |
 | **Thu 10-29** | Polish from Joe's notes (D15). | |
 
+**Result, slice 4 (2026-10-23, BUILD-4).** SC10: the campaign's three pieces pass the fair-housing pipeline and a
+claims check in code, the planted claim is refused, targeting holds only allowed criteria and refuses the rest in
+code, CP-19 is written on publishing (`tests/test_slice4.py`, live walk). SC11: Start demo turns on the guided demo
+(narration card in the presenter-notes layer, Next in walk order, Driver.js spotlights, "Do this screen for me");
+`docs/DEMO-SCRIPT.md` is generated from `steps.yaml` and the test checks every route carries its words; a headless
+browser walks all 20 screens on replays with no key at 390 and 1280 px (`scripts/e2e-demo.py`); estimated 14.6
+minutes with the narration (`docs/build/e2e-demo-run.md`). SC9: the road to closing, the hurdle map grouped by code,
+the agent-acts log and split header counts, all from records. PII: export, erase with a tombstone, access log screen;
+tests for no PII in logs or audit and in any model request over the whole walk. 163 tests pass. Steps are numbered
+on screen in walk order (decision 42).
+
 **Cut first if late (in this order):** pyHanko seal → Driver.js spotlights (narration cards stay) → Leaflet map
 (static image) → flyer as PDF (HTML print view instead) → sqlcipher (Fernet columns stay) → Opus contract trial →
 self-guided tour as a scheduler option (its CP-28 marker shown on the scheduler card, not acted) → live mode at the

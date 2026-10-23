@@ -81,9 +81,8 @@ def main() -> int:
                 page.click("#confirm-reset")
             else:
                 page.goto(base + "/timeline")
-                page.click("#gate-ff") if page.query_selector("#gate-ff") else None
-                if page.query_selector("[data-ff='9']"):
-                    page.click("[data-ff='9']")
+                # the whole walk, step 10 included ("Do this screen for me" on the last screen)
+                page.request.post(base + "/demo/play", form={"route": steps()[-1]["screens"][-1]["route"]})
             if phase != "after Start demo":
                 page.goto(base + "/contract")
                 if not page.query_selector("#signed"):

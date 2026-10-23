@@ -296,3 +296,47 @@ with a dated line.
     the PDF; masking stays for model calls and logs. Kept Bulma and the no-build rule (decision 7) with the system
     font stack, so nothing new is vendored; one accent (green ink) plus the three meaning colours. `tzdata` joins
     the requirements so Eastern time works in the slim image.
+41. **The guided demo drives the presenter-notes layer; the narration never goes back on the audience's screen
+    (2026-10-23, BUILD-4).** SC11's "narration card on each screen" is the presenter notes of decision 40, filled from
+    `app/demo/steps.yaml` (say, point at, do, markers) with the presenter's controls first: **Next** (the following
+    screen in walk order), **Do this screen for me** (plays that screen's taps through `app/demo/walk.py`, the same
+    plays as fast-forward, on the recorded replays; each client decision still recorded as the client's) and
+    **Spotlight** (Driver.js over the elements the script names, with short code-free captions the audience may read).
+    Start demo turns the guided demo on: the notes open on every screen until the presenter closes them, which is
+    remembered on that device. The notes open from the chrome (the phone's sticky step bar, "Notes"; the laptop's
+    sticky step list, "Presenter notes"), so no button floats over the content any more (Joe's review: it hid the last
+    lines). Chosen over a separate tour mode, which would have duplicated the gate cards, fast-forward and "decide as"
+    the demo already has.
+42. **Steps are numbered on screen in the order the demo walks them (2026-10-23, BUILD-4; Q47, the chat session's
+    provisional call).** 1 Intake ... 5 Communications, 6 Buyer side, 7 Offers, 8 Contract, 9 Timeline, 10 Marketing
+    the business. The step list, the phone bar, the gate cards, the timeline's cards, the screens' cross-references
+    and `docs/DEMO-SCRIPT.md` all use these numbers. Records, routes, tests and the success criteria keep the SC
+    numbers (`n` in steps.yaml; `shown` is the place in the walk); the demo script gives the mapping once. Tab titles
+    are short ("Offers · Hudson Valley AI Realty"): the old ones ended "(demonstration)", which a phone cut to a
+    stray ")".
+43. **Step 10 adds a claims check and code-only notices to the fair-housing gate (2026-10-23, BUILD-4).** The firm's
+    own advertising passes the same fair-housing pipeline as listing copy (CP-26) and a claims check in code: no
+    "licensed" (CP-35: there is no broker of record), no "replaces your agent" or lawyer (L54), never "you do not need
+    a lawyer" (L23), no reviews or testimonials, no guarantees; savings figures warn. The demo's planted headline is
+    the claim the idea invites, "The AI that replaces your agent and your lawyer": the check refuses it. That is a
+    hurdle reported, not the idea reshaped: advertising law bars the claim while New York still requires a licensed
+    broker and the parties may always have lawyers. The landing page's notices (identity and broker-of-record line,
+    fair-housing notice link, DOS-2156, AI-use notice, consent line) are added by code, never written by the model,
+    and checked present before publishing. Ad targeting is chosen from an allowed list only (housing category, place by
+    a 15-mile radius, everyone 18 and over, no interests or audiences); every blocked criterion is refused in code and
+    logged (L38). The campaign's model context is the firm's config only: no deal, no property, no person. The
+    founder is a placeholder token (Q49).
+44. **The road to closing is one planned record per item, dated from the signed contract (2026-10-23, BUILD-4).**
+    CP-22 (appraisal, mortgage commitment, title) and CP-23 (walkthrough, closing) became per-item codes, so the
+    timeline lists all eight planned steps (with CP-20 escrow, CP-21 inspection and the planned CP-34 repairs marker),
+    written at intake and dated on screen from the contract's signing and the agreed offer's periods. Per-item records
+    written on another step now carry that step (a notice to the buyer is step 8, a campaign pass step 10), so each
+    step's card counts what happened on it. The hurdle map groups each step's records by code with how often
+    (CP-09 once per message), and the agent-acts log lists every act the AI did that NY law reserves, in order.
+45. **Erase honours the request now and states the three-year rule (2026-10-23, BUILD-4).** "People and their data"
+    exports everything about a person as JSON and erases a person's personal fields on request (documents never
+    stored names, so they render "[erased]"); a tombstone keeps the transaction facts, and the erase is an audit event.
+    New York requires a brokerage to keep its transaction records three years (L17), which pulls the other way: the
+    confirm screen says so plainly. Provisional for production: erase marketing and other data at once, the signed
+    records when the period ends (Q50). Only the firm (the Presenter) or the person may open a record: the seller
+    never opens the buyer's, nor the buyer the seller's.
