@@ -5,6 +5,15 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 
 ## Open
 
+> **Start here (2026-10-23 night triage).** Every question below has a default that holds until you answer.
+> - **Needs you now (1):** Q26, who pays for the build (Max plan or more credit). Building waits on this.
+> - **Quick confirms for the demo (3), defaults hold if you say nothing:** Q19 lead pitch ("an attorney-run
+>   brokerage that sells your home for a flat fee, with software doing the paperwork"), Q24 contract draft shown in
+>   the seller's attorney's workspace, Q25 recorded replay at the meeting with a live switch.
+> - **For your father-in-law, in one conversation (the memo to-do item):** Q11, Q13 (ten sellers), Q14 (licence,
+>   HGAR), Q15 (broker only, or also seller's lawyer), Q16 and Q17 (presence, office, hours).
+> - **After the meeting:** everything else (fee model, counties, marketing, lockboxes, inspection pilot, scope).
+
 **Q11. Two facts about your father-in-law, now that he lives outside New York** (raised by Joe's 2026-10-23
 answer to Q4). (a) **Where does he live now?** A New York broker must "have and maintain a definite place of
 business within this state" with a sign readable from the sidewalk (RPL 441-a(3)), and must supervise the
