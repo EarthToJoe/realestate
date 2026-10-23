@@ -33,6 +33,7 @@ SECTIONS = [
         ("docs/EXECUTIVE-SUMMARY.md", "Executive summary", "The one document to hand him"),
         ("docs/PLAN.md", "Project plan", "Phases, costs, open questions, human-in-the-loop map"),
         ("docs/DEMO-SCRIPT.md", "Demo walkthrough script", "What to click and say, screen by screen"),
+        ("docs/research/memo-father-in-law.md", "Memo: his roles", "Broker and lawyer in one deal; running a NY firm from out of state"),
     ]),
     ("Research deliverables", [
         ("docs/research/WS1-agent-functions.md", "1. What an agent does", "Every function, and whether software can do it"),
