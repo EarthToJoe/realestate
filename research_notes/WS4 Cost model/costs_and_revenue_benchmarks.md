@@ -345,3 +345,255 @@ Per listing / per transaction:
 
 ### Gaps
 - Not obtained: CGND MLS/HVCRR fees; SentriLock/ShowingTime pricing; OneKey IDX feed fees; Matterport, Google Workspace, Dotloop/SkySlope official prices; Twilio 10DLC registration fees; county average sale prices; BLS area wages; local sponsorship and print prices; DOS confirmation of attorney exam/education exemption. Each is marked in its section.
+
+## Gap fill (2026-10-23, VPS session)
+
+Method: a fresh pass of about 70 searches and fetches on 2026-10-23, plus read-only cross-checks against the WS1, WS2, WS3, WS5 and WS6 notes. Nothing above this heading was edited; where a finding below contradicts the notes above, it says so. Labels as above; every bullet carries "accessed 2026-10-23" unless another date is given.
+
+### Coverage audit
+
+The ask, broken into its questions, judged against the notes above (before) and after this pass.
+
+| # | Question from the ask / job | Before | After | Note |
+|---|---|---|---|---|
+| 1 | Entity formation and licensing cost | Full | Full | Licence count corrected (one $185 licence for a one-broker LLC, not $370) |
+| 2 | Broker licence and education for the attorney | Partly (exemption unconfirmed) | Full | DOS application form confirms the exemption |
+| 3 | Realtor and MLS dues | Partly (OneKey only) | Partly | OneKey reconfirmed; HVCRMLS still unpublished; county-coverage conflict documented |
+| 4 | Lockboxes and showing service | Partly | Full (OneKey) | SentriLock and ShowingTime prices from WS3's primary read |
+| 5 | E&O, general liability, cyber | Partly | Full | Plus a new finding: the attorney's malpractice policy will likely not cover brokerage claims |
+| 6 | E-signature | Full | Full | Re-verified |
+| 7 | Transaction management | Partly | Full | SkySlope Forms included with OneKey; full suite paid |
+| 8 | CRM | Full | Full | Re-verified |
+| 9 | Telephony/SMS incl. 10DLC | Partly | Full | 10DLC fees found; one carrier fee corrected |
+| 10 | Photography and media per listing | Full | Full | Re-verified |
+| 11 | Portal advertising | Partly | Partly | Zillow Premier Agent per-connection averages and Showcase range (from WS3); no Realtor.com price |
+| 12 | Website, hosting, IDX/data feed | Partly (feed fee unknown) | Full | MLS Grid feed fee found |
+| 13 | AI model cost per transaction | Full | Full | Prices re-verified against Anthropic's page |
+| 14 | Legal review of contract templates | Not answered | Partly | Rates and ethics constraints found; no NY template-review quote exists |
+| 15 | Accounting | Partly | Full | NY LLC annual filing fee (IT-204-LL) found; CPA ranges claimed |
+| 16 | Escrow account set-up | Not answered | Partly | Bank fees found (secondary); NY custom keeps deposits with attorneys |
+| 17 | Office (definite place of business) | Not answered | Partly | Home office allowed if licensed (WS2); rent listings found |
+| 18 | Employer costs if staff are hired | Partly | Full | NY UI 4.1% on $17,600, FICA 7.65%, workers' comp median |
+| 19 | Human hours by stage, launch vs steady | Partly (unsourced) | Partly | Benchmarks added (Redfin agent productivity, TC and showing-agent prices, local wages); no time study exists |
+| 20 | Fee models with competitor benchmarks | Partly | Full | Hauseit, UnoFee, Redfin, Clever re-checked |
+| 21 | NY/Hudson Valley medians (dated) | Full | Full | Dutchess Q3-2026 re-verified |
+| 22 | Unit economics and break-even in three cases | Not answered ("3–4 listings") | Full (in deliverable) | Arithmetic in `docs/research/WS4-cost-model.md` |
+| 23 | Customer acquisition cost | Partly | Full | Sub-vertical cost-per-lead and Redfin marketing per transaction |
+| 24 | Kill criteria A7, K1, K2, K7 | Not answered | Full (in deliverable) | |
+
+### Verification of load-bearing claims
+
+| # | Claim in the notes | Primary source checked | Result |
+|---|---|---|---|
+| 1 | Broker licence $185 initial, $185 renewal, $185 branch, $15 exam | [DOS: Become a broker](https://dos.ny.gov/become-real-estate-broker) | Confirmed |
+| 2 | Attorney exam/education exemption "unconfirmed" (§1 Gaps) | [DOS broker application DOS-0036-f-a Rev. 09/23](https://dos.ny.gov/real-estate-broker-application), p. 2 | Corrected: confirmed in writing by DOS (see G1) |
+| 3 | Attorney-broker LLC pays $370 per term (entity + member) | [RPL §441-b](https://www.nysenate.gov/legislation/laws/RPP/441-B) | Corrected: $185 for a one-broker LLC; only each *additional* member acting as broker pays another $185 |
+| 4 | HGAR dues $606 + $100 processing, prorated | [HGAR dues schedule](https://www.hgar.com/membership/dues-schedule) | Confirmed |
+| 5 | OneKey $650 start-up + $190/month; agent $225 + $200 | [HGAR fee schedule](https://www.hgar.com/membership/fee-schedule), [OneKey join](https://corporate.onekeymls.com/join) | Confirmed; the $450 vs $650 branch and $225 vs $200 agent conflicts persist on the two live pages |
+| 6 | NAR dues $156 + $45 | [NAR dues](https://www.nar.realtor/membership/dues-information) | Confirmed for 2027 (unchanged) |
+| 7 | OneKey covers six of the eight counties incl. Ulster | [HGAR subscribe page](https://www.hgar.com/membership/subscribe-to-onekey-mls) still lists Ulster; WS3 read OneKey Rule 201 (Rules ver. 2026C), which omits Ulster | Corrected: five by rule (Dutchess, Orange, Putnam, Rockland, Sullivan); Ulster, Columbia, Greene are HVCRMLS territory (OneKey allows voluntary out-of-area entry) |
+| 8 | SentriLock and ShowingTime prices "not published" | OneKey support article (HTTP 403 to me); WS3 read it | Corrected via WS3: $130/yr + $110 per leased lockbox; ShowingTime included |
+| 9 | OneKey data-feed fees "unpublished" | [OneKey Data Delivery Resources (search snippet)](https://support.onekeymls.com/hc/en-us/articles/27251536794644-Data-Delivery-Resources); WS3 | Corrected: $250/month per feed + $20/month per licence |
+| 10 | LLC publication prices by county | [LLC Publishers 2026](https://www.llcpublishers.com/learn/how-much-does-llc-publication-cost-in-new-york-county-by-county-breakdown-2026) | Confirmed (vendor price, CLAIMED) |
+| 11 | Anthropic prices (Opus 5.5 $4/$20, Sonnet 5.5 $2/$10, Haiku 5.5 $0.10/$0.50, Fable 5.1 $10/$50, batch 50%, US-only 1.1×) | [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing) | Confirmed |
+| 12 | Twilio SMS $0.0083/segment, Verizon carrier fee "~$0.005–$0.007" | [Twilio US SMS pricing](https://www.twilio.com/en-us/sms/pricing/us) ("current as of October 2026") | Confirmed; Verizon corrected to $0.005 |
+| 13 | E&O median $708, GL $400, BOP $692, cyber $692, workers' comp $489 | [TechInsurance](https://www.techinsurance.com/real-estate-insurance/agent-broker/cost) | Confirmed |
+| 14 | NY E&O $59/mo, GL $42/mo, BOP $45/mo; NY does not require E&O | [Insureon NY](https://www.insureon.com/real-estate-business-insurance/agents-brokers/new-york) | Confirmed |
+| 15 | Cyber average $1,552/yr | [Insureon cyber](https://www.insureon.com/small-business-insurance/cyber-liability/cost) (updated 2026-04-24) | Confirmed |
+| 16 | Real estate search CPC $3.22, CPL $102.51 from "13,474 LocaliQ campaigns" | [LocaliQ real estate benchmarks](https://localiq.com/blog/real-estate-search-advertising-benchmarks/) (updated 2026-09-14) | Corrected: the real-estate figures come from 894 real-estate campaigns; the agent/broker sub-verticals cost far more per lead ($157.59 and $162.39) |
+| 17 | Redfin marketing $114.481M (2024) | [SEC XBRL](https://data.sec.gov/api/xbrl/companyconcept/CIK0001382821/us-gaap/MarketingExpense.json) | Confirmed; note the 2022 figure differs across filings ($158.071M in the FY2022 10-K, $155.309M later) |
+| 18 | NAR 2026 Member Profile: 9 sides, $59,200 | [NAR release](https://www.nar.realtor/newsroom/experienced-realtors-anchor-the-industry-as-housing-affordability-remains-top-hurdle-new-nar-report) (25 Jun 2026) | Confirmed |
+| 19 | Dutchess Q3-2026 SF median $547,700 (+10.3%), 592 sales | [OneKey Dutchess Q3-2026 PDF](https://corporate.onekeymls.com/s/DutchessCounty-mrmd.pdf) (data as of 7 Oct 2026) | Confirmed |
+| 20 | Hauseit $399/$699/$1,199; 1% with $7,500 minimum; $300 media | [Hauseit pricing](https://www.hauseit.com/pricing/) | Confirmed (page © 2026; prices undated) |
+| 21 | Redfin 2%, minimums $2,000–$9,000 | Redfin's own pages show no amounts ([why-sell](https://www.redfin.com/why-sell)); [Houwzer, 24 Aug 2026](https://houwzer.com/?p=2911) | Refined: New York minimum reported as $6,000 (CLAIMED by a competitor) |
+| 22 | NY transfer tax $2 per $500 (0.4%) paid by seller; mansion tax 1% at $1M+ paid by buyer | [NY Tax Dept](https://www.tax.ny.gov/bus/transfer/rptidx.htm) | Confirmed |
+| 23 | Attorney flat fees $995 (Levin) and $1,500–$2,500 (Rosado) | [Levin](https://ylevinlaw.com/campaign/lower-hudson-valley-real-estate-lawyer.html), [Rosado](https://rosadolawgroup.com/how-much-does-a-real-estate-attorney-cost/) | Confirmed |
+| 24 | Photography prices (Lighthouse Visuals) | [Lighthouse Visuals](https://lighthousevisuals.com/hudson-valley-ny-real-estate-photography/) | Confirmed |
+| 25 | Follow Up Boss $69/user/month; BoldSign API $30/month + $0.75/envelope | [Follow Up Boss](https://www.followupboss.com/pricing), [BoldSign](https://boldsign.com/pricing/) | Confirmed |
+| 26 | Houzeo NY $399–$499 | [Houzeo NY](https://www.houzeo.com/flat-fee-mls/new-york) returned an empty page | Could not verify (kept as in the notes, marked) |
+| 27 | Dotloop ~$32/month | [Dotloop pricing](https://www.dotloop.com/pricing/) HTTP 403 | Could not verify |
+
+### G1. Licensing, entity and the attorney route
+
+#### Takeaway
+The attorney needs no course, experience or exam: DOS's own application says admitted attorneys are exempt, so his licence is a paper application and $185 every two years. A one-broker LLC pays one $185 fee, not two. A New York LLC also owes an annual IT-204-LL filing fee ($25 at under $100,000 of New York-source gross income, rising by bracket), which the notes above did not include.
+
+#### Cited Findings
+- "Attorneys who are admitted to the New York State bar are exempt from the educational, experience and examination requirements. Submit a completed application and fee, indicating on the application that you are admitted to the New York State bar." The nonrefundable fee is $185 and "the license will be effective for two years"; the qualification checkbox reads "Attorney Admitted to NYS Bar". Form DOS-0036-f-a (Rev. 09/23), pp. 1–3. [PRIMARY, accessed 2026-10-23] — [DOS broker application](https://dos.ny.gov/real-estate-broker-application)
+- The same form: an LLC "member or manager of the limited liability company ... who meets the qualifications for licensure, may apply for a real estate license to conduct business as a real estate brokerage under the limited liability company" and applies "as the representative (principal) real estate broker" (p. 4). [PRIMARY, accessed 2026-10-23] — [DOS broker application](https://dos.ny.gov/real-estate-broker-application)
+- RPL §441-b: broker fee "one hundred fifty-five dollars plus an additional thirty dollar surcharge"; the entity licence carries "the fee required by this section for the license to the corporation", and each *additional* officer, member or manager acting as broker pays the same fee; term "not less than two years" (revision 2022-08-19). [PRIMARY, accessed 2026-10-23] — [RPL §441-b](https://www.nysenate.gov/legislation/laws/RPP/441-B)
+- DOS fee page: "$185 - Initial Application", "$185 - Branch Office Application", "$185 - Renewal", "$15 - Written Exam". [PRIMARY, accessed 2026-10-23] — [DOS: Become a broker](https://dos.ny.gov/become-real-estate-broker)
+- IT-204-LL (2025 instructions): an LLC with no New York-source gross income, or a disregarded single-member LLC with any New York income, pays $25; LLC fee table by prior-year New York-source gross income: up to $100,000 → $25; $100,000–$250,000 → $50; $250,000–$500,000 → $175; $500,000–$1,000,000 → $500; $1M–$5M → $1,500; $5M–$25M → $3,000; over $25M → $4,500; due the 15th day of the third month after year end; no extension. [PRIMARY, accessed 2026-10-23] — [NY Tax Dept IT-204-LL-I (2025)](https://www.tax.ny.gov/pdf/2025/inc/it204lli_2025.pdf)
+- WS2 cross-check: a licensed broker must keep "a definite place of business within this state" with a sidewalk-readable sign (RPL §441-a(3)), and "A residence may be used as an office provided that it is properly licensed by the Department of State" (19 NYCRR §175.25(c)(6)). [PRIMARY via WS2 notes] — [RPL §441-a](https://www.nysenate.gov/legislation/laws/RPP/441-A), [DOS Real Estate License Law (Jan. 2024)](https://dos.ny.gov/system/files/documents/2024/07/re-law.pdf)
+
+#### Inferences
+- [INFERENCE] **Contradicts the notes above (§1 Inferences and §11):** the licensing line for an attorney-broker LLC is $185 per two-year term, not $370, unless a second member (for example Joe) also acts as broker, which he cannot without his own qualifying route.
+- [INFERENCE] The IT-204-LL fee is small ($25–$175 for any plausible first-years revenue) but is a legal requirement the cost model must carry.
+- [INFERENCE] A licensed home office makes the office line near zero; NYSBA Op. 1015 footnote 5 (WS2) suggests separating the brokerage from the law office (separate office, name, staff) if the father-in-law ever relies on that opinion, which argues against simply using the law office.
+
+#### Gaps
+- DOS processing time for paper attorney-route applications is unpublished.
+
+### G2. MLS, association, lockbox and data-feed costs
+
+#### Takeaway
+OneKey via HGAR is reconfirmed at $706 (dues plus processing, January join) plus $650 start-up and $190 a month; NAR has frozen 2027 dues at $156 + $45. The notes understated what OneKey publishes: SentriLock is $130 a year plus $110 per leased lockbox, ShowingTime is included, a broker-built website using OneKey data pays MLS Grid $250 a month plus $20 per licence, and SkySlope Forms comes with membership. The notes overstated OneKey's reach: by OneKey's own rule it covers five of the eight target counties, not six.
+
+#### Cited Findings
+- HGAR 2026: REALTOR dues "paid annually at $606.00", "additional $100 processing fee", proration January $606 … October $185 … December $92; secondary membership $285. [PRIMARY, accessed 2026-10-23] — [HGAR dues schedule](https://www.hgar.com/membership/dues-schedule)
+- HGAR OneKey schedule: "Participant start-up fee (one-time charge): $650"; "Branch office fee (one-time charge per branch): $450"; "Monthly participation fee per office (including public records): $190"; subscriber 2026 "$225.00" annually plus "$200 startup fee". [PRIMARY, accessed 2026-10-23] — [HGAR fee schedule](https://www.hgar.com/membership/fee-schedule)
+- OneKey's own page: Broker Owner $650 + $190 monthly; Additional Branch Office $650 + $190 monthly; Salesperson/Broker Associate $200 + $200 annual; "you must be an active member of a REALTOR® association and hold a New York real estate license" (© 2026). [PRIMARY, accessed 2026-10-23] — [OneKey join](https://corporate.onekeymls.com/join)
+- HGAR subscription page: coverage "from Montauk to the Catskills" including "Westchester, Putnam, Dutchess, Rockland, Orange, Sullivan, and Ulster Counties"; orientation "within ninety (90) days after access has been provided"; processing "3-5 business days". Contradicted by OneKey Rule 201 (Rules & Procedures ver. 2026C), which lists Dutchess, Orange, Putnam, Rockland, Sullivan and Westchester but not Ulster (read by WS3). [PRIMARY, conflicting, accessed 2026-10-23] — [HGAR subscribe](https://www.hgar.com/membership/subscribe-to-onekey-mls); [OneKey Rules 2026C via WS3](https://support.onekeymls.com/hc/article_attachments/49417630758548)
+- NAR: "dues are $156 per member for 2027"; Consumer Advertising Campaign assessment "$45 for 2027"; "Brokers are also assessed NAR dues times the number of non-member salespersons, if any, in their office." [PRIMARY, accessed 2026-10-23] — [NAR dues information](https://www.nar.realtor/membership/dues-information)
+- SentriLock at OneKey: "$130 + applicable taxes" (July 2026–June 2027), lockbox lease "$110.00 per lockbox"; Rule 405.3: no participant "shall be required to lease an access device"; ShowingTime for the MLS "included as part of your OneKey MLS subscription". [PRIMARY via WS3; my fetch returned HTTP 403] — [OneKey SentriLock FAQ](https://support.onekeymls.com/hc/en-us/articles/37719023138964); [ShowingTime resources](https://support.onekeymls.com/hc/en-us/articles/27252859408020)
+- OneKey data delivery: "Vendor fees are $250 monthly fee for the feed and $20 monthly fee per license"; a brokerage providing in-house technical services must register with MLS Grid and act as the vendor; Matrix IDX search is included at no extra cost. [PRIMARY via WS3 and a search snippet of the support article; direct fetch HTTP 403] — [OneKey Data Delivery Resources](https://support.onekeymls.com/hc/en-us/articles/27251536794644-Data-Delivery-Resources)
+- OneKey's SkySlope page is titled "Manage real estate transactions efficiently with SkySlope—included with your OneKey® MLS membership"; per search summaries it includes SkySlope Forms with association/MLS form libraries, with "Broker Edition" and the full "SkySlope Suite" sold separately (Suite "starting at $340 per month" per a third-party listing). [PRIMARY title via search, page 404 on fetch; Suite price CLAIMED] — [OneKey SkySlope](https://corporate.onekeymls.com/products/skyslope); [OneKey SkySlope Resources](https://support.onekeymls.com/hc/en-us/articles/45731486738196-SkySlope-Resources); [FitGap listing](https://us.fitgap.com/products/024258/skyslope)
+- HVCRR (Columbia, Greene, Ulster) still publishes no fees: "call the Board/MLS office at, 845-338-5299 for correct fees"; its join page links no membership application. [PRIMARY, accessed 2026-10-23] — [HVCRR join](https://hvcrr.com/the-association/join-the-board/)
+- NAR Code of Ethics training: 2.5 hours per three-year cycle (Cycle 8: 1 Jan 2025–31 Dec 2027); new members who complete new-member orientation in the cycle have met it; fair-housing training is separate, every three years. [SECONDARY, association pages, accessed 2026-10-23] — [GAAR ethics training](https://gaar.com/education/ethics-training); [Atlanta REALTORS](https://atlantarealtors.com/education/code-of-ethics-training)
+
+#### Inferences
+- [INFERENCE] Year-one OneKey-only cost for a one-broker firm joining in January: $706 + $650 + 12 × $190 = $3,636, unchanged from the notes; add SentriLock $130 + $110 per leased box if used, and $3,240 a year (12 × $250 + 12 × $20) only if the firm builds its own MLS-fed search site rather than using the free Matrix IDX widget.
+- [INFERENCE] **Contradicts the notes above (§2 Takeaway):** full MLS cooperation in Ulster, Columbia and Greene needs a second membership in HVCRR/HVCRMLS, whose cost is unpublished; comparable published upstate packages (BNAR/WNYREIS $1,322 in January 2026 plus about $640 a year in MLS fees, per WS3) suggest $1,500–$3,000 a year, but this is an analogy, not a quote.
+- [INFERENCE] SkySlope Forms inclusion removes most of the "transaction management" line for a firm that builds its own workflow; the full SkySlope Suite is only needed for a multi-agent office.
+
+#### Gaps
+- HVCRR/HVCRMLS dues and fees: phone only (845-338-5299).
+- Whether OneKey offers unlicensed-assistant MLS logins (other MLSs charge $0–$20 a month for them): not found.
+- Whether the SentriLock $110 lease is annual or one-time: not stated in sources reached.
+
+### G3. Insurance: the brokerage needs its own policies, and the lawyer's policy will likely not help
+
+#### Takeaway
+Marketplace medians are reconfirmed: E&O about $708 a year for $1M/$1M, general liability about $400, a business owner's policy about $692, cyber $692–$1,552; New York does not require E&O. The new finding is that a lawyer's professional liability policy typically excludes claims arising from a business the lawyer owns or controls, and New York courts enforce that exclusion, including against claims that mix legal and business roles. The brokerage must carry its own E&O, and the father-in-law should check whether brokerage claims could also strip cover from his law firm.
+
+#### Cited Findings
+- Median premiums for real estate agents/brokers quoting through TechInsurance: E&O $59/month, $708/year ($1M per occurrence/$1M aggregate); general liability $33/month, $400/year ($1M/$2M); BOP $58/month, $692/year; cyber $58/month, $692/year; workers' compensation $41/month, $489/year (undated, © 2026). [SECONDARY, insurance marketplace, accessed 2026-10-23] — [TechInsurance](https://www.techinsurance.com/real-estate-insurance/agent-broker/cost)
+- New York: average Insureon premiums E&O $59/month, general liability $42/month, BOP $45/month; "New York does not require E&O coverage"; "New York law requires workers' comp for real estate businesses that have employees." [SECONDARY, insurance marketplace, accessed 2026-10-23] — [Insureon NY](https://www.insureon.com/real-estate-business-insurance/agents-brokers/new-york)
+- Cyber: average $129/month or $1,552/year, range about $400 to over $8,000, limits usually $1M–$5M, deductibles $1,000–$2,500, based on about 100,000 small businesses (updated 24 Apr 2026). [SECONDARY, accessed 2026-10-23] — [Insureon cyber cost](https://www.insureon.com/small-business-insurance/cyber-liability/cost)
+- An online E&O programme puts New York in "Group 4" at "$500+/year" through CRES, for firms with up to about $1M revenue and 25 or fewer licensees. [PRIMARY vendor, accessed 2026-10-23] — [360 Coverage Pros](https://www.360coveragepros.com/real-estate-agent-and-broker/errors-and-omissions-eando-insurance)
+- *Admiral Ins. Co. v. Adges*, 2012 WL 2426541 (S.D.N.Y. June 27, 2012), applying New York law: a lawyer and his wholly owned realty business were sued over a real estate transaction; the lawyers professional liability policy excluded claims arising from the insured's role as officer of a "business enterprise" and claims connected with any business enterprise in which an insured held more than 10%, "whether or not" professional services were involved; the court held "both business enterprise exclusions applied" and the insurer owed no defence or indemnity; such exclusions "prevent collusive suits whereby malpractice coverage could be used to shift a lawyer's business loss" to the carrier. [SECONDARY summary of a court decision; opinion not opened, accessed 2026-10-23] — [Wiley Rein newsletter 4339](https://www.wiley.law/newsletter-4339)
+- *Lee & Amtzis LLP v. American Guarantee & Liability Ins. Co.* (N.Y. App. Div., April 2015): where a lawyer's conduct was "hybrid" (legal advice mixed with his own business interest in a development company), the business-enterprise exclusion barred defence and indemnity for the malpractice claim, and because the exclusion reached any insured's acts for an entity in which any insured held a controlling interest, it also barred cover for the law firm and a second lawyer with no ownership interest. [SECONDARY summary of a court decision, accessed 2026-10-23] — [Wiley Rein alert 3658](https://www.wiley.law/alert-3658)
+- *Lancia v. State National* (Conn. App. Ct., 10 Apr 2012): a lawyer who owned a mortgage brokerage had no cover because even his legal services were "inextricably intertwined" with the brokerage role. [SECONDARY, accessed 2026-10-23] — [Wiley Rein newsletter 4241](https://www.wiley.law/newsletter-4241)
+- New York employer costs if a coordinator is hired: new-employer unemployment insurance rate 4.1% for 2026 (4.025% UI + 0.075% re-employment fund) [PRIMARY] — [NY DOL](https://dol.ny.gov/unemployment-insurance-rate-information); 2026 taxable wage base $17,600 (article 13 Feb 2026) [SECONDARY] — [Bloomberg Tax](https://news.bgov.com/payroll/n-y-releases-2026-unemployment-insurance-tax-rates); Social Security 6.2% and Medicare 1.45% employer share, 2026 wage base $184,500 [PRIMARY] — [IRS Topic 751](https://www.irs.gov/taxtopics/tc751); disability (DBL) is mandatory once an employee has worked 30 days; NYSIF DBL premium about $17.68 per person per year in 2026 [SECONDARY, payroll guide] — [Slasify NY hiring guide](https://slasify.com/en/blog/new-york-ssc-and-hiring-guide-2026)
+
+#### Inferences
+- [INFERENCE] This closes a gap WS2 left open ("malpractice-insurer underwriting of lawyers who also broker ... not researched"): the attorney cannot assume his law-practice policy covers anything the brokerage does, and a "hybrid" claim (a seller alleging bad advice from the lawyer-owner of the brokerage) could put his law firm's cover at risk under the *Lee & Amtzis* reasoning. Brokerage E&O is therefore required in practice, not optional, and he should get his own carrier's written position before launch.
+- [INFERENCE] Budget E&O at $708–$1,500 in year one (median to a cautious small-firm quote), $2,000–$3,000 once commission revenue approaches $1M (the PBI revenue rule in §3 above, CLAIMED).
+- [INFERENCE] Employer on-costs on a $21,110 part-time salary: FICA 7.65% ≈ $1,615 + NY UI 4.1% × $17,600 ≈ $722 + workers' comp ≈ $489 + DBL ≈ $18 ≈ $2,844 (about 13%).
+
+#### Gaps
+- No written quote for a software-assisted NY brokerage; quotes need the entity to exist.
+- The father-in-law's own LPL policy wording is unknown; only his carrier can answer.
+
+### G4. Software and telephony re-verified; 10DLC fees found
+
+#### Takeaway
+Every software line is small. The new numbers are the US text-messaging registration fees (10DLC: a one-time brand fee of $4–$46, a $15 campaign vetting fee and $1.50–$10 a month per campaign) and confirmation that SkySlope Forms comes with OneKey.
+
+#### Cited Findings
+- Twilio US SMS ("Pricing current as of October 2026"): long-code SMS $0.0083 per segment in and out; MMS $0.022 out / $0.0165 in; carrier fees per outbound SMS AT&T $0.0035, T-Mobile $0.0045, Verizon $0.005, US Cellular $0.005, others $0.0042; local number $1.15/month. [PRIMARY vendor, accessed 2026-10-23] — [Twilio SMS pricing](https://www.twilio.com/en-us/sms/pricing/us)
+- A2P 10DLC (registration required for business texting on ordinary 10-digit numbers): brand registration "$4 one-time" for low-volume standard and sole-proprietor brands and "$44 one-time" for standard brands; "+$15 per campaign for a one-time campaign vetting fee"; "+$1.50-$10 per campaign per month" (standard and low-volume) or "+$2 per campaign per month" (sole proprietor) (page © 2023). [PRIMARY vendor, older page, accessed 2026-10-23] — [Twilio 10DLC overview](https://pages.twilio.com/10DLC-HelpArticles-WW). Twilio's support article, per search summary, now lists $4.50 (sole proprietor/low-volume) and $46 (standard incl. secondary vetting) — the two Twilio pages conflict by $0.50–$2; the support article itself returned HTTP 403. [PRIMARY via search summary] — [Twilio support 1260803965530](https://support.twilio.com/hc/en-us/articles/1260803965530); [Twilio campaign vetting FAQ](https://support.twilio.com/hc/en-us/articles/11587910480155-A2P-10DLC-Campaign-Vetting-FAQ)
+- Follow Up Boss: Grow $69/user/month ($58 annual), calling add-on $39 ($33 annual); Pro $499/month for 10 users; Platform $1,000/month for 30 users. [PRIMARY vendor, accessed 2026-10-23] — [Follow Up Boss pricing](https://www.followupboss.com/pricing)
+- BoldSign: API $30/month including 40 envelopes, then $0.75 per envelope; web plans $0 (25 envelopes/month), Growth $5–$15/user/month, Business $15–$25/user/month, Premium $99–$138/month (250 envelopes). [PRIMARY vendor, accessed 2026-10-23] — [BoldSign pricing](https://boldsign.com/pricing/)
+- Dotloop's pricing page returned HTTP 403; the notes' secondary figure stands unverified. [accessed 2026-10-23] — [Dotloop pricing](https://www.dotloop.com/pricing/)
+
+#### Inferences
+- [INFERENCE] 10DLC set-up for one low-volume brand and one campaign: about $4.50 + $15 = $19.50 once, plus $1.50–$10 a month; texting cost per transaction (300 segments × ($0.0083 + $0.005)) ≈ $4.
+
+#### Gaps
+- Exact current 10DLC amounts (Twilio pages disagree slightly); immaterial to the model.
+
+### G5. Legal review, accounting, escrow and office
+
+#### Takeaway
+None of these lines is large, but two are shaped by ethics rules rather than price. Legal review of the brokerage's forms and AI drafting boundaries can be done by the father-in-law himself (his time) or by outside counsel at roughly $150–$400 an hour (CLAIMED); the local median wage for lawyers is $66.65 an hour, a floor for valuing his time. Accounting is a few hundred to a few thousand dollars a year plus the IT-204-LL fee; a separate escrow account is legally required (19 NYCRR 175.1) but costs $0–$10 a month at local banks; an office can be a licensed home office.
+
+#### Cited Findings
+- Kiryas Joel–Poughkeepsie–Newburgh metro (BLS OEWS, May 2025): lawyers median hourly wage $66.65; paralegals $29.50; office clerks, general $21.11; secretaries and administrative assistants $23.01; real estate sales agents annual median $93,910; software developers annual median $145,830 (real estate brokers not published for this area). [PRIMARY, BLS OEWS via the BLS public API, area code 0028880; series OEUM002888000000023101108, OEUM002888000000023201108, OEUM002888000000043906108, OEUM002888000000043601408, OEUM002888000000041902213, OEUM002888000000015125213; accessed 2026-10-23] — [BLS API: lawyers](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000023101108), [paralegals](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000023201108), [office clerks](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000043906108), [secretaries](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000043601408), [real estate sales agents](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000041902213), [software developers](https://api.bls.gov/publicAPI/v2/timeseries/data/OEUM002888000000015125213)
+- New York real estate attorney rates "$150 to $400 per hour depending on the attorney's experience and the firm's location"; residential closing flat fees $800–$2,500. [CLAIMED, law-firm blog, accessed 2026-10-23] — [Daeryun Law](https://www.daeryunlaw.com/us/insights/real-estate-consultation-fee-in-new-york)
+- Hudson Valley closing flat fees: $995 "from contract to closing for all residential real estate transactions (up to and including 3 families)" [PRIMARY vendor] — [Levin Law Group](https://ylevinlaw.com/campaign/lower-hudson-valley-real-estate-lawyer.html); "In the Hudson Valley and across Orange County, a typical closing runs $1,500 to $2,500" [PRIMARY vendor] — [Rosado Law Group](https://rosadolawgroup.com/how-much-does-a-real-estate-attorney-cost/) (both accessed 2026-10-23)
+- Partnership (Form 1065) preparation: older NSA surveys $477–$656; 2026 vendor estimates $600–$1,200, $800–$2,500 or $1,000–$5,000+; bookkeeping retainers $300–$1,200 a month. [SECONDARY/CLAIMED, conflicting, accessed 2026-10-23] — [Accounting Today (NSA)](https://www.accountingtoday.com/news/tax-prep-fees-up-2-percent); [CPA Practice Advisor (NSA 2016-17)](https://www.cpapracticeadvisor.com/2017/01/31/survey-shows-average-fees-for-accounting-tax-firm-services-for-2017/24464/); [Jupid 2026](https://jupid.com/blog/how-much-does-a-cpa-cost-2026)
+- Local business checking: Walden Savings Bank $5/month, waived with a $2,500 average balance [SECONDARY]; Hudson Valley FCU Value Business Checking $0–$10 low-balance fee, waived at $2,500 [PRIMARY per search summary; page empty on fetch]. [accessed 2026-10-23] — [FitSmallBusiness (search summary; HTTP 403 on fetch)](https://fitsmallbusiness.com/walden-savings-bank-business-checking-review); [HVCU business checking](https://www.hvcu.org/business-checking-$250-bonus/)
+- Office rent listings: 825 Main St, Poughkeepsie, 2,300 sq ft at $22/sq ft/yr; 611 Dutchess Turnpike, Arlington at $22.00/sq ft modified gross; Orange County Business Park, Goshen at $17/sq ft/yr (listing dates unclear). [CLAIMED, listing portals, accessed 2026-10-23] — [Crexi Dutchess Tpke](https://www.crexi.com/lease/properties/1090921/new-york-611-dutchess-turnpike); [CommercialSearch Hudson Valley](https://www.commercialsearch.com/office/us/ny/hudson-valley/?Page=5)
+- WS2 cross-check on what legal work the brokerage may sell: a broker may fill in a simple bar-approved form "as an incident of brokerage and with no separate charge"; anything more, or charging for the document, is unauthorised practice; the attorney-owner may not be either party's lawyer on a deal where the brokerage earns a contingent fee (NYSBA Ops. 1043, 1237, 1273), the single exception being a fixed, prepaid, non-refundable broker fee with written consent (Op. 1015). [PRIMARY via WS2 notes] — [NYSBA Op. 1015](https://nysba.org/ethics-opinion-1015/); [NYSBA Op. 1043](https://nysba.org/ethics-opinion-1043/)
+
+#### Inferences
+- [INFERENCE] "Legal review of contract templates" is two jobs. (1) Brokerage forms (listing agreement with the §175.24 explanation, buyer agreement, §443 disclosure, Human Rights Law notice, SOP, Rule 5.7 "not legal services" notice): largely supplied by SkySlope Forms/NYSAR libraries and reviewed by the father-in-law, 20–40 hours. (2) The AI drafting boundary (what the software may fill in, the "consult your lawyer" legend, no separate charge): 20–40 hours. If done by outside counsel at an assumed $300/hour, 20–50 hours costs $6,000–$15,000; if by him, $0 cash but 40–80 hours (valued at ≥ $66.65/hour = $2,700–$5,300 of his time).
+- [INFERENCE] Because New York deposits are customarily held in the seller's attorney's escrow (WS1 S19, WS2), the brokerage's own escrow account will rarely hold money; it is a compliance item (19 NYCRR 175.1), not a cost driver.
+- [INFERENCE] The consumer still pays two closing attorneys ($995–$2,500 each); the brokerage cannot charge for drafting, so there is no document-fee revenue line.
+
+#### Gaps
+- No quote for outside review of an AI-assisted brokerage's templates; no NYSBA licence price for embedding the Residential Contract of Sale in software (WS2 gap).
+- Current NSA fee survey (post-2017) not reached.
+
+### G6. Human time: what the only benchmarks say
+
+#### Takeaway
+No time study of broker hours per transaction exists (the notes' 8–15 hours per side remains an assumption). The two measured anchors cut against optimism: the typical NAR agent closed 9 sides in 2025, and Redfin, the most systematised US brokerage, averaged about 28 brokerage sides per lead agent in 2024 with salaried support behind them. Market prices for the unlicensed and licensed help a software firm would buy are $300–$500 per file for a transaction coordinator and $45–$400 per showing for an on-demand licensed showing agent.
+
+#### Cited Findings
+- Redfin full-year 2024: brokerage transactions 48,982, partner transactions 12,448, total 61,430; average lead agents 1,765; brokerage revenue per transaction $12,403; real estate services gross margin 24.2%; Q4 2024: 11,441 brokerage transactions, 1,927 average lead agents, gross margin 21.9%. [PRIMARY, SEC filing, accessed 2026-10-23] — [Redfin Q4 2024 earnings release (SEC)](https://www.sec.gov/Archives/edgar/data/1382821/000138282125000042/q42024earningsreleaseex.htm)
+- NAR 2026 Member Profile (released 25 Jun 2026): "the typical agent reported nine transaction sides in 2025"; median gross income $59,200; 13 years' experience. [PRIMARY, accessed 2026-10-23] — [NAR release](https://www.nar.realtor/newsroom/experienced-realtors-anchor-the-industry-as-housing-affordability-remains-top-hurdle-new-nar-report)
+- Transaction coordinators: published rate cards cluster at $300–$500 per file for one side (unlicensed, contract-to-close); licensed TCs $750–$1,000; monthly virtual TC services $1,000–$2,500; NAR does not survey TC pricing. [CLAIMED, vendor/industry blogs, accessed 2026-10-23] — [HousingWire: file ops costs](https://www.housingwire.com/articles/real-estate-file-ops-costs/); [Paperless Pipeline](https://www.paperlesspipeline.com/blog/?p=5043)
+- Showami (licensed on-demand showing agents): the requesting agent picks a rate "from $45 to $400" per showing; the average showing agent receives $32 per property shown; platform fee 15–30%. [PRIMARY vendor / SECONDARY, accessed 2026-10-23] — [Showami pricing](https://showami.com/pricing); [Showami support](https://support.showami.com/hc/en-us/articles/4948424803853-How-much-do-I-make-per-showing); [The Close](https://theclose.com/discover-showami-create-coordinate-on-demand-showings/)
+- NAR 2025 Profile: buyers searched a median of 10 weeks (Exhibit 3-5); 52% found the home online, 27% through an agent (Exhibit 3-6); the 2025 edition's free exhibits do not report homes viewed; the 2024 Profile reported a median of 7 homes viewed, 2 of them online only. [PRIMARY for 2025; SECONDARY for the 2024 figure, accessed 2026-10-23] — [NAR 2025 Profile PDF](https://www.rirealtors.org/clientuploads/documents/NAR/Homebuyers_and_sellers_trend_2025.pdf); [Real Estate Today summary of 2024 Profile](https://realestatetoday.substack.com/p/nars-2024-survey-of-buyers-and-sellers)
+- A vendor claims agents and TCs spend "an average of 14 hours per transaction manually chasing documents, tracking deadlines, and sending status updates", attributed to NAR's 2025 Member Profile; not found in NAR's material. [CLAIMED, automation vendor, accessed 2026-10-23] — [US Tech Automations](https://ustechautomations.com/resources/blog/real-estate-transaction-automation-pain-solution-2026)
+
+#### Inferences
+- [INFERENCE] Redfin's 27.8 brokerage sides per lead agent (48,982 ÷ 1,765) implies roughly 70 lead-agent hours per side if a lead agent works about 2,000 hours a year — and Redfin also employs associate agents and coordinators not counted here. The notes' 8–15 broker hours per side is therefore four to eight times more productive than the best measured analogue. It is achievable only if the software genuinely absorbs coordination and the broker does not tour buyers personally; it must be measured on the first listings, not assumed.
+- [INFERENCE] The unlicensed work a software firm saves is priced by the market at $300–$500 per file (TC rates) — a useful ceiling on what "automation of paperwork" is worth per side.
+- [INFERENCE] Buyer touring is the largest single block of licensed time: 7 homes × 1–1.5 hours (with Hudson Valley driving) is 7–10.5 broker hours, or about $350 (7 × $50) through a licensed showing agent.
+
+#### Gaps
+- No Hudson Valley data on homes toured per buyer, open-house attendance or broker hours; the pilot must log them.
+
+### G7. Revenue benchmarks, market context and the cost of buying customers
+
+#### Takeaway
+Competitor prices are reconfirmed and sharpened: Hauseit $399–$1,199 (listing-only) or 1% with a $7,500 minimum; UnoFee $299.99–$499.99 flat or 1.5%; Clever 1.5%; Redfin 2% with a reported $6,000 New York minimum. The average New York total commission in a 2026 agent survey is 4.62% (2.41% listing, 2.21% buyer). Buying leads is expensive: real-estate-agent and broker search ads cost $157.59–$162.39 per lead (Apr 2025–Mar 2026), and Redfin spent about $1,864 of marketing per transaction in 2024 even with a national brand. The macro backdrop turned less friendly in Q3 2026 (30-year mortgage ~7.03%, a September Fed rate rise).
+
+#### Cited Findings
+- Hauseit: Agent Assisted FSBO Base $399, Core $699, Pro $1,199 one-time ("We don't charge any additional fees or commissions at closing or if you cancel early"); "1% Full Service" plus 2.5% buyer's broker, "$7,500 minimum commission to the listing broker", "$300 upfront for pro media"; buyer closing credit of two-thirds of the buyer-broker commission with a $7,500 minimum kept; service area includes the Hudson Valley (page © 2014–2026, no pricing date). [PRIMARY vendor, accessed 2026-10-23] — [Hauseit pricing](https://www.hauseit.com/pricing/)
+- UnoFee: $79.99 monthly, $299.99 six months, $499.99 twelve months flat-fee MLS listing; "1.5%" traditional full-service via Cavestone Realty; counties include Westchester, Rockland, Putnam, Orange, Dutchess, Ulster, Sullivan. [PRIMARY vendor, accessed 2026-10-23] — [UnoFee](https://unofee.com/)
+- Redfin: billed listing fee 2.0% in every market; 1% only as a rebate if the seller buys with Redfin within 365 days; "Boston and New York sit at $6,000" minimum, with 2.0% applying above $300,000 (24 Aug 2026; published by a competitor). [CLAIMED, accessed 2026-10-23] — [Houwzer on Redfin fees](https://houwzer.com/?p=2911). Redfin's own page states no figures. — [Redfin why-sell](https://www.redfin.com/why-sell)
+- Clever (Aug 2026 survey of 434 agents): New York average total commission 4.62% (listing 2.41%, buyer's agent 2.21%), down from 5.36% (2.72%/2.64%) in 2024; national 5.46% (2.76%/2.70%); Clever's listing fee "1.5%". [SECONDARY, small state sub-sample, accessed 2026-10-23] — [Clever commission article](https://listwithclever.com/real-estate-blog/6-percent-real-estate-commission-explained/)
+- Redfin data: average buyer's-agent commission 2.42% in Q3 2025 (2.36% a year earlier); no 2026 Redfin quarterly figure found. [SECONDARY, accessed 2026-10-23] — [MortgagePoint, 31 Dec 2025](https://themortgagepoint.com/2025/12/31/buyers-agent-commissions-inch-up-as-slower-market-shifts-leverage-to-buyers/)
+- LocaliQ 2026 real estate search benchmarks (894 US campaigns, 1 Apr 2025–31 Mar 2026, medians; updated 14 Sep 2026): overall CPC $3.22, conversion 3.70%, cost per lead $102.51; "Real Estate Broker" CPL $162.39 (up 53.72%); "Residential Real Estate Agent" CPL $157.59, conversion 1.29%; "Homes for Sale by Agent" CPL $142.59. [PRIMARY dataset owner, accessed 2026-10-23] — [LocaliQ](https://localiq.com/blog/real-estate-search-advertising-benchmarks/)
+- Zillow Premier Agent: average cost per connection $139 in non-major metros and $223 in major metros (Zillow's page, undated per search summary). [PRIMARY via search summary, accessed 2026-10-23] — [Zillow Premier Agent](https://zillow.com/premier-agent); [Clever on Zillow leads](https://listwithclever.com/real-estate-blog/how-much-are-zillow-leads/)
+- Online lead-to-client conversion: "most agents see internet-sourced prospects converting at 2-2.5%", top performers ≥5%; another source 0.4–1.2% average. [CLAIMED, coaching/vendor blogs, accessed 2026-10-23] — [Jamil Academy](https://www.jamilacademy.com/blog/real-estate-lead-conversion-rate-benchmarks); [Follow Up Boss blog](https://followupboss.com/blog/ambitious-agents-guide-closing-80-deals)
+- Redfin marketing expense: $114,481,000 (FY2024), $117,863,000 (FY2023). [PRIMARY, SEC XBRL, accessed 2026-10-23] — [SEC XBRL](https://data.sec.gov/api/xbrl/companyconcept/CIK0001382821/us-gaap/MarketingExpense.json)
+- OneKey Q3-2026 Dutchess report (data as of 7 Oct 2026): single-family closed sales up 1.7% to 592; median up 10.3% to $547,700; the 30-year fixed mortgage "averaged 7.03% as of September 24"; the Federal Reserve "raised the target range ... on September 16 to 3.75%–4%, its first increase since July 2023"; national pending sales 4.7% below a year earlier in August; "contract signings are running roughly 30% below" pre-pandemic. [PRIMARY, accessed 2026-10-23] — [OneKey Dutchess Q3-2026](https://corporate.onekeymls.com/s/DutchessCounty-mrmd.pdf)
+
+#### Inferences
+- [INFERENCE] Paid customer acquisition cost per signed client: $157.59–$162.39 per lead ÷ 2–5% conversion = $3,150–$8,120; via Zillow at $139 per connection ÷ 2–5% = $2,780–$6,950. Redfin's 2024 marketing per transaction was $114,481,000 ÷ 61,430 ≈ $1,864.
+- [INFERENCE] At a $4,500 flat fee the contribution before acquisition is roughly $2,600–$4,150 per side (deliverable), so a client bought through search ads at these rates consumes the entire margin or more. This is K2 in numbers.
+- [INFERENCE] **Supersedes the notes' "customary 5–6%"** as the comparison base: the newest (if thin) New York data put the all-in average at 4.62%, so savings claims must be computed against ~4.6%, with 5–6% shown only as the traditional figure.
+- [INFERENCE] Rising rates and a Fed hike in September 2026 raise volume risk for any fixed-cost plan; break-even volumes should be judged against a flat-to-falling market, not 2025's +3.6% regional sales growth (WS5).
+
+#### Gaps
+- No Hudson Valley-specific cost per lead or conversion data; no Realtor.com or Homes.com list prices.
+- Redfin's own current New York fee table is not publicly readable.
+
+### G8. AI model cost re-verified
+
+#### Takeaway
+Anthropic's list prices in the notes are exactly right as of 2026-10-23, so the per-transaction estimate stands: about $2–$5 per side at the notes' token budget, about $15 in a heavy agentic case on Opus 5.5 with US-only inference, and about $70 in a worst case on Fable 5.1 with no caching.
+
+#### Cited Findings
+- Per million tokens: Fable 5.1 $10 in / $50 out (cache write $12.50 5-min, $20 1-hour; cache hit $0.25); Opus 5.5 $4 / $20 (writes $5 / $8; hit $0.20); Sonnet 5.5 $2 / $10 (writes $2.50 / $4; hit $0.10); Haiku 5.5 $0.10 / $0.50 for prompts up to 100,000 tokens, $0.50 / $2.50 above; Batch API "50 percent discount on both input and output tokens"; `inference_geo: "us"` "applies a 1.1x pricing multiplier"; web search "$10 USD per 1,000 searches"; newer tokenizer "produces approximately 30% more tokens for the same text"; Sonnet 5's planned rise to $3/$15 "will not occur". [PRIMARY, accessed 2026-10-23] — [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing)
+
+#### Inferences
+- [INFERENCE] Heavy case per side on Opus 5.5: 5M input tokens = 3.5M cache reads × $0.20 ($0.70) + 0.5M cache writes × $5 ($2.50) + 1.0M uncached × $4 ($4.00); 300K output × $20 ($6.00); subtotal $13.20; × 1.1 US-only = $14.52; + 50 web searches × $0.01 = $0.50; ≈ $15. Worst case on Fable 5.1, no caching: 5M × $10 + 0.3M × $50 = $65; × 1.1 = $71.50.
+
+#### Gaps
+- Token counts remain unmeasured; the POC's own call log should replace these assumptions.
+
+### Still open after gap fill
+- HVCRMLS (Ulster, Columbia, Greene) dues and MLS fees — not published; one phone call to 845-338-5299 closes it.
+- A written E&O/GL/cyber quote — insurers quote only an existing entity; CRES, Hiscox or Insureon after formation.
+- The father-in-law's malpractice carrier's position on brokerage claims — only his carrier can answer.
+- Real broker and coordinator hours per side — no study exists; must be logged on the first 10–20 deals.
+- Local customer-acquisition cost and lead conversion — no Hudson Valley data; must be measured.
+- Outside legal review price and NYSBA contract-form licence — needs a quote (WS2 overlap).
+- OneKey unlicensed-assistant MLS access and SentriLock lease term — needs a call to OneKey/HGAR (914-681-0833); small cost impact.
+- Houzeo and Dotloop prices — pages blank or blocked; immaterial to conclusions.
