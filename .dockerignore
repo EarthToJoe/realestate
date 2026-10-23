@@ -1,0 +1,12 @@
+.git
+.venv
+tmp
+docs
+research_notes
+deploy
+**/__pycache__
+*.pyc
+.pytest_cache
+secrets
+*.env
+*.key

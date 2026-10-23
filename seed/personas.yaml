@@ -1,0 +1,40 @@
+# Fictional people only (SC "PII"). The real demo house carries no owner name (D18): the seller here is a
+# fictional persona, not the owner of 146 Route 292. Names, e-mails (example.com) and phones (555-01xx) are
+# invented and reserved for fiction.
+seller:
+  token: SELLER_1
+  persona_label: Seller (fictional demo persona)
+  legal_name: Dana Okafor-Reyes
+  email: dana.or@example.com
+  phone: (845) 555-0142
+  mailing_address: 12 Example Lane, Poughkeepsie, NY 12601
+  # The handful of facts the seller types on the intake screen (gaps in the public record).
+  intake_answers:
+    parking: Paved driveway for four cars; no garage
+    condition: Kitchen updated 2019; original baths, well kept; new windows 2016
+    roof_year: "2012"
+    annual_tax_bill: "11800"
+    hoa: "no"
+    oil_tank: Indoor tank in the basement, replaced 2015
+    other: Pond at the back edge of the lot; septic pumped 2024
+    no_electric_service: "no"
+    utility_surcharge: "no"
+    green_jobs_charge: "no"
+    uncapped_gas_well: "no"
+  # Side-scoped instructions (decision 24): only the seller's AI reads these.
+  instructions:
+    authority: {price_floor: 615000, may_concede: [closing date within 30 days, leave the shed contents]}
+    confidential: {motivation: Relocating for work by spring; would take a quick close over top price}
+
+buyer:
+  token: BUYER_1
+  persona_label: Buyer (fictional demo persona)
+  legal_name: Sam Whitfield-Arora
+  email: sam.wa@example.com
+  phone: (914) 555-0187
+  mailing_address: 400 Sample Street, Apt 3, White Plains, NY 10601
+  preapproval_amount: "680000"
+  lender: Example Community Bank
+  instructions:
+    authority: {}
+    confidential: {maximum_price: 665000, notes: Needs a home office; flexible on closing date}

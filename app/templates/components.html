@@ -1,0 +1,70 @@
+{# The three on-screen record components (spec section 3), rendered from the record, never hand-placed. #}
+
+{% macro ids(cp) -%}
+  {%- for i in cp.f_ids %}<span class="tag is-light">{{ i }}</span> {% endfor -%}
+  {%- for i in cp.l_ids %}<span class="tag is-light">{{ i }}</span> {% endfor -%}
+  {%- for i in cp.ws3_ids %}<span class="tag is-light">{{ i }}</span> {% endfor -%}
+{%- endmacro %}
+
+{% macro law_marker(cp) -%}
+<div class="rec rec-law" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
+  <div class="rec-head"><span class="rec-badge">NY law today</span>
+    <b>{{ cp.code }}</b> {{ cp.title }}</div>
+  <p class="rec-rule">{{ cp.rule_text }}</p>
+  <p><b>Who the law says must act:</b> {{ cp.who_text }}
+    {% if cp.law_actor %}<span class="tag is-danger is-light">{{ law_actor_label[cp.law_actor] }}</span>{% endif %}</p>
+  {% if cp.reason %}<p><b>What the AI did:</b> {{ cp.reason }}</p>{% endif %}
+  <p class="rec-ids">{{ ids(cp) }} <a href="{{ cp.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
+  <p class="rec-foot">Recorded on the timeline; does not stop the flow.</p>
+</div>
+{%- endmacro %}
+
+{% macro human_required(cp) -%}
+<div class="rec rec-human" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
+  <div class="rec-head"><span class="rec-badge">&#9995; Human required here</span> <b>{{ cp.code }}</b> {{ cp.title }}</div>
+  <p class="rec-rule">{{ cp.rule_text }}</p>
+  <p><b>Who must act:</b> {{ cp.who_text }}</p>
+  <p class="rec-ids">{{ ids(cp) }} <a href="{{ cp.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
+</div>
+{%- endmacro %}
+
+{# A client decision. `action` posts the choice; buttons are enabled only for the client whose decision it is
+   (the server checks again, so a crafted request is refused too). #}
+{% macro decision(cp, persona, action, advice=None, labels=None) -%}
+{% set mine = (cp.actor == persona) or (cp.actor == 'seller_and_buyer' and persona in ('seller', 'buyer')) %}
+<div class="rec rec-decision" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> <b>{{ cp.code }}</b> {{ cp.title }}
+    <span class="tag {{ 'is-success' if cp.status == 'done' else 'is-warning' }} is-light">{{ cp.status }}{% if cp.decision %}: {{ cp.decision }}{% endif %}</span></div>
+  <p class="rec-rule">{{ cp.rule_text }}</p>
+  {% if advice %}<p class="rec-advice"><b>The AI's advice:</b> {{ advice }}</p>{% endif %}
+  <p><b>Whose decision:</b> {{ cp.who_text }}. {% if cp.status == 'pending' %}The next step waits for it.{% endif %}</p>
+  {% if cp.status == 'pending' %}
+  <form method="post" action="{{ action }}" class="buttons">
+    {% for choice in (labels or {}) %}
+      <button class="button {{ 'is-warning' if loop.first else 'is-light' }}" name="decision" value="{{ choice }}"
+        {% if not mine %}disabled title="Only the {{ cp.actor | replace('_', ' ') }} can decide this"{% endif %}>{{ labels[choice] }}</button>
+    {% endfor %}
+  </form>
+  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the {{ cp.actor | replace('_and_', ' and ') }} to decide.</p>{% endif %}
+  {% else %}
+  <p class="help">Decided by the {{ cp.decided_by }}{% if cp.decided_at %} at {{ cp.decided_at.strftime('%H:%M') }}{% endif %}.</p>
+  {% endif %}
+  <p class="rec-ids">{{ ids(cp) }}</p>
+</div>
+{%- endmacro %}
+
+{% macro chip(cp) -%}
+<span class="chip chip-{{ cp.kind }} chip-{{ cp.status }}" title="{{ cp.rule_text }}" data-code="{{ cp.code }}">
+  <b>{{ cp.code }}</b> {{ kind_label[cp.kind] }}{% if cp.kind == 'law_marker' and cp.law_actor %}: {{ law_actor_label[cp.law_actor] }}{% endif %}
+  · {{ cp.status }}</span>
+{%- endmacro %}
+
+{% macro source_chip(f) -%}
+<span class="src src-{{ f.source }}" title="{{ (f.inferred_reason or f.source_ref or '') }}">{{ {'public_record': 'Public record', 'seller': 'Seller', 'inferred': 'Inferred'}[f.source] or f.source }}</span>
+{%- endmacro %}
+
+{% macro ai_badge(mode, recorded_at=None) -%}
+{% if mode == 'live' %}<span class="tag is-info">AI: live</span>
+{% elif mode == 'replay' %}<span class="tag is-link is-light">AI: replay{% if recorded_at %} of the run recorded {{ recorded_at }}{% endif %}</span>
+{% else %}<span class="tag is-light">AI: {{ mode }}</span>{% endif %}
+{%- endmacro %}

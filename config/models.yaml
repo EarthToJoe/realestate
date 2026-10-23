@@ -1,0 +1,14 @@
+# Model per task (spec section 7). Move a task up or down here; no code changes.
+# Prices per million tokens, Anthropic pricing page, read 2026-10-23 [PRIMARY].
+prices:
+  claude-haiku-5-5: {input: 0.10, cache_write: 0.125, cache_read: 0.01, output: 0.50}
+  claude-sonnet-5-5: {input: 2.00, cache_write: 2.50, cache_read: 0.10, output: 10.00}
+  claude-opus-5-5: {input: 4.00, cache_write: 5.00, cache_read: 0.20, output: 20.00}
+
+tasks:
+  intake.infer_gaps: {model: claude-haiku-5-5, max_tokens: 2000}
+  # later slices
+  pricing.recommend: {model: claude-sonnet-5-5, max_tokens: 3000}
+  copy.draft: {model: claude-sonnet-5-5, max_tokens: 4000}
+  fairhousing.review: {model: claude-haiku-5-5, max_tokens: 1500}
+  probe.mask_roundtrip: {model: claude-haiku-5-5, max_tokens: 400}

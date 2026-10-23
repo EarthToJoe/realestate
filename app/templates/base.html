@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{{ screen.title if screen else 'Home' }}{% endblock %} · {{ firm.name }} (demonstration)</title>
+<link rel="stylesheet" href="/static/vendor/bulma.min.css">
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/vendor/htmx.min.js" defer></script>
+{% block head %}{% endblock %}
+</head>
+<body>
+{% from "components.html" import law_marker, ai_badge with context %}
+<div class="demo-mark" role="note">DEMONSTRATION: not a listing, not for sale through this firm, no owner authority. Fictional people; nothing is sent.</div>
+<nav class="topbar">
+  <a href="/" class="brand">{{ firm.name }} <small>demonstration</small></a>
+  <span class="topbar-right">
+    {{ ai_badge(model_mode) }}
+    <form method="post" action="/persona" class="persona-form">
+      <input type="hidden" name="back" value="{{ request.url.path }}">
+      <label>Acting as
+      <select name="persona" onchange="this.form.submit()" id="persona-select">
+        {% for key, label in personas.items() %}<option value="{{ key }}" {{ 'selected' if key == persona }}>{{ label }}</option>{% endfor %}
+      </select></label>
+      <noscript><button class="button is-small">Switch</button></noscript>
+    </form>
+    <a href="{{ review_url }}" class="review-link">Review documents</a>
+  </span>
+</nav>
+<div class="layout">
+  <aside class="steps" id="step-list">
+    <p class="steps-title">The sale, step by step</p>
+    <ol>
+    {% for st in steps %}
+      <li class="{{ 'active' if active_step and active_step.n == st.n }} {{ 'done' if st.n in done_steps }} {{ '' if st.built else 'later' }}">
+        <a href="{{ st.screens[0].route }}"><span class="n">{{ st.n }}</span> {{ st.title }}</a>
+        {% if marker_counts.get(st.n) %}<span class="mk" title="NY law today markers recorded">{{ marker_counts[st.n] }}</span>{% endif %}
+        {% if not st.built %}<small>slice {{ st.slice }}</small>{% endif %}
+        {% if active_step and active_step.n == st.n and st.screens|length > 1 %}
+        <ul>{% for sc in st.screens %}<li class="{{ 'here' if screen and sc.route == screen.route }}"><a href="{{ sc.route }}">{{ sc.title }}</a></li>{% endfor %}</ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+    <form method="post" action="/demo/reset"><button class="button is-small is-fullwidth">Start demo (reset)</button></form>
+  </aside>
+  <main class="content-area">
+    {% if screen %}
+    <details class="narration" open id="narration">
+      <summary>Narration: {{ active_step.n }}. {{ active_step.title }} · {{ screen.title }}</summary>
+      <p><b>Click:</b> {{ screen.click }}</p>
+      <p><b>Say:</b> {{ screen.say }}</p>
+      <p><b>Markers and decisions:</b> {{ screen.marker }}</p>
+    </details>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<footer class="identity" id="identity-block">
+  <p><b>{{ firm.name }}</b> ({{ firm.name_note }}) · {{ firm.office_address }} · {{ firm.phone }}</p>
+  <p class="broker-line"><span class="rec-badge">NY law today</span> {{ firm.broker_of_record }}.
+    <a href="/timeline#rec-CP-35">CP-35</a>: {{ cp35.rule }} <a href="{{ cp35.link }}" target="_blank" rel="noopener">Read the finding</a></p>
+  <p class="meta">Live model spend so far ${{ '%.4f' % live_spend }} of the ${{ '%.0f' % spend_cap }} cap · <a href="{{ review_url }}">Review documents</a></p>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

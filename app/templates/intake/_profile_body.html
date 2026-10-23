@@ -1,0 +1,31 @@
+{% from "components.html" import source_chip, ai_badge with context %}
+<div class="ai-panel" id="ai-panel">
+  {% if result %}
+    <p><b>The AI filled the gaps it could infer</b> {{ ai_badge(result.mode, result.recorded_at) }}
+      <span class="tag is-light">{{ result.model }}</span>{% if result.mode == 'live' %} <span class="tag is-light">${{ '%.4f' % result.cost_usd }}</span>{% endif %}</p>
+    <p>{{ result.output.summary }}</p>
+    {% if result.output.questions_for_seller %}<p><b>To confirm with the seller:</b></p>
+    <ul>{% for q in result.output.questions_for_seller %}<li>{{ q }}</li>{% endfor %}</ul>{% endif %}
+  {% elif ai_error %}
+    <p><b>Not recorded:</b> {{ ai_error }}</p>
+  {% elif inferred %}
+    <p><b>The AI's inferences are below</b>, tagged <span class="src src-inferred">Inferred</span> with their reasons.</p>
+  {% else %}
+    <p>The public record leaves gaps. The AI can infer some of them from what is recorded, and says why.</p>
+    <button class="button is-info" id="ai-infer" hx-post="/intake/infer" hx-target="#profile-body" hx-swap="innerHTML">
+      Let the AI fill the gaps</button>
+    <span class="htmx-indicator thinking">The AI is reading the record</span>
+    <noscript><form method="post" action="/intake/infer"><button class="button is-info">Let the AI fill the gaps</button></form></noscript>
+  {% endif %}
+</div>
+{% for group, facts in groups %}
+<h2 class="title is-6" style="margin:14px 0 4px">{{ group }}</h2>
+<table class="table is-narrow is-fullwidth facts">
+  {% for f in facts %}
+  <tr data-field="{{ f.field }}" data-source="{{ f.source }}">
+    <td style="width:32%">{{ f.label }}</td><td>{{ f.value }}</td><td style="width:110px">{{ source_chip(f) }}</td>
+    <td class="reason">{% if f.source == 'inferred' %}{{ f.inferred_reason }}{% if f.confidence %} ({{ f.confidence }} confidence){% endif %}{% elif f.source_ref %}{{ f.source_ref | truncate(90) }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endfor %}

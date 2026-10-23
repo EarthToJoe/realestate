@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Refused{% endblock %}
+{% block content %}
+<div class="notification is-warning" id="refused">
+  <p class="title is-5">{{ title }}</p>
+  <p>{{ message }}</p>
+</div>
+<p><a href="javascript:history.back()">Go back</a> · <a href="/timeline">Deal timeline</a></p>
+{% endblock %}

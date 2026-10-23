@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "components.html" import chip, law_marker, human_required with context %}
+{% block content %}
+<h1 class="title is-4">9. Deal timeline</h1>
+<p>Built only from the records the other screens wrote. Nothing here is drawn by hand.</p>
+<p class="counts" id="tl-counts">
+  <span class="tag is-danger is-light">{{ tl.counts.markers }} NY law today markers ({{ tl.counts.markers_L }} licensed broker, {{ tl.counts.markers_A }} lawyer)</span>
+  <span class="tag is-warning is-light">{{ tl.counts.decisions_done }} client decisions made, {{ tl.counts.decisions_pending }} waiting</span>
+  <span class="tag is-info is-light">{{ tl.counts.automated }} AI acts logged</span>
+  <span class="tag is-light">{{ tl.counts.human_required }} human required</span>
+  <span class="tag is-light">{{ tl.counts.third_party }} third-party steps planned</span>
+  <span class="tag is-white">{{ tl.counts.records }} records, {{ tl.counts.codes }} codes</span>
+</p>
+{% for cp in tl.standing %}{{ law_marker(cp) }}{% endfor %}
+
+<div id="timeline-rows">
+{% for row in tl.rows %}
+<div class="tl-row" data-step="{{ row.n }}">
+  <h3>{{ row.n }}. {{ row.title }} {% if not row.built %}<small class="has-text-grey">(slice to come)</small>{% endif %}</h3>
+  {% for cp in row.records %}
+    <div>{{ chip(cp) }} <small>{{ cp.title }}{% if cp.decided_by %} · by the {{ cp.decided_by }}{% endif %}{% if cp.status != 'planned' %} · {{ (cp.decided_at or cp.created_at).strftime('%H:%M') }}{% endif %}{% if cp.reason and cp.kind != 'client_decision' %} · {{ cp.reason | truncate(120) }}{% endif %}</small></div>
+  {% else %}
+    <small class="has-text-grey">No records yet.</small>
+  {% endfor %}
+</div>
+{% endfor %}
+</div>
+
+<h2 class="title is-5" style="margin-top:20px" id="hurdle-map">Hurdle map</h2>
+<p>Every red "NY law today" marker and every "human required" step recorded so far, grouped by step.</p>
+{% for row, hs in tl.hurdles %}
+  <h3 class="title is-6" style="margin:10px 0 0">{{ row.n }}. {{ row.title }}</h3>
+  {% for cp in hs %}{% if cp.kind == 'law_marker' %}{{ law_marker(cp) }}{% else %}{{ human_required(cp) }}{% endif %}{% endfor %}
+{% endfor %}
+{% endblock %}

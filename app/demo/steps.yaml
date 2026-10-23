@@ -1,0 +1,153 @@
+# One entry per step and screen: the step list, the narration cards and docs/DEMO-SCRIPT.md all come from here
+# (spec section 8). scripts/gen-demo-script.py writes the script; a test fails if the committed file differs.
+# `built: false` steps show a "coming in slice N" screen until their slice lands.
+steps:
+  - n: 1
+    title: Intake
+    slice: 1
+    built: true
+    minutes: 1.5
+    screens:
+      - route: /intake
+        title: Address and facts
+        click: Click "Use demo house", then "Start intake".
+        say: >-
+          The seller types an address and a handful of facts the public record leaves out: parking, condition,
+          roof, taxes, and the four state notice questions. The demo house is a real address in Holmes, so every
+          screen carries the DEMONSTRATION mark; the seller is a fictional person and no owner name is stored.
+        marker: none; the AI sends three notices as soon as the seller submits (CP-24, blue)
+      - route: /intake/profile
+        title: Property profile
+        click: Click "Let the AI fill the gaps".
+        say: >-
+          Every fact shows where it came from: green is the public record, amber is what the seller told us,
+          purple is what the AI inferred, with its reason and confidence. The AI fills only facts about the house,
+          never the seller's disclosure answers. The badge says whether this is the AI live or a recorded replay.
+        marker: none
+      - route: /intake/disclosures
+        title: Disclosure checklist
+        click: Switch persona to Seller, answer the disclosure questions, click "Submit my answers".
+        say: >-
+          The AI works out which disclosures this house needs from the facts: lead paint is not required because
+          it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is
+          the seller's own: the software never pre-fills it. That is an amber "Your decision" card: only the seller
+          can complete it, and contract signing waits for it.
+        marker: CP-04 seller decision (amber, blocks contract signing)
+      - route: /intake/onboarding
+        title: Seller onboarding
+        click: >-
+          As Seller, acknowledge the agency form. As Presenter, click "Let the AI accept the listing". As Seller,
+          sign the listing agreement. (Try signing before acknowledging: the app refuses and says why.)
+        say: >-
+          The AI gives the listing presentation, runs a conflicts check and accepts the listing. The red "NY law
+          today" marker says what the research found: accepting a listing for a fee is a licensed broker's act.
+          It is recorded and counted, and it does not stop the flow. The seller acknowledges the agency form and
+          signs the listing agreement, with the state's exclusive-listing explanation printed on it: those are the
+          seller's own decisions, and nothing is marketed until the agreement is signed.
+        marker: CP-01 and CP-03 seller decisions (amber); CP-02 NY law today (red, licensed broker)
+  - n: 2
+    title: Pricing
+    slice: 2
+    built: false
+    minutes: 1.5
+    screens:
+      - route: /step/2
+        title: Pricing
+        click: (slice 2)
+        say: >-
+          Coming in slice 2: comparable sales, the method in plain words, the AI's recommended price and the
+          seller's choice. Until the seller signs the listing agreement, this step refuses to start.
+        marker: CP-25 NY law today; CP-05 seller decision
+  - n: 3
+    title: Listing copy
+    slice: 2
+    built: false
+    minutes: 2.0
+    screens:
+      - route: /step/3
+        title: Listing copy
+        click: (slice 2)
+        say: Coming in slice 2 with the fair-housing checker.
+        marker: CP-26 automated; CP-06 NY law today
+  - n: 4
+    title: Marketing plan
+    slice: 2
+    built: false
+    minutes: 1.0
+    screens:
+      - route: /step/4
+        title: Marketing plan
+        click: (slice 2)
+        say: Coming in slice 2.
+        marker: CP-07 seller decision; CP-08 human required
+  - n: 5
+    title: Communications
+    slice: 3
+    built: false
+    minutes: 1.5
+    screens:
+      - route: /step/5
+        title: Communications
+        click: (slice 3)
+        say: Coming in slice 3.
+        marker: CP-27, CP-09, CP-10, CP-28, CP-29
+  - n: 6
+    title: Offers
+    slice: 3
+    built: false
+    minutes: 1.5
+    screens:
+      - route: /step/6
+        title: Offers
+        click: (slice 3)
+        say: Coming in slice 3.
+        marker: CP-11, CP-12, CP-13
+  - n: 7
+    title: Contract
+    slice: 3
+    built: false
+    minutes: 1.5
+    screens:
+      - route: /step/7
+        title: Contract
+        click: (slice 3)
+        say: Coming in slice 3.
+        marker: CP-32, CP-14, CP-15, CP-33
+  - n: 8
+    title: Buyer side
+    slice: 3
+    built: false
+    minutes: 1.5
+    screens:
+      - route: /step/8
+        title: Buyer side
+        click: (slice 3)
+        say: Coming in slice 3.
+        marker: CP-30, CP-16, CP-17, CP-31, CP-18
+  - n: 9
+    title: Deal timeline
+    slice: 1
+    built: true
+    minutes: 1.0
+    screens:
+      - route: /timeline
+        title: Deal timeline and hurdle map
+        click: Open "Deal timeline" in the step list.
+        say: >-
+          This page is built only from the records the other screens wrote; nothing is drawn by hand. Blue is
+          what the AI did, amber what the seller or buyer decided, red where New York law today requires a
+          licensed broker or a lawyer, grey the people and third parties outside the software. The red marker at
+          the top stands for the whole firm: New York requires a licensed broker of record, and this demonstration
+          has none. The hurdle map below lists every red marker with its rule and a link to the research.
+        marker: every record so far; CP-35 standing; CP-20 to CP-23 and CP-34 planned
+  - n: 10
+    title: Marketing the business
+    slice: 4
+    built: false
+    minutes: 0.5
+    screens:
+      - route: /step/10
+        title: Marketing the business
+        click: (slice 4)
+        say: Coming in slice 4.
+        marker: CP-26 automated; CP-19 NY law today

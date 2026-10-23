@@ -1,0 +1,487 @@
+# Every record the product writes: code, kind, step and the text the screen shows.
+# Source: docs/specs/poc-architecture.md section 3 (step map and checkpoint catalogue), revised for decision 21.
+# Kinds: client_decision (blocking), law_marker (red, never blocks), human_required (grey), third_party (grey,
+# planned), automated (blue). law_actor: L = licensed broker (or sponsored licensee), A = attorney.
+# A test (tests/test_catalogue.py) fails if a law_marker or human_required entry lacks rule, who, an F-ID, an L-ID
+# or WS3 ID, and a link, or if any code here is missing from docs/TRACEABILITY.md.
+# Rule sentences state the law as the research does; never soften them.
+
+links:
+  ws1: https://realestate.hughesnode.com/docs-research-ws1-agent-functions.html
+  ws2: https://realestate.hughesnode.com/docs-research-ws2-legal-licensing.html
+  ws3: https://realestate.hughesnode.com/docs-research-ws3-listing-data-access.html
+
+records:
+  CP-01:
+    title: Seller acknowledges the agency disclosure form
+    kind: client_decision
+    step: 1
+    actor: seller
+    side: seller
+    rule: New York requires the agency disclosure form (DOS-1736-f) before the listing agreement, with a signed acknowledgment or a sworn refusal kept for 3 years.
+    who: The seller
+    choices: [acknowledge, refuse_with_declaration]
+    blocks: Signing the listing agreement (CP-03)
+    f_ids: [F9]
+    l_ids: [L12]
+    link: ws2
+
+  CP-02:
+    title: AI accepts the listing after a conflicts check
+    kind: law_marker
+    step: 1
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Accepting a listing for another person for a fee is a licensed broker's act in New York; the broker must accept every listing the firm takes, and a firm cannot lend its licence to software or staff.
+    who: A licensed real estate broker
+    f_ids: [F12]
+    l_ids: [L1, L5]
+    link: ws2
+
+  CP-03:
+    title: Seller signs the listing agreement (six-point exclusive-listing explanation shown)
+    kind: client_decision
+    step: 1
+    actor: seller
+    side: seller
+    rule: No marketing without the owner's written authority and an agreed fee; an exclusive listing needs the six-point explanation, no automatic renewal and no net listing.
+    who: The seller
+    choices: [sign, decline]
+    blocks: Any marketing, pricing advice and listing copy (steps 2 to 4)
+    f_ids: [F13, F7]
+    l_ids: [L9, L14, L34]
+    link: ws2
+
+  CP-04:
+    title: Seller completes the Property Condition Disclosure Statement
+    kind: client_decision
+    step: 1
+    actor: seller
+    side: seller
+    rule: The seller completes and delivers the current Property Condition Disclosure Statement (RPL §462, form effective 2025-07-01) before the buyer signs a contract; an agent informs the seller of the duty but does not fill it in, so this software never pre-fills an answer.
+    who: The seller
+    choices: [complete, decline]
+    blocks: Contract signing (step 7)
+    f_ids: [F15, F59]
+    l_ids: [L43]
+    link: ws2
+
+  CP-05:
+    title: Seller chooses the list price
+    kind: client_decision
+    step: 2
+    actor: seller
+    side: seller
+    rule: The list price is the owner's decision, written into the listing authority.
+    who: The seller
+    choices: [choose]
+    blocks: Listing copy (step 3)
+    f_ids: [F22, F24]
+    l_ids: [L9]
+    ws3_ids: [WS3-R9]
+    link: ws2
+
+  CP-06:
+    title: AI marks advertising "ready to publish" (copy, flyer, posts)
+    kind: law_marker
+    step: 3
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Only the broker may place advertising for a listing and must approve each ad; what software does here counts as the broker's act.
+    who: A licensed real estate broker
+    per_item: true
+    f_ids: [F26, F76]
+    l_ids: [L10, L18, L36]
+    link: ws2
+
+  CP-07:
+    title: Seller signs the marketing-exposure choice and authorisations
+    kind: client_decision
+    step: 4
+    actor: seller
+    side: seller
+    rule: Cooperating brokers, lockbox access and photography need the owner's written authority; office-exclusive marketing needs a signed choice.
+    who: The seller
+    choices: [sign, decline]
+    f_ids: [F32, F38]
+    l_ids: [L9]
+    ws3_ids: [WS3-R2, WS3-R3]
+    link: ws3
+
+  CP-08:
+    title: Listing keyed into OneKey MLS from the AI's package
+    kind: human_required
+    step: 4
+    actor: human
+    law_actor: L
+    side: seller
+    rule: OneKey MLS has no listing-input API; a licensed MLS participant or the participant's registered Administrative User keys the listing, and the participant stays responsible for every field.
+    who: A licensed MLS participant (broker) or registered Administrative User
+    f_ids: [F28, F85]
+    l_ids: [L16]
+    ws3_ids: [WS3-C1]
+    link: ws3
+
+  CP-09:
+    title: AI sends a message that discusses the listing, negotiates or advises
+    kind: law_marker
+    step: 5
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Negotiating for another is a licensed act in New York, and DOS has treated discussing listings with prospects as salesperson activity.
+    who: A licensed broker or a salesperson the broker sponsors
+    per_item: true
+    f_ids: [F2, F33, F48]
+    l_ids: [L1, L6, L18]
+    link: ws2
+
+  CP-10:
+    title: Owner-hosted showing or open house (someone opens the door)
+    kind: human_required
+    step: 5
+    actor: seller
+    side: seller
+    rule: Software cannot open a door; the owner may show their own home, because an owner is not acting "for another".
+    who: The seller (owner)
+    f_ids: [F39, F40]
+    l_ids: [L19]
+    ws3_ids: [WS3-R4]
+    link: ws2
+
+  CP-11:
+    title: AI presents every offer and advises the seller
+    kind: law_marker
+    step: 6
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Presenting offers and advising the seller on them is a licensed broker's act in New York.
+    who: A licensed real estate broker
+    f_ids: [F45, F47]
+    l_ids: [L1, L18]
+    link: ws2
+
+  CP-12:
+    title: "Seller decides: accept, counter or reject"
+    kind: client_decision
+    step: 6
+    actor: seller
+    side: seller
+    rule: Accepting, countering or rejecting an offer is the seller's decision; nothing binds until a formal contract is signed by both.
+    who: The seller
+    choices: [accept, counter, reject]
+    blocks: The counter-offer and the contract (steps 6 and 7)
+    f_ids: [F47]
+    l_ids: [L24]
+    link: ws2
+
+  CP-13:
+    title: AI negotiates the counter with the other side
+    kind: law_marker
+    step: 6
+    actor: ai
+    law_actor: L
+    side: both
+    rule: Negotiating price, terms and concessions for another is a licensed act in New York.
+    who: A licensed real estate broker
+    per_item: true
+    f_ids: [F48, F49]
+    l_ids: [L1, L18]
+    link: ws2
+
+  CP-14:
+    title: AI drafts the contract of sale and rider
+    kind: law_marker
+    step: 7
+    actor: ai
+    law_actor: A
+    side: both
+    rule: Drafting a contract of sale for another is the practice of law in New York; only a lawyer may do it, and a company may not practise law at all (Judiciary Law §§478, 484, 495). A broker may only fill non-legal facts into a form marked subject to each party's attorney's approval, and Hudson Valley custom is that the seller's attorney drafts.
+    who: A lawyer admitted in New York
+    f_ids: [F52]
+    l_ids: [L21, L22, L25]
+    link: ws2
+
+  CP-15:
+    title: Wet-ink and notary items at closing (deed acknowledgment, POA, smoke-detector affidavit)
+    kind: human_required
+    step: 7
+    actor: human
+    side: both
+    rule: The deed's acknowledgment needs a notary, a power of attorney needs two witnesses, and the smoke-detector affidavit is signed at conveyance; e-signature does not cover these.
+    who: A notary public and the parties, in person
+    f_ids: [F67]
+    l_ids: [L35, L45]
+    link: ws2
+
+  CP-16:
+    title: Buyer acknowledges the agency form and signs the buyer agreement before any tour
+    kind: client_decision
+    step: 8
+    actor: buyer
+    side: buyer
+    rule: The buyer gets the agency disclosure form at first substantive contact, and a written buyer agreement is needed before a tour.
+    who: The buyer
+    choices: [sign, decline]
+    blocks: Any tour or showing for this buyer
+    f_ids: [F9, F17]
+    l_ids: [L12, L15]
+    ws3_ids: [WS3-R5]
+    link: ws2
+
+  CP-17:
+    title: Seller and buyer consent to dual agency
+    kind: client_decision
+    step: 8
+    actor: seller_and_buyer
+    side: both
+    rule: When one firm represents both seller and buyer, both must give informed written consent to dual agency.
+    who: The seller and the buyer
+    choices: [consent, decline]
+    blocks: An offer from the firm's own buyer on the firm's listing
+    f_ids: [F11, F51]
+    l_ids: [L13]
+    link: ws2
+
+  CP-18:
+    title: Buyer approves the offer (and the reply to a counter)
+    kind: client_decision
+    step: 8
+    actor: buyer
+    side: buyer
+    rule: The buyer decides what to offer; nothing binds until a formal contract is signed by both.
+    who: The buyer
+    choices: [approve, decline]
+    per_item: true
+    f_ids: [F44]
+    l_ids: [L24]
+    link: ws2
+
+  CP-19:
+    title: AI publishes the brokerage campaign (simulated)
+    kind: law_marker
+    step: 10
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Only the broker may place advertising and must approve each ad, including the firm's own campaigns and their targeting.
+    who: A licensed real estate broker
+    f_ids: [F1, F76]
+    l_ids: [L10, L18, L38, L40]
+    link: ws2
+
+  CP-20:
+    title: Deposit into escrow
+    kind: third_party
+    step: 9
+    actor: third_party
+    side: both
+    rule: The buyer's deposit is held in escrow; Hudson Valley custom is the seller's attorney's escrow account.
+    who: "Escrow holder (by custom, the seller's attorney)"
+    planned: true
+    f_ids: [F55]
+    l_ids: [L25]
+    link: ws2
+
+  CP-21:
+    title: Home inspection
+    kind: third_party
+    step: 9
+    actor: third_party
+    side: buyer
+    rule: Home inspections are done by a licensed home inspector.
+    who: Licensed home inspector
+    planned: true
+    f_ids: [F56, F57]
+    l_ids: []
+    link: ws1
+
+  CP-22:
+    title: Mortgage commitment, appraisal and title
+    kind: third_party
+    step: 9
+    actor: third_party
+    side: buyer
+    rule: The lender issues the commitment, a licensed appraiser values the house and a title company insures title.
+    who: Lender, appraiser, title company
+    planned: true
+    f_ids: [F60, F61, F62]
+    l_ids: []
+    link: ws1
+
+  CP-23:
+    title: Walkthrough and closing; commission paid
+    kind: third_party
+    step: 9
+    actor: third_party
+    side: both
+    rule: Closing is run by the title company and lender; the deed is signed in ink before a notary.
+    who: "Title company, lender, notary; the parties"
+    planned: true
+    f_ids: [F66, F67, F68]
+    l_ids: [L35]
+    link: ws2
+
+  CP-24:
+    title: Notice delivered at first contact
+    kind: automated
+    step: 1
+    actor: ai
+    side: seller
+    rule: Fair-housing notice (DOS-2156), agency form and "these are not legal services" notice are delivered at first substantive contact and stored for 3 years.
+    who: The AI (delivery is logged)
+    per_item: true
+    f_ids: [F8, F10]
+    l_ids: [L39, L12, L29]
+    link: ws2
+
+  CP-25:
+    title: AI advises the seller on list price
+    kind: law_marker
+    step: 2
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: Advising the seller on price is the listing agent's fiduciary duty; unlicensed help, people or software, may only prepare the analysis, and what software does is the broker's act.
+    who: A licensed real estate broker
+    f_ids: [F22]
+    l_ids: [L6, L18]
+    ws3_ids: [WS3-D5]
+    link: ws2
+
+  CP-26:
+    title: Fair-housing check passed
+    kind: automated
+    step: 3
+    actor: ai
+    side: seller
+    rule: Advertising and messages may not state a preference, limitation or discrimination based on a protected class or steer buyers; results are kept for the complaint window.
+    who: The AI (software gate)
+    per_item: true
+    f_ids: [F78, F81]
+    l_ids: [L36, L37, L58, L61]
+    link: ws2
+
+  CP-27:
+    title: Seller approves the fact sheet and the AI's authority
+    kind: client_decision
+    step: 5
+    actor: seller
+    side: seller
+    rule: What the agent may say and concede on the seller's behalf is the seller's instruction.
+    who: The seller
+    choices: [approve, decline]
+    blocks: Any reply the AI sends to a prospect
+    f_ids: [F33, F84]
+    l_ids: [L9, L18]
+    link: ws2
+
+  CP-28:
+    title: AI arranges a self-guided tour
+    kind: law_marker
+    step: 5
+    actor: ai
+    law_actor: L
+    side: seller
+    rule: New York has not decided whether an unaccompanied buyer tour is a licensed showing; DOS treated an unlicensed person showing listings as unlicensed activity, and OneKey lockbox keys and PINs may not be lent.
+    who: A licensed broker or salesperson (unresolved for self-guided tours)
+    f_ids: [F39]
+    l_ids: [L19, L15]
+    ws3_ids: [WS3-R4]
+    link: ws2
+
+  CP-29:
+    title: AI schedules a showing; sends access and feedback requests
+    kind: automated
+    step: 5
+    actor: ai
+    side: seller
+    rule: Scheduling showings is permitted to unlicensed staff; requests are answered within 24 hours.
+    who: The AI
+    per_item: true
+    f_ids: [F37, F42]
+    l_ids: [L15]
+    ws3_ids: [WS3-R4]
+    link: ws3
+
+  CP-30:
+    title: AI takes on the buyer as a client and records the agency relationship
+    kind: law_marker
+    step: 8
+    actor: ai
+    law_actor: L
+    side: buyer
+    rule: Taking on a client and deciding the agency relationship are the broker's acts; designated agents in a dual-agency deal must be two licensees under the broker.
+    who: A licensed real estate broker
+    f_ids: [F11, F12, F51]
+    l_ids: [L1, L5, L13]
+    link: ws2
+
+  CP-31:
+    title: AI advises the buyer on offer price and terms and drafts the offer
+    kind: law_marker
+    step: 8
+    actor: ai
+    law_actor: L
+    side: buyer
+    rule: Advising the buyer on price and terms is the buyer's agent's fiduciary duty; unlicensed help may only prepare it.
+    who: A licensed real estate broker
+    f_ids: [F23, F44]
+    l_ids: [L6, L18, L22]
+    link: ws2
+
+  CP-32:
+    title: Accepted-offer memorandum sent; disclosures attached to the contract
+    kind: automated
+    step: 7
+    actor: ai
+    side: both
+    rule: The PCDS, lead-paint, agricultural-district and §242 notices are attached before the contract is signed.
+    who: The AI
+    f_ids: [F50, F59]
+    l_ids: [L43, L44, L46, L60]
+    link: ws2
+
+  CP-33:
+    title: Seller and buyer sign the contract (simulated e-sign)
+    kind: client_decision
+    step: 7
+    actor: seller_and_buyer
+    side: both
+    rule: The contract binds only when signed by both; e-signatures are valid for the contract of sale.
+    who: The seller and the buyer
+    choices: [sign, decline]
+    f_ids: [F59]
+    l_ids: [L24, L34, L43]
+    link: ws2
+
+  CP-34:
+    title: AI negotiates repairs or credits after inspection and writes them into the contract
+    kind: law_marker
+    step: 9
+    actor: ai
+    law_actor: L+A
+    side: both
+    rule: Negotiating repairs or credits for another is a licensed broker's act, and amending the contract of sale for another is the practice of law.
+    who: A licensed broker (negotiation) and a lawyer (contract amendment)
+    planned: true
+    f_ids: [F58, F64]
+    l_ids: [L1, L21]
+    link: ws2
+
+  CP-35:
+    title: No licensed broker of record supervises this firm
+    kind: law_marker
+    step: 9
+    actor: ai
+    law_actor: L
+    side: both
+    standing: true
+    rule: A New York brokerage must be licensed through a broker who really controls it and supervises all unlicensed staff and systems; unlicensed brokerage is a crime and earns no fee.
+    who: A licensed real estate broker of record
+    f_ids: [F73, F74, F75]
+    l_ids: [L2, L3, L4, L5]
+    link: ws2

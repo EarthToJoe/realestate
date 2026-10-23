@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">1. Intake: address and facts</h1>
+<p>The seller gives the address and a few facts the public record leaves out. The AI does the rest.</p>
+<a class="button is-small is-light" href="/intake?demo=1" id="use-demo">Use demo house</a>
+{% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
+<form method="post" action="/intake" id="intake-form" style="margin-top:12px">
+  <div class="columns">
+    <div class="column is-6"><label class="label">Street</label>
+      <input class="input" name="street" required value="{{ data.street if data else '' }}" placeholder="146 Route 292"></div>
+    <div class="column is-4"><label class="label">Town</label>
+      <input class="input" name="city" required value="{{ data.city if data else '' }}" placeholder="Holmes"></div>
+    <div class="column is-2"><label class="label">ZIP</label>
+      <input class="input" name="zip" value="{{ data.zip if data else '' }}" placeholder="12531"></div>
+  </div>
+  <fieldset class="box"><legend class="label">Seller (fictional persona; personal data, encrypted and access-logged)</legend>
+    <div class="columns">
+      <div class="column"><label class="label is-small">Name</label><input class="input" name="seller_name" value="{{ data.seller_name if data else '' }}"></div>
+      <div class="column"><label class="label is-small">E-mail</label><input class="input" name="seller_email" value="{{ data.seller_email if data else '' }}"></div>
+      <div class="column"><label class="label is-small">Phone</label><input class="input" name="seller_phone" value="{{ data.seller_phone if data else '' }}"></div>
+    </div>
+  </fieldset>
+  <fieldset class="box"><legend class="label">Facts only the seller knows (tagged "Seller")</legend>
+    {% for key, (field, label, group) in seller_fields.items() %}
+      <label class="label is-small">{{ label }}</label>
+      <input class="input is-small" name="{{ key }}" value="{{ data.facts.get(key, '') if data else '' }}">
+    {% endfor %}
+  </fieldset>
+  <fieldset class="box"><legend class="label">Four state notice questions (RPL §242, L60)</legend>
+    {% for key, q in section_242.items() %}
+      <div class="field"><span>{{ q }}</span>
+        <label class="radio"><input type="radio" name="{{ key }}" value="yes" {{ 'checked' if data and data.facts.get(key) == 'yes' }}> Yes</label>
+        <label class="radio"><input type="radio" name="{{ key }}" value="no" {{ 'checked' if data and data.facts.get(key) == 'no' }}> No</label></div>
+    {% endfor %}
+  </fieldset>
+  <button class="button is-primary" id="start-intake">Start intake</button>
+  <p class="help">Submitting is the seller's first substantive contact: the AI sends the fair-housing notice, the
+  agency form and the "not legal services" notice at once (CP-24).</p>
+</form>
+{% endblock %}

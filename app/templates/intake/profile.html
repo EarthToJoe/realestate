@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">1. Intake: property profile</h1>
+<p><b>{{ deal.property.street }}, {{ deal.property.city }}, NY {{ deal.property.zip }}</b>
+  {% if deal.property.municipality %}· {{ deal.property.municipality }}, {{ deal.property.county }} County{% endif %}
+  {% if deal.property.upi %}· parcel {{ deal.property.upi }}{% endif %}</p>
+{% if not deal.property.is_demo_house %}
+<div class="notification is-light">No public record was found for this address in the demo's records (the POC
+reads one fixture house; real lookups are out of scope). The profile shows the seller's facts only.</div>
+{% endif %}
+<div id="profile-body">{% include "intake/_profile_body.html" %}</div>
+<p style="margin-top:12px"><a class="button" href="/intake/disclosures">Next: disclosure checklist &rarr;</a></p>
+{% endblock %}

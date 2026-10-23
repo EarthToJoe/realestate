@@ -1,0 +1,22 @@
+# One brokerage, brand in one file, so a second could follow (OUT-OF-SCOPE). Every page and message carries the
+# identity block built from this file (L10). Decision 25 (provisional): no invented licensed person; the
+# broker-of-record line states the law and the CP-35 marker stands beside it.
+# The firm name is a placeholder for the demonstration (QUESTIONS-FOR-JOE: firm name).
+default:
+  name: Hudson Valley AI Realty
+  name_note: demonstration name; not a licensed firm
+  office_address: "Office address: required by NY law (19 NYCRR 175.25); none in this demonstration"
+  phone: "(555) 010-0100"
+  email: hello@example.com
+  broker_of_record: "Licensed broker of record: required by NY law; none in this demonstration"
+  broker_marker: CP-35
+  flat_fee: "$4,995 flat listing fee, paid at closing (demonstration figure)"
+  services:
+    - Pricing analysis from public sales records
+    - Listing copy, flyer and social posts, fair-housing checked
+    - Listing package prepared for the MLS
+    - Enquiries answered and showings booked within 24 hours
+    - Offers presented, compared and negotiated
+    - Contract draft and rider, disclosures attached
+    - Coordination to closing
+  timeline: "Listing ready in 2 days; typical Dutchess County sale 60 to 90 days to close"
