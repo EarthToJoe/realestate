@@ -1,9 +1,61 @@
 # Questions for Joe
 
 Answer any of these when you check in, in one line each. Where I could not wait, I made the provisional choice
-shown and kept moving; your answer overrides it. Newest at the top of each section.
+shown and kept moving; your answer overrides it. Readable at https://realestate.hughesnode.com/docs-questions-for-joe.html
 
-## Open: these three unblock things
+## Open
+
+**Q7. Sign off the demo's finish line** (`docs/SUCCESS-CRITERIA.md`, or
+https://realestate.hughesnode.com/docs-success-criteria.html). Reply `SIGN-OFF` or the edits you want.
+**This is now the critical path:** with the meeting about a week out (Q5), the build has to start by
+Sunday 2026-10-25 to leave a day for you to click through it and a day to polish.
+- *Provisional:* I write the architecture spec and traceability as soon as workstreams 1 to 3 land (that is
+  planning, not code), so building can start the hour you sign off.
+
+**Q11. Two facts about your father-in-law, now that he lives outside New York** (raised by Joe's 2026-10-23
+answer to Q4). (a) **Where does he live now?** A New York broker must "have and maintain a definite place of
+business within this state" with a sign readable from the sidewalk (RPL 441-a(3)), and must supervise the
+firm's work; both are harder from out of state. (b) **Is his New York attorney registration current?** NY
+lawyers re-register every two years even when they live elsewhere. DOS grants the broker licence with no
+course and no exam only to "an Attorney who is currently admitted to the New York State bar"; if his status
+lapsed or he registered as retired, that route may need fixing first.
+- *Provisional:* he lives outside NY, his registration is current or can be made current, and the firm rents
+  a small licensed office in the Hudson Valley. The research on his roles will cover both questions.
+
+**Q12. Demo house in Virginia, product in New York.** Joe, 2026-10-23: "Use 4910 John Ticer Dr, Alexandria,
+VA." Glad to. One snag: the product is built for New York (NY contract of sale, NY disclosure forms, NY MLSs),
+so a Virginia address on a New York contract is the first thing a NY lawyer would catch. Two ways to handle it:
+(1) **use the address as given**, with every legal step clearly labelled "New York rules (our launch market)";
+or (2) **use the house's real details but place it in a Hudson Valley town** so every step is consistent.
+Also: is it your house (so the OK to use it is yours)?
+- *Provisional:* (1), the address as given, with the labels; switching to (2) is a one-line change. Only the
+  property's facts are used (rooms, size, year built, features), never an owner's name.
+
+## Answered (newest first)
+
+- **2026-10-23, Joe, Q4 (father-in-law's status):** (a) broker licence or attorney exemption: "Not sure what
+  this means. Perhaps not important at this juncture. He hasn't lived or worked in NY for almost 10 years. He
+  passed his bar in NY and worked there a while." (b) practising law: "Not directly." (c) willing to be broker
+  of record and approve every checkpoint: "Yes." (d) also act as attorney for either party in brokerage deals:
+  "Yes, if possible. I'm happy to inform him of the implications, risks, or contrary tos." Old Hudson Valley
+  entity: "No." **What changes:** (a) explained in the chat: he can get a NY broker licence on paper for $185
+  with no course or exam, as an admitted NY attorney, so it is easy, but it raises Q11. (d) conflicts with the
+  early research (NY bar ethics opinions bar being both broker and lawyer in one deal; the narrow exception is a
+  fixed fee with written consent), so a plain memo on what he can and cannot do follows the WS2 deliverable,
+  for Joe to share with him. Ten years away also weakens the "he knows everybody up there" premise behind A5;
+  the assumptions update will say so.
+- **2026-10-23, Joe, Q5 (meeting):** "Week from now let's call it." So about 2026-10-30. Pace: research and
+  plan this weekend, build 2026-10-25 to 10-28, Joe's click-through on hughesnode 10-28, polish 10-29.
+- **2026-10-23, Joe, Q6 (demo property):** "Use 4910 John Ticer Dr, Alexandria, VA." Follow-up in Q12.
+- **2026-10-23, Joe, Q8 (name):** "Not yet." Neutral placeholder in one configuration file.
+- **2026-10-23, Joe, Q9 (buyer depth):** seller flow complete plus four buyer screens: "Sounds good for now."
+- **2026-10-23, Joe, Q10 (separate API keys):** "No." One key; the POC logs its own spend per module.
+- 2026-10-23: Q4 to Q9 were put on Joe's ranked to-do list (https://shorts.hughesnode.com/todo).
+- 2026-10-23, Joe: created `EarthToJoe/realestate`; origin repointed (Q1 done).
+- 2026-10-23, Joe: VPS session `realestate` is up and billed to the API key (Q2, Q3 done).
+- 2026-10-23, Joe: "Use GitHub. You have my permission." and "I want all this setup work to be done using the API credit." (see Q1 and Q3).
+
+### Setup questions (all done; kept for the record)
 
 **Q1. Create the GitHub repo. Done 2026-10-23: origin is `github.com/EarthToJoe/realestate`; the VPS clone pulls and pushes there.** Joe answered 2026-10-23: "Use GitHub.
 You have my permission." With that, the work is pushed to a temporary branch `realestate-lifeboat` in the
@@ -39,46 +91,3 @@ intact), and it takes over the work. The thirteen research passes already runnin
 part billed to Max; stopping them would throw away finished work, so they land, get committed, and the VPS
 session writes everything from there. Say "continue here" if you would rather I keep going in the cloud on
 Max until the VPS session is up.
-
-## Open: shape the plan
-
-**Q4. Your father-in-law's exact status.** Four facts change workstream 2's conclusions:
-(a) Does he hold an actual NY real estate **broker** licence (with a licence number), or does he act under
-the attorney exemption only? (b) Is he still actively practising law? (c) Is he willing to be the **broker
-of record** and the licensed human who approves every checkpoint, at least at launch? (d) Does he expect to
-also act as the attorney for either party in deals the brokerage handles? (Early reading: NY ethics
-opinions bar being both broker and lawyer in the same deal; WS2 will confirm.) Also: does the old Hudson
-Valley entity still exist, and under what name?
-- *Provisional:* planning assumes he gets or holds a broker licence, is broker of record, and does **not**
-  act as either party's lawyer in brokerage deals.
-
-**Q5. When is the meeting?** Date or rough window. Sets the pace and what gets polished first.
-- *Provisional:* research done in the next two days, POC in the following week, polish after.
-
-**Q6. Demo property.** Fictional-but-realistic Hudson Valley house, or a real one he knows (his own, or a
-consenting friend's)? A real address he knows makes the demo land harder, but needs the owner's OK.
-- *Provisional:* fictional house in a real town, with a one-line switch to a real address later.
-
-**Q7. Sign off the success criteria** in `docs/SUCCESS-CRITERIA.md` (reply `SIGN-OFF` or edits). Building
-starts after this and after workstreams 1 to 3 land.
-
-**Q8. Working name.** Any name in mind for the brokerage or product? The brand sits in one configuration
-file either way.
-- *Provisional:* neutral placeholder in the UI; repo stays `realestate`.
-
-**Q9. Buyer side depth in the first demo.** Full parity with the seller side, or seller flow complete plus
-four buyer screens (intake, search, tour request, offer)?
-- *Provisional:* seller complete, four buyer screens (that is what the success criteria say).
-
-**Q10. Separate API keys per workstream?** In the Anthropic Console you can create several keys. If you make
-one per use (`realestate-session`, `realestate-poc`), the Console's usage page shows spend per key with no
-extra work. Optional.
-- *Provisional:* one key; the POC logs its own spend per module.
-
-## Answered
-
-- 2026-10-23: Q4 to Q9 are on Joe's ranked to-do list (https://shorts.hughesnode.com/todo): Q7 sign-off (item 0e39cd), Q4 father-in-law questions (8ba86e), Q5/Q6/Q8/Q9 one-liners (ffd75b).
-- 2026-10-23, Joe: created `EarthToJoe/realestate`; origin repointed (Q1 done).
-
-- 2026-10-23, Joe: VPS session `realestate` is up and billed to the API key (Q2, Q3 done).
-- 2026-10-23, Joe: "Use GitHub. You have my permission." and "I want all this setup work to be done using the API credit." (see Q1 and Q3).

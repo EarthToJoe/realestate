@@ -68,3 +68,19 @@ with a dated line.
     every commit and pull. When the POC is built it moves in at the same address (the hughesnode project's type
     changes from static to docker), with the review pages kept alongside the demo, so Joe has one bookmark.
     The existing `review` and `demo` hughesnode apps belong to other projects and are not used.
+14. **Demo house: Joe's real address, labelled New York flow (2026-10-23, provisional).** Joe chose 4910 John
+    Ticer Dr, Alexandria, VA, which replaces decision 6's fictional house. The product's legal steps are New
+    York's, so every state-specific screen carries a "New York rules (launch market)" label; the alternative
+    (the same house's details placed in a Hudson Valley town) stays a one-line switch (Q12). Only property
+    facts are used, never an owner's name; the house's facts come from the official City of Alexandria
+    assessment record or from Joe, never from a portal.
+15. **Schedule set by the meeting, about 2026-10-30 (Joe, Q5).** Research, plan and executive summary over
+    the weekend; the architecture spec and traceability are written as soon as WS1 to WS3 land, before
+    sign-off, because they are planning, not code; the build runs 2026-10-25 to 10-28 once Joe signs off;
+    Joe clicks through on hughesnode 2026-10-28; polish 2026-10-29. One API key for everything (Q10: "No"
+    to separate keys).
+16. **The father-in-law wants to be broker and lawyer in the same deals; the plan does not assume he can
+    (2026-10-23).** Joe (Q4d): "Yes, if possible." The early research says NY bar ethics opinions bar it
+    except in a narrow fixed-fee, written-consent form. The plan keeps the provisional structure (broker of
+    record, not either party's lawyer) until a dedicated memo, written after the WS2 deliverable, sets out
+    his options, risks and the out-of-state questions (Q11) for Joe to share with him.
