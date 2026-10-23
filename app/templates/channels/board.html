@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% from "components.html" import human_required, ids with context %}
+{% block content %}
+<h1 class="title is-4">4. Marketing plan: the channel board</h1>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% else %}
+<p>Each card says honestly what happens on that channel and who does it. Blue is the AI; grey with a hand is a step
+no software can do today; "fed from the MLS" means the portal copies the MLS entry by itself.</p>
+
+{% set mine = (persona == 'seller') %}
+<div class="rec rec-decision" data-code="CP-07" id="rec-CP-07">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> <b>CP-07</b> {{ cp07.title }}
+    <span class="tag {{ 'is-success' if cp07.status == 'done' else 'is-warning' }} is-light">{{ cp07.status }}{% if cp07.decision %}: {{ cp07.decision }}{% endif %}</span></div>
+  <p class="rec-rule">{{ cp07.rule_text }}</p>
+  <p class="rec-advice"><b>The AI's advice:</b> "Publish to Internet" with all three authorisations: the widest exposure,
+    and the MLS entry, the lockbox and the photos all depend on them.</p>
+  {% if cp07.status == 'pending' %}
+  <form method="post" action="/channels/authorise">
+    {% for name, what in exposures.items() %}
+    <label class="radio" style="display:block"><input type="radio" name="exposure" value="{{ name }}" {{ 'checked' if loop.first }} {{ 'disabled' if not mine }}> <b>{{ name }}</b>: {{ what }}</label>
+    {% endfor %}
+    {% for key, label, rule in authorisations %}
+    <label class="checkbox" style="display:block"><input type="checkbox" name="granted" value="{{ key }}" checked {{ 'disabled' if not mine }}> {{ label }} <small>({{ rule }})</small></label>
+    {% endfor %}
+    <div class="buttons" style="margin-top:6px">
+      <button class="button is-warning" name="decision" value="sign" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Sign (simulated e-sign)</button>
+      <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Decline</button>
+    </div>
+  </form>
+  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% else %}
+  <p><b>{{ cp07.reason }}.</b> Decided by the {{ cp07.decided_by }}.</p>
+  {% endif %}
+  <p class="rec-ids">{{ ids(cp07) }} <a href="{{ cp07.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
+</div>
+
+<div class="channel-board">
+{% for c in cards %}
+  <div class="card-ch kind-{{ c.kind }}" id="card-{{ c.id }}" data-kind="{{ c.kind }}">
+    <p class="ch-name">{% if c.kind == 'human_required' %}&#9995; {% endif %}<b>{{ c.name }}</b></p>
+    <p class="ch-status">{{ {'human_required': 'Human required', 'fed': 'Fed from the MLS', 'automated': 'AI', 'vendor': 'Vendor booking', 'owner': 'Owner hosts'}[c.kind] }}: <b>{{ c.status }}</b></p>
+    <p><small>{{ c.detail }}</small></p>
+    {% if c.human_step %}<p><small>&#9995; <b>Human required here:</b> {{ c.human_step }}.</small></p>{% endif %}
+    <p class="rec-ids">{% for i in c.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ c.link }}" target="_blank" rel="noopener">Read the finding</a></p>
+    {% if c.action == 'mls' %}
+    <form method="post" action="/channels/mls-entry"><button class="button is-small" id="mls-entry"
+      {% if persona != 'presenter' %}disabled title="Only the Presenter records a simulated human step"{% endif %}>Record the MLS entry (simulated)</button></form>
+    <p><small><a href="/copy/mls">See the package the AI prepared</a></small></p>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>
+{% if cp08 %}{{ human_required(cp08) }}{% else %}
+<div class="rec rec-human" data-code="CP-08" id="rec-CP-08">
+  {% set e = cards[0] %}
+  <div class="rec-head"><span class="rec-badge">&#9995; Human required here</span> <b>CP-08</b> Listing keyed into OneKey MLS from the AI's package</div>
+  <p class="rec-rule">{{ e.detail }}</p>
+  <p class="rec-ids">{% for i in e.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ e.link }}" target="_blank" rel="noopener">Read the finding</a></p>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

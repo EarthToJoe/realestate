@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">2. Pricing: comparable sales and adjustments</h1>
+<p class="tag is-warning is-medium" id="cma-label">{{ label }}</p>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% else %}
+{% set sm = pa.summary %}
+<p style="margin-top:8px">The AI took <b>{{ sm.count }} arm's-length one-family sales</b>
+from the Dutchess County public sales records (ParcelAccess; within about 4 miles, the last 18 months) and adjusted each one toward this house in code,
+using the rates below. The model does not do the arithmetic; it explains it and advises on the next screen.</p>
+<div class="box" id="subject">
+  <b>This house:</b> {{ sm.subject.style }}, built {{ sm.subject.year_built }}, {{ '{:,}'.format(sm.subject.living_area_sqft) }} sq ft
+  + {{ sm.subject.finished_basement_sqft }} sq ft finished basement, {{ sm.subject.bedrooms }} bedrooms,
+  {{ sm.subject.bathrooms_full }} full baths, {{ sm.subject.acres }} acres, central air: {{ 'yes' if sm.subject.central_air else 'no' }},
+  garage: {{ 'yes' if sm.subject.garage else 'no' }}.
+  {% if sm.subject.full_market_value_2026 %}<br><small>Cross-check: the 2026 roll's state full market value is
+  ${{ '{:,}'.format(sm.subject.full_market_value_2026) }} (a tax formula, not an appraisal).</small>{% endif %}
+</div>
+<div class="table-container">
+<table class="table is-narrow is-fullwidth is-striped" id="comps-table">
+  <thead><tr><th>#</th><th>Address</th><th>Sold</th><th>Price</th><th>Style</th><th>Sq ft</th><th>Acres</th>
+    <th>Beds / baths</th><th>Net adj.</th><th>Gross</th><th>Adjusted</th><th>Weight</th><th>Flags</th></tr></thead>
+  <tbody>
+  {% for c in pa.comps %}
+  <tr data-rank="{{ c.rank }}" class="{{ 'weak' if c.weak }}">
+    <td>{{ c.rank }}</td><td>{{ c.address }}<br><small>{{ c.distance_mi }} mi · {{ c.deed }}</small></td>
+    <td>{{ c.sale_date }}</td><td>${{ '{:,}'.format(c.sale_price) }}</td><td>{{ c.style }}</td>
+    <td>{{ '{:,}'.format(c.living_area_sqft) }}</td><td>{{ c.acres }}</td><td>{{ c.bedrooms }} / {{ c.baths }}</td>
+    <td>{{ '{:+,}'.format(c.net_adjustment) }}</td><td>{{ c.gross_pct }}%</td>
+    <td><b>${{ '{:,}'.format(c.adjusted_price) }}</b></td><td>{{ c.weight }}</td>
+    <td>{% for w in c.weak %}<span class="tag is-warning is-light">{{ w }}</span> {% endfor %}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<details id="adjustments"><summary><b>Every adjustment, line by line</b></summary>
+{% for c in pa.comps %}
+<p style="margin-top:8px"><b>{{ c.rank }}. {{ c.address }}</b>: ${{ '{:,}'.format(c.sale_price) }} → ${{ '{:,}'.format(c.adjusted_price) }}</p>
+<table class="table is-narrow"><tbody>
+{% for a in c.adjustments %}<tr><td>{{ a.factor }}</td><td>{{ '{:+,}'.format(a.amount) }}</td><td><small>{{ a.why }}</small></td></tr>{% endfor %}
+</tbody></table>
+{% endfor %}
+</details>
+<div class="ai-panel" id="range">
+  <p><b>Suggested range:</b> ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }}
+    · <b>indicated value</b> ${{ '{:,}'.format(sm.indicated_value) }} (weighted) · median adjusted ${{ '{:,}'.format(sm.median_adjusted) }}</p>
+  <p><small>Range: {{ sm.range_rule }} (sales {{ sm.range_basis | join(', ') }}). Weights favour sales needing smaller
+  adjustments and of the same style. Rates [INFERENCE, demonstration rates stated here]:
+  date +{{ sm.rates.time_pct_per_month }}%/month; living area ${{ sm.rates.living_area_per_sqft }}/sq ft; finished basement
+  ${{ sm.rates.finished_basement_per_sqft }}/sq ft; lot ${{ '{:,}'.format(sm.rates.lot_per_acre) }}/acre (first {{ sm.rates.lot_cap_acres }} acres of
+  difference); age ${{ '{:,}'.format(sm.rates.year_built_per_year) }}/year; bedroom ${{ '{:,}'.format(sm.rates.bedroom) }}; full bath
+  ${{ '{:,}'.format(sm.rates.full_bath) }}; half bath ${{ '{:,}'.format(sm.rates.half_bath) }}; central air ${{ '{:,}'.format(sm.rates.central_air) }};
+  garage ${{ '{:,}'.format(sm.rates.garage) }}; other styles {{ sm.rates.style_pct }}%. As of {{ sm.as_of }}.</small></p>
+</div>
+<p><a class="button is-info" href="/pricing/advice">Next: the AI's advice &rarr;</a></p>
+{% endif %}
+{% endblock %}

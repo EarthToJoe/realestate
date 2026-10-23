@@ -83,7 +83,7 @@ def decide(s: Session, checkpoint: Checkpoint, *, persona: str, decision: str, r
         raise ValueError(f"{checkpoint.code} is not a client decision")
     if persona not in DECIDERS.get(e.actor, set()):
         raise NotYourDecision(
-            f"{checkpoint.code} is the {e.who.lower()}'s decision; the {persona} cannot make it."
+            f"{checkpoint.code} is {e.who.lower()}'s decision; the {persona} cannot make it."
         )
     if e.choices and decision not in e.choices:
         raise ValueError(f"{checkpoint.code}: '{decision}' is not one of {list(e.choices)}")
@@ -124,7 +124,7 @@ def require(s: Session, deal_id: int, *codes: str, action: str) -> None:
         e = catalogue.get(code)
         if cp is None or cp.status != "done":
             state = "declined" if cp and cp.status == "declined" else "not made yet"
-            raise GateError(code, f"Cannot {action}: {code} ({e.title}) is {state}. It is the "
+            raise GateError(code, f"Cannot {action}: {code} ({e.title}) is {state}. It is "
                                   f"{e.who.lower()}'s decision. Why: {e.rule}")
 
 

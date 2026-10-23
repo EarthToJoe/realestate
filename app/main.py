@@ -50,9 +50,22 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
 
     from app.modules.intake.routes import router as intake_router
     from app.modules.timeline.routes import router as timeline_router
+    from app.modules.pricing.routes import router as pricing_router
+    from app.modules.listing_copy.routes import router as copy_router
+    from app.modules.channels.routes import router as channels_router
+    from app.fairhousing.check import FairHousingBlocked
 
-    app.include_router(intake_router)
-    app.include_router(timeline_router)
+    for r in (intake_router, pricing_router, copy_router, channels_router, timeline_router):
+        app.include_router(r)
+
+    @app.exception_handler(FairHousingBlocked)
+    async def fh_blocked(request: Request, exc: FairHousingBlocked):
+        s = db.new_session()
+        try:
+            return render(request, s, "refused.html", status_code=409,
+                          title="Refused: the fair-housing check has not passed", message=str(exc), code=None)
+        finally:
+            s.close()
 
     @app.exception_handler(GateError)
     async def gate_refused(request: Request, exc: GateError):
@@ -103,6 +116,8 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
         from app.web import current_deal, steps
 
         st = next((x for x in steps() if x["n"] == n), None)
+        if st and st["built"]:
+            return RedirectResponse(st["screens"][0]["route"], status_code=303)
         deal = current_deal(s)
         gate = None
         if n in (2, 3, 4) and deal:

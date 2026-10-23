@@ -1,0 +1,58 @@
+{% set art = p.art %}{% set res = p.res %}
+<div class="box">
+<p><b>{{ art.title }}</b>{% if art.extra and art.extra.platform %} ({{ art.extra.platform }}){% endif %}
+  <span class="tag is-light">v{{ art.version }}{% if art.edited_by != 'ai' %} · {{ art.edited_by }}{% endif %}</span>
+  <span class="tag status-{{ art.status }} {{ {'ready': 'is-success', 'passed': 'is-info is-light', 'blocked': 'is-danger', 'draft': 'is-light'}[art.status] }}">{{ {'ready': 'ready to publish', 'passed': 'check passed', 'blocked': 'blocked', 'draft': 'not checked'}[art.status] }}</span></p>
+{% if error %}<div class="notification is-danger is-light refusal">{{ error }}</div>{% endif %}
+<div class="columns">
+  <div class="column">
+    <p class="help">Text {% if p.marked %}(findings highlighted){% endif %}</p>
+    <div class="copy-text">{% if p.marked %}{{ p.marked }}{% else %}{{ art.text }}{% endif %}</div>
+  </div>
+  <div class="column fh-panel" data-passed="{{ 'yes' if res and res.passed else 'no' }}">
+    <p class="help">Fair-housing check{% if res %}: rules {{ res.rules_version }}; model review
+      {% if res.model_mode %}{{ res.model_mode }} ({{ res.model }}){% else %}did not run{% endif %}{% endif %}</p>
+    {% if not res %}
+      <p>Not checked for this version yet.</p>
+    {% else %}
+      {% if res.model_error %}<p class="has-text-danger">Model review pass unavailable: {{ res.model_error }} The gate stays shut.</p>{% endif %}
+      {% if not res.findings %}<p class="has-text-success"><b>Passed:</b> no findings.</p>{% endif %}
+      {% for f in res.findings %}
+      <div class="finding finding-{{ f.tier }}" data-rule="{{ f.rule_id }}">
+        <span class="tag {{ 'is-danger' if f.tier == 'block' else 'is-warning' }}">{{ f.tier }}</span>
+        <b>{{ f.rule_id }}</b> · {{ f.cls }} · <small>found by {{ f.source }}</small><br>
+        "<i>{{ f.phrase }}</i>": {{ f.explanation }}<br>
+        <small><b>Legal basis:</b> {{ f.basis }}</small><br>
+        <small><b>Suggested:</b> {{ f.suggestion }}</small>
+        {% if f.ai_choice %}<br><small><b>The AI's choice:</b> {{ f.ai_choice }}. {{ f.ai_reason }}</small>{% endif %}
+      </div>
+      {% endfor %}
+      {% if res.findings and res.passed %}<p class="has-text-success"><b>Passed:</b> warn findings only; the AI's choices are shown.</p>{% endif %}
+      {% if res.fixed_text and res.fixed_text != art.text %}
+      <p class="help" style="margin-top:6px">The AI's fixed version</p>
+      <div class="copy-text fixed-text">{{ res.fixed_text }}</div>
+      {% endif %}
+    {% endif %}
+    {% if p.mls_checks %}
+      <p class="help" style="margin-top:6px">MLS remarks pre-check</p>
+      <ul class="mls-checks">{% for c in p.mls_checks %}<li class="{{ 'has-text-danger' if c.status == 'fail' }}">{{ '✔' if c.status == 'ok' else '✖' }} {{ c.check }} ({{ c.rule }}): {{ c.detail }}</li>{% endfor %}</ul>
+    {% endif %}
+  </div>
+</div>
+<div class="buttons">
+  {% set tgt = '#art-' ~ art.id %}
+  <form method="post" action="/copy/{{ art.id }}/plant" hx-post="/copy/{{ art.id }}/plant" hx-target="{{ tgt }}" hx-swap="innerHTML">
+    <button class="button is-small is-danger is-light plant-btn" title="Adds: {{ planted }}">Plant a violation (demo)</button></form>
+  {% if res and res.fixed_text and res.fixed_text != art.text %}
+  <form method="post" action="/copy/{{ art.id }}/fix" hx-post="/copy/{{ art.id }}/fix" hx-target="{{ tgt }}" hx-swap="innerHTML">
+    <button class="button is-small is-info fix-btn">Let the AI apply the fix and re-check</button></form>
+  {% endif %}
+  <form method="post" action="/copy/{{ art.id }}/check" hx-post="/copy/{{ art.id }}/check" hx-target="{{ tgt }}" hx-swap="innerHTML">
+    <button class="button is-small is-light">Re-check</button></form>
+  {% if art.status != 'ready' %}
+  <form method="post" action="/copy/{{ art.id }}/ready" hx-post="/copy/{{ art.id }}/ready" hx-target="{{ tgt }}" hx-swap="innerHTML">
+    <button class="button is-small is-success is-light ready-btn">Let the AI mark it ready to publish</button></form>
+  {% endif %}
+  <span class="htmx-indicator thinking">The AI is checking</span>
+</div>
+</div>

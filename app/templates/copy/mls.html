@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">3. MLS pre-check and the listing package</h1>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% elif not remarks %}
+<p>No remarks yet: <a href="/copy">let the AI write the copy</a> first.</p>
+{% else %}
+<p>Before a licensed MLS participant keys the listing (step 4), the AI checks the remarks against OneKey's rules and
+assembles every field in OneKey's input order, with RESO names. The participant stays responsible for every field.</p>
+<h2 class="title is-6">Public remarks (v{{ remarks.version }}, {{ 'ready to publish' if remarks.status == 'ready' else remarks.status }})</h2>
+<div class="copy-text">{{ remarks.text }}</div>
+<table class="table is-narrow is-fullwidth" id="mls-checks">
+  <thead><tr><th>Check</th><th>Rule</th><th>Result</th></tr></thead>
+  <tbody>
+  {% for c in checks %}<tr class="{{ 'has-text-danger' if c.status == 'fail' }}"><td>{{ c.check }}</td><td>{{ c.rule }}</td><td>{{ '✔' if c.status == 'ok' else '✖' }} {{ c.detail }}</td></tr>{% endfor %}
+  <tr><td>Fair-housing screen of the remarks</td><td>OneKey Rule 306.3(b) (WS3-R7); spec section 5</td>
+    <td>{% if fh_res and fh_res.passed and fh_res.version == remarks.version %}✔ passed ({{ fh_res.rules_version }}){% else %}✖ not passed for this version{% endif %}</td></tr>
+  </tbody>
+</table>
+<h2 class="title is-6">Listing package (OneKey order)</h2>
+<table class="table is-narrow is-fullwidth" id="mls-package">
+  <thead><tr><th>RESO field</th><th>Label</th><th>Value</th><th></th></tr></thead>
+  <tbody>
+  {% for r in package %}<tr data-field="{{ r.field }}"><td><code>{{ r.field }}</code></td><td>{{ r.label }}{% if r.required %} *{% endif %}</td>
+    <td>{{ r.value if r.value else '—' }}{% if r.note %}<br><small>{{ r.note }}</small>{% endif %}</td>
+    <td>{% if r.ok %}✔{% elif r.required %}<span class="has-text-danger">missing</span>{% endif %}</td></tr>{% endfor %}
+  </tbody>
+</table>
+<p class="help">* required. Field order: [INFERENCE] grouped as OneKey's input screens are (WS3-C1).</p>
+<p><a class="button is-info" href="/channels">Next: marketing plan &rarr;</a></p>
+{% endif %}
+{% endblock %}

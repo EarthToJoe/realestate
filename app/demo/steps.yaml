@@ -48,38 +48,75 @@ steps:
   - n: 2
     title: Pricing
     slice: 2
-    built: false
+    built: true
     minutes: 1.5
     screens:
-      - route: /step/2
-        title: Pricing
-        click: (slice 2)
+      - route: /pricing
+        title: Comparable sales and adjustments
+        click: Open "Pricing". Open "Every adjustment, line by line" to show the arithmetic.
         say: >-
-          Coming in slice 2: comparable sales, the method in plain words, the AI's recommended price and the
-          seller's choice. Until the seller signs the listing agreement, this step refuses to start.
-        marker: CP-25 NY law today; CP-05 seller decision
+          Eight real sales from the county's public sales records, all within about four miles. The code, not the
+          model, adjusts each one toward this house: date of sale, size, finished basement, lot, age, rooms, central
+          air and style, at the rates printed on the screen. Sales needing large adjustments or far away are flagged
+          and weigh less. The label says what this is: a comparative market analysis, not an appraisal.
+        marker: none on this screen; the range is computed in code
+      - route: /pricing/advice
+        title: The AI's advice, net sheet and the seller's price
+        click: >-
+          Click "Let the AI recommend a price". Switch persona to Seller and click "Choose this list price". (Try
+          step 3 first: the copy refuses to start until the seller chooses.)
+        say: >-
+          The AI explains the method in plain words, names the weaker sales, and recommends a list price with its
+          reasoning and the net sheet. The red marker is the research: advising a seller on price is the listing
+          agent's fiduciary duty, which New York reserves to a licensed broker. It is recorded and does not stop the
+          flow. The price itself is the seller's decision, and the listing copy waits for it.
+        marker: CP-25 NY law today (red, licensed broker); CP-05 seller decision (amber, blocks step 3)
   - n: 3
     title: Listing copy
     slice: 2
-    built: false
+    built: true
     minutes: 2.0
     screens:
-      - route: /step/3
-        title: Listing copy
-        click: (slice 2)
-        say: Coming in slice 2 with the fair-housing checker.
-        marker: CP-26 automated; CP-06 NY law today
+      - route: /copy
+        title: Drafts and the fair-housing check
+        click: >-
+          Click "Let the AI write the copy". On the portal description click "Plant a violation (demo)", then "Let
+          the AI apply the fix and re-check", then "Let the AI mark passing copy ready to publish".
+        say: >-
+          The AI writes the MLS remarks, the portal description, three social posts and the flyer, and every piece
+          goes through the fair-housing check: our written rules for every federal and New York protected class and
+          for steering, then a model review for coded language. Plant a violation: "perfect for a young family,
+          steps from the church". It is caught with the rule, the class, the legal basis and a fixed version. The
+          AI applies the fix, the re-check passes, and only then can the AI mark it ready to publish. Marking an ad
+          ready is a broker's act in New York: the red marker.
+        marker: CP-26 fair-housing pass (blue, per piece); CP-06 NY law today (red, per piece)
+      - route: /copy/mls
+        title: MLS pre-check and package
+        click: Open "MLS pre-check and package"; open the flyer PDF.
+        say: >-
+          The remarks are checked against OneKey's rules: no contact details or showing instructions, no
+          compensation, never "free". The package lists every field in OneKey order with RESO names. The flyer PDF
+          carries the DEMONSTRATION mark on every page, because the house is a real address and nobody authorised a
+          listing.
+        marker: none on this screen
   - n: 4
     title: Marketing plan
     slice: 2
-    built: false
+    built: true
     minutes: 1.0
     screens:
-      - route: /step/4
-        title: Marketing plan
-        click: (slice 2)
-        say: Coming in slice 2.
-        marker: CP-07 seller decision; CP-08 human required
+      - route: /channels
+        title: Channel board
+        click: >-
+          As Seller, choose "Publish to Internet" and sign. As Presenter, click "Record the MLS entry (simulated)"
+          and watch the portal and website cards change.
+        say: >-
+          Every card says honestly who does the work. OneKey MLS has no listing-input API, so a licensed MLS
+          participant keys the listing from the AI's package: the grey "human required" marker, linked to the
+          research. Zillow, Realtor.com, Redfin and Homes.com are fed from the MLS, not by us. The firm's own page
+          waits for the MLS entry under the Clear Cooperation rule. The seller signs the exposure choice and the
+          lockbox and photo authorisations: their decision.
+        marker: CP-07 seller decision (amber); CP-08 human required (grey)
   - n: 5
     title: Communications
     slice: 3

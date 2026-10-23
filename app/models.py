@@ -1,7 +1,7 @@
 """Data model (spec section 4). Every column is marked info={"source": ...} or info={"pii": <category>}.
 
-Slice 1 defines the tables its screens use; later slices add offer, message, copy_artifact and
-fair_housing_result here. The POC rebuilds from the seed, so adding tables needs no migration.
+Slice 1 defined the tables its screens use; slice 2 added pricing_analysis, copy_artifact and
+fair_housing_result; slice 3 adds offer and message. The POC rebuilds from the seed, so adding tables needs no migration.
 """
 
 from __future__ import annotations
@@ -209,6 +209,61 @@ class ModelCall(Base):
     mode: Mapped[str] = mapped_column(String(10), info=SYS)  # live | replay | fake
     prompt_version: Mapped[str] = mapped_column(String(40), info=SYS)
     request_hash: Mapped[str] = mapped_column(String(64), info=SYS)
+
+
+class PricingAnalysis(Base):
+    """Step 2: the comparables with code-computed adjustments, the range and the AI's advice. No PII."""
+
+    __tablename__ = "pricing_analysis"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    comps: Mapped[list] = mapped_column(JSON, info={"source": "public_record"})  # with adjustments (code)
+    summary: Mapped[dict] = mapped_column(JSON, info=SYS)  # range, indicated value, rates used
+    advice: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})  # the model's structured output
+    mode: Mapped[str | None] = mapped_column(String(10), info=SYS)
+    model: Mapped[str | None] = mapped_column(String(60), info=SYS)
+    recorded_at: Mapped[str | None] = mapped_column(String(40), info=SYS)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
+
+
+class CopyArtifact(Base):
+    """Step 3 (and step 10): one piece of advertising copy. Each edit is a new version of the text; a version
+    can be marked "ready to publish" only with a passing fair-housing result for that exact text (spec 5)."""
+
+    __tablename__ = "copy_artifact"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    channel: Mapped[str] = mapped_column(String(30), info=SYS)  # mls_remarks | portal | social_1..3 | flyer
+    title: Mapped[str] = mapped_column(String(120), info=SYS)
+    text: Mapped[str] = mapped_column(Text, info={"source": "ai"})
+    extra: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})  # flyer headline, bullets; platform
+    version: Mapped[int] = mapped_column(Integer, default=1, info=SYS)
+    status: Mapped[str] = mapped_column(String(20), default="draft", info=SYS)  # draft | blocked | passed | ready
+    edited_by: Mapped[str] = mapped_column(String(30), default="ai", info=SYS)  # ai | planted (demo) | ai_fix
+    ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), info=SYS)
+    mode: Mapped[str | None] = mapped_column(String(10), info=SYS)
+    model: Mapped[str | None] = mapped_column(String(60), info=SYS)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
+
+
+class FairHousingResult(Base):
+    """One run of the fair-housing pipeline on one exact text. Kept for the complaint window (L61)."""
+
+    __tablename__ = "fair_housing_result"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int | None] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    entity: Mapped[str] = mapped_column(String(30), info=SYS)  # copy_artifact | message | campaign
+    entity_id: Mapped[int] = mapped_column(Integer, info=SYS)
+    version: Mapped[int] = mapped_column(Integer, info=SYS)
+    text_hash: Mapped[str] = mapped_column(String(64), info=SYS)
+    findings: Mapped[list] = mapped_column(JSON, default=list, info=SYS)
+    fixed_text: Mapped[str | None] = mapped_column(Text, info={"source": "ai"})
+    passed: Mapped[bool] = mapped_column(Boolean, info=SYS)  # True = no block finding
+    rules_version: Mapped[str] = mapped_column(String(40), info=SYS)
+    model_mode: Mapped[str | None] = mapped_column(String(10), info=SYS)
+    model: Mapped[str | None] = mapped_column(String(60), info=SYS)
+    model_error: Mapped[str | None] = mapped_column(Text, info=SYS)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
 
 
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run

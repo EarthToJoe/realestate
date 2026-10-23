@@ -1,0 +1,74 @@
+# Fair-housing fixture set (spec section 5): text, expected (allowed | disallowed | warn), class, rule.
+# rules_must_catch: true = the rules pass alone must catch it (test_rules_fixture); false = coded language that only
+# the model review pass is expected to catch (test_pipeline_fixture, replayed from recorded model answers).
+# Coverage: every federal and NY class at least once, steering, blockbusting, source of income, warn-tier wording,
+# and allowed look-alikes that must not be flagged.
+phrases:
+  # ---- disallowed: familial status and age
+  - {text: "Perfect for a young family", expected: disallowed, class: familial status; age, rule: FH-FAM-01, rules_must_catch: true}
+  - {text: "Adults only, quiet community", expected: disallowed, class: familial status, rule: FH-FAM-02, rules_must_catch: true}
+  - {text: "Great for families with kids, fenced yard", expected: disallowed, class: familial status, rule: FH-FAM-01, rules_must_catch: true}
+  - {text: "No children please; the pond is unfenced", expected: disallowed, class: familial status, rule: FH-FAM-02, rules_must_catch: true}
+  - {text: "Ideal for empty nesters downsizing", expected: disallowed, class: familial status; age, rule: FH-FAM-02, rules_must_catch: true}
+  - {text: "Family-friendly street with little traffic", expected: disallowed, class: familial status, rule: FH-FAM-01, rules_must_catch: true}
+  - {text: "Young professionals will love the commute", expected: disallowed, class: age, rule: FH-AGE-01, rules_must_catch: true}
+  - {text: "A peaceful spot for retirees", expected: disallowed, class: age, rule: FH-AGE-01, rules_must_catch: true}
+  - {text: "Mature buyers preferred", expected: disallowed, class: age, rule: FH-AGE-01, rules_must_catch: true}
+  # ---- religion / creed
+  - {text: "Ideal for Christian buyers", expected: disallowed, class: creed, rule: FH-REL-01, rules_must_catch: true}
+  - {text: "Close-knit Jewish community nearby", expected: disallowed, class: creed, rule: FH-REL-01, rules_must_catch: true}
+  - {text: "Churchgoers will feel at home", expected: disallowed, class: creed, rule: FH-REL-01, rules_must_catch: true}
+  # ---- race, color, national origin, citizenship
+  - {text: "Quiet white neighborhood", expected: disallowed, class: race; color, rule: FH-RACE-01, rules_must_catch: true}
+  - {text: "English speakers preferred", expected: disallowed, class: national origin, rule: FH-NO-01, rules_must_catch: true}
+  - {text: "Settled Italian neighbourhood", expected: disallowed, class: national origin, rule: FH-NO-01, rules_must_catch: true}
+  - {text: "US citizens only", expected: disallowed, class: citizenship or immigration status, rule: FH-CIT-01, rules_must_catch: true}
+  # ---- sex, marital status, orientation, gender identity
+  - {text: "Perfect bachelor pad", expected: disallowed, class: sex; marital status, rule: FH-SEX-01, rules_must_catch: true}
+  - {text: "Ideal for a single woman", expected: disallowed, class: sex; marital status, rule: FH-SEX-01, rules_must_catch: true}
+  - {text: "Married couples preferred", expected: disallowed, class: marital status, rule: FH-MAR-01, rules_must_catch: true}
+  - {text: "Perfect for newlyweds", expected: disallowed, class: marital status, rule: FH-MAR-01, rules_must_catch: true}
+  - {text: "Straight couples only", expected: disallowed, class: sexual orientation, rule: FH-ORI-01, rules_must_catch: true}
+  - {text: "No transgender buyers", expected: disallowed, class: gender identity or expression, rule: FH-GEN-01, rules_must_catch: true}
+  # ---- disability
+  - {text: "Not suitable for wheelchairs", expected: disallowed, class: disability, rule: FH-DIS-01, rules_must_catch: true}
+  - {text: "Buyers must be able to climb stairs", expected: disallowed, class: disability, rule: FH-DIS-01, rules_must_catch: true}
+  - {text: "No service animals", expected: disallowed, class: disability, rule: FH-DIS-01, rules_must_catch: true}
+  # ---- lawful source of income, military, domestic violence
+  - {text: "No Section 8", expected: disallowed, class: lawful source of income, rule: FH-SOI-01, rules_must_catch: true}
+  - {text: "Vouchers not accepted", expected: disallowed, class: lawful source of income, rule: FH-SOI-01, rules_must_catch: true}
+  - {text: "Employed professionals only", expected: disallowed, class: lawful source of income, rule: FH-SOI-01, rules_must_catch: true}
+  - {text: "No military, frequent moves not wanted", expected: disallowed, class: military status, rule: FH-MIL-01, rules_must_catch: true}
+  - {text: "No domestic violence victims", expected: disallowed, class: status as a victim of domestic violence, rule: FH-DV-01, rules_must_catch: true}
+  # ---- steering and blockbusting
+  - {text: "Great schools, safe neighbourhood", expected: disallowed, class: steering, rule: FH-STR-01, rules_must_catch: true}
+  - {text: "Low-crime area minutes from town", expected: disallowed, class: steering, rule: FH-STR-02, rules_must_catch: true}
+  - {text: "Award-winning school district", expected: disallowed, class: steering, rule: FH-STR-01, rules_must_catch: true}
+  - {text: "An exclusive neighborhood of fine homes", expected: disallowed, class: steering, rule: FH-STR-03, rules_must_catch: true}
+  - {text: "You'll fit right in with the neighbors", expected: disallowed, class: steering, rule: FH-STR-04, rules_must_catch: true}
+  - {text: "Sell now before the neighborhood changes", expected: disallowed, class: blockbusting, rule: FH-BB-01, rules_must_catch: true}
+  # ---- coded language for the model pass
+  - {text: "Ideal for a buyer who wants neighbours of the same faith", expected: disallowed, class: creed, rule: MODEL, rules_must_catch: false}
+  - {text: "A fine retreat for a gentleman of leisure", expected: disallowed, class: sex; age, rule: MODEL, rules_must_catch: false}
+  - {text: "Best for buyers who can manage the stairs without help", expected: disallowed, class: disability, rule: MODEL, rules_must_catch: false}
+  # ---- warn tier
+  - {text: "Steps from the church", expected: warn, class: religion (landmark), rule: FH-REL-02}
+  - {text: "Mother-in-law suite on the lower level", expected: warn, class: familial status (wording), rule: FH-W-01}
+  - {text: "Spacious master bedroom with a view of the pond", expected: warn, class: sex (MLS wording), rule: FH-SEX-02}
+  - {text: "His and hers closets", expected: warn, class: sex (wording), rule: FH-SEX-03}
+  - {text: "Within walking distance of the hamlet centre", expected: warn, class: disability (wording), rule: FH-DIS-02}
+  # ---- allowed, including look-alikes
+  - {text: "Three bedrooms, two baths, 1.2-acre lot", expected: allowed}
+  - {text: "Near the Metro-North station", expected: allowed}
+  - {text: "Family room with fireplace", expected: allowed}
+  - {text: "Walk-in closet in the primary bedroom", expected: allowed}
+  - {text: "Close to Whaley Lake", expected: allowed}
+  - {text: "In the Pawling Central School District", expected: allowed}
+  - {text: "Private well and septic; oil heat with a 2015 tank", expected: allowed}
+  - {text: "About 6 minutes' drive to the Patterson station", expected: allowed}
+  - {text: "Quiet street with mature trees", expected: allowed}
+  - {text: "White kitchen cabinets and black granite counters", expected: allowed}
+  - {text: "Single-family home on 4.18 acres", expected: allowed}
+  - {text: "Accessory apartment with its own entrance", expected: allowed}
+  - {text: "Exclusive listing agreement signed; open house Sunday", expected: allowed}
+  - {text: "Three steps up to the front door", expected: allowed}

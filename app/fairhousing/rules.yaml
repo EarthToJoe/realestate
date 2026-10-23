@@ -1,0 +1,320 @@
+# Fair-housing rules for advertising copy and outgoing messages (spec section 5). Our own text: no authoritative
+# list exists (HUD's 2024 advertising guidance was withdrawn effective 2025-09-17; WS7 G1), and the published
+# lists conflict, so this file borrows ideas from the ArkansasONE MLS list, OneKey's rules, the NYC CCHR examples,
+# DOS-2156 and HUD's 1995 memo, and is stricter than the 1995 memo where MLS practice is stricter.
+#
+# Each rule: id, class (the protected class or the conduct), tier (block | warn), basis (L-ID and citation),
+# explanation (plain words, shown on screen), suggestion (a neutral rewrite, shown on screen), fix (literal text
+# that replaces the match in the AI's fixed version; omitted = the sentence is dropped), patterns (Python regex,
+# matched case-insensitively; write word boundaries in the pattern).
+#
+# Classes. Federal (42 U.S.C. §3604(c), L36): race, color, religion, sex, disability, familial status, national
+# origin. New York (Executive Law §296(5), L36; list checked against the statute's protected classes as WS2 records
+# them): race, creed, color, national origin, citizenship or immigration status, sex, sexual orientation, gender
+# identity or expression, age, disability, marital status, familial status, military status, lawful source of
+# income (L59), status as a victim of domestic violence. Steering: 19 NYCRR 175.17(b) (L37). Blockbusting:
+# 19 NYCRR 175.17(c), RPL §442-h (L41). Disparate effect: Executive Law §296 as applied (L58).
+#
+# Change the version whenever a rule changes; every result stores the version it was checked against.
+version: "FH-RULES 2026-10-23.1"
+
+classes:
+  federal: [race, color, religion, sex, disability, familial status, national origin]
+  new_york: [race, creed, color, national origin, citizenship or immigration status, sex, sexual orientation,
+             gender identity or expression, age, disability, marital status, familial status, military status,
+             lawful source of income, status as a victim of domestic violence]
+
+rules:
+  # ---- Familial status and age -------------------------------------------------------------------------
+  - id: FH-FAM-01
+    class: familial status; age
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: Says who the home suits by family make-up or age, which states a preference for some buyers.
+    suggestion: Describe the house, not the buyer (e.g. "three bedrooms and a fenced yard").
+    patterns:
+      - '\b(young|growing|starter|small|large|big) famil(y|ies)\b'
+      - '\b(perfect|ideal|great|made|suited|wonderful) for (a |the |your )?(\w+ )?famil(y|ies)\b'
+      - '\bfamily[- ]friendly\b'
+      - '\bfamily (neighbou?rhood|community|area|street)\b'
+      - '\b(great|perfect|ideal) for (kids|children|toddlers)\b'
+
+  - id: FH-FAM-02
+    class: familial status
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: Excludes or discourages households with children.
+    suggestion: Remove it; a single-family sale cannot be limited by household make-up.
+    patterns:
+      - '\bno (children|kids|minors)\b'
+      - '\b(without|no) (young )?(children|kids)\b'
+      - '\badults?[- ]only\b'
+      - '\badult (community|building|living)\b'
+      - '\bchild[- ]free\b'
+      - '\bempty[- ]nesters?\b'
+
+  - id: FH-AGE-01
+    class: age
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (age)"
+    explanation: Names an age group the home is meant for.
+    suggestion: Describe the features (e.g. "one-level living", "low-maintenance yard").
+    patterns:
+      - '\byoung (professionals?|couples?|buyers?|people|crowd)\b'
+      - '\b(retirees?|pensioners?)\b'
+      - '\bseniors?( citizens?)? (only|preferred|welcome)\b'
+      - '\bmature (buyers?|adults?|persons?|people|couples?)\b'
+      - '\b(perfect|ideal) for (your )?retirement\b'
+      - '\b(over|age)[- ]?(50|55|60|62)s?\+?( community| only| buyers?| residents| living)\b'
+
+  # ---- Religion / creed --------------------------------------------------------------------------------
+  - id: FH-REL-01
+    class: religion (federal); creed (NY)
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: States a preference by religion.
+    suggestion: Remove the reference to buyers' religion.
+    patterns:
+      - '\b(christian|jewish|muslim|catholic|protestant|hindu|sikh|buddhist|mormon|evangelical)s? (buyers?|famil(y|ies)|households?|community|neighbou?rhood|people|residents|only|preferred|owners?)\b'
+      - '\b(ideal|perfect|great|suited) for (a |an )?(christian|jewish|muslim|catholic|protestant|hindu|sikh|buddhist|mormon|evangelical)s?\b'
+      - '\b(churchgoers?|god[- ]fearing|parishioners)\b'
+
+  - id: FH-REL-02
+    class: religion (landmark)
+    tier: warn
+    basis: "L36: HUD 1995 advertising memo allows naming a landmark; MLS lists are stricter"
+    explanation: Naming a house of worship as a landmark is allowed; it must not read as a preference.
+    suggestion: Use a neutral landmark or a distance (e.g. "in the hamlet centre").
+    fix: in the hamlet centre
+    patterns:
+      - '\b(steps|minutes|walk|walking distance|close|near|next door|across the street) (from|to) (the |a |st\.? \w+ )?(church|synagogue|temple|mosque|parish|chapel)\b'
+      - '\bnear (the |a )?(church|synagogue|temple|mosque|parish|chapel)\b'
+
+  # ---- Race, color, national origin, citizenship ------------------------------------------------------
+  - id: FH-RACE-01
+    class: race; color
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: Refers to buyers' or neighbours' race or colour.
+    suggestion: Remove it.
+    patterns:
+      - '\b(white|black|african[- ]american|hispanic|latino|latina|asian|caucasian|minority)s? (only|neighbou?rhood|area|community|buyers?|famil(y|ies)|residents|neighbou?rs|people)\b'
+      - '\b(no|few) minorities\b'
+
+  - id: FH-NO-01
+    class: national origin
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: States a preference by language or national origin.
+    suggestion: Remove it.
+    patterns:
+      - '\benglish[- ]speak(ing|ers?)\b'
+      - '\bmust speak english\b'
+      - '\b(no )?foreigners\b'
+      - '\b(american|us|u\.s\.)[- ]born\b'
+      - '\b(irish|italian|polish|chinese|indian|mexican|korean|russian) (neighbou?rhood|community|buyers?|famil(y|ies)|only|preferred)\b'
+
+  - id: FH-CIT-01
+    class: citizenship or immigration status
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (citizenship or immigration status)"
+    explanation: Limits buyers by citizenship or immigration status.
+    suggestion: Remove it.
+    patterns:
+      - '\b(u\.?s\.? )?citizens only\b'
+      - '\bno (immigrants|undocumented|illegals|non[- ]citizens)\b'
+      - '\b(proof of citizenship|green card required)\b'
+
+  # ---- Sex, gender identity, sexual orientation, marital status ----------------------------------------
+  - id: FH-SEX-01
+    class: sex; marital status
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: Says the home suits a person of one sex or marital status.
+    suggestion: Describe the space (e.g. "compact, easy-care home").
+    patterns:
+      - '\bbachelor(ette)? pad\b'
+      - '\b(perfect|ideal|great|suited) for (a |the )?(single )?(man|woman|men|women|gentleman|gentlemen|lady|ladies|bachelor|bachelorette|guy|gal)\b'
+      - '\b(females?|males?|women|men) only\b'
+
+  - id: FH-SEX-02
+    class: sex (MLS wording)
+    tier: warn
+    basis: "L36: allowed under HUD's 1995 memo; most MLS lists now prefer neutral terms"
+    explanation: '"Master" is allowed by HUD but most MLS wording guides replace it.'
+    suggestion: '"primary bedroom" / "primary suite"'
+    fix: primary
+    patterns:
+      - '\bmaster(?= (bedroom|suite|bath|bathroom|closet)s?\b)'
+
+  - id: FH-SEX-03
+    class: sex (wording)
+    tier: warn
+    basis: "L36: MLS wording guides"
+    explanation: Gendered wording for a feature.
+    suggestion: '"double" or "two"'
+    fix: double
+    patterns:
+      - '\bhis[- ](and|&)[- ]hers\b'
+      - '\bman[- ]cave\b'
+
+  - id: FH-ORI-01
+    class: sexual orientation
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (sexual orientation)"
+    explanation: States a preference by sexual orientation.
+    suggestion: Remove it.
+    patterns:
+      - '\b(straight|gay|lesbian|lgbtq?\+?)[- ](only|couples?|friendly|neighbou?rhood|community|buyers?)\b'
+      - '\bno (gays|lgbtq?\+?)\b'
+
+  - id: FH-GEN-01
+    class: gender identity or expression
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (gender identity or expression)"
+    explanation: States a preference by gender identity or expression.
+    suggestion: Remove it.
+    patterns:
+      - '\bno (transgender|trans|non[- ]binary)\b'
+      - '\b(cisgender|biological (men|women|males|females)) only\b'
+
+  - id: FH-MAR-01
+    class: marital status; familial status
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (marital status)"
+    explanation: Says the home suits married people, couples or singles.
+    suggestion: Describe the house, not the buyer.
+    patterns:
+      - '\bmarried (couples?|people|buyers?)( only| preferred)?\b'
+      - '\b(perfect|ideal|great|suited) for (a |the )?(newlyweds|couples?|singles?|honeymooners)\b'
+      - '\b(singles?|couples?) only\b'
+      - '\bno singles\b'
+
+  # ---- Disability ----------------------------------------------------------------------------------------
+  - id: FH-DIS-01
+    class: disability
+    tier: block
+    basis: "L36: 42 U.S.C. §3604(c); NY Executive Law §296(5)"
+    explanation: Excludes or discourages buyers with a disability.
+    suggestion: State the fact about the house instead (e.g. "three steps to the entrance").
+    patterns:
+      - '\bnot (suitable|ideal|appropriate|right|meant) for (wheelchairs?|wheelchair users|the disabled|disabled (people|persons|buyers)|handicapped|the handicapped|the elderly)\b'
+      - '\bno (wheelchairs?|handicapped|disabled)\b'
+      - '\bable[- ]bodied\b'
+      - '\b(physically|mentally) (fit|healthy|able|sound)\b'
+      - '\bno (service|support|assistance|emotional support) animals\b'
+      - '\b(must|should) be able to (climb|walk|manage)\b'
+
+  - id: FH-DIS-02
+    class: disability (wording)
+    tier: warn
+    basis: "L36: allowed under HUD's 1995 memo; MLS guides prefer distances"
+    explanation: '"Walking distance" is allowed by HUD; a distance is clearer for every buyer.'
+    suggestion: Give the distance (e.g. "0.3 miles from").
+    fix: close to
+    patterns:
+      - '\bwalking distance (to|of|from)\b'
+      - '\bwalk to\b'
+
+  # ---- Lawful source of income (NY), military, domestic violence ----------------------------------------
+  - id: FH-SOI-01
+    class: lawful source of income
+    tier: block
+    basis: "L59: NY Executive Law §296(5) (lawful source of income), L36"
+    explanation: Refuses or discourages buyers by their lawful source of income, including housing assistance.
+    suggestion: Remove it; financing terms belong in the offer, not in who may buy.
+    patterns:
+      - '\bno section[- ]?8\b'
+      - '\bsection[- ]?8 not (accepted|allowed)\b'
+      - '\b(no|not accepting) (housing )?(choice )?vouchers?\b'
+      - '\bvouchers? not accepted\b'
+      - '\bno (government|public|housing) assistance\b'
+      - '\b(employed|working) (professionals?|buyers?|people) only\b'
+      - '\bmust (be employed|have a job)\b'
+
+  - id: FH-MIL-01
+    class: military status
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (military status)"
+    explanation: Refuses or discourages buyers by military status.
+    suggestion: Remove it.
+    patterns:
+      - '\bno (military|veterans|service members|servicemembers)\b'
+      - '\bcivilians only\b'
+
+  - id: FH-DV-01
+    class: status as a victim of domestic violence
+    tier: block
+    basis: "L36: NY Executive Law §296(5) (domestic violence victim status)"
+    explanation: Refuses or discourages victims of domestic violence.
+    suggestion: Remove it.
+    patterns:
+      - '\bno (victims of domestic violence|domestic violence victims|protective orders)\b'
+
+  # ---- Steering and blockbusting -------------------------------------------------------------------------
+  - id: FH-STR-01
+    class: steering (school quality)
+    tier: block
+    basis: "L37: 19 NYCRR 175.17(b); L58 disparate effect"
+    explanation: School quality claims steer buyers; name the district only and link the official report card.
+    suggestion: Name the district (e.g. "Pawling Central School District").
+    patterns:
+      - '\b(great|good|best|top|excellent|top[- ]rated|award[- ]winning|highly[- ]rated|blue[- ]ribbon|sought[- ]after|desirable|outstanding) schools?( district)?\b'
+      - '\bschools? (are|is) (great|excellent|top|the best|outstanding)\b'
+
+  - id: FH-STR-02
+    class: steering (safety and crime)
+    tier: block
+    basis: "L37: 19 NYCRR 175.17(b)"
+    explanation: Safety and crime claims about an area steer buyers and are often coded.
+    suggestion: Remove it; describe the house and its setting (e.g. "on 4.18 acres").
+    patterns:
+      - '\bsafe (neighbou?rhood|area|community|street|town|place)\b'
+      - '\b(low|no)[- ]crime\b'
+      - '\bcrime[- ](free|rate)\b'
+
+  - id: FH-STR-03
+    class: steering (exclusivity)
+    tier: block
+    basis: "L37: 19 NYCRR 175.17(b)"
+    explanation: '"Exclusive" or "prestigious" areas suggest some people are not welcome.'
+    suggestion: Describe the setting (e.g. "private, wooded lot").
+    patterns:
+      - '\b(exclusive|prestigious|restricted|select) (neighbou?rhood|community|area|enclave|street|address)\b'
+
+  - id: FH-STR-04
+    class: steering (neighbourhood composition)
+    tier: block
+    basis: "L37: 19 NYCRR 175.17(b); L41 blockbusting"
+    explanation: Describes who lives in the area rather than the property.
+    suggestion: Remove it.
+    patterns:
+      - '\b(diverse|integrated|ethnic|homogeneous|changing|transitional|up[- ]and[- ]coming) (neighbou?rhood|area|community)\b'
+      - '\b(you.ll|you will) fit (right )?in\b'
+      - '\bpeople like (you|us)\b'
+      - '\blike[- ]minded (neighbou?rs|people|community)\b'
+      - '\b(kind|type|sort) of (people|neighbou?rs)\b'
+      - '\b(nice|good|quiet|friendly) neighbou?rs\b'
+
+  - id: FH-BB-01
+    class: blockbusting (race, national origin)
+    tier: block
+    basis: "L41: 19 NYCRR 175.17(c); RPL §442-h"
+    explanation: Urges selling because of who is moving in or values falling, which is blockbusting.
+    suggestion: Remove it.
+    patterns:
+      - '\b(before|as) (the )?(neighbou?rhood|area) changes\b'
+      - '\b(property )?values (will|are going to|could) (drop|fall|decline|plummet)\b'
+      - '\b(minorities|immigrants|newcomers) (are )?moving in\b'
+
+  # ---- Other warn-tier wording (MLS stricter than HUD's 1995 memo) --------------------------------------
+  - id: FH-W-01
+    class: familial status (wording)
+    tier: warn
+    basis: "L36: MLS wording guides"
+    explanation: '"Mother-in-law" suite suggests who should live there.'
+    suggestion: '"accessory apartment" or "guest suite"'
+    fix: accessory
+    patterns:
+      - '\bmother[- ]in[- ]law(?= (suite|apartment|unit|quarters))'
+      - '\bnanny(?= (suite|quarters|room))'

@@ -4,7 +4,7 @@ Generated from `app/demo/steps.yaml` by `scripts/gen-demo-script.py`; do not edi
 this file and the screens drift apart). Open https://realestate.hughesnode.com (house login), press
 **Start demo**, and follow the screens in order. The narration card at the top of each screen says the same.
 
-Built so far: step 1 (Intake), step 9 (Deal timeline). Target length when all ten
+Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 9 (Deal timeline). Target length when all ten
 steps are built: 13.5 minutes plus a 30-second introduction.
 
 **Colours on every screen:** blue = the AI did it; amber = the seller's or buyer's own decision (the next
@@ -38,23 +38,41 @@ right) changes who is acting: Presenter, Seller or Buyer. Only the client whose 
 - **Say:** The AI gives the listing presentation, runs a conflicts check and accepts the listing. The red "NY law today" marker says what the research found: accepting a listing for a fee is a licensed broker's act. It is recorded and counted, and it does not stop the flow. The seller acknowledges the agency form and signs the listing agreement, with the state's exclusive-listing explanation printed on it: those are the seller's own decisions, and nothing is marketed until the agreement is signed.
 - **Markers and decisions:** CP-01 and CP-03 seller decisions (amber); CP-02 NY law today (red, licensed broker)
 
-## 2. Pricing (1.5 min) (slice 2)
+## 2. Pricing (1.5 min)
 
-Not built yet. Coming in slice 2: comparable sales, the method in plain words, the AI's recommended price and the seller's choice. Until the seller signs the listing agreement, this step refuses to start.
+### 2.1 Comparable sales and adjustments (`/pricing`)
 
-Records: CP-25 NY law today; CP-05 seller decision.
+- **Click:** Open "Pricing". Open "Every adjustment, line by line" to show the arithmetic.
+- **Say:** Eight real sales from the county's public sales records, all within about four miles. The code, not the model, adjusts each one toward this house: date of sale, size, finished basement, lot, age, rooms, central air and style, at the rates printed on the screen. Sales needing large adjustments or far away are flagged and weigh less. The label says what this is: a comparative market analysis, not an appraisal.
+- **Markers and decisions:** none on this screen; the range is computed in code
 
-## 3. Listing copy (2 min) (slice 2)
+### 2.2 The AI's advice, net sheet and the seller's price (`/pricing/advice`)
 
-Not built yet. Coming in slice 2 with the fair-housing checker.
+- **Click:** Click "Let the AI recommend a price". Switch persona to Seller and click "Choose this list price". (Try step 3 first: the copy refuses to start until the seller chooses.)
+- **Say:** The AI explains the method in plain words, names the weaker sales, and recommends a list price with its reasoning and the net sheet. The red marker is the research: advising a seller on price is the listing agent's fiduciary duty, which New York reserves to a licensed broker. It is recorded and does not stop the flow. The price itself is the seller's decision, and the listing copy waits for it.
+- **Markers and decisions:** CP-25 NY law today (red, licensed broker); CP-05 seller decision (amber, blocks step 3)
 
-Records: CP-26 automated; CP-06 NY law today.
+## 3. Listing copy (2 min)
 
-## 4. Marketing plan (1 min) (slice 2)
+### 3.1 Drafts and the fair-housing check (`/copy`)
 
-Not built yet. Coming in slice 2.
+- **Click:** Click "Let the AI write the copy". On the portal description click "Plant a violation (demo)", then "Let the AI apply the fix and re-check", then "Let the AI mark passing copy ready to publish".
+- **Say:** The AI writes the MLS remarks, the portal description, three social posts and the flyer, and every piece goes through the fair-housing check: our written rules for every federal and New York protected class and for steering, then a model review for coded language. Plant a violation: "perfect for a young family, steps from the church". It is caught with the rule, the class, the legal basis and a fixed version. The AI applies the fix, the re-check passes, and only then can the AI mark it ready to publish. Marking an ad ready is a broker's act in New York: the red marker.
+- **Markers and decisions:** CP-26 fair-housing pass (blue, per piece); CP-06 NY law today (red, per piece)
 
-Records: CP-07 seller decision; CP-08 human required.
+### 3.2 MLS pre-check and package (`/copy/mls`)
+
+- **Click:** Open "MLS pre-check and package"; open the flyer PDF.
+- **Say:** The remarks are checked against OneKey's rules: no contact details or showing instructions, no compensation, never "free". The package lists every field in OneKey order with RESO names. The flyer PDF carries the DEMONSTRATION mark on every page, because the house is a real address and nobody authorised a listing.
+- **Markers and decisions:** none on this screen
+
+## 4. Marketing plan (1 min)
+
+### 4.1 Channel board (`/channels`)
+
+- **Click:** As Seller, choose "Publish to Internet" and sign. As Presenter, click "Record the MLS entry (simulated)" and watch the portal and website cards change.
+- **Say:** Every card says honestly who does the work. OneKey MLS has no listing-input API, so a licensed MLS participant keys the listing from the AI's package: the grey "human required" marker, linked to the research. Zillow, Realtor.com, Redfin and Homes.com are fed from the MLS, not by us. The firm's own page waits for the MLS entry under the Clear Cooperation rule. The seller signs the exposure choice and the lockbox and photo authorisations: their decision.
+- **Markers and decisions:** CP-07 seller decision (amber); CP-08 human required (grey)
 
 ## 5. Communications (1.5 min) (slice 3)
 

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">2. Pricing: the AI's advice and your price</h1>
+<p class="tag is-warning is-medium" id="cma-label">{{ label }}</p>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% else %}
+{% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
+<div id="advice-body">{% include "pricing/_advice_body.html" %}</div>
+{% endif %}
+{% endblock %}

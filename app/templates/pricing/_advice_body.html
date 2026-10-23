@@ -1,0 +1,67 @@
+{% from "components.html" import law_marker, decision, ai_badge with context %}
+{% set sm = pa.summary %}
+<div class="ai-panel" id="ai-panel">
+{% if advice %}
+  <p><b>The AI's recommended list price: <span id="recommended">${{ '{:,}'.format(advice.recommended_price) }}</span></b>
+    {{ ai_badge(pa.mode, pa.recorded_at) }} <span class="tag is-light">{{ pa.model }}</span>
+    {% if not advice.inside_range %}<span class="tag is-warning">outside the computed range: see the reasoning</span>{% endif %}</p>
+  <p><b>Range</b> ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }} · indicated ${{ '{:,}'.format(sm.indicated_value) }}</p>
+  <p><b>The method in plain words.</b> {{ advice.method_plain }}</p>
+  <p><b>Why this price.</b> {{ advice.reasoning }}</p>
+  {% if advice.weak_comps %}<p><b>Weaker comparables:</b></p>
+  <ul>{% for w in advice.weak_comps %}<li>#{{ w.rank }}: {{ w.why }}</li>{% endfor %}</ul>{% endif %}
+  <p><b>What would change it:</b></p>
+  <ul>{% for t in advice.things_that_would_change_it %}<li>{{ t }}</li>{% endfor %}</ul>
+{% elif ai_error %}
+  <p><b>Not recorded:</b> {{ ai_error }}</p>
+{% else %}
+  <p>The code has adjusted {{ sm.count }} sales into a range of ${{ '{:,}'.format(sm.range_low) }} to ${{ '{:,}'.format(sm.range_high) }}.
+  The AI now explains the method and recommends a list price, as a listing agent would.</p>
+  <button class="button is-info" id="ai-recommend" hx-post="/pricing/recommend" hx-target="#advice-body" hx-swap="innerHTML">
+    Let the AI recommend a price</button>
+  <span class="htmx-indicator thinking">The AI is weighing the sales</span>
+  <noscript><form method="post" action="/pricing/recommend"><button class="button is-info">Let the AI recommend a price</button></form></noscript>
+{% endif %}
+</div>
+{% if cp25 %}{{ law_marker(cp25) }}{% endif %}
+
+{% if net_rec %}
+<h2 class="title is-6" style="margin-top:14px">Net sheet (estimate)</h2>
+<table class="table is-narrow is-fullwidth" id="net-sheet">
+  <thead><tr><th>At the price</th><th>${{ '{:,}'.format(net_rec.price) }} (AI)</th>
+    {% if net_chosen and net_chosen.price != net_rec.price %}<th>${{ '{:,}'.format(net_chosen.price) }} (your choice)</th>{% endif %}<th></th></tr></thead>
+  <tbody>
+  {% for line in net_rec.lines %}
+  <tr><td>{{ line.item }}</td><td>−${{ '{:,}'.format(line.amount) }}</td>
+    {% if net_chosen and net_chosen.price != net_rec.price %}<td>−${{ '{:,}'.format(net_chosen.lines[loop.index0].amount) }}</td>{% endif %}
+    <td><small>{{ line.note }}</small></td></tr>
+  {% endfor %}
+  <tr><td><b>Estimated proceeds before any mortgage payoff</b></td><td><b>${{ '{:,}'.format(net_rec.net_before_mortgage) }}</b></td>
+    {% if net_chosen and net_chosen.price != net_rec.price %}<td><b>${{ '{:,}'.format(net_chosen.net_before_mortgage) }}</b></td>{% endif %}<td></td></tr>
+  </tbody>
+</table>
+<p class="help">{{ net_rec.tax_note }} {{ net_rec.mortgage_note }} Estimates [INFERENCE] except the transfer tax rate.</p>
+{% endif %}
+
+{% if cp05 %}
+{% set mine = (persona == 'seller') %}
+<div class="rec rec-decision" data-code="CP-05" id="rec-CP-05">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> <b>CP-05</b> {{ cp05.title }}
+    <span class="tag {{ 'is-success' if cp05.status == 'done' else 'is-warning' }} is-light">{{ cp05.status }}</span></div>
+  <p class="rec-rule">{{ cp05.rule_text }}</p>
+  {% if advice %}<p class="rec-advice"><b>The AI's advice:</b> list at ${{ '{:,}'.format(advice.recommended_price) }}. The price is yours to choose.</p>{% endif %}
+  {% if cp05.status == 'pending' %}
+  <p><b>Whose decision:</b> {{ cp05.who_text }}. Listing copy (step 3) waits for it.</p>
+  <form method="post" action="/pricing/choose" class="field has-addons">
+    <div class="control"><input class="input" name="price" id="price-input" inputmode="numeric"
+      value="{{ advice.recommended_price if advice else '' }}" {% if not mine %}disabled{% endif %}></div>
+    <div class="control"><button class="button is-warning" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Choose this list price</button></div>
+  </form>
+  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% else %}
+  <p id="chosen-price"><b>{{ cp05.reason }}.</b> Decided by the {{ cp05.decided_by }}.</p>
+  <p><a class="button is-info" href="/copy">Next: listing copy &rarr;</a></p>
+  {% endif %}
+  <p class="rec-ids">{% for i in cp05.f_ids + cp05.l_ids + cp05.ws3_ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}</p>
+</div>
+{% endif %}
