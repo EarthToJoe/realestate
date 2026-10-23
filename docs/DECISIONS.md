@@ -103,3 +103,12 @@ with a dated line.
     the executive summary, the father-in-law memo, the architecture spec and one fact-check pass. The POC build
     does not fit in what is left: Joe decides in the morning whether it runs on the Max plan (his original order
     was credit first, then Max) or on more API credit.
+20. **Stack locked, models chosen (2026-10-23, from `docs/specs/poc-architecture.md`).** Decision 7 holds
+    (Python 3.12, FastAPI, Jinja2 + HTMX, SQLite, Anthropic SDK, no JS build), plus SQLAlchemy, WeasyPrint,
+    docxtpl, structlog, nh3, Bulma, Driver.js and Leaflet; one Docker app at realestate.hughesnode.com with the
+    review pages kept. Haiku 5.5 for intake, fair-housing review, inbox and buyer side; Sonnet 5.5 for pricing,
+    listing copy, counter-offer, contract and business campaign; about $0.16 per live demo run, replay mode for
+    rehearsals and tests, live calls stop at $12 so the $15 reserve holds. Provisional, Joe to confirm (spec
+    section 11): the contract draft (success criterion 7) is shown in the seller's attorney's workspace, because
+    neither the brokerage nor the software may draft a contract of sale (WS2); the brokerage side stops at the
+    accepted-offer memo. The meeting runs on a recorded replay by default, with a live switch.
