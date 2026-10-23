@@ -4,7 +4,7 @@ Generated from `app/demo/steps.yaml` by `scripts/gen-demo-script.py`; do not edi
 this file and the screens drift apart). Open https://realestate.hughesnode.com (house login), press
 **Start demo**, and follow the screens in order. The narration card at the top of each screen says the same.
 
-Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 5 (Communications), step 9 (Deal timeline). Target length when all ten
+Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 5 (Communications), step 6 (Offers), step 9 (Deal timeline). Target length when all ten
 steps are built: 13.5 minutes plus a 30-second introduction.
 
 **Colours on every screen:** blue = the AI did it; amber = the seller's or buyer's own decision (the next
@@ -82,11 +82,13 @@ right) changes who is acting: Presenter, Seller or Buyer. Only the client whose 
 - **Say:** Nothing leaves until the seller approves the facts and the AI's authority. Then eight simulated enquiries arrive and the AI deals with each on its own: it answers from the approved facts and discloses the oil heat and the septic; it books an owner-hosted showing and a self-guided tour; it refuses to rate schools or the area and points to official sources; it says it can't give legal advice. Only two things reach the seller: a price question and a showing outside the seller's hours. Every message carries the firm's identity block, passed the fair-housing check, and the first one on each thread carries the agency form. Each one that discusses the listing records a red CP-09 marker: in New York today that is a licensed act.
 - **Markers and decisions:** CP-27 seller decision (amber); CP-09 and CP-28 NY law today (red); CP-10 human required (grey); CP-24 and CP-29 AI did it (blue)
 
-## 6. Offers (1.5 min) (slice 3)
+## 6. Offers (1.5 min)
 
-Not built yet. Coming in slice 3.
+### 6.1 Offer comparison, advice, decision and negotiation (`/offers`)
 
-Records: CP-11, CP-12, CP-13.
+- **Click:** Click "Let the AI present the offers and advise". As Seller, counter offer A at the suggested figures. As Presenter, try a counter by hand below the seller's lowest price and watch it refused; then click "Let the AI take the next step" until the offer is agreed.
+- **Say:** Two written offers: one from an outside buyer's agent, one from the firm's own buyer. Code builds the comparison and each net sheet; the AI presents every offer and advises, a licensed act in New York today (red CP-11). The seller decides: accept, counter or reject, and how low the AI may go. The AI then negotiates with the buyer's side on its own, each counter a red CP-13 marker. A counter outside the seller's decision is refused by code and goes back to the seller. Nothing is binding until both sign a contract.
+- **Markers and decisions:** CP-11, CP-12, CP-13
 
 ## 7. Contract (1.5 min) (slice 3)
 

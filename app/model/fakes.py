@@ -39,6 +39,15 @@ def default(task: str, context: dict) -> dict:
                          f"Please note the house has {sheet.get('Heating fuel', 'oil')} heat, a private well and "
                          "septic, and no central air.",
                 "disclosed": ["oil heat", "private well and septic", "no central air"]}
+    if task == "offers.advise":
+        offers = context["offers"]
+        best = max(offers, key=lambda o: o["net_before_mortgage"])
+        return {"offers": [{"label": o["label"], "summary": f"${o['price']:,}, {o['financing']}.",
+                            "risks": o["contingencies"][:2], "advice": "Workable; counter on price."}
+                           for o in offers],
+                "recommendation": f"Work with offer {best['label']}: the highest net. Counter on price; keep its "
+                                  "terms. You decide.",
+                "suggested_counter_price": 640000, "suggested_lowest_price": 635000}
     if task == "copy.draft":
         price = context.get("list_price") or 0
         return {"mls_remarks": "Raised ranch on 4.18 acres in Holmes with three bedrooms and three full baths, "

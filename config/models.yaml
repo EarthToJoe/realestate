@@ -12,4 +12,5 @@ tasks:
   copy.draft: {model: claude-sonnet-5-5, max_tokens: 8000}
   fairhousing.review: {model: claude-haiku-5-5, max_tokens: 3000}
   inbox.reply: {model: claude-sonnet-5-5, max_tokens: 4000}
+  offers.advise: {model: claude-sonnet-5-5, max_tokens: 6000}
   probe.mask_roundtrip: {model: claude-haiku-5-5, max_tokens: 400}

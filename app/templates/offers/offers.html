@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, decision, ai_badge with context %}
+{% block content %}
+<h1 class="title is-4">6. Offers: presented, advised, decided, negotiated</h1>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% else %}
+<p class="tag is-warning is-medium" id="not-binding">{{ not_binding }}</p>
+<div class="table-container" style="margin-top:8px">
+<table class="table is-narrow is-fullwidth is-striped" id="offers-table">
+  <thead><tr><th></th>{% for o in offers %}<th data-offer="{{ o.label }}">Offer {{ o.label }}</th>{% endfor %}</tr></thead>
+  <tbody>
+  <tr><td>From</td>{% for o in offers %}<td>{{ o.party }}</td>{% endfor %}</tr>
+  <tr><td>Price</td>{% for o in offers %}<td><b>${{ '{:,}'.format(o.price) }}</b> ({{ '{:+,}'.format(o.vs_list) }} vs list)</td>{% endfor %}</tr>
+  <tr><td>Financing</td>{% for o in offers %}<td>{{ o.financing }}</td>{% endfor %}</tr>
+  <tr><td>Deposit</td>{% for o in offers %}<td>{{ o.deposit_pct }}% (${{ '{:,}'.format(o.deposit) }}), held in escrow</td>{% endfor %}</tr>
+  <tr><td>Contingencies</td>{% for o in offers %}<td>{{ o.contingencies | join('; ') }}</td>{% endfor %}</tr>
+  <tr><td>Closing</td>{% for o in offers %}<td>{{ o.closing_days }} days</td>{% endfor %}</tr>
+  <tr><td>Requests</td>{% for o in offers %}<td>{{ o.requests }}</td>{% endfor %}</tr>
+  <tr><td><b>Estimated net before mortgage</b></td>{% for o in offers %}<td id="net-{{ o.label }}"><b>${{ '{:,}'.format(o.net_before_mortgage) }}</b></td>{% endfor %}</tr>
+  </tbody>
+</table>
+</div>
+<p><small>Net sheets computed in code: flat fee, NY transfer tax (0.4%), estimated attorney and recording costs; see step 2 for the lines.</small></p>
+
+<div class="ai-panel" id="advice">
+{% if st.advice %}
+  <p><b>The AI presents every offer</b> {{ ai_badge(st.advice.mode) }} <span class="tag is-light">{{ st.advice.model }}</span></p>
+  {% for v in st.advice.offers %}<p><b>Offer {{ v.label }}.</b> {{ v.summary }} <i>Risks:</i> {{ v.risks | join('; ') }}. <i>Advice:</i> {{ v.advice }}</p>{% endfor %}
+  <p id="recommendation"><b>Recommendation.</b> {{ st.advice.recommendation }}</p>
+  <p><b>Suggested counter:</b> ${{ '{:,}'.format(st.advice.suggested_counter_price) }}, agreeing down to ${{ '{:,}'.format(st.advice.suggested_lowest_price) }}</p>
+{% else %}
+  <form method="post" action="/offers/advise"><button class="button is-info" id="ai-advise">Let the AI present the offers and advise</button></form>
+{% endif %}
+</div>
+{% if cp11 %}{{ law_marker(cp11) }}{% endif %}
+
+{% if cp12 %}
+{% set mine = (persona == 'seller') %}
+<div class="rec rec-decision" data-code="CP-12" id="rec-CP-12">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> <b>CP-12</b> {{ cp12.title }}
+    <span class="tag {{ 'is-success' if cp12.status == 'done' else 'is-warning' }} is-light">{{ cp12.status }}{% if cp12.decision %}: {{ cp12.decision }}{% endif %}</span></div>
+  <p class="rec-rule">{{ cp12.rule_text }}</p>
+  {% if cp12.status == 'pending' %}
+  <form method="post" action="/offers/decide">
+    <label>Offer <select name="offer" {{ 'disabled' if not mine }}>{% for o in offers %}<option>{{ o.label }}</option>{% endfor %}</select></label>
+    <label>Counter at $<input name="counter_price" size="8" value="{{ st.advice.suggested_counter_price if st.advice else '' }}" {{ 'disabled' if not mine }}></label>
+    <label>the AI may agree down to $<input name="lowest_price" size="8" value="{{ st.advice.suggested_lowest_price if st.advice else '' }}" {{ 'disabled' if not mine }}></label>
+    <div class="buttons" style="margin-top:6px">
+      {% for c, label in [('counter', 'Counter'), ('accept', 'Accept as offered'), ('reject', 'Reject')] %}
+      <button class="button {{ 'is-warning' if loop.first else 'is-light' }}" name="decision" value="{{ c }}" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>{{ label }}</button>
+      {% endfor %}
+    </div>
+  </form>
+  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% else %}<p class="help">Decided by the {{ cp12.decided_by }}: {{ cp12.reason }}</p>{% endif %}
+</div>
+{% endif %}
+
+{% if st.decision and st.decision.decision == 'counter' %}
+<h2 class="title is-6" id="negotiation">Negotiation (the AI negotiates within the seller's decision)</h2>
+<table class="table is-narrow"><tbody>
+{% for t in st.thread or [] %}<tr><td>{{ t['from'] }}</td><td>${{ '{:,}'.format(t.price) }}</td><td><small>{{ t.note }}</small></td></tr>{% endfor %}
+</tbody></table>
+{% if not st.accepted %}
+<form method="post" action="/offers/negotiate"><button class="button is-info" id="ai-negotiate">Let the AI take the next step</button></form>
+<form method="post" action="/offers/counter" style="margin-top:6px" id="try-counter">
+  <small>Presenter: try a counter by hand at $<input name="price" size="8" value="{{ st.decision.lowest_price - 10000 }}"></small>
+  <button class="button is-small is-light" {{ 'disabled' if persona != 'presenter' }}>Send it</button>
+</form>
+{% endif %}
+{% for c in cp13 %}{% if loop.last %}{{ law_marker(c) }}{% endif %}{% endfor %}
+{% endif %}
+{% if st.accepted %}
+<div class="notification is-success is-light" id="accepted">Agreed: offer {{ st.accepted.label }} at
+  ${{ '{:,}'.format(st.accepted.final_price) }}, other terms as offered. {{ not_binding }}</div>
+<p><a class="button is-info" href="/step/7">Next: the contract &rarr;</a></p>
+{% endif %}
+{% endif %}
+{% endblock %}

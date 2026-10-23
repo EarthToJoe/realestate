@@ -140,13 +140,22 @@ steps:
   - n: 6
     title: Offers
     slice: 3
-    built: false
+    built: true
     minutes: 1.5
     screens:
-      - route: /step/6
-        title: Offers
-        click: (slice 3)
-        say: Coming in slice 3.
+      - route: /offers
+        title: Offer comparison, advice, decision and negotiation
+        click: >-
+          Click "Let the AI present the offers and advise". As Seller, counter offer A at the suggested figures. As
+          Presenter, try a counter by hand below the seller's lowest price and watch it refused; then click "Let
+          the AI take the next step" until the offer is agreed.
+        say: >-
+          Two written offers: one from an outside buyer's agent, one from the firm's own buyer. Code builds the
+          comparison and each net sheet; the AI presents every offer and advises, a licensed act in New York today
+          (red CP-11). The seller decides: accept, counter or reject, and how low the AI may go. The AI then
+          negotiates with the buyer's side on its own, each counter a red CP-13 marker. A counter outside the
+          seller's decision is refused by code and goes back to the seller. Nothing is binding until both sign a
+          contract.
         marker: CP-11, CP-12, CP-13
   - n: 7
     title: Contract

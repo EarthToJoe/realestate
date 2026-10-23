@@ -285,5 +285,15 @@ class Message(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
 
 
+class OfferState(Base):
+    """Step 6: the offers' advice, the seller's decision (CP-12) and the negotiation thread, one row per deal.
+    No PII: parties are labelled roles."""
+
+    __tablename__ = "offer_state"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    state: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
+
+
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run
 # survives the demo reset and ships with the image. See app/model/provider.py.
