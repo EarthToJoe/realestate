@@ -18,9 +18,13 @@ if ! git ls-remote -q "$REAL" >/dev/null 2>&1; then
   exit 1
 fi
 git remote set-url origin "$REAL"
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"   # the clone was single-branch
 git checkout -q -B main
 # The cloud session may already have pushed to the new repo; take its commits first (fast-forward only).
-if git fetch -q origin main 2>/dev/null; then git merge -q --ff-only origin/main || { echo "Local and remote main diverged; ask the session to merge." >&2; exit 1; }; fi
+git fetch -q origin
+if git rev-parse -q --verify origin/main >/dev/null; then
+  git merge -q --ff-only origin/main || { echo "Local and remote main diverged; ask the session to merge." >&2; exit 1; }
+fi
 git push -u origin main
 echo "origin is now $REAL; main pushed. The lifeboat branch in shorts can be deleted with:"
 echo "  git push $SHORTS_URL --delete realestate-lifeboat"
