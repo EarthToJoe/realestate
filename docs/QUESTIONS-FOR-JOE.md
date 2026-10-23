@@ -174,6 +174,20 @@ research beside the adjusted sales and reconciles them: the range is $610,000 to
 *Provisional:* keep them, labelled; a broker (perhaps your father-in-law's contacts) can replace them with
 local paired-sales rates in `app/modules/pricing/service.py`, one line each. *Unblocks:* nothing for the demo.
 
+**Q47. The demo order: the buyer's side before the offers.** The firm's own buyer makes offer B, and the buyer
+answers the seller's counter on the buyer's screen. So the demo goes steps 1 to 5, then 8 (buyer side), then 6
+(offers) and 7 (contract). The step list on screen keeps its numbers (decision 34). *Provisional:* keep that
+order. The other way is to renumber so the buyer's side is step 6, which means changing the success criteria's
+numbers. *Unblocks:* nothing; the click-through on 2026-10-28 will show whether it reads naturally.
+
+**Q48. The contract drafts with Opus, and the draft leaves blanks.** After a side-by-side, the contract is drafted
+by Claude Opus 5.5, the strongest model, because a lawyer will read it closely (decision 36). That costs about
+$0.27 a live draft, against $0.18 on Sonnet, and nothing in the recorded demo. Where the deal gives no number (the
+seller's cure-cost limit, test deadlines, the loan amount), the draft leaves a blank for the parties rather than
+inventing one. *Provisional:* Opus, with blanks. If your father-in-law would rather see a draft with every blank
+filled with a usual Hudson Valley figure, that is a prompt change; it needs his figures. *Unblocks:* nothing for the
+demo.
+
 ## Answered (newest first)
 
 - **2026-10-23, closed by decision 21 or merged into Q44 (the father-in-law bundle):**

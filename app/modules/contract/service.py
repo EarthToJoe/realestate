@@ -39,7 +39,7 @@ from app.records import service as records
 from app.sanitize import clean_model
 
 PROMPTS = Path(__file__).with_name("prompts")
-PROMPT_VERSION = "draft.v1"
+PROMPT_VERSION = "draft.v2"
 LABEL = ("DEMONSTRATION. Drafted by software for the parties. NY law today: only a lawyer may draft a contract of "
          "sale for another (L21, L22).")
 LABEL_VERSION = "d26-v1"
@@ -172,6 +172,27 @@ def disclosures(s: Session, deal: Deal) -> list[dict]:
     return out
 
 
+def contract_disclosures(s: Session, deal: Deal) -> list[dict]:
+    """The disclosures in the contract's own terms: true whether or not the seller has completed the PCDS yet (the
+    draft comes first in the demo), and free of the software's vocabulary (screens, record codes)."""
+    rows = {d.kind: d for d in s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id)).scalars()}
+    out = [{"title": f"Property Condition Disclosure Statement (Real Property Law §462, form effective "
+                     f"{pcds.form()['version']})", "required": True,
+            "terms": "completed and signed by the seller and delivered to the buyer before the buyer signs this "
+                     "contract; attached to the contract"}]
+    reasons = {"lead_paint": "the house was built in 1995; the federal lead-based paint disclosure applies to housing "
+                             "built before 1978",
+               "ag_district": "the property is not in an agricultural district",
+               "section_242": "the seller answered no to each of the four questions"}
+    for kind in ("lead_paint", "ag_district", "section_242"):
+        d = rows.get(kind)
+        if d is not None:
+            out.append({"title": d.title, "required": d.required,
+                        "terms": "delivered to the buyer before the buyer signs" if d.required else
+                        f"not required: {reasons[kind]}"})
+    return out
+
+
 def model_context(s: Session, deal: Deal) -> dict:
     """The whitelist for the draft: party tokens, the property's facts, the agreed terms, the disclosures' state.
     No names, no e-mail, no phone, and neither side's confidential instructions."""
@@ -181,7 +202,7 @@ def model_context(s: Session, deal: Deal) -> dict:
         facts=["ArchitecturalStyle", "YearBuilt", "LivingArea", "BedroomsTotal", "BathroomsFull", "LotSizeAcres",
                "HeatingFuel", "WaterSource", "Sewer", "FloodZone", "SchoolDistrict", "TaxAnnualAmount"],
         instructions=False)
-    ctx["acting_for"] = "both parties (the product's own contract step)"
+    ctx["acting_for"] = "both parties"
     ctx["parties"] = {"seller": "[SELLER_1]", "buyer": "[BUYER_1]"}
     ctx["property"]["municipality"] = deal.property.municipality or "Town of Pawling"
     ctx["property"]["county"] = deal.property.county or "Dutchess"
@@ -196,7 +217,7 @@ def model_context(s: Session, deal: Deal) -> dict:
                                  "written dual-agency consent" if a.get("side") == "firm_buyer" else
                                  "Hudson Valley AI Realty (demonstration name) for the seller; the buyer's agent "
                                  "at another firm"}
-    ctx["disclosures"] = [{k: d[k] for k in ("title", "l_id", "required", "status")} for d in disclosures(s, deal)]
+    ctx["disclosures"] = contract_disclosures(s, deal)
     ctx["pcds_known_facts"] = pcds.summary(answers) if answers else []
     ctx["standard_form_headings"] = [f"{i}. {h}" for i, h in enumerate(STANDARD_FORM, 1)]
     return ctx

@@ -59,10 +59,19 @@ own model calls (decision 19). Cross-check: the Anthropic Console usage page.
 | 2026-10-23 | local, `scripts/slice2-models.py record` | the steps 2 to 4 demo run (9 calls, replays committed) | Sonnet + Haiku | not kept (run database rebuilt by the replay check) | 0.0829 | Replays the hosted demo uses |
 | 2026-10-23 | local, `pytest --live` | fairhousing.review on 58 fixture phrases | claude-haiku-5-5 | not kept (pytest temp database) | ~0.02 (estimate) | Fixture replays; A8 measurement |
 | 2026-10-23 | local, first compare attempt | Haiku copy.draft cut off at 4,000 tokens (raised; not logged) | claude-haiku-5-5 | ~4,000 out | ~0.004 (estimate) | Led to `max_tokens` 8,000 |
+| 2026-10-23 | local, `scripts/slice2-models.py record` (BUILD-3) | steps 2 to 4 re-recorded after the pricing fix (10 calls) | Sonnet + Haiku | not kept | 0.0964 | Pricing reconciled with the demo-house research |
+| 2026-10-23 | local (BUILD-3, first half) | steps 5 and 6 recorded (9 calls) | Sonnet + Haiku | not kept | 0.0240 | Replays for the first steps 5 and 6 |
+| 2026-10-23 | hosted, `scripts/live-flow.sh` (BUILD-3, first half) | replay misses on steps 5 and 6 went live | Sonnet + Haiku | not kept | 0.0295 | The live walk before those replays shipped |
+| 2026-10-23 | local, `scripts/slice3-models.py record`, run 1 | buyer.alert, buyer.offer_advise, offers.advise, 2 fairhousing.review | Sonnet + Haiku | 3,397 in / 6,238 out | 0.0486 | Walk took offer A; the contract call was refused by the SDK (not billed) |
+| 2026-10-23 | local, `scripts/slice3-models.py record`, run 2 | offers.advise, buyer.counter_advise, contract.draft (Sonnet) | claude-sonnet-5-5 | 2,741 in / 19,832 out | 0.2109 | After offer A was made realistic weaker paper |
+| 2026-10-23 | local, `scripts/slice3-models.py compare` | contract.draft (Opus, `draft.v1`) | claude-opus-5-5 | 1,587 in / 14,114 out | 0.2976 | The spec's Opus/Sonnet contract side-by-side |
+| 2026-10-23 | local, `scripts/slice3-models.py record`, run 3 | contract.draft (Opus, `draft.v2`) | claude-opus-5-5 | 1,595 in / 12,841 out | 0.2731 | The shipped contract replay (decision 36) |
 
-**App live spend so far: about $0.20** (slice 1 $0.001; slice 2 about $0.20, $0.18 of it logged by the app and the
-rest estimated as marked) of the $12 app cap (inside the $15 demo reserve). The hosted app answers the demo house,
-steps 1 to 4, from the recorded replays at no cost (its footer reads $0.0000); tests use the fake provider.
+**App live spend so far: about $1.19** (slice 1 $0.001; slice 2 about $0.20; slice 3 $0.98: the pricing fix
+$0.10, steps 5 and 6 $0.05, the slice-3 recordings and the contract side-by-side $0.83) of the $12 app cap (inside
+the $15 demo reserve on the API key). The hosted app answers the whole demo walk, steps 1 to 8, from the recorded
+replays at no cost: a local replay-mode walk of `scripts/live-flow.sh` ends at $0.0000. Tests use the fake
+provider. A fully live run of the walk would cost about $0.50 (the Opus contract about $0.27 of it) [INFERENCE: summed from the logged calls].
 
 ## 2026-10-23, morning: original idea re-spec and build slice 1 (credit, then Max: decision 22)
 
@@ -74,7 +83,7 @@ steps 1 to 4, from the recorded replays at no cost (its footer reads $0.0000); t
 | setup | Smoke test of a job on the Max login | 0.00 notional | Max plan |
 | BUILD-2 | Slice 2: pricing, listing copy and the fair-housing pipeline (39/39 planted phrases caught), marketing plan | 8.43 | API credit |
 | BUILD-3 | Slice 3, first half: pricing reconciled with the demo-house research ($610k to $650k), Step 5 Communications, Step 6 Offers | 3.95 | API credit |
-| BUILD-3 | Slice 3, second half (running): Step 7 Contract, Step 8 Buyer side; resumed with its context | running | Max plan |
+| BUILD-3 | Slice 3, second half: full PCDS form, Step 8 Buyer side, the offers rework, Step 7 Contract, models, replays, live walk; resumed with its context | notional (see `scripts/spend-summary.sh`) | Max plan |
 
 **Credit after BUILD-1: $171.26 spent; $15 reserved for the demo's own calls; $13.74 left for BUILD-2.** The app's
 own live calls so far: $0.001 (two Haiku calls recording the replay).

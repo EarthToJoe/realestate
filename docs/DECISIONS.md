@@ -222,3 +222,47 @@ with a dated line.
     attributes seller facts; about $0.08 more a run), Haiku 5.5 on the fair-housing review; `copy.draft` gets
     8,000 output tokens after Haiku was cut off at 4,000. The channel board has no model call: every card is built
     from the connector stubs and the records, so its honesty does not depend on a model.
+34. **The demo walks the buyer's side before the offers, and the demo seller's PCDS answers are one click
+    (2026-10-23, BUILD-3).** Offer B in step 6 comes from the firm's own buyer, whom the buyer's AI advises and who
+    approves the offer in step 8; and the buyer's reply to the seller's counter is approved on step 8's offer
+    screen. So the walk is steps 1 to 5, then 8, then 6 and 7. `steps.yaml` holds that order, `DEMO-SCRIPT.md`
+    says it, and the step list on screen stays in number order. The spec's wording ("step 8 shows the same deal from
+    the buyer's side") was a flashback; making the buyer's decisions live is truer to SC8 (the buyer approves) than
+    replaying them. Separately, the PCDS is the full 56-question form. The fictional demo seller's answers sit in
+    `seed/personas.yaml` and the seller persona can submit them in one click: that is the seller's own act (only the
+    seller persona can do it, and the record service refuses anyone else). Every field on the form still starts
+    blank, and the answers are labelled fiction, not statements about the real house. Why: a 12-to-15-minute demo
+    cannot type 56 answers, and the rule (L43; RPL §466) is that the software never fills the seller's form, which
+    this keeps. Alternative: answer it by hand on screen (still possible).
+35. **The counter carries terms, inside the seller's decision (2026-10-23, BUILD-3).** CP-12 now records, for a
+    counter, the price, the lowest price the AI may agree, the counter's closing, the closing range the AI may agree,
+    the longest inspection and mortgage-commitment periods, and whether the buyer's requests may stay. Code
+    (`offers.outside_decision`) refuses any counter or agreement outside it: price below the floor or above the
+    counter, closing outside the range, longer periods, a smaller deposit, other financing, new contingencies,
+    unagreed or new requests, any seller credit. The seller's AI answers the buyer's side on its own: it agrees a
+    reply inside the decision, counters again inside it otherwise, and opens a new CP-12 for the seller when nothing
+    inside it is left. Concessions beyond these (repairs, credits) go back to the seller; that is post-inspection
+    negotiation (CP-34, planned).
+36. **Opus 5.5 drafts the contract; prompt `draft.v2` (2026-10-23, BUILD-3).** The spec's side-by-side
+    (`docs/build/model-side-by-side-slice3.md`) had an independent close reading of both drafts on the same deal.
+    It found Opus decisively better on New York mechanics: GOL §5-1311, the transfer-tax forms and no mansion tax,
+    the deed covenants, the escrow terms, buyer protection on a withdrawn commitment, and certificate-of-occupancy
+    searches. Sonnet had errors a lawyer would flag at once, such as the buyer having to close even if the lender
+    refuses to fund. Both v1 drafts leaked the software's words and Opus invented numbers. `draft.v2` gives the
+    disclosures in contract terms, keeps the software out, and asks for blanks instead of invented numbers. Opus
+    costs about $0.10 more a live run and is used nowhere else. The contract call streams, because the SDK refuses
+    a blocking call that might pass 10 minutes. Other slice-3 tasks run on Sonnet: offers advice, both sides'
+    negotiation advice and the inbox replies, all read closely; the buyer's search alert runs on Haiku.
+37. **Offer A is realistic weaker paper (2026-10-23, BUILD-3).** In the first recorded run the seller's AI rightly
+    preferred the outside offer, which was then simply better ($630,000, 20% down), so the walk never reached the
+    two AIs negotiating with each other. Offer A is now a common kind of weaker offer: 10% down, a 75-day closing
+    and a contingency on the sale of the buyer's current home. On that paper the seller's AI advises countering
+    offer B, and the walk follows the AI's own suggestion. The recorder and the live walk read the suggested offer
+    and figures from the screen rather than hard-coding them.
+38. **The information wall is enforced in code and on screen (2026-10-23, BUILD-3).** Every buyer-side model call
+    is built from `AgentContext(buyer)`, the buyer's own state and public records, and never reads the seller's
+    instructions or decision. Seller-side calls see offer B only as its terms. A test walks the whole demo and
+    checks every model request by side, so no buyer limit, note or name reaches a seller-side call and no seller
+    floor, lowest price or motivation reaches a buyer-side call. On screen, the buyer's private limit is hidden from
+    the seller persona, and the seller's advice and decision are hidden from the buyer persona. The Presenter sees
+    both, so the wall can be shown.
