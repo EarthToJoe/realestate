@@ -47,6 +47,8 @@ SECTIONS = [
         ("docs/specs/poc-architecture.md", "Architecture plan", "How the demo is built, what it costs per run, build days"),
         ("docs/specs/demo-house.md", "Demo house: 146 Rt 292, Holmes", "Official-record facts and nearby sales"),
         ("docs/research/fact-check.md", "Fact-check of the reports", "Independent check of the key claims"),
+        ("docs/build/site-audit-2026-10-23.md", "Whole-site audit (evening)", "Why entries were lost, what is confusing, and the fix"),
+        ("docs/build/audit-fresh-eyes-2026-10-23.md", "First-time visitor's audit", "A separate reviewer walks the site as three newcomers"),
         ("docs/build/ui-audit-2026-10-23.md", "Demo screens: audit", "What looks wrong and what the redesign fixes"),
     ]),
     ("Living documents", [
