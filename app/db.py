@@ -27,7 +27,12 @@ AUDIT_TRIGGERS = [
 def init_engine(url: str):
     global _engine, _Session
     connect_args = {"check_same_thread": False} if url.startswith("sqlite") else {}
-    _engine = create_engine(url, connect_args=connect_args)
+    kwargs = {}
+    if url.startswith("sqlite+pysqlcipher"):
+        import sqlcipher3
+
+        kwargs["module"] = sqlcipher3
+    _engine = create_engine(url, connect_args=connect_args, hide_parameters=True, **kwargs)
     if url.startswith("sqlite"):
 
         @event.listens_for(_engine, "connect")

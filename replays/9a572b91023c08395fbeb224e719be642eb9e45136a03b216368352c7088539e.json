@@ -1,0 +1,24 @@
+{
+ "request_hash": "9a572b91023c08395fbeb224e719be642eb9e45136a03b216368352c7088539e",
+ "task": "probe.mask_roundtrip",
+ "model": "claude-haiku-5-5",
+ "prompt_version": "t6.v1",
+ "recorded_at": "2026-10-23 10:43 UTC",
+ "output": {
+  "reply": "Hi [BUYER_1], thank you for your enquiry. Saturday morning works well, and we will confirm a viewing time with you at [BUYER_1_EMAIL] shortly.",
+  "tokens_seen": [
+   "[BUYER_1]",
+   "[BUYER_1_EMAIL]",
+   "[BUYER_1_PHONE]"
+  ]
+ },
+ "request": {
+  "task": "probe.mask_roundtrip",
+  "model": "claude-haiku-5-5",
+  "max_tokens": 400,
+  "prompt_version": "t6.v1",
+  "schema": "Reply",
+  "system": "You answer a buyer enquiry for a listing in one or two sentences. Address the buyer by the token you see. List every [TOKEN] you saw in tokens_seen.",
+  "user": "{\"message\": \"Hi, this is [BUYER_1] ([BUYER_1_EMAIL], [BUYER_1_PHONE]). Could I see the house on Saturday morning? [BUYER_1]\"}"
+ }
+}

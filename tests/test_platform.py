@@ -119,3 +119,16 @@ def test_persona_switch(client):
     assert "persona=seller" in r.headers["set-cookie"]
     r = client.post("/persona", data={"persona": "seller", "back": "//evil.example"}, follow_redirects=False)
     assert r.headers["location"] == "/"
+
+
+def test_shipped_replay_answers_the_demo_intake(settings):
+    """The recorded live run (replays/) answers the demo-house intake with no network and no key."""
+    from fastapi.testclient import TestClient
+
+    from app.main import create_app
+
+    store = prov.ReplayStore(settings.data_dir / "replays", read_dirs=[prov.SHIPPED_REPLAYS])
+    c = TestClient(create_app(settings, prov.ReplayProvider(store)))
+    demo_intake(c)
+    r = c.post("/intake/infer", headers={"HX-Request": "true"})
+    assert "AI: replay of the run recorded" in r.text and 'data-source="inferred"' in r.text

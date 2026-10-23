@@ -22,7 +22,8 @@ ENV REALESTATE_DATA_DIR=/data \
     REALESTATE_SECRETS_DIR=/run/secrets/realestate \
     REALESTATE_REVIEW_DIR=/review \
     REALESTATE_LOG_FILE=/data/app.log \
+    REALESTATE_MODEL_MODE=replay \
     PYTHONUNBUFFERED=1
 EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=5s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --start-interval=2s CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz')"
 CMD ["uvicorn", "--factory", "app.main:create_app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]

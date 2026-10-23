@@ -1,0 +1,69 @@
+{
+ "request_hash": "0ddec8ce3af1f76cbc95f3fac7cd3078b1b269d590b0bf32386e416892040548",
+ "task": "intake.infer_gaps",
+ "model": "claude-haiku-5-5",
+ "prompt_version": "infer_gaps.v1",
+ "recorded_at": "2026-10-23 10:43 UTC",
+ "output": {
+  "inferences": [
+   {
+    "field": "HeatingSystemAge",
+    "label": "Heating system age",
+    "value": "Likely original to the 1995 build or replaced later; the oil tank was replaced in 2015, so the boiler may be newer than the house.",
+    "reason": "Hot water/steam heat on oil, 1995 build year, and an indoor oil tank replaced in 2015.",
+    "confidence": "low"
+   },
+   {
+    "field": "CentralAirLikely",
+    "label": "Cooling",
+    "value": "Probably no central air. Any cooling is likely window or wall units, if present at all.",
+    "reason": "Assessor records cooling as none and the house has hot water heat with no ducted system recorded.",
+    "confidence": "medium"
+   },
+   {
+    "field": "ElectricServiceLikely",
+    "label": "Heating and cooking fuel",
+    "value": "Electric is the only utility on record, so the house likely runs on oil for heat and electric for cooking and hot water.",
+    "reason": "Utilities recorded as electric only; heating fuel recorded as oil.",
+    "confidence": "medium"
+   },
+   {
+    "field": "WellAndSepticUse",
+    "label": "Water and sewer",
+    "value": "Likely a drilled or dug private well and a private septic system, with no public water or sewer connection.",
+    "reason": "Water and sewer both recorded as private; the seller reports the septic was pumped in 2024.",
+    "confidence": "high"
+   },
+   {
+    "field": "ExteriorStructure",
+    "label": "Exterior structures",
+    "value": "The 400 sq ft deck and the two 2014 sheds are likely to be separate from the main house for insurance and title purposes.",
+    "reason": "Other structures listed as a porch or deck (1995) and two machine sheds (2014).",
+    "confidence": "low"
+   },
+   {
+    "field": "ClosingCostTaxLikely",
+    "label": "Likely tax exposure at sale",
+    "value": "Likely the Town and County tax rate applies to the seller's annual bill of about $11,800; any transfer tax on a sale would be based on the sale price, not the assessed value.",
+    "reason": "Seller reports an annual tax of $11,800, and the 2021 transfer was recorded at $0, so no sale price is on record.",
+    "confidence": "medium"
+   }
+  ],
+  "questions_for_seller": [
+   "Is there any garage, carport or detached building beyond the two sheds and the deck?",
+   "Has the well been tested, and what are the yield and water quality results if available?",
+   "Where is the oil tank's fill and gauge located, and is the tank still in use?",
+   "Does the 2,520 sq ft living area include the raised ranch lower level, or only the upper floor?"
+  ],
+  "summary": "The public record shows a 1995 raised ranch on 4.18 acres with well, septic, oil heat and no central air. Most of the gaps are about condition, systems and measurements, which we have not inferred. The seller must confirm the basement area, the garage status, the cooling setup and the pond's extent within the lot."
+ },
+ "request": {
+  "task": "intake.infer_gaps",
+  "model": "claude-haiku-5-5",
+  "max_tokens": 2000,
+  "prompt_version": "infer_gaps.v1",
+  "schema": "IntakeInference",
+  "system": "You are the listing side of an AI real estate brokerage in New York, preparing a property profile at intake.\nYou receive facts about one house: each has a source (public_record, seller or inferred), plus a list of\ngaps the public record leaves.\n\nYour job: fill gaps you can reasonably infer from the recorded facts, and say what the seller must confirm.\n\nRules:\n- Infer only facts about the property itself (systems, structure, land, taxes, likely costs). State each as a\n  likelihood (\"likely\", \"probably\"), give the recorded facts it rests on, and a confidence.\n- Never answer, or suggest answers to, the seller's Property Condition Disclosure Statement. That form is the\n  seller's own; the brokerage never pre-fills it (RPL §462). Do not infer defects, leaks, pests or\n  environmental problems.\n- Never mention or infer anything about people: no owner, no neighbours, no \"ideal buyer\", no household type.\n- No school quality, neighbourhood character, safety or crime claims (fair-housing steering rules).\n- Do not repeat facts that are already recorded or given by the seller; add only what is new.\n- Plain English, short sentences. Output only the structured fields requested.\n",
+  "user": "{\"acting_for\": \"seller\", \"gaps\": [{\"detail\": \"No market sale on the current record (2021 transfer was $0, condition C). Older deed references were not looked up; the County Clerk index lists party names, so it was not searched.\", \"field\": \"last_market_sale\"}, {\"detail\": \"No garage recorded.\", \"field\": \"parking_garage\"}, {\"detail\": \"Recorded as none; confirm.\", \"field\": \"central_air\"}, {\"detail\": \"3 full and 0 half as recorded; confirm.\", \"field\": \"bathrooms\"}, {\"detail\": \"Whether 2,520 sq ft includes the raised ranch's lower level; the 840 sq ft finished basement is separate.\", \"field\": \"living_area_measurement\"}, {\"detail\": \"Interior condition, kitchen, baths, roof, windows; well yield and water quality; septic age and last pumping; oil tank location.\", \"field\": \"condition_and_updates\"}, {\"detail\": \"The roll does not track associations; none recorded.\", \"field\": \"hoa\"}, {\"detail\": \"How much of the roughly 2.5-acre pond lies within the lot, and any rights to it; GIS overlay only.\", \"field\": \"pond\"}, {\"detail\": \"Not retrieved.\", \"field\": \"annual_tax_bill\"}, {\"detail\": \"FEMA panel number and effective date not confirmed; FEMA's server refused connections from this server.\", \"field\": \"fema_panel\"}, {\"detail\": \"Inferred from USGS and NYC DEP sources; confirm on DEP's watershed map.\", \"field\": \"nyc_watershed\"}, {\"detail\": \"Building permits and certificates of occupancy not checked.\", \"field\": \"permits\"}, {\"detail\": \"Meaning of special district code not looked up.\", \"field\": \"special_district_PF021\"}], \"parties\": {\"client\": \"[SELLER_1]\"}, \"property\": {\"address\": \"146 Route 292, Holmes, NY\", \"facts\": [{\"field\": \"ParcelNumber\", \"label\": \"Parcel ID (SWIS, print key)\", \"source\": \"public_record\", \"value\": \"[PHONE]-02-[PHONE]\"}, {\"field\": \"PropertyClass\", \"label\": \"Property class\", \"source\": \"public_record\", \"value\": \"210 One Family Year-Round Residence\"}, {\"field\": \"SchoolDistrict\", \"label\": \"School district (name only)\", \"source\": \"public_record\", \"value\": \"Pawling Central School District\"}, {\"field\": \"Zoning\", \"label\": \"Zoning\", \"source\": \"public_record\", \"value\": \"HA, Hamlet Area (Town of Pawling)\"}, {\"field\": \"FloodZone\", \"label\": \"FEMA flood zone\", \"source\": \"public_record\", \"value\": \"Zone X: Area of minimal flood hazard; not a special flood hazard area (SFHA false)\"}, {\"field\": \"PropertySubType\", \"label\": \"Property type\", \"source\": \"inferred\", \"value\": \"Detached single-family house\"}, {\"field\": \"ArchitecturalStyle\", \"label\": \"Building style\", \"source\": \"public_record\", \"value\": \"Raised ranch\"}, {\"field\": \"YearBuilt\", \"label\": \"Year built\", \"source\": \"public_record\", \"value\": \"1995\"}, {\"field\": \"LivingArea\", \"label\": \"Living area (sq ft)\", \"source\": \"public_record\", \"value\": \"2,520\"}, {\"field\": \"Basement\", \"label\": \"Basement\", \"source\": \"public_record\", \"value\": \"Full\"}, {\"field\": \"BelowGradeFinishedArea\", \"label\": \"Finished basement (sq ft)\", \"source\": \"public_record\", \"value\": \"840\"}, {\"field\": \"Stories\", \"label\": \"Stories\", \"source\": \"public_record\", \"value\": \"1\"}, {\"field\": \"BedroomsTotal\", \"label\": \"Bedrooms\", \"source\": \"public_record\", \"value\": \"3\"}, {\"field\": \"BathroomsFull\", \"label\": \"Full bathrooms\", \"source\": \"public_record\", \"value\": \"3\"}, {\"field\": \"BathroomsHalf\", \"label\": \"Half bathrooms\", \"source\": \"public_record\", \"value\": \"0\"}, {\"field\": \"Kitchens\", \"label\": \"Kitchens\", \"source\": \"public_record\", \"value\": \"1\"}, {\"field\": \"FireplacesTotal\", \"label\": \"Fireplaces\", \"source\": \"public_record\", \"value\": \"0\"}, {\"field\": \"QualityGrade\", \"label\": \"Assessor's quality grade\", \"source\": \"public_record\", \"value\": \"C (Average)\"}, {\"field\": \"AssessorCondition\", \"label\": \"Assessor's condition rating\", \"source\": \"public_record\", \"value\": \"Normal\"}, {\"field\": \"Heating\", \"label\": \"Heating\", \"source\": \"public_record\", \"value\": \"Hot water/steam\"}, {\"field\": \"HeatingFuel\", \"label\": \"Heating fuel\", \"source\": \"public_record\", \"value\": \"Oil\"}, {\"field\": \"Cooling\", \"label\": \"Central air\", \"source\": \"public_record\", \"value\": \"None recorded\"}, {\"field\": \"WaterSource\", \"label\": \"Water\", \"source\": \"public_record\", \"value\": \"Private (well)\"}, {\"field\": \"Sewer\", \"label\": \"Sewer\", \"source\": \"public_record\", \"value\": \"Private (septic)\"}, {\"field\": \"Utilities\", \"label\": \"Utilities\", \"source\": \"public_record\", \"value\": \"Electric\"}, {\"field\": \"LotSizeAcres\", \"label\": \"Lot size (acres)\", \"source\": \"public_record\", \"value\": \"4.18\"}, {\"field\": \"OtherStructures\", \"label\": \"Other structures\", \"source\": \"public_record\", \"value\": \"Porch, open / deck 400 sq ft (1995); Shed, machine 300 sq ft (2014); Shed, machine 100 sq ft (2014)\"}, {\"field\": \"WaterfrontFeatures\", \"label\": \"Mapped water and wetlands\", \"source\": \"inferred\", \"value\": \"No state wetland on the parcel; a pond of about 2.53 acres at the lot's edge, about 13% inside the mapped lot lines\"}, {\"field\": \"AgriculturalDistrict\", \"label\": \"Agricultural district\", \"source\": \"public_record\", \"value\": \"None\"}, {\"field\": \"Condominium\", \"label\": \"Condominium\", \"source\": \"public_record\", \"value\": \"No\"}, {\"field\": \"AssessedValue\", \"label\": \"Assessed value (2026 final roll)\", \"source\": \"public_record\", \"value\": \"$161,700 (land $37,800)\"}, {\"field\": \"FullMarketValueState\", \"label\": \"State full market value (formula, not an appraisal)\", \"source\": \"public_record\", \"value\": \"$591,200 at 27.35% equalisation\"}, {\"field\": \"LastTransfer\", \"label\": \"Last recorded transfer\", \"source\": \"public_record\", \"value\": \"2021-04-09, $0, code C (One of the Buyers is also a Seller): not a market sale\"}, {\"field\": \"LeadPaintDisclosure\", \"label\": \"Lead-paint disclosure\", \"source\": \"inferred\", \"value\": \"Not required\"}, {\"field\": \"ParkingFeatures\", \"label\": \"Parking / garage\", \"source\": \"seller\", \"value\": \"Paved driveway for four cars; no garage\"}, {\"field\": \"ConditionUpdates\", \"label\": \"Condition and updates\", \"source\": \"seller\", \"value\": \"Kitchen updated 2019; original baths, well kept; new windows 2016\"}, {\"field\": \"RoofYear\", \"label\": \"Roof installed (year)\", \"source\": \"seller\", \"value\": \"2012\"}, {\"field\": \"OilTank\", \"label\": \"Oil tank\", \"source\": \"seller\", \"value\": \"Indoor tank in the basement, replaced 2015\"}, {\"field\": \"TaxAnnualAmount\", \"label\": \"Annual property tax bill\", \"source\": \"seller\", \"value\": \"11800\"}, {\"field\": \"AssociationYN\", \"label\": \"Homeowners' association\", \"source\": \"seller\", \"value\": \"no\"}, {\"field\": \"SellerNotes\", \"label\": \"Other facts from the seller\", \"source\": \"seller\", \"value\": \"Pond at the back edge of the lot; septic pumped 2024\"}]}}"
+ }
+}

@@ -39,7 +39,14 @@ class Settings:
 
     @property
     def db_url(self) -> str:
-        return self.database_url or f"sqlite:///{self.data_dir / 'realestate.db'}"
+        """Plain SQLite locally; with a DB_KEY secret (the server) the whole file is encrypted with SQLCipher
+        (try-first check T2 passed). PII columns are Fernet-encrypted either way."""
+        if self.database_url:
+            return self.database_url
+        key = self.secret("DB_KEY")
+        if key:
+            return f"sqlite+pysqlcipher://:{key}@/{self.data_dir / 'realestate.db'}"
+        return f"sqlite:///{self.data_dir / 'realestate.db'}"
 
     def secret(self, name: str) -> str | None:
         p = self.secrets_dir / name
