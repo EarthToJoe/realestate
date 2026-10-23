@@ -1,5 +1,25 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1, VPS session), night
+
+**Disk:** 21 GB free of 96 GB (79% used). Fine; no action needed.
+
+**Repo:** origin is `github.com/EarthToJoe/realestate`; pulled to `3b9352b`. All thirteen notes files present.
+
+**Pipeline checked:** API key works (rate limits are high, so parallel jobs are safe); a smoke job through
+`scripts/api-run.sh` ran on Opus 5.5 and logged its cost (8 cents, tag `setup`).
+
+**Launched (running now, all billed to the credit):** seven headless jobs in parallel, one per workstream.
+WS1 to WS6 each (a) audit their notes against the brief's full ask, (b) re-check the 10 to 20 claims their
+conclusions rest on against primary sources, (c) fill the gaps with a fresh search budget, appended to the
+notes under "Gap fill (2026-10-23, VPS session)", then (d) write the deliverable in `docs/research/` and a
+handoff file in `docs/research/handoff/`. WS7 does (a) to (c) for the POC building blocks only. Joe's standard,
+added to every brief: "extensive and not piece and parcel; comprehensive, accurate, focused on the right
+things." The exact briefs are saved in `docs/research/jobs/`.
+
+**Next:** review each deliverable as it lands, commit it, post spend per workstream; then assumptions status
+(step 4), the plan and the executive summary (step 5).
+
 ## 2026-10-23 (day 1, cloud session), end of day
 
 **Research notes complete.** All thirteen passes finished and are committed (about 1 MB of sourced notes).

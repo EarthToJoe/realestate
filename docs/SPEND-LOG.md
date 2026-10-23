@@ -13,5 +13,6 @@ has since asked that everything run on the credit, so from the VPS session onwar
 | Date | Workstream | What | Tokens in | Tokens out | Cost (USD) | Source |
 |---|---|---|---|---|---|---|
 | 2026-10-23 | WS1 to WS6 | Twelve research passes (cloud session) | n/a | n/a | 0 against the credit (Max plan) | cloud session |
+| 2026-10-23 | setup | Smoke test of the headless job pipeline (VPS) | 2 turns | | 0.08 | api-run |
 
-**Running total against the credit: $0.00**
+**Running total against the credit: $0.08** (WS1 to WS7 jobs running; totals added as each finishes)
