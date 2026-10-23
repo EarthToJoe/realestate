@@ -6,7 +6,8 @@ Where the $200 credit (expires 2026-11-08) goes. Two sources:
 2. **The Claude Code session on the VPS**: once it runs on the API key, the Anthropic Console usage page shows
    it per key; totals are copied here by hand at each milestone.
 
-The research done in the **cloud** session on day 1 ran on Joe's Max plan and does not draw on the credit.
+The research done in the **cloud** session on day 1 ran on Joe's Max plan and does not draw on the credit; Joe
+has since asked that everything run on the credit, so from the VPS session onward every line here is credit spend.
 
 | Date | Workstream | What | Tokens in | Tokens out | Cost (USD) | Source |
 |---|---|---|---|---|---|---|

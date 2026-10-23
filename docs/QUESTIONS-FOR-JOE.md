@@ -5,40 +5,38 @@ shown and kept moving; your answer overrides it. Newest at the top of each secti
 
 ## Open: these three unblock things
 
-**Q1. Create the GitHub repo.** The Claude GitHub app is not allowed to create repositories (it got a 403), so
-please make it, exactly as you made `shorts`:
-1. Open github.com/new on your phone.
-2. Name: `realestate`. Owner: EarthToJoe. **Private.** Leave "Add a README" unticked. Create.
-3. Reply "repo made". I push everything there within minutes and delete the temporary copy.
-- *Why it matters:* this cloud container is wiped after inactivity. I tried to park the work on a temporary
-  branch inside the `shorts` repo, but the session's permission rules block pointing git at another repo (a
-  sensible rule, and I did not work around it). So until the repo exists the work lives only in this container.
-- *Provisional:* I send you the key documents as files in chat at each milestone, and push everything the
-  minute you say "repo made".
+**Q1. Create the GitHub repo (30 seconds, no longer blocking).** Joe answered 2026-10-23: "Use GitHub.
+You have my permission." With that, the work is pushed to a temporary branch `realestate-lifeboat` in the
+`shorts` repo, and the VPS can start from it. The Claude GitHub app still cannot *create* a repository (the
+403 is the app's permission on GitHub, not yours), so the clean fix is still yours: github.com/new, name
+`realestate`, owner EarthToJoe, **private**, no README. Then on the VPS, once:
+`bash /root/projects/realestate/scripts/repoint-origin.sh`. The lifeboat branch gets deleted after.
 
-**Q2. Start the VPS session.** I cannot reach the VPS from this cloud session (no SSH here; the VPS is only
-known as the `ssh vps` alias on your Mac). After Q1, run this once on your Mac:
+**Q2. Start the VPS session (the one thing only you can do).** I cannot reach the VPS from the cloud (no
+SSH here; the VPS is only the `ssh vps` alias on your Mac). One command, run once. It clones from the real
+repo if it exists, else from the lifeboat branch; checks disk; sets up the always-on session; and asks for
+the API key with hidden input (press Enter to accept the default "yes").
+
+From your Mac:
 ```bash
-ssh -t vps 'git clone https://github.com/EarthToJoe/realestate.git /root/projects/realestate && bash /root/projects/realestate/scripts/vps-setup.sh'
+ssh -t vps 'd=/root/projects/realestate; if [ ! -d "$d" ]; then if git ls-remote -q --exit-code https://github.com/EarthToJoe/realestate.git HEAD >/dev/null 2>&1; then git clone -q https://github.com/EarthToJoe/realestate.git "$d"; else git clone -q -b realestate-lifeboat --single-branch https://github.com/EarthToJoe/shorts.git "$d"; fi; fi; bash "$d/scripts/vps-setup.sh"'
 ```
-It checks disk space first and stops if there is too little, clones next to `shorts`, marks the folder
-trusted, adds `realestate` to `rc`, starts `claude-remote@realestate`, and offers to store the API key with
-hidden input (see Q3). Success: a session named **realestate** appears in your Claude app.
-- *If you are not near the Mac:* you can instead paste this into the existing **shorts** Remote Control chat
-  on your phone: "Clone https://github.com/EarthToJoe/realestate.git to /root/projects/realestate and run
-  bash /root/projects/realestate/scripts/vps-setup.sh". The key step needs a terminal, so skip it there.
+From your phone, with no Mac: open the Hostinger hPanel browser terminal for the VPS (you are root there)
+and paste the same command without the `ssh -t vps '...'` wrapper:
+```bash
+d=/root/projects/realestate; if [ ! -d "$d" ]; then if git ls-remote -q --exit-code https://github.com/EarthToJoe/realestate.git HEAD >/dev/null 2>&1; then git clone -q https://github.com/EarthToJoe/realestate.git "$d"; else git clone -q -b realestate-lifeboat --single-branch https://github.com/EarthToJoe/shorts.git "$d"; fi; fi; bash "$d/scripts/vps-setup.sh"
+```
+Have an API key ready first: console.anthropic.com, API keys, Create key (name it `realestate`).
+Success: a session named **realestate** in your Claude app, and `/status` there says it uses the API key.
 - *If the clone fails for credentials:* the VPS already pulls the private `shorts` repo, so it should work;
-  if it does not, tell me the error line.
+  if not, send me the error line.
 
-**Q3. Billing for this project's session.** Your brief says to use the $200 API credit (expires Nov 8) before
-Max. The `shorts` rule says never set `ANTHROPIC_API_KEY` where Claude Code reads it. I will honour both: the
-key is read **only** by the `realestate` session's own service file, never by a shell profile, never by the
-shorts sessions, never pasted into chat. Storing it switches that one session to API billing; removing the
-file switches it back. The POC's own model calls use the same key. Confirm with "api billing yes" (or run
-step 2 and say yes when asked), or say "keep Max".
-- *Provisional:* mechanism ready, **off** until you store the key.
-- *Note:* the research running in **this** cloud session bills your Max plan; I cannot point it at the credit
-  from here. The VPS session can be.
+**Q3. Billing: answered.** Joe, 2026-10-23: "I want all this setup work to be done using the API credit."
+So: the VPS session runs on the key (step 2 above stores it, for that session only; the shorts rule stays
+intact), and it takes over the work. The thirteen research passes already running in the cloud are the only
+part billed to Max; stopping them would throw away finished work, so they land, get committed, and the VPS
+session writes everything from there. Say "continue here" if you would rather I keep going in the cloud on
+Max until the VPS session is up.
 
 ## Open: shape the plan
 
@@ -77,4 +75,4 @@ extra work. Optional.
 
 ## Answered
 
-(none yet)
+- 2026-10-23, Joe: "Use GitHub. You have my permission." and "I want all this setup work to be done using the API credit." (see Q1 and Q3).

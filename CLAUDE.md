@@ -1,5 +1,7 @@
 # realestate: AI real estate agent (New York, Hudson Valley first)
 
+- **New session? Read `docs/HANDOVER.md` first**, then `docs/PROGRESS.md` and `docs/QUESTIONS-FOR-JOE.md`.
+
 - **Source of truth:** `docs/BRIEF.md` (Joe's brief, verbatim). Decisions: `docs/DECISIONS.md`. Questions and
   Joe's answers: `docs/QUESTIONS-FOR-JOE.md`. What "done" means: `docs/SUCCESS-CRITERIA.md`. Assumptions and
   kill criteria: `docs/ASSUMPTIONS.md`. Out of scope: `docs/OUT-OF-SCOPE.md`. Traceability: `docs/TRACEABILITY.md`.

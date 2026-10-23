@@ -18,6 +18,12 @@ NAME=realestate
 ts=$(date +%Y%m%d%H%M%S)
 [ "$(id -u)" = 0 ] || { echo "Run this as root on the VPS." >&2; exit 1; }
 cd "$PROJ"
+# The folder may have been cloned from the temporary 'realestate-lifeboat' branch of the shorts repo
+# (used until the real EarthToJoe/realestate repo exists). Work on a local 'main' either way.
+cur=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+[ "$cur" = main ] || git checkout -q -B main
+origin=$(git remote get-url origin 2>/dev/null || echo none)
+echo "Repo: $PROJ (origin: $origin, branch: main)"
 
 echo "== 0. Disk"
 bash "$PROJ/scripts/disk-check.sh" || { rc=$?; if [ $rc -ge 2 ]; then
@@ -71,11 +77,13 @@ systemctl enable --now "claude-remote@$NAME"
 echo "Waiting for the session to come up..."; sleep 20
 trusted || { echo "Trust flag was lost; re-applying and restarting."; trust; systemctl restart "claude-remote@$NAME"; sleep 20; }
 
-echo "== 4. API billing for this session (optional)"
+echo "== 4. API billing for this session (Joe, 2026-10-23: all of this project's work runs on the API credit)"
 if [ -f /srv/realestate/secrets/claude-code.env ]; then
   echo "API key already stored; this session bills the API."
 elif [ -t 0 ]; then
-  read -r -p "Store the Anthropic API key now so THIS session uses the \$200 credit before Max? [y/N] " yn
+  echo "You need an API key from console.anthropic.com (API keys, Create key). Nothing is shown while you paste it."
+  read -r -p "Store the Anthropic API key now so THIS session uses the \$200 credit? [Y/n] " yn
+  [ -z "$yn" ] && yn=y
   case "$yn" in y|Y) bash "$PROJ/scripts/secret-set.sh" ANTHROPIC_API_KEY ;; *) echo "Skipped. Later: ssh -t vps sudo bash $PROJ/scripts/secret-set.sh ANTHROPIC_API_KEY" ;; esac
 else
   echo "Not interactive; skipped. Later: ssh -t vps sudo bash $PROJ/scripts/secret-set.sh ANTHROPIC_API_KEY"
@@ -86,3 +94,6 @@ echo
 echo
 echo "Success = '$NAME' shows active/up here and a session named '$NAME' appears in your Claude app."
 echo "Attach to its terminal if ever needed: tmux -L rc-$NAME attach"
+case "$origin" in *shorts*) echo
+  echo "NOTE: this clone came from the temporary lifeboat branch in the shorts repo. Once EarthToJoe/realestate"
+  echo "exists (private, empty), run once:  bash $PROJ/scripts/repoint-origin.sh" ;; esac

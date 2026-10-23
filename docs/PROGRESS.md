@@ -10,6 +10,10 @@
   decision log, questions for Joe, out-of-scope list, traceability skeleton, spend log.
 - One-command VPS setup written (`scripts/vps-setup.sh`), with disk guard and per-session API billing option.
 
+**Joe's answers (later on day 1):** use GitHub (permission given); all work on the API credit. Result: the work
+is pushed to the `realestate-lifeboat` branch of the shorts repo; the VPS session, once Joe runs the one
+command, takes over on the API key (`docs/HANDOVER.md`). The thirteen research passes in flight stay on Max.
+
 **Blocked or waiting on Joe**
 - GitHub repo `EarthToJoe/realestate` must be created by Joe (the Claude GitHub app got a 403 creating it).
   A temporary branch in the `shorts` repo was blocked by permissions, so the work lives in this container until

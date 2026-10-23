@@ -46,3 +46,10 @@ with a dated line.
    free and warns under 6 GB; the session checks `df` at start and before any install (`scripts/disk-check.sh`)
    and warns Joe in `PROGRESS.md` and directly. Depth of work is never reduced for disk; Joe frees space or
    upgrades.
+10. **The VPS session does the work; the cloud session only bootstraps.** Joe (2026-10-23): all of this
+    project's work is to run on the API credit. The cloud session cannot be billed to it, so after the in-
+    flight research notes land and are pushed, the writing, planning and building move to the VPS session,
+    which runs on the key. `docs/HANDOVER.md` is the baton. The cloud session resumes only if Joe says so.
+11. **Lifeboat branch, with permission.** Joe allowed GitHub use; the work is pushed to `realestate-lifeboat`
+    in the `shorts` repo (the app cannot create repos). It is a parking spot, not a home: `scripts/repoint-
+    origin.sh` moves the VPS clone to `EarthToJoe/realestate` once Joe creates it, and the branch is deleted.
