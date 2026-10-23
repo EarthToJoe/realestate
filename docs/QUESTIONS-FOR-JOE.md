@@ -5,7 +5,7 @@ shown and kept moving; your answer overrides it. Newest at the top of each secti
 
 ## Open: these three unblock things
 
-**Q1. Create the GitHub repo (30 seconds, no longer blocking).** Joe answered 2026-10-23: "Use GitHub.
+**Q1. Create the GitHub repo. Done 2026-10-23: origin is `github.com/EarthToJoe/realestate`; the VPS clone pulls and pushes there.** Joe answered 2026-10-23: "Use GitHub.
 You have my permission." With that, the work is pushed to a temporary branch `realestate-lifeboat` in the
 `shorts` repo, and the VPS can start from it. The Claude GitHub app still cannot *create* a repository (the
 403 is the app's permission on GitHub, not yours), so the clean fix is still yours: github.com/new, name
@@ -76,6 +76,9 @@ extra work. Optional.
 - *Provisional:* one key; the POC logs its own spend per module.
 
 ## Answered
+
+- 2026-10-23: Q4 to Q9 are on Joe's ranked to-do list (https://shorts.hughesnode.com/todo): Q7 sign-off (item 0e39cd), Q4 father-in-law questions (8ba86e), Q5/Q6/Q8/Q9 one-liners (ffd75b).
+- 2026-10-23, Joe: created `EarthToJoe/realestate`; origin repointed (Q1 done).
 
 - 2026-10-23, Joe: VPS session `realestate` is up and billed to the API key (Q2, Q3 done).
 - 2026-10-23, Joe: "Use GitHub. You have my permission." and "I want all this setup work to be done using the API credit." (see Q1 and Q3).
