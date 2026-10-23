@@ -60,7 +60,6 @@ delivery, identity verification, more than one brokerage, a mobile app. See `doc
 ## Sign-off
 
 - [x] Joe: "thats fine. i sign off" (2026-10-23, in the realestate chat).
-- 2026-10-23 amendment that came with the sign-off (decision 14, Q12): the demo house is Joe's real address,
-  4910 John Ticer Dr, Alexandria, VA, with every state-specific step labelled "New York rules (launch market)".
-  Wherever this page says "fictional house", read "the demo house"; the people in the demo stay fictional,
-  and only the property's facts are used.
+- 2026-10-23 amendment after the sign-off (decision 18): the demo house is a real Hudson Valley address,
+  146 Rt 292, Holmes, NY 12531 (Dutchess County). Wherever this page says "fictional house", read "the demo
+  house"; the people in the demo stay fictional, and only the property's facts are used.

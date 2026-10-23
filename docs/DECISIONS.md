@@ -88,3 +88,8 @@ with a dated line.
     `docs/SUCCESS-CRITERIA.md` as written, with decision 14's demo house. Decision 14 is confirmed, no longer
     provisional (Joe: "thats fine"). Code starts once the WS1 to WS3 deliverables land and the architecture
     spec and traceability are written from them (Joe's sequencing rule).
+18. **Demo house moves to New York: 146 Rt 292, Holmes, NY 12531 (Joe, 2026-10-23).** Joe sent this Dutchess
+    County address after the Virginia/New York snag was raised (Q12); it replaces decision 14's Alexandria
+    address, so every legal step is New York's with no "launch market" label needed. Property facts and
+    comparable sales come from Dutchess County, town assessor and New York State records, never a portal; no
+    owner's name is stored. The Alexandria data job was stopped after two minutes (about $1, estimated).

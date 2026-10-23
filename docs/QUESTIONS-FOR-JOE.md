@@ -17,6 +17,9 @@ lapsed or he registered as retired, that route may need fixing first.
 
 ## Answered (newest first)
 
+- **2026-10-23, Joe, Q12 follow-up:** sent "146 Rt 292, Holmes, NY 12531". Taken as the demo house in place of
+  Alexandria (decision 18); the Virginia/New York mismatch is gone. Assumed the OK to use it is Joe's to give.
+
 - **2026-10-23, Joe, Q7 (sign-off):** "i sign off". The success criteria are the finish line; the build starts
   as soon as workstreams 1 to 3 land.
 - **2026-10-23, Joe, Q12 (Virginia house, New York product):** "thats fine" to the provisional: use 4910 John

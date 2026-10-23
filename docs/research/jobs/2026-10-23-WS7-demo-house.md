@@ -1,15 +1,18 @@
 # Your job: gather the demo house's facts and comparable sales (headless, 2026-10-23)
 
 You are a headless job in /root/projects/realestate. Joe signed off the POC success criteria today
-(`docs/SUCCESS-CRITERIA.md`, read it) and chose his real address as the demo house: **4910 John Ticer Dr,
-Alexandria, VA** (decisions 14 and 17 in `docs/DECISIONS.md`). The product's legal flow is New York's; the
-demo labels state-specific steps "New York rules (launch market)". Your job is the property data only.
+(`docs/SUCCESS-CRITERIA.md`, read it) and chose a real Hudson Valley address as the demo house: **146 Rt 292, Holmes, NY 12531** (Dutchess
+County; it replaces an earlier Virginia address; decisions 14 and 17 in `docs/DECISIONS.md`). Your job is
+the property data only.
 Other jobs are running in parallel in this working tree: **do not run any git command that changes state
 (no add, commit, push, stash, checkout)** and write only the two files below.
 
 ## Rules (from CLAUDE.md; they matter here)
-- Use official public records: the City of Alexandria real estate assessment search, the City's open data
-  portal (sales and assessment datasets), Virginia or Alexandria GIS, and other government sources. Read
+- Use official public records: Dutchess County's parcel and real property tax services (e.g. Dutchess
+  County Parcel Access / GIS), the town assessor's assessment roll (confirm which town Holmes falls in for
+  this parcel: likely Pawling or Beekman), New York State ORPTS data (assessment rolls, sales data, RP-5217
+  sales where public), data.ny.gov datasets, the County Clerk's public indexes, FEMA flood maps, and other
+  government sources. Read
   public pages normally. **Never use or scrape Zillow, Redfin, Realtor.com, Homes.com or any MLS**, and never
   copy listing photos or listing descriptions from anyone.
 - **PII:** never record an owner's or buyer's name, for the demo house or for any comparable. Addresses, unit
@@ -19,7 +22,7 @@ Other jobs are running in parallel in this working tree: **do not run any git co
   official record, leave it blank and say so; never guess. Label anything derived [INFERENCE].
 
 ## What to find
-1. **The demo house:** property type (detached, townhouse, condo; building or complex name if any), year
+1. **The demo house:** property class (NY property class code), property type (detached, townhouse, condo; building or complex name if any), year
    built, living area, lot size if any, bedrooms, bathrooms, stories, parking, heating/cooling, notable
    features recorded, current assessed value (land and improvements, by year for the last 3 years), last
    recorded sale date and price, zoning, condo or HOA association if recorded, and the official parcel ID.
@@ -28,8 +31,10 @@ Other jobs are running in parallel in this working tree: **do not run any git co
    sales records. For each: address (unit if any), sale date, price, type, year built, living area, beds and
    baths where recorded, and why it is comparable. Note any sale that looks non-arm's-length and exclude it.
 3. **Neighbourhood facts usable in listing copy** (property and place, never people, to stay within fair
-   housing rules): distances to the nearest Metro station, major roads, parks, trails, shopping, from
-   official or map sources; the public school district name only as a fact (no "great schools" claims).
+   housing rules): distances to the nearest Metro-North station (Harlem Line), major roads (I-84, Route 22,
+   Taconic), lakes, parks, the Appalachian Trail, shopping, from official or map sources; the public school
+   district name only as a fact (no "great schools" claims); flood zone; whether the property is on well and
+   septic if recorded (these drive NY disclosures).
 
 ## Write
 - `docs/specs/demo-house.md`: plain-language summary for Joe and the build, a facts table with sources, the
