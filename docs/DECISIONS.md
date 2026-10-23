@@ -112,3 +112,27 @@ with a dated line.
     section 11): the contract draft (success criterion 7) is shown in the seller's attorney's workspace, because
     neither the brokerage nor the software may draft a contract of sale (WS2); the brokerage side stops at the
     accepted-offer memo. The meeting runs on a recorded replay by default, with a live switch.
+21. **The original idea stands: software that completely replaces the seller's agent and the buyer's agent, and
+    drafts the contract (Joe, 2026-10-23: "Keep the original idea, that is what I said I would build. I can pare it
+    back on the future if need be. The idea is the idea. Completely replace the real estate agents.").** This
+    reverses the reshaping written overnight into the plan, the executive summary and the architecture spec
+    (section 0 and 11): the "attorney-run flat-fee brokerage with software doing the paperwork" pitch (Q19), the
+    broker approval gates, and the contract shown in the seller's attorney's workspace (Q24, decision 20). The
+    research findings do not change and are not softened: New York law today requires a licensed broker for the
+    core agent acts (WS2 section 1), only a lawyer may draft a contract for another (L21, L22), and three kill tests
+    failed (ASSUMPTIONS). They are now reported as the hurdles the original idea has to clear, not as reasons to
+    change it; paring back is Joe's call, later. In the demo the AI does every agent act on both sides, including
+    negotiating and drafting the contract. The seller and the buyer make their own decisions, as any agent's
+    clients do. Wherever New York law today requires a licensed person or a lawyer, the screen shows a red "NY law
+    today" marker with the rule and a link to the finding; the marker does not stop the flow (the brief: "Every
+    step where a human or a license is still required should be visible in the demo itself so it illustrates the
+    hurdles"). MLS entry stays a "human required" step because no listing-input API exists (WS3): a fact about
+    the MLS, not a design choice. The free-inspection add-on was the father-in-law's idea for evaluation, not
+    "the idea"; WS6's recommendation stands provisionally (Q43).
+22. **Billing: the API credit first, then the Max plan (Joe, 2026-10-23: "Do as much as you can with the api
+    credit before moving to use the plan").** Answers Q26. `scripts/api-run.sh` now runs each job on the credit
+    while at least $2 is left above the $15 reserve, trimming the job's cap to what is left, then runs jobs on the
+    Max login (no key in the job's environment); a job that hits "credit balance too low" switches all later jobs
+    to Max. `spend.jsonl` marks every run `api` or `max` (Max costs are notional). The $15 reserve stays because
+    the Max plan cannot pay for the app's own API calls at the meeting. The build starts as soon as the
+    architecture spec is revised for decision 21 (2026-10-23), not 10-25, since this answer was the only blocker.

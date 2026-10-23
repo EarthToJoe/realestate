@@ -14,7 +14,9 @@
   at the start of every session and before any install, build, download or large write. Under 6 GB free:
   warn Joe in `docs/PROGRESS.md` and in your next reply. Under 3 GB: stop anything disk-heavy and tell Joe
   what to free or upgrade. Never reduce the depth or quality of work because of disk; that is Joe's call.
-- **Billing (two layers, Joe 2026-10-23: all work on the $200 API credit, expires 2026-11-08).** This chat
+- **Billing (two layers, Joe 2026-10-23: the $200 API credit first, expires 2026-11-08, then the Max plan:
+  "Do as much as you can with the api credit before moving to use the plan").** `api-run.sh` switches jobs to
+  the Max login by itself once the credit is down to its $15 demo reserve (decision 22). This chat
   session runs on the claude.ai login because Remote Control (what makes it appear in Joe's app) is disabled
   whenever an API key is in its environment. So the chat session only orchestrates and reviews: **every
   substantial piece of work (writing a deliverable, the plan, the summary, building or testing the POC) is
@@ -37,7 +39,10 @@
   e.g. `https://realestate.hughesnode.com/docs-success-criteria.html`. New documents meant for him go in the
   `SECTIONS` list of `scripts/publish_review.py`. To-do items link here, not to GitHub.
 - **Demo-ability is a design requirement:** each stage is its own visible screen; the AI's work is shown, not
-  hidden; every human or licensed step is a visible checkpoint with its reason; a guided demo mode and
+  hidden; the AI is the agent on both sides and does every agent act (Joe, 2026-10-23: "The idea is the idea.
+  Completely replace the real estate agents."; decision 21), the seller and buyer make their own decisions, and
+  every step where NY law today requires a licence or a lawyer carries a visible marker with its reason (it does
+  not stop the flow); research findings are reported as hurdles, never used to reshape the idea; a guided demo mode and
   `docs/DEMO-SCRIPT.md` stay in step with the screens.
 - **Research rules:** cite sources; label claims [PRIMARY] / [SECONDARY] / [CLAIMED] / [INFERENCE]; date
   facts; never soften a finding. Read public pages normally; never scrape MLSs or portals against their terms;

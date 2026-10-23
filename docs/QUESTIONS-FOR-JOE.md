@@ -5,13 +5,12 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 
 ## Open
 
-> **Start here (2026-10-23 night triage).** Every question below has a default that holds until you answer.
-> - **Needs you now (1):** Q26, who pays for the build (Max plan or more credit). Building waits on this.
-> - **Quick confirms for the demo (3), defaults hold if you say nothing:** Q19 lead pitch ("an attorney-run
->   brokerage that sells your home for a flat fee, with software doing the paperwork"), Q24 contract draft shown in
->   the seller's attorney's workspace, Q25 recorded replay at the meeting with a live switch.
-> - **For your father-in-law, in one conversation (the memo to-do item):** Q11, Q13 (ten sellers), Q14 (licence,
->   HGAR), Q15 (broker only, or also seller's lawyer), Q16 and Q17 (presence, office, hours).
+> **Start here (updated 2026-10-23 morning).** Every question below has a default that holds until you answer.
+> - **Answered this morning:** Q26 (credit first, then Max), Q19 and Q24 (the original idea: the software replaces
+>   both agents and drafts the contract). The plan, summary and questions for your father-in-law are being
+>   rewritten around the original idea today.
+> - **Quick confirms for the demo, defaults hold if you say nothing:** Q25 recorded replay at the meeting with a
+>   live switch; Q43 free inspection stays as the research recommends.
 > - **After the meeting:** everything else (fee model, counties, marketing, lockboxes, inspection pilot, scope).
 
 **Q11. Two facts about your father-in-law, now that he lives outside New York** (raised by Joe's 2026-10-23
@@ -66,11 +65,6 @@ negotiates every offer; tours (a) at launch, (b) once volume outgrows his hours;
 host showings and open houses themselves. *Unblocks:* the offer and tour checkpoints, broker hours in the cost model.
 (WS1)
 
-**Q19. Lead pitch: "software replaces both agents and the lawyer", or "an attorney-run brokerage that sells your
-home for a flat fee, with an optional buyer rebate"?** *Provisional:* the second, seller-first; the first hits K1, K4
-and A6 on the evidence. No "autonomous", "no agent needed" or "no lawyer needed" anywhere. *Unblocks:* the demo
-narrative, marketing copy, the executive summary's framing. (WS5)
-
 **Q20. Fee model.** *Provisional:* a flat $4,500 seller-side fee with optional add-ons; a $3,500 buyer-side fee with
 any surplus seller-offered compensation rebated to the buyer; never a document fee. Local anchors: NY Flat Fee Realty
 1%, Hauseit 1% with a $7,500 minimum, 845 Realty Guys $9,995, Redfin 2% with a $6,000 minimum. Confirm after the ten
@@ -91,19 +85,9 @@ form: NYSAR's statewide purchase agreement, the bar association's Residential Co
 publish flat fees (no referral payments either way); the demo mirrors the bar-association long form's section
 structure in its own words. *Unblocks:* the contract screens. (WS2, WS7, architecture §11)
 
-**Q24. Demo step 7: show the contract draft in the seller's attorney's workspace?** Neither the brokerage nor its
-software may draft a contract of sale, so the brokerage screen stops at the accepted-offer memo and the draft appears
-on a screen used by the seller's attorney, as that attorney's tool. *Provisional:* yes. Alternative: keep it as
-worded in the success criteria with a heavy "draft for attorney review" label; weaker in front of a lawyer.
-*Unblocks:* build day 3. (architecture §11)
-
 **Q25. At the meeting: recorded replay by default, with a live switch?** *Provisional:* yes; replay recorded the day
 before and labelled, live only if the room has good internet; map with an offline fallback; the app also runs on a
 laptop with one command. Does the room have reliable internet? *Unblocks:* demo-mode design. (architecture §11, WS7)
-
-**Q26. Who pays for the build: the Max plan or more API credit?** (Decision 19.) *Provisional:* the build runs on
-Max unless you add credit; the demo's own AI calls stay on the key inside the $15 reserve. *Unblocks:* the build
-starting 2026-10-25. (architecture §11)
 
 **Q27 (FIL). Will he ask his malpractice carrier, in writing, whether claims connected with a brokerage he co-owns
 are excluded and could affect his legal cover?** *Provisional:* assume no cover from that policy; the brokerage buys
@@ -178,7 +162,22 @@ needs, with names and contact details masked. *Unblocks:* the PII wording and au
 the demo; our own 40+ phrase test set is enough; revisit for production. *Unblocks:* breadth of the checker's tests.
 (WS7)
 
+**Q43. The free inspection: does "keep the original idea" include it?** It was your father-in-law's add-on, which
+you asked to be evaluated honestly. *Provisional:* no; the research's recommendation stands (drop it as pitched, run
+a capped pilot on the first ten listings with the seller as the inspector's client), shown in the plan as his
+idea with the findings. *Unblocks:* the plan's inspection section and the demo's intake step. (WS6, decision 21)
+
 ## Answered (newest first)
+
+- **2026-10-23, Joe, Q19, Q24 and the plan's framing:** "Keep the original idea, that is what I said I would
+  build. I can pare it back on the future if need be. The idea is the idea. Completely replace the real estate
+  agents." **What changes (decision 21):** the pitch is the brief's idea (software replaces the seller's and
+  the buyer's agent and drafts the contract), not the attorney-run flat-fee brokerage. In the demo the AI does
+  every agent act; red "NY law today" markers show where a licence or a lawyer is required today, without
+  stopping the flow. The findings themselves are unchanged.
+- **2026-10-23, Joe, Q26 (who pays for the build):** "Do as much as you can with the api credit before moving to
+  use the plan." **What changes (decision 22):** jobs run on the credit until about $2 is left above the $15 demo
+  reserve, then on the Max login automatically. The build starts today.
 
 - **2026-10-23, Joe, Q12 follow-up:** sent "146 Rt 292, Holmes, NY 12531". Taken as the demo house in place of
   Alexandria (decision 18); the Virginia/New York mismatch is gone. Assumed the OK to use it is Joe's to give.
