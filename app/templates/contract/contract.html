@@ -47,17 +47,17 @@ about that today, and where the lawful route at launch is.</p>
 
 <h2 class="title is-6" id="side-by-side">Side by side with the standard form's structure</h2>
 <p><small>{{ standard_source }}. Headings only; no clause text is used.</small></p>
-<table class="table is-narrow is-fullwidth is-striped" id="sbs-table">
+<div class="table-container"><table class="table is-narrow is-fullwidth is-striped" id="sbs-table">
   <thead><tr><th>Standard paragraph</th><th>This draft</th><th>Difference</th></tr></thead>
   <tbody>{% for r in rows %}<tr data-n="{{ r.n }}"><td>{{ r.n }}. {{ r.heading }}</td><td>{{ r.draft_ref }}</td><td><small>{{ r.note }}</small></td></tr>{% endfor %}</tbody>
-</table>
+</table></div>
 {% endif %}
 
 <h2 class="title is-6" id="disclosures">Disclosures attached to the contract</h2>
-<table class="table is-narrow is-fullwidth" id="disclosure-table">
+<div class="table-container"><table class="table is-narrow is-fullwidth" id="disclosure-table">
   {% for d in disclosures %}<tr data-kind="{{ d.kind }}"><td>{{ d.title }}</td><td><span class="tag is-light">{{ d.l_id }}</span></td>
     <td>{% if d.ready %}{{ d.status }}{% else %}<b>{{ d.status }}</b> · <a href="/disclosures/pcds?back=/contract" id="pcds-open">open the form</a>{% endif %}</td></tr>{% endfor %}
-</table>
+</table></div>
 {% if cp04 and cp04.status != 'done' %}<p class="notification is-warning is-light" id="pcds-waiting">The seller has not completed the Property Condition Disclosure Statement.
   It must be delivered before the buyer signs (L43), so signing is refused until it is. The software never fills it in.</p>{% endif %}
 {% if st.draft and not (st.attached and st.attached.complete) %}
@@ -65,12 +65,12 @@ about that today, and where the lawful route at launch is.</p>
 {% for c in cp32 %}{{ chip(c) }} {% endfor %}
 
 <h2 class="title is-6" id="signing-map">Signing map</h2>
-<table class="table is-narrow is-fullwidth" id="signing-map-table">
+<div class="table-container"><table class="table is-narrow is-fullwidth" id="signing-map-table">
   <thead><tr><th>Document</th><th>Who</th><th>How</th><th>Law</th><th>When</th></tr></thead>
   <tbody>{% for r in signing_map %}<tr class="{{ 'wet-ink' if r.how not in ('e-sign', 'sent') }}"><td>{{ r.doc }}</td><td>{{ r.who }}</td>
     <td>{% if r.how == 'e-sign' %}<span class="tag is-info is-light">e-sign</span>{% elif r.how == 'sent' %}sent{% else %}<span class="tag is-dark is-light">{{ r.how }}</span>{% endif %}</td>
     <td>{{ r.law }}</td><td>{{ r.when }}</td></tr>{% endfor %}</tbody>
-</table>
+</table></div>
 {% if cp15 %}{{ human_required(cp15) }}{% endif %}
 
 <h2 class="title is-6">Signing (simulated)</h2>

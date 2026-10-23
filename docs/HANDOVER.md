@@ -64,11 +64,13 @@ appending findings to the same files under a dated "Gap fill" heading.
 
 ## The build (from 2026-10-23)
 
-Slice 1 is live (BUILD-1): skeleton, record service, Step 1 Intake, Step 9 timeline, docker type on hughesnode.
-Later slices build on it: see `README.md` ("The demo app") for the code map and commands, the architecture spec
-section 9 for what each slice must pass, and decisions 27 to 29 for hosting, try-first results and replays. After
-changing code: `make test`, commit, `bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh`. New model
-tasks go in `config/models.yaml`; record new replays with `scripts/record-replays.py` (extend it per slice).
+Slices 1 to 3 are live (BUILD-1 to BUILD-3): steps 1 to 9 except step 10 (business marketing, slice 4), docker
+type on hughesnode. The demo is walked 1 to 5, then 8 (buyer side), 6 and 7 (decision 34). See `README.md` ("The
+demo app") for the code map and commands, the architecture spec section 9 for what each slice must pass, and
+decisions 27 to 29 for hosting, try-first results and replays. After changing code: `make test`, commit,
+`bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh` (it walks steps 1 to 8). New model tasks go in
+`config/models.yaml`; record the whole walk's replays with `scripts/slice3-models.py record` (it runs the steps 1
+to 4 path of `scripts/slice2-models.py` first; replay first, misses live and recorded into `replays/`).
 
 ## Rules that are easy to forget
 

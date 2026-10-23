@@ -1,5 +1,45 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), evening: slice 3 is live (contract and buyer side added)
+
+**See it:** https://realestate.hughesnode.com (house login). Press **Start demo** and walk steps 1 to 5, then
+**8** (buyer side), then 6 (offers) and 7 (contract): the buyer's offer comes before the offers screen
+(decision 34, Q47). `docs/DEMO-SCRIPT.md` says what to click and say on each screen.
+
+**Built (BUILD-3, second half):**
+- **The full Property Condition Disclosure Statement:** the current 56-question form (effective 2025-07-01), read
+  from the enacted bill text. Every field starts blank, and only the seller can submit it. The fictional demo
+  seller's answers can be submitted in one click, as the seller, and are labelled fiction.
+- **Step 8 Buyer side, four screens:**
+  - **Intake:** asks no question about family, religion or any other protected trait. The AI takes the buyer on as
+    a client under a red marker and sends the notices and a buyer agreement with a negotiable fee.
+  - **Search:** facts-only filters and an AI alert.
+  - **Tour:** refused until the buyer agreement is signed. Both clients consent in writing to dual agency.
+  - **Offer:** the buyer's AI advises and drafts the offer (red marker). The buyer approves it, and it becomes
+    offer B.
+- **Step 6 reworked:**
+  - The seller's counter now sets terms as well as price (closing range, inspection and mortgage periods,
+    requests), and code refuses anything outside them.
+  - The seller's AI and the buyer's AI negotiate. In the recorded run, the seller counters at $634,000 and lets
+    the AI go down to $628,000. The buyer approves a reply of $629,000, and the seller's AI agrees on its own.
+  - A test checks every model call of the whole run, and neither AI ever sees the other side's limits.
+- **Step 7 Contract:**
+  - The AI sends the accepted-offer memorandum.
+  - Opus drafts the contract of sale and a rider in the order of the bar-association long form. A side-by-side
+    note covers each of its 28 paragraphs.
+  - Code checks the draft against the deal, and refuses any wording that says a lawyer is unnecessary.
+  - The red marker states the law plainly and names the lawful route at launch, with a link to the plan.
+  - Signing is refused until the seller's disclosure statement is done.
+  - A signing map shows the deed's notary, the power-of-attorney witnesses and the detector affidavit.
+  - Both parties sign (simulated).
+  - The PDF (17 pages) and the DOCX carry the label on every page.
+- **Models:** Opus drafts the contract after a side-by-side found it decisively better on New York mechanics
+  (decision 36, Q48). The other new tasks run on Sonnet, and the buyer's search alert on Haiku.
+- **Checks:** 118 tests pass. `scripts/live-flow.sh` walks steps 1 to 8 on the live site, and every check passes.
+  The walk replays at no cost.
+- **App spend:** the app's own live spend for slice 3 was $0.98, all on recording. Disk: 18 GB free.
+- **Next:** slice 4 (step 10, demo mode, timeline finish, PII export and delete, Playwright, spend roll-up).
+
 ## 2026-10-23 (day 1), late: pricing fixed; slice 3 half built (Communications and Offers live)
 
 **See it:** https://realestate.hughesnode.com (house login): steps 2, 5 and 6.
