@@ -29,6 +29,14 @@ use; if it says a claude.ai login, tell Joe the key step was skipped and give hi
 | WS6 | `WS6 Free inspection/pre_listing_inspection.md` |
 | WS7 | `WS7 POC building blocks/what_already_exists.md` |
 
+## Known weakness of the cloud research: web-search budget
+
+At least two cloud passes reported that the session's shared web-search budget ran out mid-task; they fell
+back to fetching known URLs directly and listed what they could not check under "Gaps" in their notes
+(for example Zillow pages returned bot-blocks and are cited by URL for the attorney to open). Before step 3,
+read each notes file's Gaps sections and run short gap-filling passes with your own fresh search budget,
+appending findings to the same files under a dated "Gap fill" heading.
+
 ## What to do next, in order
 
 1. `bash scripts/disk-check.sh`. Record the result in `docs/PROGRESS.md`. Warn Joe if under 6 GB.
