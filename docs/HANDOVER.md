@@ -64,6 +64,9 @@ appending findings to the same files under a dated "Gap fill" heading.
 
 ## Rules that are easy to forget
 
+- Joe sees things by link: `https://realestate.hughesnode.com` (house login), republished on every commit
+  (decision 13). Send him the page link, not a file path.
+
 - Never touch `/root/projects/shorts`. Never put the API key anywhere but the files `secret-set.sh` writes.
 - Joe reads on his phone: short, plain, exact commands.
 - Thoroughness over cost; `/clear` between unrelated tasks.

@@ -59,3 +59,12 @@ with a dated line.
     Resolution: the interactive session runs on the claude.ai login (`scripts/session-billing.sh off`) and
     launches headless jobs with `scripts/api-run.sh`, each billed to the key and cost-logged per workstream
     tag; the POC app bills the key directly. The chat's own orchestration is the only Max usage.
+13. **hughesnode is the home base for everything Joe sees (2026-10-23, night).** Joe: "start using hughesnode
+    as a home base for reviews you need me to see. it'll also be the place where demos are performed, user
+    tests are performed, etc. It's often easiest if you provide me a link." Files on the VPS are hard to get
+    to his phone; a link is not. So `https://realestate.hughesnode.com` (private, house login) is the project's
+    own address. Today it is a static review home: `scripts/publish-review.sh` renders `docs/` and
+    `research_notes/` as phone-readable pages, and git hooks (`scripts/install-hooks.sh`) republish it after
+    every commit and pull. When the POC is built it moves in at the same address (the hughesnode project's type
+    changes from static to docker), with the review pages kept alongside the demo, so Joe has one bookmark.
+    The existing `review` and `demo` hughesnode apps belong to other projects and are not used.

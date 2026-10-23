@@ -30,6 +30,12 @@
   logged with reasoning; daily summary in `docs/PROGRESS.md`; questions in `docs/QUESTIONS-FOR-JOE.md` with a
   provisional choice so nothing blocks; explicit out-of-scope; fair-housing checks in every copy pipeline;
   PII handled as a first-class concern (minimise, mark, log access, allow export and delete, keep out of logs).
+- **Show Joe things by link, on hughesnode (Joe, 2026-10-23).** `https://realestate.hughesnode.com` (house
+  login) is the home base for anything Joe should see: reviews, deliverables, demos, user tests. Getting files
+  off the VPS to his phone is hard; a link is easy. Commit, and the git hooks republish the review pages
+  (`scripts/publish-review.sh`; run `scripts/install-hooks.sh` once per clone); then give him the page's link,
+  e.g. `https://realestate.hughesnode.com/docs-success-criteria.html`. New documents meant for him go in the
+  `SECTIONS` list of `scripts/publish_review.py`. To-do items link here, not to GitHub.
 - **Demo-ability is a design requirement:** each stage is its own visible screen; the AI's work is shown, not
   hidden; every human or licensed step is a visible checkpoint with its reason; a guided demo mode and
   `docs/DEMO-SCRIPT.md` stay in step with the screens.
