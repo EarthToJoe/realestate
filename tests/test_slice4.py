@@ -98,7 +98,7 @@ def test_claims_check_catches(text, rule):
 
 @pytest.mark.parametrize("text", [
     "Having a lawyer review your contract is always your choice, and we encourage it.",
-    "A licensed home inspector inspects the house.", "One flat fee: $4,995, paid at closing.",
+    "A licensed home inspector inspects the house.", "One flat fee: $4,500, paid at closing.",
     "The AI reviews every offer with you."])
 def test_claims_check_lets_honest_copy_through(text):
     assert not [f for f in brand.claims_check(text) if f["tier"] == "block"]
@@ -123,6 +123,27 @@ def test_campaign_model_context_has_no_deal_or_person(client, provider):
     req = next(r for r in provider.requests if r["task"] == "brand.campaign")
     body = json.loads(req["user"])
     assert set(body) == {"firm", "firm_note", "founder", "area", "services", "flat_fee", "timeline", "ad_area"}
+
+
+def test_founder_placeholder_is_a_styled_fill_in_chip(client):
+    """Q49: no real person named without consent; the placeholder reads as a deliberate fill-in, never as a bug."""
+    walked(client)
+    page = client.get("/brand").text
+    assert 'class="fill-in"' in page and 'title="Named once the founder agrees; see Q49"' in page
+    assert "[Founder" not in page and "[FOUNDER]" not in page
+
+
+def test_fees_match_the_plan():
+    """WS4's working fees, as in the executive summary and the plan: $4,500 seller side, $3,500 buyer side."""
+    from app.brokerage import brokerage
+    from app.modules.buyer.service import buyer_agreement
+    from app.modules.pricing.service import net_sheet
+
+    b = brokerage()
+    assert b["flat_fee"].startswith("$4,500 ") and b["buyer_fee"].startswith("$3,500 ")
+    assert "demonstration figure" in b["flat_fee"] and "negotiable" in b["buyer_fee"]
+    assert net_sheet(600_000)["lines"][0]["amount"] == 4500
+    assert any("$3,500" in term for term in buyer_agreement()["terms"])
 
 
 # ---- the finished timeline (SC9) -----------------------------------------------------------------------------

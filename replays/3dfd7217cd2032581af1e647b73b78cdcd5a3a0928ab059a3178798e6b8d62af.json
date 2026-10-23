@@ -1,0 +1,44 @@
+{
+ "request_hash": "3dfd7217cd2032581af1e647b73b78cdcd5a3a0928ab059a3178798e6b8d62af",
+ "task": "brand.campaign",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "campaign.v1",
+ "recorded_at": "2026-10-23 15:16 UTC",
+ "output": {
+  "landing_page": {
+   "headline": "Sell your Hudson Valley home with an AI agent, one flat fee",
+   "body": [
+    "Hudson Valley AI Realty is run by an AI agent. It is software, not a person. [FOUNDER] started the firm to guide owners in Dutchess County and the Hudson Valley from listing to signed contract.",
+    "Here is how it works, step by step. The AI builds a pricing analysis from public sales records. It writes your listing copy, flyer and social posts, and checks them against fair-housing rules. It prepares your listing package for the MLS, so your listing is ready in 2 days. It answers enquiries and books showings within 24 hours. It presents, compares and negotiates offers. Then it drafts the contract and rider, attaches disclosures, and coordinates to closing.",
+    "The fee is a $4,500 flat listing fee, paid at closing. That is a demonstration figure. Fees are not set by law and are negotiable. A typical Dutchess County sale takes 60 to 90 days to close. We encourage you to have your own lawyer review your contract."
+   ],
+   "call_to_action": "Tell us about your home to begin"
+  },
+  "local_ad": {
+   "headline": "Selling a home? One flat fee.",
+   "text": "An AI agent handles your listing through to a signed contract. $4,500 flat, paid at closing. Ask for our free guide to selling costs."
+  },
+  "lead_magnet": {
+   "title": "What Selling in the Hudson Valley Costs and Takes",
+   "pitch": "A free, step-by-step guide to the costs and the timeline of selling a home in Dutchess County and the Hudson Valley. See each step from pricing to closing.",
+   "outline": [
+    "Pricing your home from public sales records",
+    "Getting your listing ready in 2 days",
+    "Enquiries and showings: what happens in the first 24 hours",
+    "Offers: how they are presented, compared and negotiated",
+    "Contract, rider and disclosures, and why to have your own lawyer",
+    "Closing: the 60 to 90 day timeline and the $4,500 fee paid at closing"
+   ]
+  },
+  "targeting_reason": "The ad is shown by place only, to people within 15 miles of Pawling, NY, and never chosen by who they are. Every owner inside that radius can see the same ad."
+ },
+ "request": {
+  "task": "brand.campaign",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 6000,
+  "prompt_version": "campaign.v1",
+  "schema": "Campaign",
+  "system": "You write the marketing for a New York real estate brokerage's own business: not for one house, for the firm. The\nfirm's AI is the agent for home sellers (and buyers) from listing to signed contract, at the flat fee given. Write\nfrom the facts you are given only. Never invent a statistic, a past sale, a review, an award or a saving.\n\nWrite three pieces:\n- landing_page: for home sellers in the area given. Headline; 2 or 3 short paragraphs (120 to 200 words in all)\n  saying what the firm does for a seller, step by step, and the flat fee; one call to action. Mention the founder\n  once, by the token [FOUNDER] exactly (the firm fills in the name).\n- local_ad: one ad for Facebook and Instagram, for home sellers in the area. Headline under 40 characters; text\n  under 150 characters.\n- lead_magnet: a free guide a seller can ask for on the landing page: what selling a home in the area costs and\n  takes, step by step. Title, a one or two sentence pitch, and 4 to 6 outline lines.\n- targeting_reason: one or two sentences on reaching people by place only, within the radius given.\n\nFair housing (federal Fair Housing Act; NY Executive Law §296; 19 NYCRR 175.17) applies to every word:\n- Speak to home sellers as owners of a property; never describe who a buyer or seller is or should be.\n- No references to race, colour, religion, national origin, citizenship, sex, sexual orientation, gender identity,\n  age, disability, marital or familial status, military status, source of income or domestic-violence status.\n- No school, safety, crime or \"who lives here\" talk; no \"exclusive\" or \"prestigious\" areas.\n- No blockbusting: never suggest that anyone should sell because the area or its people are changing (19 NYCRR\n  175.17). No pressure or urgency about the neighbourhood.\n\nHonest claims (FTC Act §5; 16 CFR 465; NY General Business Law §349 and §350):\n- Say plainly that the agent is AI software. Do not call the firm or the AI \"licensed\". Do not claim to replace\n  agents, brokers, lawyers or attorneys, or that a seller does not need a lawyer; never discourage anyone from\n  having a lawyer.\n- No reviews, star ratings, testimonials or quotes from clients. No guarantees. No savings figures or comparisons\n  with other firms' fees: state the flat fee as a fact.\n- No contact details in the copy: the page adds them.\n\nPlain, warm, specific, short sentences. No exclamation marks.\n",
+  "user": "{\"ad_area\": \"within 15 miles of Pawling, NY\", \"area\": \"Dutchess County and the Hudson Valley, New York\", \"firm\": \"Hudson Valley AI Realty\", \"firm_note\": \"demonstration name; not a licensed firm\", \"flat_fee\": \"$4,500 flat listing fee, paid at closing (demonstration figure); fees are not set by law and are negotiable\", \"founder\": \"[FOUNDER]\", \"services\": [\"Pricing analysis from public sales records\", \"Listing copy, flyer and social posts, fair-housing checked\", \"Listing package prepared for the MLS\", \"Enquiries answered and showings booked within 24 hours\", \"Offers presented, compared and negotiated\", \"Contract draft and rider, disclosures attached\", \"Coordination to closing\"], \"timeline\": \"Listing ready in 2 days; typical Dutchess County sale 60 to 90 days to close\"}"
+ }
+}

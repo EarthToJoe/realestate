@@ -1,0 +1,47 @@
+{
+ "request_hash": "df64eb282e033bb64b97f3badcdd3639943f50aa14d47eb7d21277c23aeae4e6",
+ "task": "offers.advise",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "advise.v2",
+ "recorded_at": "2026-10-23 15:14 UTC",
+ "output": {
+  "offers": [
+   {
+    "label": "A",
+    "summary": "$630,000, which is $10,000 under list and inside the $610,000 to $650,000 range. Your estimated net before your mortgage payoff is $620,480. The buyer has a conventional mortgage with 10% down, pre-approval attached, and wants the riding mower to stay.",
+    "risks": [
+     "The offer depends on the buyer selling their current home within 60 days. If that home doesn't sell, the buyer can walk away, and nothing in the offer shows whether it is listed or under contract.",
+     "The 75-day closing and the 45-day mortgage-commitment period are long. Your house would stay off the market that whole time.",
+     "The well and septic tests and the 10-day inspection give the buyer more ways to ask for a lower price or repairs."
+    ],
+    "advice": "Higher price and net than B, but the home-sale contingency makes it the weaker deal. I would only work with it if the buyer drops that contingency, and I would keep it as a backup."
+   },
+   {
+    "label": "B",
+    "summary": "$625,000, which is $15,000 under list and inside the pricing range. Your estimated net before your mortgage payoff is $615,500. The buyer has a conventional mortgage, pre-approval attached, a 10% deposit and no special requests. The firm represents both you and this buyer (dual agency), and both of you consented in writing. I have judged this offer on its terms only.",
+    "risks": [
+     "The inspection covers the roof, heating system and oil tank, plus well water and septic tests, so repair or credit requests are possible within the 10-day inspection period.",
+     "The price is $5,000 below A, and your net is $4,980 lower.",
+     "The mortgage-commitment period is 30 days, which is short. That is good for you, but the buyer must get the loan approved quickly."
+    ],
+    "advice": "This is the cleaner offer: no home-sale contingency, a shorter 60-day closing, a 30-day mortgage period and no extra requests. It is a little low, so I would counter it."
+   }
+  ],
+  "recommendation": "I suggest working with Offer B and countering rather than accepting as is. It has no home-sale contingency, a quicker 60-day closing and a shorter mortgage period, so it is much more likely to close than A. A pays $5,000 more, but if the buyer's own home doesn't sell, A could fall through after months of waiting. B is $15,000 under list, and the house has only been on the market 9 days, so there is room to ask for more. Buyers liked the lot and kitchen, though the lack of central air and the road noise may be holding prices down. The firm represents both sides on B, so I am judging it only on its terms. No offer is binding until a formal contract is signed by both parties, and the decision is yours.",
+  "suggested_offer": "B",
+  "suggested_action": "counter",
+  "suggested_counter_price": 635000,
+  "suggested_lowest_price": 628000,
+  "suggested_closing_days": 60,
+  "suggested_terms": "Keep the 60-day closing, the 10-day inspection period and the 30-day mortgage-commitment period as offered. Ask the buyer to limit any inspection requests to real defects found in the inspection. Keep Offer A as a backup in case B does not come together."
+ },
+ "request": {
+  "task": "offers.advise",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 6000,
+  "prompt_version": "advise.v2",
+  "schema": "OfferAdvice",
+  "system": "You are the listing agent for a New York real estate brokerage. You act for the seller. Present every written\noffer you are given to the seller, none left out, and advise on each with your reasoning: price against the list\nprice and the pricing range, the seller's estimated net, financing, deposit, contingencies and their deadlines\n(inspection and mortgage-commitment periods, in days), closing date, the buyer's requests, and the risk that the\ndeal falls through. Then recommend which offer to work with and whether to accept, counter or reject it. The\nseller decides; you advise.\n\nUse only the data you are given; the software computed the net figures. Offer B comes from the firm's own buyer\nclient: say plainly that the firm represents both sides on it (dual agency, which both clients consented to in\nwriting) and judge it on its terms only. You do not know, and must not guess, anything the buyer has not put in\nthe offer. Offers are not binding until a formal contract is signed by both parties.\n\nIf you suggest a counter, give a round counter price, the lowest round price you suggest the seller allow you to\nagree without coming back, the closing (days from signing) the counter should ask for, and one or two sentences on\nthe other terms (inspection and mortgage periods, the buyer's requests). The software lets the seller set limits on\neach and refuses any counter outside them.\n\nPlain words for a homeowner. Never mention protected characteristics of any buyer.\n",
+  "user": "{\"list_price\": 640000, \"market\": {\"days_on_market\": 9, \"pricing_range\": \"$610,000 to $650,000 (step 2)\", \"showing_feedback\": \"liked the lot and kitchen; concerns: no central air, road noise\"}, \"offers\": [{\"closing_days\": 75, \"contingencies\": [\"mortgage commitment\", \"home inspection\", \"well and septic tests\", \"sale of the buyer's current home within 60 days\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage, 10% down; pre-approval attached\", \"inspection_days\": 10, \"label\": \"A\", \"mortgage_days\": 45, \"net_before_mortgage\": 620480, \"price\": 630000, \"requests\": [\"the riding mower stays\"], \"side\": \"outside\", \"vs_list\": -10000}, {\"closing_days\": 60, \"contingencies\": [\"Mortgage commitment\", \"Home inspection, including roof, heating system and oil tank\", \"Well water quality and flow test\", \"Septic inspection\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage; pre-approval attached\", \"inspection_days\": 10, \"label\": \"B\", \"mortgage_days\": 30, \"net_before_mortgage\": 615500, \"price\": 625000, \"requests\": [], \"side\": \"firm_buyer\", \"vs_list\": -15000}]}"
+ }
+}

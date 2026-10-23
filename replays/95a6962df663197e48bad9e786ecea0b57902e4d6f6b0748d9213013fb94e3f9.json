@@ -1,0 +1,25 @@
+{
+ "request_hash": "95a6962df663197e48bad9e786ecea0b57902e4d6f6b0748d9213013fb94e3f9",
+ "task": "buyer.counter_advise",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "counter_advise.v1",
+ "recorded_at": "2026-10-23 15:14 UTC",
+ "output": {
+  "advice": "The seller came down nothing on terms and moved up only $10,000 from your $625,000 offer, to $635,000. Everything else matches your offer, including the 60-day closing, the inspections and the mortgage period, and the price is within your budget. You could accept, but the gap is small and the seller has moved once, so I suggest a modest counter at $630,000 with the terms unchanged. This meets them partway and shows you're serious. The risk is that the seller holds at $635,000, and you could still accept then, though nothing guarantees the seller will wait. Nothing is binding until both sides sign a formal contract, and the choice is yours.",
+  "action": "counter",
+  "price": 630000,
+  "closing_days": 60,
+  "inspection_days": 10,
+  "mortgage_days": 30,
+  "requests": []
+ },
+ "request": {
+  "task": "buyer.counter_advise",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 6000,
+  "prompt_version": "counter_advise.v1",
+  "schema": "BuyerCounterAdvice",
+  "system": "You are a New York real estate brokerage's buyer's agent. You act for the buyer and owe the buyer loyalty and\nconfidentiality. The seller has countered your buyer's offer. Advise the buyer on the counter and draft the reply:\naccept it, counter (price and terms), or walk away. Use only the buyer's own offer, the seller's counter as the\nseller's side sent it, the buyer's needs and private notes, and the buyer's private maximum price.\n\nYou know nothing about the seller's limits beyond the counter itself, and you must not guess them. Never reveal the\nbuyer's maximum price; a reply never states it. Never advise the buyer to exceed it. If the counter is within the\nbuyer's maximum and the terms suit the buyer's notes, say whether accepting or a modest counter is the better\nchoice, and why. If you counter, give a round price and the closing, inspection and mortgage periods in days.\n\nThe buyer decides; the reply is sent only after the buyer approves it. Nothing is binding until a formal contract\nis signed by both parties. Plain words.\n",
+  "user": "{\"acting_for\": \"buyer\", \"buyer_offer\": {\"closing_days\": 60, \"contingencies\": [\"Mortgage commitment\", \"Home inspection, including roof, heating system and oil tank\", \"Well water quality and flow test\", \"Septic inspection\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage; pre-approval attached\", \"inspection_days\": 10, \"mortgage_days\": 30, \"price\": 625000, \"requests\": []}, \"earlier_counters\": [], \"instructions\": {\"authority\": {}, \"confidential\": {\"maximum_price\": 665000, \"notes\": \"Needs a home office; flexible on closing date\"}, \"fact_sheet\": {\"acres_min\": 1.0, \"beds_min\": 3, \"must_haves\": \"A room for a home office; some land; room for a garden\", \"preapproval_amount\": 680000, \"preapproved\": true, \"timeline\": \"Flexible; closing in about two months suits\", \"towns\": [\"Pawling\", \"Beekman\", \"Dover\", \"Union Vale\", \"East Fishkill\"]}}, \"parties\": {\"client\": \"[BUYER_1]\", \"other_party\": \"[SELLER_1]\"}, \"property\": {\"address\": \"146 Route 292, Holmes, NY\", \"facts\": [{\"field\": \"ArchitecturalStyle\", \"label\": \"Building style\", \"source\": \"public_record\", \"value\": \"Raised ranch\"}, {\"field\": \"LivingArea\", \"label\": \"Living area (sq ft)\", \"source\": \"public_record\", \"value\": \"2,520\"}, {\"field\": \"LotSizeAcres\", \"label\": \"Lot size (acres)\", \"source\": \"public_record\", \"value\": \"4.18\"}]}, \"replies_sent\": [], \"seller_counter\": {\"closing_days\": 60, \"contingencies\": [\"Mortgage commitment\", \"Home inspection, including roof, heating system and oil tank\", \"Well water quality and flow test\", \"Septic inspection\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage; pre-approval attached\", \"inspection_days\": 10, \"mortgage_days\": 30, \"price\": 635000, \"requests\": []}}"
+ }
+}

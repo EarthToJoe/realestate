@@ -308,7 +308,7 @@ def net_sheet(price: int, annual_tax: int | None = None) -> dict:
     """The seller's estimated proceeds before any mortgage payoff. Figures are estimates for the demonstration
     [INFERENCE] except the NY transfer tax rate (Tax Law §1402: $2 per $500 of consideration, paid by the seller)."""
     b = brokerage()
-    fee = 4995
+    fee = int(b["flat_fee_usd"])
     lines = [
         {"item": f"{b['name']} flat listing fee (paid at closing)", "amount": fee, "note": b["flat_fee"]},
         {"item": "NY State real estate transfer tax (0.4%)", "amount": int(round(price * 0.004)),

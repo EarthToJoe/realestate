@@ -10,9 +10,13 @@ default:
   email: hello@example.com
   broker_of_record: "Licensed broker of record: required by NY law; none in this demonstration"
   broker_marker: CP-35
-  flat_fee: "$4,995 flat listing fee, paid at closing (demonstration figure)"
+  # Fees follow WS4's working figures (the executive summary and the plan): seller side $4,500, buyer side $3,500,
+  # each paid at closing on the broker-only route. The *_usd numbers feed the net sheets; keep them in step.
+  flat_fee_usd: 4500
+  flat_fee: "$4,500 flat listing fee, paid at closing (demonstration figure); fees are not set by law and are negotiable"
   # The buyer agreement states an objectively ascertainable fee and that it is negotiable (L15).
-  buyer_fee: "$4,995 flat buyer-representation fee, paid by the buyer at closing (demonstration figure); fees are not set by law and are negotiable"
+  buyer_fee_usd: 3500
+  buyer_fee: "$3,500 flat buyer-representation fee, paid by the buyer at closing (demonstration figure); fees are not set by law and are negotiable"
   services:
     - Pricing analysis from public sales records
     - Listing copy, flyer and social posts, fair-housing checked
@@ -23,8 +27,9 @@ default:
     - Coordination to closing
   timeline: "Listing ready in 2 days; typical Dutchess County sale 60 to 90 days to close"
   # Step 10, the firm's own campaign. The founder is not named in the demonstration (QUESTIONS-FOR-JOE Q49): the
-  # copy carries the token [FOUNDER] and the screen shows this placeholder.
-  founder_display: "[Founder's name]"
+  # copy carries the token [FOUNDER] and the screen shows it as a styled fill-in chip with this label and tooltip.
+  founder_display: "Founder's name"
+  founder_tooltip: "Named once the founder agrees; see Q49"
   area: "Dutchess County and the Hudson Valley, New York"
   ad_center: "Pawling, NY"
   ad_radius_miles: 15

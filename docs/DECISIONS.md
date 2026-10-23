@@ -340,3 +340,16 @@ with a dated line.
     confirm screen says so plainly. Provisional for production: erase marketing and other data at once, the signed
     records when the period ends (Q50). Only the firm (the Presenter) or the person may open a record: the seller
     never opens the buyer's, nor the buyer the seller's.
+46. **The demo's fees follow WS4, and the founder placeholder is a styled fill-in (2026-10-23, BUILD-POLISH).** The
+    chat session's review of slice 4 found `config/brokerage.yaml` charging $4,995 on each side while the executive
+    summary, the plan and WS4 use $4,500 for the seller and $3,500 for the buyer, paid at closing on the broker-only
+    route. The father-in-law reads both, so the config now carries WS4's figures (`flat_fee_usd` 4500,
+    `buyer_fee_usd` 3500, each text still "demonstration figure" and "fees are not set by law and are negotiable"),
+    and the pricing net sheet reads the number from config instead of a constant. Every model request that carried the
+    fee or a figure derived from it was re-recorded (8 live calls, $0.3149): the firm's campaign and its four
+    fair-housing reviews, and the seller's offer advice, whose "seller keeps" figures moved by $495. The new advice
+    suggests a $635,000 counter (was $634,000), so the recorded deal now agrees at **$630,000** (was $629,000) and the
+    buyer's counter advice and the Opus contract draft were re-recorded too. The eight superseded replays are deleted.
+    Second, "[Founder's name]" in brackets read as a bug on the landing page: the campaign now renders the [FOUNDER]
+    token as a dotted fill-in chip labelled "Founder's name" with the tooltip "Named once the founder agrees; see Q49".
+    Q49's rule stands: no real person is named without consent. The campaign has no PDF; the chip is the only rendering.

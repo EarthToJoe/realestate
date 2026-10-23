@@ -267,13 +267,26 @@ def parse(art: CopyArtifact) -> dict:
     return {"title": rest[0] if rest else "", "pitch": " ".join(rest[1:]), "outline": outline}
 
 
-def founder(text: str) -> str:
+def founder_text(text: str) -> str:
+    """Plain text with the founder token filled by the placeholder label (for checks, never for the screen)."""
     return text.replace(FOUNDER, brokerage()["founder_display"])
 
 
+def founder_chip() -> Markup:
+    """The founder placeholder as a deliberate fill-in chip, not bracketed text (Q49: no one named without consent)."""
+    b = brokerage()
+    return Markup('<span class="fill-in" data-fill-in="founder" title="{}">{}</span>').format(
+        b["founder_tooltip"], b["founder_display"])
+
+
+def founder(text: str) -> Markup:
+    """The AI's text for the screen: escaped, with the founder token shown as the fill-in chip."""
+    return founder_html(escape(text))
+
+
 def founder_html(marked: Markup) -> Markup:
-    """The founder placeholder inside already-escaped HTML (the token has no characters HTML escapes)."""
-    return Markup(str(marked).replace(FOUNDER, str(escape(brokerage()["founder_display"]))))
+    """The founder chip inside already-escaped HTML (the token has no characters HTML escapes)."""
+    return Markup(str(marked).replace(FOUNDER, str(founder_chip())))
 
 
 # ---- the AI's acts ------------------------------------------------------------------------------------------------
@@ -383,7 +396,7 @@ def set_targeting(s: Session, deal: Deal) -> list[dict]:
 
 def rendered_landing(art: CopyArtifact) -> str:
     """What the published page carries: the AI's text plus the notices the code adds."""
-    return founder(art.text) + "\n\n" + "\n\n".join(n["text"] for n in notices())
+    return founder_text(art.text) + "\n\n" + "\n\n".join(n["text"] for n in notices())
 
 
 def publish(s: Session, deal: Deal) -> dict:

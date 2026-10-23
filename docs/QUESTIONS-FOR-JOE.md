@@ -191,8 +191,8 @@ filled with a usual Hudson Valley figure, that is a prompt change; it needs his 
 demo.
 
 **Q49. The founder on the firm's own advertising.** Step 10's landing page names the firm's founder, as the
-brief asks; the demo shows a placeholder, "[Founder's name]", because naming a real person in public advertising
-needs that person's consent. *Provisional:* keep the placeholder. If your father-in-law (or you) should be named, tell
+brief asks; the demo shows a placeholder, a dotted "Founder's name" fill-in (decision 46), because naming a real
+person in public advertising needs that person's consent. *Provisional:* keep the placeholder. If your father-in-law (or you) should be named, tell
 me the name and the one line to say about him; it is one line in `config/brokerage.yaml`. *Unblocks:* nothing for the
 demo.
 

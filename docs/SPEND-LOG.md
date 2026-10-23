@@ -67,8 +67,9 @@ own model calls (decision 19). Cross-check: the Anthropic Console usage page.
 | 2026-10-23 | local, `scripts/slice3-models.py compare` | contract.draft (Opus, `draft.v1`) | claude-opus-5-5 | 1,587 in / 14,114 out | 0.2976 | The spec's Opus/Sonnet contract side-by-side |
 | 2026-10-23 | local, `scripts/slice3-models.py record`, run 3 | contract.draft (Opus, `draft.v2`) | claude-opus-5-5 | 1,595 in / 12,841 out | 0.2731 | The shipped contract replay (decision 36) |
 | 2026-10-23 | local, `scripts/slice4-models.py record` (BUILD-4) | brand.campaign (Sonnet) and 4 fairhousing.review (Haiku): step 10's replays | Sonnet + Haiku | not kept (the run database was rebuilt by the next run; the script now keeps a ledger) | ~0.01 (estimate from the slice-2 per-call measurements) | Replays for step 10, so the whole demo runs at $0 |
+| 2026-10-23 | local, `scripts/slice4-models.py record` (BUILD-POLISH) | offers.advise, buyer.counter_advise (Sonnet), contract.draft (Opus), brand.campaign (Sonnet), 4 fairhousing.review (Haiku) | Opus + Sonnet + Haiku | 4,163 in / 18,216 out | 0.3149 | Fees set to WS4 ($4,500 / $3,500); every request that carried them re-recorded (decision 46) |
 
-**App live spend after slice 4: about $1.20** (slice 4 added about $0.01, the step-10 recording; the hosted app's own live calls are $0.0295 in all, rolled up below). Before slice 4: **about $1.19** (slice 1 $0.001; slice 2 about $0.20; slice 3 $0.98: the pricing fix
+**App live spend after the fee fix (BUILD-POLISH): about $1.52** (the fee fix re-recorded 8 calls for $0.3149, decision 46; the hosted app still $0.0295). **After slice 4: about $1.20** (slice 4 added about $0.01, the step-10 recording; the hosted app's own live calls are $0.0295 in all, rolled up below). Before slice 4: **about $1.19** (slice 1 $0.001; slice 2 about $0.20; slice 3 $0.98: the pricing fix
 $0.10, steps 5 and 6 $0.05, the slice-3 recordings and the contract side-by-side $0.83) of the $12 app cap (inside
 the $15 demo reserve on the API key). The hosted app answers the whole demo walk, steps 1 to 8, from the recorded
 replays at no cost: a local replay-mode walk of `scripts/live-flow.sh` ends at $0.0000. Tests use the fake
@@ -76,14 +77,14 @@ provider. A fully live run of the walk would cost about $0.50 (the Opus contract
 
 <!-- app-spend:begin -->
 
-### The app's own calls, rolled up by `scripts/app-spend.py` (2026-10-23 15:07 UTC)
+### The app's own calls, rolled up by `scripts/app-spend.py` (2026-10-23 15:23 UTC)
 
 **Hosted app** (`model_call` in the container's database, every call since it was created):
 
 | Mode | Calls | Cost (USD) |
 |---|---|---|
 | live | 9 | 0.0295 |
-| replay | 597 | 0.0000 |
+| replay | 657 | 0.0000 |
 
 Live calls on the hosted app, by task:
 
@@ -94,6 +95,8 @@ Live calls on the hosted app, by task:
 | offers.advise | claude-sonnet-5-5 | 1 | 369 | 1,169 | 0 | 1,438 | 0.0180 |
 
 **Hosted live spend: $0.0295** of the $12 app cap (the footer of every page shows the same figure).
+
+**Local recordings logged by `scripts/slice4-models.py`** (8 live calls): $0.3149.
 
 <!-- app-spend:end -->
 
@@ -110,6 +113,7 @@ Live calls on the hosted app, by task:
 | BUILD-3 | Slice 3, second half: full PCDS form, Step 8 Buyer side, the offers rework, Step 7 Contract, models, replays, live walk; resumed with its context | notional (see `scripts/spend-summary.sh`) | Max plan |
 | BUILD-FIX | Demo usability fix: gate cards instead of redirects, fast-forward, "Decide as", phone layout; app live spend $0 (all replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
 | BUILD-4 | Slice 4: step 10, guided demo, finished timeline, PII export and delete, walk-order numbering, end-to-end browser run, polish; app live spend about $0.01 (step 10's replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
+| BUILD-POLISH | Content fixes from the slice-4 review: fees match the plan ($4,500 / $3,500), founder placeholder as a styled chip; app live spend $0.3149 (8 re-recorded replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
 
 **Credit after BUILD-1: $171.26 spent; $15 reserved for the demo's own calls; $13.74 left for BUILD-2.** The app's
 own live calls so far: $0.001 (two Haiku calls recording the replay).

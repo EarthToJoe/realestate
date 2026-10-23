@@ -1,5 +1,19 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), night: two content fixes from the slice-4 review (BUILD-POLISH)
+
+- **The fees now match the plan:** $4,500 for the seller, $3,500 for the buyer, paid at closing (WS4's figures, as
+  in the executive summary and the plan), on the intake services card, the pricing and offers net sheets, the buyer
+  agreement and the firm's campaign. No screen or recorded AI answer says $4,995 any more (decision 46).
+- **Knock-on in the recorded run:** with the new "seller keeps" figures the AI suggests a $635,000 counter, so the
+  deal now agrees at **$630,000** (was $629,000); the contract draft was re-recorded to match. 8 live calls, $0.3149;
+  the hosted demo still runs on recorded answers at $0 (hosted live total unchanged at $0.0295).
+- **"[Founder's name]" no longer looks like a bug:** the landing page shows a dotted "Founder's name" fill-in with
+  the tooltip "Named once the founder agrees; see Q49". Nobody is named without consent (Q49).
+- **Checks:** 165 tests pass (including the browser run of the guided demo on replays with no key);
+  `scripts/live-flow.sh` passes on the live site; 15 affected screenshots re-shot in `docs/build/screens/slice4/`.
+  The live deal is reset to the start. Disk: 13 GB free.
+
 ## 2026-10-23 (day 1), night: slice 4, the demo is complete (BUILD-4)
 
 All ten steps are built and live at https://realestate.hughesnode.com (house login). The live deal is reset to the
