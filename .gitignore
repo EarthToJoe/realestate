@@ -1,0 +1,15 @@
+# secrets never enter the repo
+secrets/
+*.key
+*.env
+.env*
+# python
+.venv/
+__pycache__/
+*.pyc
+# node (if ever used)
+node_modules/
+# local scratch
+tmp/
+*.log
+.DS_Store

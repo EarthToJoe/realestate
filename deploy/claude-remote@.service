@@ -1,0 +1,20 @@
+[Unit]
+Description=Claude Code Remote Control session for project %i (folder /root/projects/%i)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=root
+Environment=HOME=/root
+Environment=PATH=/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+WorkingDirectory=/root/projects/%i
+# Own tmux socket per project; Claude restarts in place if it exits. Same pattern as the other projects.
+# Only installed by scripts/vps-setup.sh when the VPS lacks the template already used by shorts.
+ExecStart=/usr/bin/tmux -L rc-%i new-session -d -s %i -c /root/projects/%i \
+  "while true; do /usr/bin/claude --remote-control %i; sleep 15; done"
+ExecStop=/usr/bin/tmux -L rc-%i kill-server
+
+[Install]
+WantedBy=multi-user.target
