@@ -1,5 +1,26 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1, VPS session), late night: night plan
+
+**Signed off:** success criteria (Joe: "i sign off"). **Demo house:** 146 Rt 292, Holmes, NY 12531 (decision 18).
+**Joe's answers** to Q4 to Q10 are in `QUESTIONS-FOR-JOE.md`; the meeting is about 2026-10-30.
+
+**Spend warning (decision 19).** About $125 of the $200 credit went in the first 35 minutes. Every job is now
+capped and leaner, and $15 is held back for the demo's own AI calls. The build does not fit in what is left;
+Joe chooses Max or more credit in the morning (on his to-do list).
+
+**Night plan, in order (each step only when the one before has landed):**
+1. Research jobs still running finish: WS1, WS2, WS3, WS6, the resumed WS5, the Holmes house data. Log, review,
+   commit, publish each. Salvage and resume any that lose helpers (WS3, WS2 at risk), within the cap.
+2. One lean job (cap $10): assumptions status lines, consolidated questions from all handoffs, `docs/PLAN.md`
+   and `docs/EXECUTIVE-SUMMARY.md`, reading only the deliverables and handoffs.
+3. One small job (cap $4): plain memo for the father-in-law on being broker and lawyer, and on running a NY
+   brokerage from out of state (Q4d, Q11).
+4. One job (cap $8): `docs/specs/poc-architecture.md` with the "what already exists" table, and
+   `docs/TRACEABILITY.md` from the F-IDs and L-IDs.
+5. One fact-check pass (cap $5): the load-bearing claims across all six reports, by a job that did not write them.
+6. Stop there and wait for Joe's billing answer before any build work.
+
 ## 2026-10-23 (day 1, VPS session), night
 
 **Disk:** 21 GB free of 96 GB (79% used). Fine; no action needed.

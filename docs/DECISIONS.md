@@ -93,3 +93,13 @@ with a dated line.
     address, so every legal step is New York's with no "launch market" label needed. Property facts and
     comparable sales come from Dutchess County, town assessor and New York State records, never a portal; no
     owner's name is stored. The Alexandria data job was stopped after two minutes (about $1, estimated).
+19. **Spending discipline after a fast start (Joe, 2026-10-23: "we're spending extraordinarily fast", "be
+    judicious about spending still").** The first wave (seven research jobs at xhigh effort, some with four
+    helper agents each re-reading large contexts) used about $125 of the $200 credit in 35 minutes; the cost is
+    mostly cache reads of big contexts over many turns, not the AI's writing. From now on: every job has a hard
+    cap (`--budget`, default $8), runs at `high` effort, reads the six deliverables and handoffs rather than the
+    1 MB of notes, and uses no helper agents unless the brief says so; the runner refuses any job that would cut
+    into a **$15 reserve** kept for the POC's own model calls at demo time. Remaining credit goes to the plan,
+    the executive summary, the father-in-law memo, the architecture spec and one fact-check pass. The POC build
+    does not fit in what is left: Joe decides in the morning whether it runs on the Max plan (his original order
+    was credit first, then Max) or on more API credit.

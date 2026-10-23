@@ -15,4 +15,12 @@ has since asked that everything run on the credit, so from the VPS session onwar
 | 2026-10-23 | WS1 to WS6 | Twelve research passes (cloud session) | n/a | n/a | 0 against the credit (Max plan) | cloud session |
 | 2026-10-23 | setup | Smoke test of the headless job pipeline (VPS) | 2 turns | | 0.08 | api-run |
 
-**Running total against the credit: $0.08** (WS1 to WS7 jobs running; totals added as each finishes)
+| 2026-10-23 | WS4 | Gap fill + cost-model deliverable | | | 10.18 | api-run |
+| 2026-10-23 | WS5 | Gap fill + competitors, first run (helpers stopped by the wait ceiling; nothing written) | | | 23.21 | api-run |
+| 2026-10-23 | WS7 | Gap fill, POC building blocks | | | 8.29 | api-run |
+| 2026-10-23 | WS7 | Demo-house data for Alexandria, stopped after 2 min when the address changed | | | ~1.00 (estimated) | transcript |
+| 2026-10-23 | WS1, WS2, WS3, WS6, WS5 resume, Holmes data | Still running at 03:57; estimated from transcripts so far: WS3 ~27.8, WS2 ~13.5, WS1 ~9.1, WS6 ~8.3, WS5 resume ~7.6, web searches ~7 | | | ~73 (estimated) | transcripts |
+
+**Running total against the credit: $42.76 logged, about $125 including the running jobs' use so far** (2026-10-23
+03:57 UTC). Estimates use per-token prices fitted from finished jobs' own cost breakdowns (they reproduce WS4 and
+WS7 to the cent). The Anthropic Console is the cross-check. Decision 19 sets the caps from here.
