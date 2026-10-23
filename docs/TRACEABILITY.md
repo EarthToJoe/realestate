@@ -9,7 +9,7 @@ Written 2026-10-23 from the architecture spec; **revised 2026-10-23 for decision
 sides and performs every agent act, including the functions WS1 classes "human or licence required", each with a
 red "NY law today" marker; the seller and the buyer make their own decisions). Status is updated as the build lands
 (planned → built → tested). Slice 1 statuses set 2026-10-23 (BUILD-1): "tested" means a pytest test and the
-live-site walk (`scripts/live-flow.sh`) check it. Slice 2 statuses set 2026-10-23 (BUILD-2): steps 2 to 4, same meaning; the live walk now covers steps 1 to 4. Slice 3 (BUILD-3, in progress) 2026-10-23: steps 5 and 6 tested; the live walk covers steps 1 to 6; steps 7 and 8 still planned.
+live-site walk (`scripts/live-flow.sh`) check it. Slice 2 statuses set 2026-10-23 (BUILD-2): steps 2 to 4, same meaning; the live walk now covers steps 1 to 4. Slice 3 statuses set 2026-10-23 (BUILD-3): steps 5 to 8 tested, including the full 7/1/25 PCDS form (CP-04, row "Disclosure checklist") and the information-wall test; the live walk covers steps 1 to 8 in the demo's walk order (1 to 5, 8, 6, 7).
 
 **In the demo** = who performs it in the product: **AI**, **seller**, **buyer**, **third party** (planned, named
 on the timeline), **human required** (a practical step with no software route). **NY law today** = the marker text
@@ -49,18 +49,18 @@ client_decision, LM law_marker, HR human_required, TP third_party, AU automated.
 | `offers` / AI presents every offer and advises with reasoning | 6 | F45, F47, F84 | L1, L18 | CP-11 LM | AI | Presenting offers and advising: licensed broker | tested |
 | `offers` / Seller decides: accept, counter or reject | 6 | F47 | L24 | CP-12 CD | seller | none | tested |
 | `offers` / AI negotiates the counter with the other side; code checks it against the seller's decision | 6, 8 | F48, F49 | L1, L18, L24 | CP-13 LM (per side) | AI | Negotiating price, terms, concessions: licensed broker | tested |
-| `contract` / Accepted-offer memorandum to both parties | 7 | F50 | L24 | CP-32 AU | AI | none | planned |
-| `contract` / Contract draft + rider, side-by-side with the standard form structure, page labels | 7 | F52, F54 | L21, L22, L23, L25 | CP-14 LM | AI | Drafting a contract for another is the practice of law (attorney) | planned |
-| `contract` / Disclosures attached (PCDS, lead paint, ag district, §242); signing blocked until PCDS delivered | 7 | F59 | L43, L44, L46, L60 | CP-32 AU | AI | none | planned |
-| `contract` / Signing map: e-signable vs wet ink and notary (`SignatureProvider` stub) | 7 | F67 | L34, L35, L45 | CP-15 HR | human required (notary; the parties in ink) | none (practical; shown as human required) | planned |
-| `contract` / Seller and buyer sign the contract (simulated e-sign) | 7 | F59 | L24, L34, L43 | CP-33 CD | seller, buyer | none | planned |
-| `buyer` / Buyer intake + representation disclosure | 8 | F6, F9, F18, F19 | L11, L12, L29, L37, L39 | CP-24 AU; CP-16 CD (part 1) | AI; buyer acknowledges | none | planned |
-| `buyer` / AI takes on the buyer as a client and records the agency relationship | 8 | F11, F12 | L1, L5, L13 | CP-30 LM | AI | Taking a client and deciding the agency relationship: licensed broker | planned |
-| `buyer` / Search alerts on fictional listings (`IDXConnector` stub) | 8 | F35, F36 | L37, WS3-D1, WS3-D6 | none (no steering filters) | AI | none | planned |
-| `buyer` / Tour request blocked until buyer agreement signed | 8 | F17, F37 | L15, WS3-R5 | CP-16 CD; then CP-29, and CP-10 or CP-28 | buyer signs; AI books | see CP-28 for a self-guided tour | planned |
-| `buyer` / Dual-agency consent (buyer wants the firm's own listing); information wall between the two AIs | 8 | F11, F51 | L13 | CP-17 CD | seller and buyer consent; AI keeps the wall | Designated agents must be two licensees (in the CP-30 marker) | planned |
-| `buyer` / AI advises on offer price and terms and drafts the offer | 8 | F23, F43, F44 | L6, L18, L22, L24 | CP-31 LM | AI | Advising the buyer on price: buyer's agent's fiduciary duty (licensed broker) | planned |
-| `buyer` / Buyer approves the offer and the reply to the counter | 8 | F44 | L24 | CP-18 CD | buyer | none | planned |
+| `contract` / Accepted-offer memorandum to both parties | 7 | F50 | L24 | CP-32 AU | AI | none | tested |
+| `contract` / Contract draft + rider, side-by-side with the standard form structure, page labels | 7 | F52, F54 | L21, L22, L23, L25 | CP-14 LM | AI | Drafting a contract for another is the practice of law (attorney) | tested |
+| `contract` / Disclosures attached (PCDS, lead paint, ag district, §242); signing blocked until PCDS delivered | 7 | F59 | L43, L44, L46, L60 | CP-32 AU | AI | none | tested |
+| `contract` / Signing map: e-signable vs wet ink and notary (`SignatureProvider` stub) | 7 | F67 | L34, L35, L45 | CP-15 HR | human required (notary; the parties in ink) | none (practical; shown as human required) | tested |
+| `contract` / Seller and buyer sign the contract (simulated e-sign) | 7 | F59 | L24, L34, L43 | CP-33 CD | seller, buyer | none | tested |
+| `buyer` / Buyer intake + representation disclosure | 8 | F6, F9, F18, F19 | L11, L12, L29, L37, L39 | CP-24 AU; CP-16 CD (part 1) | AI; buyer acknowledges | none | tested |
+| `buyer` / AI takes on the buyer as a client and records the agency relationship | 8 | F11, F12 | L1, L5, L13 | CP-30 LM | AI | Taking a client and deciding the agency relationship: licensed broker | tested |
+| `buyer` / Search alerts on fictional listings (`IDXConnector` stub) | 8 | F35, F36 | L37, WS3-D1, WS3-D6 | none (no steering filters) | AI | none | tested |
+| `buyer` / Tour request blocked until buyer agreement signed | 8 | F17, F37 | L15, WS3-R5 | CP-16 CD; then CP-29, and CP-10 or CP-28 | buyer signs; AI books | see CP-28 for a self-guided tour | tested |
+| `buyer` / Dual-agency consent (buyer wants the firm's own listing); information wall between the two AIs | 8 | F11, F51 | L13 | CP-17 CD | seller and buyer consent; AI keeps the wall | Designated agents must be two licensees (in the CP-30 marker) | tested |
+| `buyer` / AI advises on offer price and terms and drafts the offer | 8 | F23, F43, F44 | L6, L18, L22, L24 | CP-31 LM | AI | Advising the buyer on price: buyer's agent's fiduciary duty (licensed broker) | tested |
+| `buyer` / Buyer approves the offer and the reply to the counter | 8 | F44 | L24 | CP-18 CD | buyer | none | tested |
 | `timeline` / Deal dashboard coloured AI / client decided / NY law today / third party, built from records | 9 | F34, F63 | L5, L17 | displays all records | AI (display) | shows every marker | tested (first version, slice 1) |
 | `timeline` / Hurdle map: every red marker with rule, who the law says, link; header counts | 9 | F89 (evidence of what the law requires, by step) | L1, L5, L18, L21 | displays every LM, HR, TP | AI (display) | shows every marker | built (slice 1: markers and human-required steps by step, header counts; finished in slice 4) |
 | `timeline` / Planned: deposit escrow, inspection, mortgage, appraisal, title, walkthrough, closing | 9 | F55, F56, F57, F60, F61, F62, F66, F67, F68 | L25, L33, L35 | CP-20, CP-21, CP-22, CP-23 TP | third party | none (planned third-party steps) | built (planned records written at intake) |

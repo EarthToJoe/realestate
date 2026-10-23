@@ -31,6 +31,12 @@ def generate() -> str:
         "right) changes who is acting: Presenter, Seller or Buyer. Only the client whose decision it is can make it.",
         "",
     ]
+    order = [s["n"] for s in steps]
+    if order != sorted(order):
+        lines += [f"**Walk order:** {', '.join(map(str, order))}. The step list on screen stays in number order; the",
+                  "buyer's side (step 8) is walked before the offers (step 6) because offer B comes from the firm's own",
+                  "buyer, and the buyer's reply to the seller's counter is made on step 8's offer screen (decision 34).",
+                  ""]
     for s in steps:
         lines.append(f"## {s['n']}. {s['title']} ({s['minutes']:g} min){'' if s['built'] else f' (slice {s['slice']})'}")
         lines.append("")

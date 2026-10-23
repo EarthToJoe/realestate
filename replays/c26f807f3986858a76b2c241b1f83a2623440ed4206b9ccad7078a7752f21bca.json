@@ -1,0 +1,371 @@
+{
+ "request_hash": "c26f807f3986858a76b2c241b1f83a2623440ed4206b9ccad7078a7752f21bca",
+ "task": "contract.draft",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "draft.v1",
+ "recorded_at": "2026-10-23 12:20 UTC",
+ "output": {
+  "title": "Residential Contract of Sale and Rider: One-Family House, 146 Route 292, Holmes, Town of Pawling, Dutchess County, New York (Demonstration Draft)",
+  "sections": [
+   {
+    "number": "1",
+    "heading": "Premises",
+    "text": "[SELLER_1] agrees to sell and [BUYER_1] agrees to buy the one-family house and land at 146 Route 292, Holmes, Town of Pawling, Dutchess County, New York (about 4.18 acres according to the public record), together with the buildings on it and everything permanently attached to them. That includes the heating system and oil tank, the well and well pump and equipment, the septic system, plumbing and electrical systems, light fixtures, and any storm windows, screens and doors. It also includes [SELLER_1]'s rights, if any, in the road in front of the land and in any adjoining strips. The legal description in [SELLER_1]'s own deed will be used in the new deed. Together these are called the Premises."
+   },
+   {
+    "number": "2",
+    "heading": "Personal Property",
+    "text": "No items of personal property (things not attached to the house) are included in this sale beyond what clause 1 describes. The accepted offer lists none. Rider clause R5 says how any item can be added. Anything of [SELLER_1]'s that is not included must be removed before closing."
+   },
+   {
+    "number": "3",
+    "heading": "Purchase Price",
+    "text": "The purchase price is $629,000. It is payable as follows: (a) $62,900 (10% of the price) as the deposit under clause 6, paid when the contract is signed; and (b) the balance of $566,100 at closing, by the acceptable funds described in clause 7. The balance includes the proceeds of [BUYER_1]'s mortgage loan under clause 8 and Rider clause R1."
+   },
+   {
+    "number": "4",
+    "heading": "Existing Mortgage",
+    "text": "[BUYER_1] is not taking over any mortgage now on the Premises. [SELLER_1] will pay off and have discharged, at or before closing, every existing mortgage and similar lien on the Premises. The payoff may come from the purchase price as clause 20 allows. [SELLER_1] will ask each lender for a written payoff statement before closing."
+   },
+   {
+    "number": "5",
+    "heading": "Purchase Money Mortgage",
+    "text": "Not applicable. [SELLER_1] is not lending any part of the price to [BUYER_1]. [BUYER_1]'s financing comes from a third-party lender under clause 8 and Rider clause R1."
+   },
+   {
+    "number": "6",
+    "heading": "Downpayment in Escrow",
+    "text": "[BUYER_1] will deliver the $62,900 deposit to the escrow holder named in Rider clause R9 when both parties have signed this contract. The escrow holder will keep the deposit in a separate escrow account, will not mix it with its own money, and will release it only (a) at closing to [SELLER_1], as part of the price; (b) to [BUYER_1], if [BUYER_1] cancels in time under a contingency in this contract or this contract is properly ended for a reason that entitles [BUYER_1] to the deposit; (c) to [SELLER_1], if this contract is properly ended for [BUYER_1]'s default; or (d) as both parties agree in writing or as a court orders. If the parties disagree about the deposit, the escrow holder may keep it until they agree or a court decides, or may pay it into court. The escrow holder is a stakeholder, not a party to the sale, and is not liable for acting in good faith."
+   },
+   {
+    "number": "7",
+    "heading": "Acceptable Funds",
+    "text": "The deposit may be paid by wire transfer or by a check that clears and is collected before it is released. All money due at closing must be paid by wire transfer of immediately available funds, by an official bank check or certified check drawn on a bank in New York State, or by a check from the title company's or an attorney's escrow account. A personal check is not acceptable at closing. Checks are payable as the receiving party directs."
+   },
+   {
+    "number": "8",
+    "heading": "Mortgage Commitment Contingency",
+    "text": "[BUYER_1]'s obligation to buy depends on [BUYER_1] getting a written mortgage commitment within 30 days after the contract date (the Commitment Date). The commitment is for a conventional loan on the Premises, as set out in Rider clause R1. If [BUYER_1] does not get a commitment, [BUYER_1] may cancel in the way Rider clause R1 describes and will get the full deposit back. [BUYER_1] must apply promptly and in good faith and must not do anything meant to cause the lender to refuse."
+   },
+   {
+    "number": "9",
+    "heading": "Permitted Exceptions",
+    "text": "[SELLER_1] will convey title subject only to these Permitted Exceptions: (a) zoning and building laws, so long as the Premises can still be used as a one-family house; (b) recorded easements for utilities and recorded covenants and restrictions that do not stop that use or reduce the Premises' value; (c) facts an accurate survey would show, so long as they do not interfere with that use and no building encroaches on another's land or on a road; (d) real estate taxes that are not yet due, which are adjusted at closing; and (e) anything [BUYER_1] accepts in writing. Mortgages, judgments, tax liens and other money liens are not Permitted Exceptions."
+   },
+   {
+    "number": "10",
+    "heading": "Governmental Violations and Orders",
+    "text": "[SELLER_1] will comply with every notice of violation or order against the Premises issued by a government agency before the contract date, and will pay for that work, if the notice is on record or [SELLER_1] knows of it. If [SELLER_1] does not finish the work before closing, [SELLER_1] may instead give [BUYER_1] a credit at closing for its reasonable cost, as the parties agree in writing. If the parties cannot agree on that, [BUYER_1] may cancel by written notice and get the full deposit back. Violations first noted after the contract date do not give [BUYER_1] the right to cancel, unless they are based on conditions that existed before the contract date and the cost to correct them is substantial."
+   },
+   {
+    "number": "11",
+    "heading": "Seller's Representations",
+    "text": "[SELLER_1] states that, to [SELLER_1]'s knowledge, as of the contract date and again at closing: (a) [SELLER_1] owns the Premises and has the right to sell them; (b) [SELLER_1] has not received notice of any pending condemnation, special assessment, lawsuit or governmental proceeding affecting the Premises that has not been disclosed in writing to [BUYER_1]; (c) [SELLER_1] is not a foreign person for federal tax purposes; and (d) the facts [SELLER_1] gave on the Property Condition Disclosure Statement delivered under Rider clause R6 are true, to the best of [SELLER_1]'s knowledge. The statement is not a warranty and is not a substitute for [BUYER_1]'s own inspections."
+   },
+   {
+    "number": "12",
+    "heading": "Condition of Property",
+    "text": "[BUYER_1] has been given the chance to inspect the Premises. Subject to the contingencies in Rider clauses R2, R3 and R4 and to the Property Condition Disclosure Statement, [BUYER_1] will take the Premises in their present condition, reasonable wear and tear excepted, and [SELLER_1] makes no other promise about their condition. Until closing, [SELLER_1] will maintain the Premises, lawn and grounds as they are today. At closing, [SELLER_1] will deliver the Premises vacant and broom-clean, with the heating, plumbing, electrical, well pump and septic systems in the working order they are in on the contract date. [SELLER_1] will remove all debris and all personal property not included in this sale. [BUYER_1] may walk through the Premises shortly before closing. Risk of loss by fire or other casualty stays with [SELLER_1] until closing. If the Premises are materially damaged before closing, [BUYER_1] may cancel and get the full deposit back, or may close and receive [SELLER_1]'s insurance proceeds or a credit."
+   },
+   {
+    "number": "13",
+    "heading": "Insurable Title",
+    "text": "[SELLER_1] must deliver title that a reputable title insurance company licensed in New York is willing to insure for [BUYER_1], at regular rates, free of everything except the Permitted Exceptions. If [BUYER_1] wants a lender's policy, the lender's title requirements must be met by [SELLER_1] only so far as they relate to the quality of [SELLER_1]'s own title."
+   },
+   {
+    "number": "14",
+    "heading": "Closing, Deed and Title",
+    "text": "At closing, [SELLER_1] will deliver to [BUYER_1] a bargain and sale deed with covenant against grantor's acts, in proper form for recording, signed in ink by [SELLER_1] and acknowledged before a notary public, as set out in Rider clause R8. The deed must state the true price and must convey the Premises free of everything except the Permitted Exceptions. The deed will be signed by every person who owns the Premises. [SELLER_1] will also deliver any other documents this contract requires, including the transfer tax forms."
+   },
+   {
+    "number": "15",
+    "heading": "Closing Date and Place",
+    "text": "The closing will take place on December 22, 2026, which is 60 days after the contract date as the parties have agreed. It will be held at a place the parties agree on in writing or, if they have not, at the office of the title company or of the lender's attorney in or near Dutchess County. The parties may agree in writing to move the date. If either party cannot close on that date, the other may give written notice setting a new reasonable date and making time of the essence for that date. Closing may be completed without both parties present if the title company has the signed papers and the funds."
+   },
+   {
+    "number": "16",
+    "heading": "Conditions to Closing",
+    "text": "[BUYER_1] is not required to close unless: (a) [SELLER_1]'s statements in clause 11 are still true; (b) [SELLER_1] can deliver title as clause 13 requires; (c) the Premises are in the condition clause 12 requires; (d) [SELLER_1] delivers the closing items in Rider clause R8; and (e) the contingencies in Rider clauses R1 to R4 have been satisfied or have properly lapsed. [SELLER_1] is not required to close unless [BUYER_1] pays the price and delivers the documents [BUYER_1] must sign. A party may waive a condition that is for that party's benefit, but only in writing."
+   },
+   {
+    "number": "17",
+    "heading": "Deed Transfer and Recording Taxes",
+    "text": "[SELLER_1] will pay the New York State real estate transfer tax and will sign and file the transfer tax and real property transfer forms. [BUYER_1] will pay the cost of recording the deed, the mortgage recording tax and the fee for recording the mortgage, and [BUYER_1]'s own title search and title insurance charges. If any other transfer tax applies by law, the party the law makes responsible will pay it. This clause survives closing."
+   },
+   {
+    "number": "18",
+    "heading": "Apportionments and Other Adjustments; Water Meter and Installment Assessments",
+    "text": "At closing, these are adjusted as of midnight before the closing date, so that [SELLER_1] bears them up to that time and [BUYER_1] bears them afterward: (a) real estate taxes, by the tax period for which each tax is levied, including school tax, town tax and county tax; (b) fuel oil in the tank, which [BUYER_1] will pay [SELLER_1] for at the supplier's current price per gallon, measured by a reading taken shortly before closing, and (c) any other charge that normally is adjusted in a sale like this one. [SELLER_1] reports the annual tax bill at about $11,800, for information only and not as a promise of what future taxes will be. The Premises have a private well and septic system, so no public water meter reading or sewer charge is adjusted. If an installment assessment for a public improvement exists, [SELLER_1] will pay the installments due before the closing date and [BUYER_1] will pay the later ones. If a mistake is found after closing, the parties will correct it promptly by payment between them. This clause survives closing."
+   },
+   {
+    "number": "19",
+    "heading": "Allowance for Unpaid Taxes, etc.",
+    "text": "If, at closing, any tax, water or sewer charge, or similar charge that is a lien on the Premises is unpaid, [SELLER_1] will either pay it before closing or allow [BUYER_1] a credit for the amount due, with any interest and penalty. The title company or closing agent may then pay the charge from the balance due to [SELLER_1]."
+   },
+   {
+    "number": "20",
+    "heading": "Use of Purchase Price to Remove Encumbrances",
+    "text": "[SELLER_1] may use the money due at closing to pay and discharge mortgages, liens and other encumbrances that are not Permitted Exceptions. The title company or closing agent handling closing must pay them directly and deliver recordable satisfactions, or other evidence the title insurer accepts, at closing or afterward as the title insurer agrees to insure over them."
+   },
+   {
+    "number": "21",
+    "heading": "Title Examination; Seller's Inability to Convey; Limitations of Liability",
+    "text": "[BUYER_1] will order a title search promptly and give [SELLER_1] a written statement of any title objection as soon as [BUYER_1] learns of it. [SELLER_1] will use reasonable efforts to remove any objection that is not a Permitted Exception, but is not required to bring a lawsuit or to spend more than the amount needed to pay mortgages, tax liens and other liens made by [SELLER_1]. If [SELLER_1] cannot or will not cure an objection by the closing date, [BUYER_1] may (a) take the title [SELLER_1] can give, with no reduction in the price, or (b) cancel by written notice, in which case the deposit is returned in full and [SELLER_1] will reimburse [BUYER_1] for the reasonable cost of the title search and any survey, and neither party has any further liability to the other. [SELLER_1] may adjourn the closing for a reasonable time, which may be up to the period the parties agree in writing, to try to cure."
+   },
+   {
+    "number": "22",
+    "heading": "Affidavit as to Judgments, Bankruptcies, etc.",
+    "text": "[SELLER_1] will give [BUYER_1] and the title company an affidavit stating that no judgment, bankruptcy, tax lien or similar matter affects [SELLER_1] and could become a lien on the Premises. If the title search shows such a matter against a person with a name like [SELLER_1]'s, [SELLER_1] will give the evidence the title company needs to show it is not [SELLER_1]'s."
+   },
+   {
+    "number": "23",
+    "heading": "Defaults and Remedies",
+    "text": "If [BUYER_1] defaults and does not close when required, and the default is not a result of [SELLER_1]'s failure to perform or of a right of [BUYER_1] to cancel under this contract, [SELLER_1]'s only remedy is to keep the $62,900 deposit as liquidated damages. If [SELLER_1] defaults and does not close when required, and the default is not a result of [BUYER_1]'s failure to perform, [BUYER_1] may either (a) cancel and get back the deposit, with reimbursement of the reasonable cost of the title search, survey, and inspections, or (b) seek a court order requiring [SELLER_1] to sell the Premises as this contract says. A party who wants to claim the other is in default must first give written notice of the default and a reasonable chance to cure it."
+   },
+   {
+    "number": "24",
+    "heading": "Purchaser's Lien",
+    "text": "[BUYER_1] has a lien on the Premises for the amount of the deposit and any other amounts [SELLER_1] owes [BUYER_1] if this contract ends because of [SELLER_1]'s default or because [BUYER_1] properly cancels. The lien does not apply if [BUYER_1] is in default."
+   },
+   {
+    "number": "25",
+    "heading": "Notices",
+    "text": "Every notice under this contract must be in writing and must be delivered by hand, by a recognized overnight courier, or by email with a delivery or read confirmation, to the address or email the party writes next to that party's signature. A copy goes to any lawyer the party names there. The notice is effective when delivered, or on the next business day if delivered after 5 p.m. or on a weekend or holiday. The escrow holder and the broker are also given copies of any notice about the deposit or a contingency. Each party may change its address by notice to the others."
+   },
+   {
+    "number": "26",
+    "heading": "No Assignment",
+    "text": "[BUYER_1] may not transfer or assign this contract, in whole or in part, to anyone else without [SELLER_1]'s prior written consent. Any attempted assignment without that consent is void. [BUYER_1] remains responsible under this contract even if [SELLER_1] consents."
+   },
+   {
+    "number": "27",
+    "heading": "Broker",
+    "text": "Each party states that the only broker involved in this sale is Hudson Valley AI Realty (a demonstration name), which has acted for both parties as dual agent with each party's written consent, as noted in Rider clause R10. Each party will protect the other against claims for commission or fees by any other broker with whom that party dealt. The broker's commission, if any, is owed only under the separate written agreement with the broker and is payable by the party who agreed to pay it. This clause survives closing."
+   },
+   {
+    "number": "28",
+    "heading": "Miscellaneous",
+    "text": "This contract, with its Rider and any signed amendment, is the whole agreement of the parties and replaces earlier offers and talks. It binds the parties only when both [SELLER_1] and [BUYER_1] have signed it and a signed copy has been delivered to each. Electronic signatures are valid for this contract and have the same effect as ink signatures, and the parties may sign separate counterparts. Any change must be in writing and signed by both parties. If the Rider conflicts with the body, the Rider controls. The contract binds the parties' heirs and permitted successors. New York law governs. Delivery of the deed ends the parties' duties under the contract, except those that this contract says survive closing. The contract date is the date the last party signs and the signed contract is delivered to the other party. If a deadline falls on a Saturday, Sunday or legal holiday, it moves to the next business day. This draft was prepared as a demonstration and is not a promise that it fits either party's needs; each party may have a lawyer of their choice review it before signing."
+   }
+  ],
+  "rider": [
+   {
+    "number": "R1",
+    "heading": "Mortgage Commitment Contingency",
+    "text": "[BUYER_1]'s obligation to buy depends on [BUYER_1] getting a written commitment from an institutional lender for a conventional mortgage loan on the Premises, in the principal amount shown in [BUYER_1]'s attached pre-approval, within 30 days after the contract date (the Commitment Date). The loan amount, and any other loan terms, are those in the attached pre-approval and are to be confirmed by the parties in writing before signing. [BUYER_1] will apply promptly and in good faith, give the lender what it asks for, and promptly send [SELLER_1] a copy of the commitment or any denial. [BUYER_1] is not required to accept a commitment on terms materially worse than the pre-approval. If by the Commitment Date [BUYER_1] has not received a commitment, [BUYER_1] may cancel this contract by written notice to [SELLER_1] and the escrow holder given on or before the Commitment Date, and the deposit will be returned in full. If [BUYER_1] gives a commitment to [SELLER_1] by that date, or gives no notice of cancellation by that date, this contingency ends, and [BUYER_1] must close even if the lender later refuses to fund, unless the parties extend the date in writing. The parties may extend the Commitment Date only by a written, signed agreement."
+   },
+   {
+    "number": "R2",
+    "heading": "Home Inspection Contingency",
+    "text": "[BUYER_1]'s obligation to buy depends on a satisfactory home inspection by an inspector of [BUYER_1]'s choice, done within 10 days after the contract date. The inspection covers the whole house and includes the roof, the heating system and the oil tank (including a test of its condition and whether it leaks). [SELLER_1] will allow [BUYER_1] and the inspector reasonable access to the Premises, including the basement, attic, mechanical systems and tank, at times arranged in advance. [BUYER_1] will pay for the inspection and will repair any physical damage the inspection causes. If [BUYER_1] is not satisfied, [BUYER_1] may cancel by written notice to [SELLER_1] and the escrow holder given on or before the 10th day after the contract date, with a copy of the report page or pages that show the problem, and the deposit will be returned in full. Within the same period [BUYER_1] may instead ask [SELLER_1] for repairs or a credit; [SELLER_1] need not agree, and any agreement must be in writing and signed by both parties. A request does not extend the 10 days. If [BUYER_1] gives no cancellation notice by the end of the 10th day, this contingency ends."
+   },
+   {
+    "number": "R3",
+    "heading": "Well Water Quality and Flow Test",
+    "text": "[BUYER_1]'s obligation to buy depends on a well water quality and flow test showing results [BUYER_1] finds acceptable. The test will be done by a qualified laboratory or well tester of [BUYER_1]'s choice and completed within 10 days after the contract date, the same period as in Rider clause R2. [SELLER_1] will give access to the well and the water supply for sampling and flow testing at times arranged in advance. [BUYER_1] will pay for the test. If [BUYER_1] is not satisfied with the results, [BUYER_1] may cancel by written notice to [SELLER_1] and the escrow holder given on or before the 10th day after the contract date, with a copy of the results, and the deposit will be returned in full. If no notice is given by the end of that day, this contingency ends. The parties may extend this date in writing if the laboratory cannot report in time."
+   },
+   {
+    "number": "R4",
+    "heading": "Septic Inspection",
+    "text": "[BUYER_1]'s obligation to buy depends on a septic system inspection by an inspector of [BUYER_1]'s choice, done within 10 days after the contract date, the same period as in Rider clause R2. [SELLER_1] will give access to the septic tank, distribution box and drain field, including uncovering the tank cover if it is not already exposed, at times arranged in advance; the cost of any pumping or digging for the inspection is paid by [BUYER_1]. If [BUYER_1] is not satisfied, [BUYER_1] may cancel by written notice to [SELLER_1] and the escrow holder given on or before the 10th day after the contract date, with a copy of the report, and the deposit will be returned in full. If no notice is given by the end of that day, this contingency ends. The parties may extend this date in writing."
+   },
+   {
+    "number": "R5",
+    "heading": "Personal Property Included",
+    "text": "The accepted offer lists no items of personal property as included in the sale. Nothing other than the fixtures and attached items in clause 1 is included. If the parties want to include an item (for example an appliance or a piece of equipment), they must list it in a written amendment signed by both parties, and [SELLER_1] will then leave it at closing in working order as it is on the contract date and free of liens. Any item not listed belongs to [SELLER_1] and must be removed before closing."
+   },
+   {
+    "number": "R6",
+    "heading": "Property Condition Disclosure Statement Delivered",
+    "text": "[SELLER_1] will complete and deliver to [BUYER_1] the Property Condition Disclosure Statement on the current New York form (the 2025-07-01 form) before [BUYER_1] signs this contract. At the time this draft was prepared, the statement was still waiting for [SELLER_1] to complete. [BUYER_1] should not be asked to sign until [BUYER_1] has received and had time to read it. Both parties confirm by signing that the statement has been delivered. It is [SELLER_1]'s statement and does not replace the inspections in Rider clauses R2 to R4."
+   },
+   {
+    "number": "R7",
+    "heading": "Disclosures Not Required for This Sale",
+    "text": "On the facts given, the following are not required and have not been delivered: (a) the lead-based paint disclosure and pamphlet, because the house was built in 1995 and the requirement applies only to homes built before 1978; (b) the agricultural district notice under Agriculture and Markets Law §310, because no agricultural district appears on the record; and (c) the notices under Real Property Law §242, because [SELLER_1] answered no to all four intake questions. If any fact on which these statements rest turns out to be wrong, [SELLER_1] will promptly deliver the disclosure or notice that applies."
+   },
+   {
+    "number": "R8",
+    "heading": "Closing Items",
+    "text": "At closing, [SELLER_1] will deliver: (a) a signed affidavit that the Premises have working smoke detectors and carbon monoxide detectors as New York law requires; (b) the deed described in clause 14, signed in ink by [SELLER_1] and acknowledged before a notary public; (c) the transfer tax forms and the affidavit in clause 22; (d) keys, garage openers and any codes for the Premises; and (e) the documents the title company reasonably asks for. [BUYER_1] will deliver the funds required by clause 3 and sign the documents [BUYER_1] must sign, including those for the mortgage loan."
+   },
+   {
+    "number": "R9",
+    "heading": "Escrow Holder",
+    "text": "The escrow holder for the $62,900 deposit is to be named by the parties in writing before the deposit is delivered. It must be a third party who is neither [SELLER_1] nor [BUYER_1], and by Hudson Valley custom is often the seller's attorney's escrow account. The escrow holder's name and account details are to be written into this contract before signing, and the escrow holder will sign to accept the duties in clause 6. The contract does not bind the parties until both have signed, even if the deposit has not yet been delivered, but [BUYER_1] will deliver the deposit when both have signed."
+   },
+   {
+    "number": "R10",
+    "heading": "Dual Agency",
+    "text": "Hudson Valley AI Realty (a demonstration name) is acting for both [SELLER_1] and [BUYER_1], and both parties have given their written consent to dual agency. Each party understands that the broker may not advise one against the other, and that each party may have a lawyer of their choice review this contract before signing."
+   },
+   {
+    "number": "R11",
+    "heading": "Property Facts",
+    "text": "Facts about the Premises taken from the public record or from [SELLER_1] and used in preparing this draft are for the parties' information only. They are not promises by [SELLER_1] unless [SELLER_1] also states them in the Property Condition Disclosure Statement. They are: raised ranch built in 1995, 2,520 square feet, 3 bedrooms, 3 full baths, oil heat, private well, private septic, 4.18 acres, Pawling Central School District, FEMA flood zone X (minimal flood hazard), and an annual tax bill of about $11,800. [BUYER_1] should confirm what matters to [BUYER_1], for example during the inspections in Rider clauses R2 to R4."
+   },
+   {
+    "number": "R12",
+    "heading": "Counting Days",
+    "text": "The contingency periods in this Rider (30 days for the mortgage commitment and 10 days for the home inspection, well water test and septic inspection) count from the contract date, which is the date the last party signs and delivers the signed contract. The closing date, December 22, 2026, is fixed. If the contract date is such that a period ends on a weekend or legal holiday, clause 28 moves it to the next business day."
+   }
+  ],
+  "side_by_side": [
+   {
+    "standard_number": 1,
+    "draft_ref": "1, R11",
+    "note": "Same substance; adds well, septic and oil tank to the fixtures and lists public-record facts in the Rider."
+   },
+   {
+    "standard_number": 2,
+    "draft_ref": "2, R5",
+    "note": "No personal property is included; an item may be added only by signed amendment."
+   },
+   {
+    "standard_number": 3,
+    "draft_ref": "3",
+    "note": "Same substance; uses $629,000 price, $62,900 deposit (10%) and $566,100 balance."
+   },
+   {
+    "standard_number": 4,
+    "draft_ref": "4",
+    "note": "Same substance; buyer takes over no mortgage and seller must pay off existing liens."
+   },
+   {
+    "standard_number": 5,
+    "draft_ref": "5",
+    "note": "Not applicable; no seller financing, only a third-party lender."
+   },
+   {
+    "standard_number": 6,
+    "draft_ref": "6, R9",
+    "note": "Escrow holder is a third party to be named by the parties, with release rules."
+   },
+   {
+    "standard_number": 7,
+    "draft_ref": "7",
+    "note": "Same substance; wire or bank check at closing, no personal check."
+   },
+   {
+    "standard_number": 8,
+    "draft_ref": "8, R1",
+    "note": "30-day commitment deadline for a conventional loan; buyer must cancel by that date or the contingency ends."
+   },
+   {
+    "standard_number": 9,
+    "draft_ref": "9",
+    "note": "Same substance; permitted exceptions are written for a one-family house."
+   },
+   {
+    "standard_number": 10,
+    "draft_ref": "10",
+    "note": "Seller cures or credits violations on record before the contract date; buyer may cancel if no agreement."
+   },
+   {
+    "standard_number": 11,
+    "draft_ref": "11, R6",
+    "note": "Seller's statements are to the best of knowledge and are tied to the Property Condition Disclosure Statement."
+   },
+   {
+    "standard_number": 12,
+    "draft_ref": "12, R2, R3, R4",
+    "note": "Buyer takes the house as is, subject to a 10-day inspection, well and septic contingencies; seller keeps risk of loss."
+   },
+   {
+    "standard_number": 13,
+    "draft_ref": "13",
+    "note": "Same substance; title must be insurable at regular rates."
+   },
+   {
+    "standard_number": 14,
+    "draft_ref": "14, R8",
+    "note": "Deed is signed in ink and acknowledged before a notary."
+   },
+   {
+    "standard_number": 15,
+    "draft_ref": "15, R12",
+    "note": "Closing is fixed for December 22, 2026; place to be agreed."
+   },
+   {
+    "standard_number": 16,
+    "draft_ref": "16, R8",
+    "note": "Closing conditions include the contingencies and the smoke and carbon monoxide detector affidavit."
+   },
+   {
+    "standard_number": 17,
+    "draft_ref": "17",
+    "note": "Seller pays state transfer tax; buyer pays recording and mortgage recording costs."
+   },
+   {
+    "standard_number": 18,
+    "draft_ref": "18",
+    "note": "Adds fuel oil adjustment; no water meter or sewer adjustment because of well and septic."
+   },
+   {
+    "standard_number": 19,
+    "draft_ref": "19",
+    "note": "Same substance."
+   },
+   {
+    "standard_number": 20,
+    "draft_ref": "20",
+    "note": "Same substance."
+   },
+   {
+    "standard_number": 21,
+    "draft_ref": "21",
+    "note": "Seller's duty to cure is limited to money liens; buyer's remedy is deposit back plus search costs."
+   },
+   {
+    "standard_number": 22,
+    "draft_ref": "22, R8",
+    "note": "Same substance."
+   },
+   {
+    "standard_number": 23,
+    "draft_ref": "23",
+    "note": "Seller keeps the 10% deposit as the sole remedy if buyer defaults; buyer may seek a court order or take the deposit back if seller defaults."
+   },
+   {
+    "standard_number": 24,
+    "draft_ref": "24",
+    "note": "Same substance."
+   },
+   {
+    "standard_number": 25,
+    "draft_ref": "25",
+    "note": "Notices by hand, courier or email, to the addresses the parties write by their signatures."
+   },
+   {
+    "standard_number": 26,
+    "draft_ref": "26",
+    "note": "Same substance; buyer needs seller's written consent to assign."
+   },
+   {
+    "standard_number": 27,
+    "draft_ref": "27, R10",
+    "note": "Hudson Valley AI Realty acts as dual agent with both parties' written consent."
+   },
+   {
+    "standard_number": 28,
+    "draft_ref": "28, R12",
+    "note": "Binds only when both sign; electronic signatures valid; no attorney-approval contingency."
+   }
+  ],
+  "notes_to_parties": [
+   "This is a demonstration draft. New York law says only a lawyer may draft a contract of sale for another, and each of you may have a lawyer of your choice review this draft before signing.",
+   "Fill in or confirm before signing: the escrow holder's name and account, the mortgage loan amount from the pre-approval, the closing place, and each party's address and email for notices.",
+   "The seller's Property Condition Disclosure Statement (2025-07-01 form) is still waiting. The buyer should receive and read it before signing.",
+   "The deadlines run from the date both of you sign: 30 days for the mortgage commitment and 10 days for the home inspection, well water test and septic inspection; closing is set for December 22, 2026. Ask the inspectors and laboratory early whether they can finish in 10 days, and agree in writing to any extension."
+  ]
+ },
+ "request": {
+  "task": "contract.draft",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 20000,
+  "prompt_version": "draft.v1",
+  "schema": "ContractDraft",
+  "system": "You draft a New York residential contract of sale and its rider for a one-family house, for both parties, from\nthe accepted offer and the deal facts you are given. This is a demonstration: every page is labelled by the\nsoftware, and New York law today says only a lawyer may draft a contract of sale for another (the screen says so).\nDraft as carefully as a New York real estate lawyer would.\n\nStructure: follow the order of the bar-association Residential Contract of Sale's 28 paragraphs, whose headings you\nare given (structure only: write every clause in your own words; never reproduce the form's text). Put the\ndeal-specific terms in the rider: the mortgage-commitment contingency and its deadline, the home-inspection\ncontingency and its deadline, the well and septic tests, personal property included, the disclosures delivered\n(the Property Condition Disclosure Statement on the current form, and the others listed), and closing items (the\nseller's smoke and carbon-monoxide detector affidavit at closing; the deed signed in ink and acknowledged before a\nnotary).\n\nUse exactly the deal's numbers: price, deposit, financing, the contingency periods in days, the closing date. The\nescrow holder for the deposit is to be named by the parties (a third party). Use the party tokens [SELLER_1] and\n[BUYER_1]; never invent names, addresses or facts. Say the contract binds only when both parties have signed it,\nand that electronic signatures are valid for it.\n\nDo not add an attorney-approval contingency (the demonstration's decision 26). Never say or imply that either\nparty does not need a lawyer, and never discourage anyone from consulting one; a note to the parties may say each\nof them may have a lawyer of their choice review the draft before signing.\n\nSide by side: for each of the 28 standard paragraphs give the draft clause or clauses that cover it (or \"none\")\nand one line on how the draft differs. Plain English throughout.\n",
+  "user": "{\"acting_for\": \"both parties (the product's own contract step)\", \"disclosures\": [{\"l_id\": \"L43\", \"required\": true, \"status\": \"waiting for the seller (CP-04)\", \"title\": \"Property Condition Disclosure Statement (2025-07-01 form)\"}, {\"l_id\": \"L44\", \"required\": false, \"status\": \"not required: Built 1995: only homes built before 1978\", \"title\": \"Lead-based paint disclosure and pamphlet\"}, {\"l_id\": \"L46\", \"required\": false, \"status\": \"not required: No agricultural district on the record\", \"title\": \"Agricultural district notice (AML §310)\"}, {\"l_id\": \"L60\", \"required\": false, \"status\": \"not required: The seller answered no to all four questions on the intake screen\", \"title\": \"RPL §242 seller notices (four questions)\"}], \"parties\": {\"buyer\": \"[BUYER_1]\", \"seller\": \"[SELLER_1]\"}, \"pcds_known_facts\": [], \"property\": {\"address\": \"146 Route 292, Holmes, NY\", \"county\": \"Dutchess\", \"facts\": [{\"field\": \"SchoolDistrict\", \"label\": \"School district (name only)\", \"source\": \"public_record\", \"value\": \"Pawling Central School District\"}, {\"field\": \"FloodZone\", \"label\": \"FEMA flood zone\", \"source\": \"public_record\", \"value\": \"Zone X: Area of minimal flood hazard; not a special flood hazard area (SFHA false)\"}, {\"field\": \"ArchitecturalStyle\", \"label\": \"Building style\", \"source\": \"public_record\", \"value\": \"Raised ranch\"}, {\"field\": \"YearBuilt\", \"label\": \"Year built\", \"source\": \"public_record\", \"value\": \"1995\"}, {\"field\": \"LivingArea\", \"label\": \"Living area (sq ft)\", \"source\": \"public_record\", \"value\": \"2,520\"}, {\"field\": \"BedroomsTotal\", \"label\": \"Bedrooms\", \"source\": \"public_record\", \"value\": \"3\"}, {\"field\": \"BathroomsFull\", \"label\": \"Full bathrooms\", \"source\": \"public_record\", \"value\": \"3\"}, {\"field\": \"HeatingFuel\", \"label\": \"Heating fuel\", \"source\": \"public_record\", \"value\": \"Oil\"}, {\"field\": \"WaterSource\", \"label\": \"Water\", \"source\": \"public_record\", \"value\": \"Private (well)\"}, {\"field\": \"Sewer\", \"label\": \"Sewer\", \"source\": \"public_record\", \"value\": \"Private (septic)\"}, {\"field\": \"LotSizeAcres\", \"label\": \"Lot size (acres)\", \"source\": \"public_record\", \"value\": \"4.18\"}, {\"field\": \"TaxAnnualAmount\", \"label\": \"Annual property tax bill\", \"source\": \"seller\", \"value\": \"11800\"}], \"municipality\": \"Town of Pawling\"}, \"standard_form_headings\": [\"1. Premises\", \"2. Personal Property\", \"3. Purchase Price\", \"4. Existing Mortgage\", \"5. Purchase Money Mortgage\", \"6. Downpayment in Escrow\", \"7. Acceptable Funds\", \"8. Mortgage Commitment Contingency\", \"9. Permitted Exceptions\", \"10. Governmental Violations and Orders\", \"11. Seller's Representations\", \"12. Condition of Property\", \"13. Insurable Title\", \"14. Closing, Deed and Title\", \"15. Closing Date and Place\", \"16. Conditions to Closing\", \"17. Deed Transfer and Recording Taxes\", \"18. Apportionments and Other Adjustments; Water Meter and Installment Assessments\", \"19. Allowance for Unpaid Taxes, etc.\", \"20. Use of Purchase Price to Remove Encumbrances\", \"21. Title Examination; Seller's Inability to Convey; Limitations of Liability\", \"22. Affidavit as to Judgments, Bankruptcies, etc.\", \"23. Defaults and Remedies\", \"24. Purchaser's Lien\", \"25. Notices\", \"26. No Assignment\", \"27. Broker\", \"28. Miscellaneous\"], \"terms\": {\"brokerage\": \"Hudson Valley AI Realty (demonstration name), acting for both parties with their written dual-agency consent\", \"closing_date\": \"December 22, 2026\", \"closing_days\": 60, \"contingencies\": [\"Mortgage commitment\", \"Home inspection, including roof, heating system and oil tank\", \"Well water quality and flow test\", \"Septic inspection\"], \"deposit\": 62900, \"deposit_pct\": 10, \"escrow_holder\": \"to be named by the parties (a third party; by Hudson Valley custom the seller's attorney's escrow account)\", \"financing\": \"Conventional mortgage; pre-approval attached\", \"inspection_days\": 10, \"mortgage_commitment_days\": 30, \"personal_property_included\": [], \"price\": 629000}}"
+ }
+}

@@ -137,6 +137,56 @@ steps:
           identity block, passed the fair-housing check, and the first one on each thread carries the agency form.
           Each one that discusses the listing records a red CP-09 marker: in New York today that is a licensed act.
         marker: CP-27 seller decision (amber); CP-09 and CP-28 NY law today (red); CP-10 human required (grey); CP-24 and CP-29 AI did it (blue)
+  # Walk order: step 8 (the buyer's side) is walked before step 6, because offer B in step 6 comes from the firm's
+  # own buyer. The step list on screen stays in number order (decision 34).
+  - n: 8
+    title: Buyer side
+    slice: 3
+    built: true
+    minutes: 2.0
+    screens:
+      - route: /buyer
+        title: Buyer intake and representation
+        click: >-
+          Click "Use the demo buyer (fictional)", then "Become a client of the firm". As Buyer, acknowledge the
+          agency form and sign the buyer agreement.
+        say: >-
+          The same system from the buyer's side. The intake asks about the home and the money only, never about
+          family, religion or any protected trait. The AI takes the buyer on as a client, a broker's act in New York
+          today (red CP-30), sends the agency form, the fair-housing notice and the "not legal services" notice, and
+          the buyer agreement with a stated, negotiable fee. The buyer's private limit goes to the buyer's AI only:
+          the seller's AI never sees it.
+        marker: CP-30 NY law today (red); CP-24 AI did it (blue); CP-16 buyer decision (amber)
+      - route: /buyer/search
+        title: Search and alerts
+        click: Click "Save the search and let the AI send the alert".
+        say: >-
+          Fictional listings and this firm's own listing. The filters are the home's facts only: there is no
+          school-rating or neighbourhood filter, so the search cannot steer. The buyer's AI writes the alert; it is
+          fair-housing checked and carries the firm's identity block, like every message.
+        marker: CP-09 NY law today (red); CP-24 AI did it (blue)
+      - route: /buyer/tour
+        title: Tour request and dual-agency consent
+        click: >-
+          Click "Ask the AI to book a tour". As Buyer, then as Seller, consent to dual agency.
+        say: >-
+          The code refuses a tour before the buyer agreement is signed. The seller's AI books it inside the
+          seller's hours: self-guided, a red marker because New York has not decided whether an unaccompanied tour
+          is a licensed showing. Because the firm also acts for the seller, both clients consent in writing to dual
+          agency before the buyer can make an offer: each keeps its own AI and its own secrets.
+        marker: CP-29 AI did it (blue); CP-28 NY law today (red); CP-17 seller and buyer decision (amber)
+      - route: /buyer/offer
+        title: Offer advice, draft and approval
+        click: >-
+          Click "Let the buyer's AI advise and draft the offer". As Buyer, approve and send it. Later, after the
+          seller's counter in step 6, come back: "Let the buyer's AI advise on the counter", and as Buyer approve the
+          reply.
+        say: >-
+          The buyer's AI advises on price and terms from the buyer's own answers, the public sales and the house's
+          facts, and drafts the offer: a broker's act today (red CP-31). Only the buyer can approve it; then it goes
+          to the seller's side as offer B. When the seller counters, the buyer's AI advises again, the buyer approves
+          the reply, and the buyer's AI sends exactly that: negotiating for the buyer, a red CP-13.
+        marker: CP-31 and CP-13 NY law today (red); CP-18 buyer decision (amber)
   - n: 6
     title: Offers
     slice: 3
@@ -146,39 +196,50 @@ steps:
       - route: /offers
         title: Offer comparison, advice, decision and negotiation
         click: >-
-          Click "Let the AI present the offers and advise". As Seller, counter offer A at the suggested figures. As
-          Presenter, try a counter by hand below the seller's lowest price and watch it refused; then click "Let
-          the AI take the next step" until the offer is agreed.
+          Click "Let the AI present the offers and advise". As Seller, counter offer B at the suggested figures
+          (price, the lowest price the AI may agree, closing date and periods). Click "Let the AI send the seller's
+          counter". As Presenter, try a counter by hand below the seller's lowest price and watch it refused. Then go
+          to step 8's offer screen for the buyer's reply, and come back: the seller's AI has answered on its own.
         say: >-
           Two written offers: one from an outside buyer's agent, one from the firm's own buyer. Code builds the
-          comparison and each net sheet; the AI presents every offer and advises, a licensed act in New York today
-          (red CP-11). The seller decides: accept, counter or reject, and how low the AI may go. The AI then
-          negotiates with the buyer's side on its own, each counter a red CP-13 marker. A counter outside the
-          seller's decision is refused by code and goes back to the seller. Nothing is binding until both sign a
-          contract.
-        marker: CP-11, CP-12, CP-13
+          comparison and each net sheet; the seller's AI presents every offer and advises, a licensed act in New York
+          today (red CP-11). The seller decides: accept, counter or reject, and the limits of the counter: price,
+          closing date, inspection and mortgage periods, requests. The seller's AI negotiates with the buyer's AI on
+          its own, each act a red CP-13. Anything outside the seller's decision is refused by code and goes back to
+          the seller. Nothing is binding until both sign a contract.
+        marker: CP-11 and CP-13 NY law today (red); CP-12 seller decision (amber)
   - n: 7
     title: Contract
     slice: 3
-    built: false
-    minutes: 1.5
+    built: true
+    minutes: 2.0
     screens:
-      - route: /step/7
-        title: Contract
-        click: (slice 3)
-        say: Coming in slice 3.
-        marker: CP-32, CP-14, CP-15, CP-33
-  - n: 8
-    title: Buyer side
-    slice: 3
-    built: false
-    minutes: 1.5
-    screens:
-      - route: /step/8
-        title: Buyer side
-        click: (slice 3)
-        say: Coming in slice 3.
-        marker: CP-30, CP-16, CP-17, CP-31, CP-18
+      - route: /contract
+        title: Memorandum, contract draft, side-by-side, signing
+        click: >-
+          Click "Let the AI draft the contract and rider". Read the red CP-14 marker. Click "Open the contract for
+          signing" and watch it refused: the seller's disclosure statement is missing. Open the form (next screen),
+          then come back, attach the disclosures, open signing, and sign as Seller and as Buyer. Open the PDF and the
+          DOCX.
+        say: >-
+          The memorandum goes to both parties. The AI drafts the contract of sale and rider for both of them, in the
+          bar-association long form's order, with a side-by-side note for each of its 28 paragraphs. Code checks the
+          draft against the deal and refuses any wording that says a lawyer is unnecessary. The red marker says it
+          plainly: in New York today only a lawyer may draft a contract of sale for another; at launch the lawful
+          route is the firm's paper subject to each party's attorney's approval. Signing waits for the seller's own
+          disclosure statement. The signing map shows what e-signature cannot do: the deed's notary, a power of
+          attorney's witnesses, the smoke-detector affidavit. Every page of the PDF and the DOCX carries the label.
+        marker: CP-32 AI did it (blue); CP-14 NY law today (red); CP-15 human required (grey); CP-33 seller and buyer decision (amber)
+      - route: /disclosures/pcds
+        title: The seller's Property Condition Disclosure Statement
+        click: >-
+          As Seller, click "Seller: submit my prepared answers" (or answer the 56 questions by hand). Then back to
+          the contract.
+        say: >-
+          The full current form, 56 questions, effective July 2025. Every field starts blank: the seller completes
+          it from their own knowledge, and the software never fills it in. The demo seller's answers are fiction,
+          labelled as such.
+        marker: CP-04 seller decision (amber)
   - n: 9
     title: Deal timeline
     slice: 1

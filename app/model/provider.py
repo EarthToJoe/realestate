@@ -154,13 +154,14 @@ class AnthropicProvider(ModelProvider):
         spent = live_spend(s)
         if spent >= self.cap:
             raise SpendCapReached(f"Live model spend ${spent:.2f} has reached the ${self.cap:.2f} cap; use replay.")
-        resp = self.client.messages.parse(
-            model=req["model"],
-            max_tokens=req["max_tokens"],
-            system=[{"type": "text", "text": req["system"], "cache_control": {"type": "ephemeral"}}],
-            messages=[{"role": "user", "content": req["user"]}],
-            output_format=schema,
-        )
+        kwargs = dict(model=req["model"], max_tokens=req["max_tokens"],
+                      system=[{"type": "text", "text": req["system"], "cache_control": {"type": "ephemeral"}}],
+                      messages=[{"role": "user", "content": req["user"]}], output_format=schema)
+        if req["max_tokens"] >= 16000:  # long outputs (the contract) stream: the SDK refuses a long blocking call
+            with self.client.messages.stream(**kwargs) as stream:
+                resp = stream.get_final_message()
+        else:
+            resp = self.client.messages.parse(**kwargs)
         parsed = resp.parsed_output
         if parsed is None:
             raise RuntimeError(f"{req['task']}: the model returned no parsable output (stop: {resp.stop_reason})")

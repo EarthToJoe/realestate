@@ -44,10 +44,13 @@ NOT_BINDING = "Not binding until a formal contract of sale is signed by both par
 TERM_KEYS = ("price", "deposit_pct", "financing", "mortgage_days", "inspection_days", "closing_days",
              "contingencies", "requests")
 
+# Offer A is a common kind of weaker paper: a higher price, but 10% down, a long closing and a contingency on the
+# sale of the buyer's current home (demonstration fixture).
 OFFER_A = {"label": "A", "party": "Buyer's agent for Prospect B (simulated other firm)", "side": "outside",
-           "price": 630000, "deposit_pct": 10, "financing": "Conventional mortgage, 20% down; pre-approval attached",
-           "mortgage_days": 45, "inspection_days": 10, "closing_days": 60,
-           "contingencies": ["mortgage commitment", "home inspection", "well and septic tests"],
+           "price": 630000, "deposit_pct": 10, "financing": "Conventional mortgage, 10% down; pre-approval attached",
+           "mortgage_days": 45, "inspection_days": 10, "closing_days": 75,
+           "contingencies": ["mortgage commitment", "home inspection", "well and septic tests",
+                             "sale of the buyer's current home within 60 days"],
            "requests": ["the riding mower stays"]}
 # The outside agent's simulated answers to a counter on offer A, in order (demonstration).
 A_REPLIES = [{"price": 632000, "closing_days": 60, "inspection_days": 10, "mortgage_days": 45},

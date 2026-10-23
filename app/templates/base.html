@@ -30,7 +30,7 @@
   <aside class="steps" id="step-list">
     <p class="steps-title">The sale, step by step</p>
     <ol>
-    {% for st in steps %}
+    {% for st in steps | sort(attribute='n') %}
       <li class="{{ 'active' if active_step and active_step.n == st.n }} {{ 'done' if st.n in done_steps }} {{ '' if st.built else 'later' }}">
         <a href="{{ st.screens[0].route }}"><span class="n">{{ st.n }}</span> {{ st.title }}</a>
         {% if marker_counts.get(st.n) %}<span class="mk" title="NY law today markers recorded">{{ marker_counts[st.n] }}</span>{% endif %}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Walks Step 1 Intake on a running app the way the demo does, and checks each screen.
+# Walks steps 1 to 8 on a running app the way the demo does (walk order 1-5, 8, 6, 7), and checks each screen.
 #   bash scripts/live-flow.sh                      the live site (house login)
 #   bash scripts/live-flow.sh http://127.0.0.1:8000  a local run
 # Clicks counted for SC1 ("profile with source chips in under 5 minutes of clicking").
@@ -75,16 +75,74 @@ as seller -X POST "$BASE/inbox/approve" -d decision=approve -d self_guided=yes -
 as presenter -X POST "$BASE/inbox/all" -o /dev/null
 as presenter "$BASE/inbox" -o "$OUT"; ok "AI replies sent (simulated)" "sent (simulated)"
 for k in 'id="rec-CP-09"' 'id="rec-CP-10"' 'id="rec-CP-28"' 'id="feedback-log"' 'class="identity-block"' 'seller-card'; do ok "inbox $k" "$k"; done
+# ---- Step 8 Buyer side (walked before step 6: offer B comes from the firm's own buyer)
+as presenter "$BASE/offers" -o "$OUT"; ok "offers: only A before the buyer acts" 'id="waiting-b"'
+as presenter -X POST "$BASE/buyer" -o /dev/null -w "%{http_code}\n" \
+  --data-urlencode "name=Sam Whitfield-Arora" --data-urlencode "email=sam.wa@example.com" \
+  --data-urlencode "phone=(914) 555-0187" -d beds_min=3 -d acres_min=1 \
+  -d towns=Pawling -d towns=Beekman -d towns=Dover --data-urlencode "towns=Union Vale" --data-urlencode "towns=East Fishkill" \
+  --data-urlencode "must_haves=A room for a home office; some land; room for a garden" -d preapproved=yes \
+  -d preapproval_amount=680000 --data-urlencode "timeline=Flexible; closing in about two months suits" \
+  -d max_price=665000 --data-urlencode "private_notes=Needs a home office; flexible on closing date" | sed 's/^/buyer intake -> HTTP /'
+as presenter "$BASE/buyer" -o "$OUT"; ok "buyer: CP-30 marker" 'id="rec-CP-30"'; ok "buyer: CP-16 waiting" 'id="rec-CP-16"'
+as presenter -X POST "$BASE/buyer/tour" -d kind=self-guided -o /dev/null -w "%{http_code}\n" | sed 's/^/tour before CP-16 -> HTTP (expect 409) /'
+as buyer -X POST "$BASE/buyer/sign" -d decision=sign -o /dev/null -w "%{http_code}\n" | sed 's/^/buyer signs CP-16 -> HTTP /'
+as presenter -X POST "$BASE/buyer/alert" -o /dev/null
+as presenter "$BASE/buyer/search" -o "$OUT"; ok "search: alert sent (simulated)" 'data-topic="alert"'; ok "search: the firm's listing" 'data-listing="FIRM"'
+as presenter -X POST "$BASE/buyer/tour" -d kind=self-guided -o /dev/null
+for p in buyer seller; do as $p -X POST "$BASE/buyer/consent" -d decision=consent -o /dev/null -w "%{http_code}\n" | sed "s/^/$p consents CP-17 -> HTTP /"; done
+as presenter "$BASE/buyer/tour" -o "$OUT"; ok "tour booked" 'id="booked"'; ok "tour: CP-28 marker" 'id="rec-CP-28"'
+as presenter -X POST "$BASE/buyer/offer/advise" -o /dev/null
+as buyer "$BASE/buyer/offer" -o "$OUT"; ok "buyer's AI drafted the offer (CP-31)" 'id="draft-offer"'
+as presenter -X POST "$BASE/buyer/offer/approve" -d decision=approve -o /dev/null -w "%{http_code}\n" | sed 's/^/presenter approves CP-18 -> HTTP (expect 403) /'
+as buyer -X POST "$BASE/buyer/offer/approve" -d decision=approve -o /dev/null -w "%{http_code}\n" | sed 's/^/buyer approves CP-18 -> HTTP /'
 # ---- Step 6 Offers
 as presenter -X POST "$BASE/offers/advise" -o /dev/null
-as presenter "$BASE/offers" -o "$OUT"; ok "offers: two compared, AI advice, CP-11" 'id="rec-CP-11"'
-as seller -X POST "$BASE/offers/decide" -d decision=counter -d offer=A -d counter_price=640000 -d lowest_price=635000 -o /dev/null -w "%{http_code}\n" | sed 's/^/seller counters CP-12 -> HTTP /'
-as presenter -X POST "$BASE/offers/counter" -d price=625000 -o /dev/null -w "%{http_code}\n" | sed 's/^/counter below the floor -> HTTP (expect 409) /'
-for _ in 1 2 3; do as presenter -X POST "$BASE/offers/negotiate" -o /dev/null; done
-as presenter "$BASE/offers" -o "$OUT"; ok "AI negotiated to agreement (CP-13)" 'id="accepted"'
+as seller "$BASE/offers" -o "$OUT"; ok "offers: two compared, AI advice, CP-11" 'id="rec-CP-11"'
+v() { grep -o "name=\"$1\"[^>]*value=\"[0-9]*\"" "$OUT" | head -1 | grep -o 'value="[0-9]*"' | grep -o '[0-9]*'; }
+OFFER=$(grep -o '<option selected>[AB]</option>' "$OUT" | grep -o '[AB]' | head -1); OFFER=${OFFER:-B}
+echo "the AI suggests: counter offer $OFFER at \$$(v counter_price), agreeing down to \$$(v lowest_price), closing $(v closing_days) days"
+as seller -X POST "$BASE/offers/decide" -d decision=counter -d offer=$OFFER -d counter_price=$(v counter_price) \
+  -d lowest_price=$(v lowest_price) -d closing_days=$(v closing_days) -d closing_min=$(v closing_min) \
+  -d closing_max=$(v closing_max) -d inspection_max=$(v inspection_max) -d mortgage_max=$(v mortgage_max) \
+  -o /dev/null -w "%{http_code}\n" | sed 's/^/seller counters CP-12 -> HTTP /'
+as presenter -X POST "$BASE/offers/negotiate" -o /dev/null
+as presenter -X POST "$BASE/offers/counter" -d price=500000 -o "$OUT" -w "%{http_code}\n" | sed 's/^/hand counter below the floor -> HTTP (expect 409) /'
+ok "counter refused by code" "below the lowest price the seller allowed"
+for _ in 1 2 3 4 5; do
+  as presenter "$BASE/offers" -o "$OUT"; grep -q 'id="accepted"' "$OUT" && break
+  [ "$OFFER" = B ] || { as presenter -X POST "$BASE/offers/negotiate" -o /dev/null; continue; }
+  as presenter -X POST "$BASE/buyer/counter/advise" -o /dev/null
+  as buyer -X POST "$BASE/buyer/counter/approve" -d decision=approve -o /dev/null -w "%{http_code}\n" | sed 's/^/buyer approves the reply (CP-18) -> HTTP /'
+done
+as presenter "$BASE/offers" -o "$OUT"; ok "the AIs negotiated to agreement (CP-13)" 'id="accepted"'
+grep -o 'id="accepted">Agreed: [^<]*' "$OUT" | sed 's/id="accepted">//' | head -1
+as buyer "$BASE/offers" -o "$OUT"; ok "wall: the buyer does not see the seller's decision" 'id="wall-note"'
+as seller "$BASE/buyer" -o "$OUT"; ok "wall: the seller does not see the buyer's limit" 'id="buyer-private-hidden"'
+# ---- Step 7 Contract
+as presenter -X POST "$BASE/contract/draft" -o /dev/null
+as presenter "$BASE/contract" -o "$OUT"
+ok "contract: code checks passed" 'data-passed="yes"'; ok "contract: CP-14 marker" 'id="rec-CP-14"'
+ok "contract: launch route links the plan" 'docs-plan.html#the-contract-route-what-new-york-allows-today'
+ok "contract: side-by-side, 28 rows" 'data-n="28"'; ok "contract: label" "DEMONSTRATION. Drafted by software for the parties"
+as presenter -X POST "$BASE/contract/open-signing" -o /dev/null -w "%{http_code}\n" | sed 's/^/signing before the PCDS -> HTTP (expect 409) /'
+as seller -X POST "$BASE/disclosures/pcds/prepared" -o /dev/null -w "%{http_code}\n" | sed 's/^/seller submits the PCDS (CP-04) -> HTTP /'
+as presenter -X POST "$BASE/contract/attach" -o /dev/null
+as presenter -X POST "$BASE/contract/open-signing" -o /dev/null -w "%{http_code}\n" | sed 's/^/open signing -> HTTP /'
+for p in seller buyer; do as $p -X POST "$BASE/contract/sign" -d decision=sign -o /dev/null -w "%{http_code}\n" | sed "s/^/$p signs CP-33 -> HTTP /"; done
+as presenter "$BASE/contract" -o "$OUT"; ok "contract signed by both (simulated)" 'id="signed"'; ok "CP-15 wet ink / notary" 'id="rec-CP-15"'
+PDF=$(mktemp); as presenter "$BASE/contract/draft.pdf" -o "$PDF"
+head -c 4 "$PDF" | grep -q '%PDF' && echo "ok   contract is a PDF" || { echo "FAIL contract PDF"; fail=1; }
+if command -v pdftotext >/dev/null; then
+  n=$(pdftotext "$PDF" - | tr '\f' '\n' | grep -c 'DEMONSTRATION. Drafted by software'); p=$(pdftotext "$PDF" - | grep -c $'\f')
+  echo "contract PDF: $p pages; the label printed $n times (top and bottom of each page)"
+fi
+DOCX=$(mktemp); as presenter "$BASE/contract/draft.docx" -o "$DOCX"
+if unzip -p "$DOCX" word/header1.xml 2>/dev/null | grep -q 'DEMONSTRATION. Drafted by software'; then echo "ok   DOCX header carries the label"; else echo "FAIL DOCX label"; fail=1; fi
+rm -f "$PDF" "$DOCX"
 grep -o 'Live model spend so far \$[0-9.]*' "$OUT" | head -1
 c "$BASE/timeline" -o "$OUT"
-for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"'; do ok "timeline $k" "$k"; done
+for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"' 'data-code="CP-27"' 'data-code="CP-11"' 'data-code="CP-13"' 'data-code="CP-14"' 'data-code="CP-17"' 'data-code="CP-31"' 'data-code="CP-33"'; do ok "timeline $k" "$k"; done
 for k in chip-automated chip-client_decision chip-law_marker chip-third_party 'data-code="CP-35"' 'id="hurdle-map"'; do ok "timeline $k" "$k"; done
 grep -o '[0-9]* NY law today markers[^<]*' "$OUT" | head -1
 grep -o '[0-9]* client decisions made, [0-9]* waiting' "$OUT" | head -1

@@ -1,0 +1,37 @@
+{
+ "request_hash": "abd6901124e5ce4f2e80313a9acd92f7b188c2808cb417b70624959b95707a6f",
+ "task": "buyer.alert",
+ "model": "claude-haiku-5-5",
+ "prompt_version": "alert.v1",
+ "recorded_at": "2026-10-23 12:15 UTC",
+ "output": {
+  "message": "Four listings match your search: at least three bedrooms, at least one acre, in your five chosen towns, and all priced within your $680,000 pre-approval. None of the listing facts we have states a dedicated home office room, so we will need to confirm that for each home before you visit. One of the four, in Pawling, is this firm's own listing, and we will go through it with you in the same detail as the others.",
+  "notes": [
+   {
+    "id": "F1",
+    "why": "Sits on 1.2 acres with 3 bedrooms, 2 baths and 1,980 sq ft, priced at $589,000; the listing facts do not state a dedicated home office room."
+   },
+   {
+    "id": "F3",
+    "why": "Sits on 5.1 acres with 3 bedrooms, 2 baths and 1,760 sq ft, priced at $545,000; the listing facts do not state a dedicated home office room."
+   },
+   {
+    "id": "F5",
+    "why": "Sits on 3.4 acres with 3 bedrooms, 2.5 baths and 2,340 sq ft, priced at $629,000; the listing facts do not state a dedicated home office room."
+   },
+   {
+    "id": "FIRM",
+    "why": "This is the firm's own listing: 4.18 acres with 3 bedrooms, 3 baths and 2,520 sq ft, priced at $640,000; the listing facts do not state a dedicated home office room."
+   }
+  ]
+ },
+ "request": {
+  "task": "buyer.alert",
+  "model": "claude-haiku-5-5",
+  "max_tokens": 2000,
+  "prompt_version": "alert.v1",
+  "schema": "BuyerAlert",
+  "system": "You are a New York real estate brokerage's buyer's agent, writing a search alert to your buyer client. You act for\nthe buyer. You are given the buyer's stated needs (not their budget limit's reasoning) and the listings that match\nthe search the buyer chose. Write a short alert and one note per listing on how it meets the buyer's stated needs,\nusing only the listing facts given.\n\nFair housing (L37): describe homes, never people. Never mention schools' quality, safety or crime, the neighbours,\nwho lives in an area or who a home \"suits\". Do not steer: present every matching listing, in the order given, with\nthe same care. If a listing is the firm's own listing, say so plainly. No sign-off: the software adds the firm's\nidentity block.\n",
+  "user": "{\"acting_for\": \"buyer\", \"buyer_needs\": {\"acres_min\": 1.0, \"beds_min\": 3, \"must_haves\": \"A room for a home office; some land; room for a garden\", \"preapproval_amount\": 680000, \"preapproved\": true, \"timeline\": \"Flexible; closing in about two months suits\", \"towns\": [\"Pawling\", \"Beekman\", \"Dover\", \"Union Vale\", \"East Fishkill\"]}, \"listings\": [{\"acres\": 1.2, \"baths\": 2, \"beds\": 3, \"days_on_market\": 21, \"firm_listing\": false, \"heat\": \"Oil, hot water\", \"id\": \"F1\", \"label\": \"Fictional listing F1\", \"price\": 589000, \"sqft\": 1980, \"style\": \"Colonial\", \"town\": \"Beekman\", \"water_sewer\": \"Well and septic\", \"year_built\": 1988}, {\"acres\": 5.1, \"baths\": 2, \"beds\": 3, \"days_on_market\": 12, \"firm_listing\": false, \"heat\": \"Oil, hot water\", \"id\": \"F3\", \"label\": \"Fictional listing F3\", \"price\": 545000, \"sqft\": 1760, \"style\": \"Ranch\", \"town\": \"Dover\", \"water_sewer\": \"Well and septic\", \"year_built\": 1979}, {\"acres\": 3.4, \"baths\": 2.5, \"beds\": 3, \"days_on_market\": 45, \"firm_listing\": false, \"heat\": \"Oil, hot water\", \"id\": \"F5\", \"label\": \"Fictional listing F5\", \"price\": 629000, \"sqft\": 2340, \"style\": \"Cape Cod\", \"town\": \"Union Vale\", \"water_sewer\": \"Well and septic\", \"year_built\": 1993}, {\"acres\": 4.18, \"baths\": 3, \"beds\": 3, \"days_on_market\": 9, \"firm_listing\": true, \"heat\": \"Oil\", \"id\": \"FIRM\", \"label\": \"This firm's listing (the demonstration house)\", \"price\": 640000, \"sqft\": 2520, \"style\": \"Raised ranch\", \"town\": \"Pawling\", \"water_sewer\": \"Well and septic\", \"year_built\": 1995}], \"parties\": {\"client\": \"[BUYER_1]\", \"other_party\": \"[SELLER_1]\"}}"
+ }
+}
