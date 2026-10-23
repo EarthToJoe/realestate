@@ -112,3 +112,32 @@ def slot(v: str) -> str:
     """'Sun at 14:00' (a showing slot as the services write it) becomes 'Sunday at 2 pm'."""
     m = re.fullmatch(r"(Mon|Tue|Wed|Thu|Fri|Sat|Sun) at (\d{1,2}):00", (v or "").strip())
     return f"{DAYS[m.group(1)]} at {hour(int(m.group(2)))}" if m else (v or "")
+
+
+# ---- the audience layer: no record codes, research IDs or repeated "(simulated)" (decision 50) ---------------------
+
+_CODE_PAREN = re.compile(r"\s*\((?:(?:L|F)\d+[a-z]?|WS\d-[A-Z]\d+|CP-\d+)(?:[,;] ?(?:(?:L|F)\d+[a-z]?|WS\d-[A-Z]\d+|CP-\d+))*\)")
+_CODE_NAMED = re.compile(r"\bCP-\d+ \(([^)]*)\)")
+_CODE_BARE = re.compile(r"\s*\b(?:CP-\d+|WS\d-[A-Z]\d+)\b")
+
+
+def plain(text) -> str:
+    """Display only: drops research IDs and record codes in brackets, "(stub)" and "(simulated)" (said once per
+    screen instead), and names the firm's buyer as the buyer. Records keep their stored words."""
+    if text is None:
+        return ""
+    t = str(text)
+    t = _CODE_NAMED.sub(lambda m: m.group(1)[:1].lower() + m.group(1)[1:], t)
+    t = _CODE_PAREN.sub("", t)
+    t = re.sub(r"\s*\((?:simulated|stub)\)", "", t)
+    t = re.sub(r"\bBuyer 1's\b", "the buyer's", t)
+    t = re.sub(r"\bBuyer 1\b", "the buyer", t)
+    return t
+
+
+def gate_message(text: str) -> str:
+    """A service refusal in plain words: the record codes and the rule's citation go; what is missing stays."""
+    t = plain(text or "")
+    t = t.split(" Why: ")[0]
+    t = _CODE_BARE.sub("", t)
+    return t.strip()

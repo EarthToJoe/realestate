@@ -1,42 +1,37 @@
 {% extends "base.html" %}
 {% from "components.html" import decision, law_marker with context %}
 {% block content %}
+{% set acked = cp01 and cp01.status == 'done' %}
 {% set signed = cp03 and cp03.status == 'done' and (cp03.decision or '') == 'sign' %}
 <div class="outcome {{ 'is-done' if signed }}">
-  <h1 class="page-title">{% if signed %}The seller signed the listing agreement{% elif cp03 %}The listing agreement is ready for the seller to sign{% elif cp02 %}The AI accepted the listing{% elif cp01 and cp01.status == 'done' %}The seller acknowledged the agency form{% else %}Signing up the seller{% endif %}</h1>
-  <p>{% if signed %}The firm may now market the house. Next: the price.{% else %}Four things happen here: the AI sends the required notices, the seller acknowledges the agency form, the AI accepts the listing, and the seller signs the listing agreement.{% endif %}</p>
+  <h1 class="page-title">{% if signed %}The seller hired the firm: the listing agreement is signed{% elif cp03 %}The listing agreement is ready for the seller to sign{% elif acked %}The seller acknowledged the agency form{% else %}The seller hires the firm{% endif %}</h1>
+  <p>{% if signed %}The firm may now market the house. Next: the price.{% elif cp03 %}The AI checked for conflicts and accepted the listing. Signing is the seller's decision.{% else %}The AI has sent the notices New York requires. Two decisions are the seller's: the agency form, then the listing agreement.{% endif %}</p>
 </div>
 
-<div class="rec rec-auto rec-compact">
-  <div class="rec-head"><span class="rec-badge">AI did it</span> <b>Notices sent at first contact</b></div>
-  <ul class="plain" style="margin:0">{% for r in cp24 %}<li>&#10003; {{ r.reason }} <small class="muted">{{ r.created_at | et('time') }}</small></li>{% endfor %}</ul>
+<div class="rec rec-auto rec-compact" id="notices">
+  <div class="rec-head"><span class="rec-badge">AI did it</span> <b>Notices sent to the seller at first contact</b></div>
+  <ul class="plain" style="margin:0">{% for r in cp24 %}<li>&#10003; {{ (r.reason or '') | replace('Sent to the seller: ', '') | plain }}</li>{% endfor %}</ul>
 </div>
 
-{{ decision(cp01, persona, '/intake/agency', advice="This form explains whom the firm represents. Acknowledging it is not agreeing to anything else; you may instead sign a declaration that you refused it.", labels={'acknowledge': 'I acknowledge the agency form', 'refuse_with_declaration': 'I refuse (sign a declaration)'}) }}
+{{ decision(cp01, change='agency', advice="This form explains whom the firm represents. Acknowledging it is not agreeing to anything else; the seller may instead sign a declaration refusing it.", waiting="Press the amber button at the bottom to acknowledge it for the seller.") }}
 
-<details class="working" {{ 'open' if not cp02 }}>
-  <summary>The AI's listing presentation <span class="sum-note">services, fee, conflicts check</span></summary>
+<details class="working">
+  <summary>What the firm does, and the fee <span class="sum-note">the AI's listing presentation</span></summary>
   <div class="working-body">
-  <p><b>What the firm does for you:</b></p>
   <ul>{% for item in presentation.services %}<li>{{ item }}</li>{% endfor %}</ul>
   <p><b>Fee:</b> {{ presentation.fee }}. <b>Timeline:</b> {{ presentation.timeline }}.</p>
   <p><b>Conflicts check:</b> {{ 'Clear. ' if conflicts.clear }}{{ conflicts.detail }}</p>
   </div>
 </details>
 
-{% if cp02 %}
-  {{ law_marker(cp02) }}
-{% else %}
-  <form method="post" action="/intake/accept" id="accept-form" class="buttons">
-    <button class="button is-info" id="ai-accept">Let the AI accept the listing</button>
-    <span class="help">An AI act; anyone may trigger it in the demo.</span>
-  </form>
-{% endif %}
+{% if cp02 %}{{ law_marker(cp02) }}{% endif %}
 
-{% if agreement %}
-<h2 class="section-title" id="agreement">The listing agreement</h2>
-<p>Exclusive right to sell, written by the AI: {{ presentation.fee }}, six months, no automatic renewal.</p>
-{% if cp03 %}{{ decision(cp03, persona, '/intake/sign', advice="Signing lets the firm market the house at the fee above. Signing needs the agency form acknowledged first.", labels={'sign': 'Sign the agreement (simulated e-sign)', 'decline': 'Decline'}) }}{% endif %}
+{% if agreement and cp03 %}
+<div id="agreement">
+{% call decision(cp03, change='listing', advice="Signing lets the firm market the house at the fee above. Nothing is marketed until it is signed.", waiting="Press the amber button at the bottom to sign it for the seller (a simulated e-signature).") %}
+  <p>Exclusive right to sell, written by the AI: {{ presentation.fee }}, six months, no automatic renewal.</p>
+{% endcall %}
+</div>
 <details class="working">
   <summary>Read the agreement <span class="sum-note">with the state's exclusive-listing explanation</span></summary>
   <div class="working-body legal-text" style="border:0;padding-top:0">
@@ -46,20 +41,14 @@
   <p>Fee: {{ presentation.fee }}. Term: 6 months from signing, ending on a fixed date; it does not renew
      automatically (19 NYCRR 175.15). This is not a net listing (175.19).</p>
   <p>Offers: you choose whether negotiated offers come to you through the listing broker or through the selling
-     broker (19 NYCRR 175.24(c)). <label><input type="radio" name="routing" checked disabled> through the listing firm</label></p>
-  <p style="font-size:.875rem"><b>EXPLANATION:</b> An "exclusive right to sell" listing means that if you, the owner of the
+     broker (19 NYCRR 175.24(c)). This demonstration routes them through the listing firm.</p>
+  <p style="font-size:.9375rem"><b>EXPLANATION:</b> An "exclusive right to sell" listing means that if you, the owner of the
      property, find a buyer for your house, or if another broker finds a buyer, you must pay the agreed commission
      to the present broker. An "exclusive agency" listing means that if you, the owner of the property find a buyer,
      you will not have to pay a commission to the broker. However, if another broker finds a buyer, you will owe a
      commission to both the selling broker and your present broker. <i>(19 NYCRR 175.24(b), printed in at least
      six-point type and initialled by the owner.)</i></p>
-  <p>No marketing starts until this agreement is signed.</p>
   </div>
 </details>
 {% endif %}
-
-<div class="actions">
-  {% if signed %}<a class="button is-next" href="/pricing">Next: pricing &rarr;</a>{% endif %}
-  <a class="button is-light" href="/timeline">See it on the deal timeline</a>
-</div>
 {% endblock %}

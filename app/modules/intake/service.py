@@ -160,7 +160,8 @@ def _checklist(s: Session, deal: Deal, seller: Person, connector: FixtureRecords
     ]
     for kind, title, l_id, trigger, required, reason in items:
         s.add(Disclosure(deal_id=deal.id, person_id=seller.id, kind=kind, title=title, l_id=l_id, trigger=trigger,
-                         required=required, required_reason=reason))
+                         required=required, required_reason=reason,
+                         answers={k: (facts.get(k) or "") for k in SECTION_242} if kind == "section_242" else None))
     s.flush()
 
 
@@ -255,3 +256,110 @@ def profile_groups(deal: Deal) -> list[tuple[str, list[PropertyFact]]]:
 def presentation() -> dict:
     b = brokerage()
     return {"services": b["services"], "fee": b["flat_fee"], "timeline": b["timeline"]}
+
+
+# ---- Step 1 re-opened (decision 48): the form shows what was saved; saving again updates the same house and deal --
+
+CONTACT = ("seller_name", "seller_email", "seller_phone")
+
+
+def saved_input(s: Session, deal: Deal) -> IntakeInput:
+    """What the seller saved, to re-open the form filled in."""
+    facts = {f.field: f.value for f in deal.property.facts if f.source == "seller"}
+    answers = {}
+    d242 = s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id, Disclosure.kind == "section_242")
+                     ).scalar_one_or_none()
+    if d242 is not None and d242.answers:
+        answers = dict(d242.answers)
+    seller = deal.seller
+    return IntakeInput(street=deal.property.street, city=deal.property.city, zip=deal.property.zip or "",
+                       seller_name=(seller.legal_name or "") if seller else "",
+                       seller_email=(seller.email or "") if seller else "",
+                       seller_phone=(seller.phone or "") if seller else "",
+                       facts={**{k: facts.get(field, "") for k, (field, _, _) in SELLER_FIELDS.items()}, **answers})
+
+
+def house_of(data: IntakeInput) -> dict:
+    """The house's side of the form (address, the seller's facts, the four questions): what later work uses."""
+    return {"street": data.street.strip().lower(), "city": data.city.strip().lower(), "zip": (data.zip or "").strip(),
+            **{k: (data.facts.get(k) or "").strip() for k in list(SELLER_FIELDS) + list(SECTION_242)}}
+
+
+def changes(old: IntakeInput, new: IntakeInput) -> dict:
+    """What a re-sent form changes: contact details only (nothing to redo) or the house too."""
+    contact = [k for k in CONTACT if (getattr(old, k) or "").strip() != (getattr(new, k) or "").strip()]
+    a, b = house_of(old), house_of(new)
+    house = [k for k in a if a[k] != b[k]]
+    return {"contact": contact, "house": house, "address": any(k in house for k in ("street", "city", "zip"))}
+
+
+def update_contact(s: Session, deal: Deal, data: IntakeInput) -> None:
+    seller = deal.seller
+    seller.legal_name, seller.email, seller.phone = data.seller_name, data.seller_email, data.seller_phone
+    for value, label in ((data.seller_name, "[SELLER_1]"), (data.seller_email, "[EMAIL]"),
+                         (data.seller_phone, "[PHONE]")):
+        MASKER.register(value, label)
+    record_event(s, actor="seller", kind="change", entity="person", entity_id=seller.id,
+                 summary="The seller changed their contact details on step 1 (nothing else redone)")
+    s.flush()
+
+
+def update_house(s: Session, deal: Deal, data: IntakeInput, connector: FixtureRecords | None = None) -> None:
+    """The same house record and the same deal, with the new address or facts: public-record facts looked up again
+    on a new address, the seller's facts replaced, the checklist recomputed. The caller re-opens the later work
+    that depends on the house (app/demo/path.py)."""
+    connector = connector or FixtureRecords()
+    prop = deal.property
+    old = saved_input(s, deal)
+    if (old.street, old.city, old.zip) != (data.street, data.city, data.zip):
+        found = connector.lookup(data.street, data.city, data.zip)
+        addr = found.address
+        prop.street, prop.city, prop.zip = (addr.get("street") or data.street, addr.get("city") or data.city,
+                                            addr.get("zip") or data.zip)
+        prop.county, prop.municipality = addr.get("county"), addr.get("municipality")
+        prop.latitude, prop.longitude, prop.upi = addr.get("latitude"), addr.get("longitude"), addr.get("upi")
+        prop.is_demo_house = found.found
+        for f in list(prop.facts):
+            if f.source != "seller":
+                s.delete(f)
+        s.flush()
+        for f in found.facts:
+            s.add(PropertyFact(property_id=prop.id, field=f.field, label=f.label, group=f.group, value=f.value,
+                               source=f.source, source_ref=f.source_ref, confidence=f.confidence,
+                               inferred_reason=f.inferred_reason))
+        if found.found:
+            yb = connector.year_built()
+            s.add(PropertyFact(property_id=prop.id, field="LeadPaintDisclosure", label="Lead-paint disclosure",
+                               group="Records", value="Not required" if yb >= 1978 else "Required",
+                               source="inferred", confidence="high",
+                               inferred_reason=f"Built {yb}; the federal lead-paint disclosure applies to homes "
+                                               f"built before 1978 (L44)"))
+    for f in list(prop.facts):
+        if f.source == "seller":
+            s.delete(f)
+    s.flush()
+    for key, (field, label, group) in SELLER_FIELDS.items():
+        v = (data.facts.get(key) or "").strip()
+        if v:
+            s.add(PropertyFact(property_id=prop.id, field=field, label=label, group=group, value=v,
+                               source="seller", source_ref="Seller, on the intake screen", confidence="medium"))
+    found = prop.is_demo_house
+    yb = connector.year_built() if found else None
+    ag = connector.in_ag_district() if found else None
+    any_242 = [k for k in SECTION_242 if (data.facts.get(k) or "no").lower().startswith("y")]
+    for d in s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id)).scalars():
+        if d.kind == "lead_paint":
+            d.required = yb is None or yb < 1978
+            d.required_reason = f"Built {yb}: only homes built before 1978" if yb else "Year built unknown: confirm"
+        elif d.kind == "ag_district":
+            d.required = ag is None or bool(ag)
+            d.required_reason = "No agricultural district on the record" if ag is False else "Check the parcel"
+        elif d.kind == "section_242":
+            d.required = bool(any_242)
+            d.required_reason = (("The seller answered yes to: " + ", ".join(any_242)) if any_242
+                                 else "The seller answered no to all four questions on the intake screen")
+            d.answers = {k: (data.facts.get(k) or "") for k in SECTION_242}
+    record_event(s, actor="seller", kind="change", entity="property", entity_id=prop.id,
+                 summary="The seller changed the house's address or facts on step 1; the same house and deal")
+    s.flush()
+    s.refresh(prop)

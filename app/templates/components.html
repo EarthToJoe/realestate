@@ -1,5 +1,6 @@
-{# The on-screen record components (spec section 3), rendered from the record, never hand-placed. Redesigned from
-   the UI audit (2026-10-23): one plain sentence first, the rule, codes and IDs folded under "Why". #}
+{# The on-screen record components (spec section 3), rendered from the record, never hand-placed. One plain sentence
+   first; the rule, codes and IDs folded under "Why". Decisions 47 to 51: a decision's button is the action bar's one
+   primary button; the card says whose decision it is, and once made, a "Change" link. #}
 
 {% macro ids(cp) -%}
   {%- for i in cp.f_ids %}<span class="tag is-light">{{ i }}</span> {% endfor -%}
@@ -7,10 +8,11 @@
   {%- for i in cp.ws3_ids %}<span class="tag is-light">{{ i }}</span> {% endfor -%}
 {%- endmacro %}
 
-{% macro law_marker(cp) -%}
+{% macro law_marker(cp, times=None) -%}
 <div class="rec rec-law" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
   <div class="rec-head"><span class="rec-badge">NY law today</span>
-    {% if cp.law_actor %}<span class="rec-status" style="color:var(--law)">needs a {{ law_actor_label[cp.law_actor] }}</span>{% endif %}</div>
+    {% if cp.law_actor %}<span class="rec-status" style="color:var(--law)">needs a {{ law_actor_label[cp.law_actor] }}</span>{% endif %}
+    {% if times and times > 1 %}<span class="rec-times">recorded {{ times }} times</span>{% endif %}</div>
   <p class="rec-plain">{{ plain_of(cp.code) or cp.rule_text }}</p>
   <details class="rec-more"><summary>Why, and what the AI did</summary>
     <p class="rec-rule">{{ cp.rule_text }}</p>
@@ -21,13 +23,12 @@
       <a href="{{ route[1] }}" target="_blank" rel="noopener">The plan's contract route</a></p>{% endif %}
     <p class="rec-ids">Record {{ cp.code }}: {{ cp.title }}. {{ ids(cp) }} <a href="{{ cp.research_link }}" target="_blank" rel="noopener">Read the finding</a></p>
   </details>
-  <p class="rec-foot">Recorded on the deal timeline; it does not stop the flow.</p>
 </div>
 {%- endmacro %}
 
-{% macro human_required(cp) -%}
+{% macro human_required(cp, simulated_label=False) -%}
 <div class="rec rec-human" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
-  <div class="rec-head"><span class="rec-badge">&#9995; A person does this</span></div>
+  <div class="rec-head"><span class="rec-badge">A person does this</span>{% if simulated_label and cp.status == 'simulated' %}<span class="rec-status">done (simulated)</span>{% endif %}</div>
   <p class="rec-plain">{{ plain_of(cp.code) or cp.title }}</p>
   <details class="rec-more"><summary>Why</summary>
     <p class="rec-rule">{{ cp.rule_text }}</p>
@@ -38,115 +39,116 @@
 </div>
 {%- endmacro %}
 
-{# A client decision. `action` posts the choice; buttons are enabled only for the client whose decision it is
-   (the server checks again, so a crafted request is refused too). #}
-{% macro decision(cp, persona, action, advice=None, labels=None) -%}
-{% set mine = (cp.actor == persona) or (cp.actor == 'seller_and_buyer' and persona in ('seller', 'buyer') and (persona ~ '=') not in (cp.decision or '')) %}
-<div class="rec rec-decision {{ 'is-done' if cp.status == 'done' }}" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
+{# Who decided and when, with "(played by the demo)" when the script played it, and the Change link. #}
+{% macro decided_line(cp, change=None, extra='') -%}
+<p class="decided" data-decided="{{ cp.code }}">
+  {%- if cp.actor == 'seller_and_buyer' %}{{ decision_label(cp) }}{% else %}{{ decision_label(cp) }} by the {{ cp.decided_by or cp.actor }}{% endif %}
+  {%- if cp.decided_at %} <span class="when" title="Deal time">{{ cp.decided_at | et }}</span>{% endif %}
+  {%- if cp.played %} <span class="played">(played by the demo)</span>{% endif %}{{ extra }}
+  {%- if change %} · <a href="/path/change/{{ change }}" class="change-link" data-change="{{ change }}">Change<span class="sr-only"> {{ cp.title | lower }}</span></a>{% endif %}</p>
+{%- endmacro %}
+
+{# A client decision. Pending: what is being decided, and that the amber button below makes it. Done: the decision,
+   who made it and when, and "Change". `body` (caller) holds the decision's own fields, if any. #}
+{% macro decision(cp, change=None, advice=None, waiting=None) -%}
+<div class="rec rec-decision {{ 'is-done' if cp.status in ('done', 'declined') }}" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
   <div class="rec-head"><span class="rec-badge">{{ whose(cp.actor) }}</span>
-    <span class="rec-status">{{ decision_label(cp) }}</span></div>
-  <p class="rec-title">{{ cp.title }}</p>
+    <span class="rec-status">{% if cp.status == 'pending' %}{{ decision_label(cp) }}{% elif cp.status == 'declined' %}Declined{% else %}Done{% endif %}</span></div>
+  <p class="rec-title">{{ cp.title | plain }}</p>
   {% if advice %}<p class="rec-advice"><b>The AI's advice:</b> {{ advice }}</p>{% endif %}
+  {% if caller is defined %}{{ caller() }}{% endif %}
   {% if cp.status == 'pending' %}
-  {% if labels %}
-  <form method="post" action="{{ action }}" class="buttons">
-    {% for choice in labels %}
-      <button class="button {{ 'is-warning' if loop.first else 'is-light' }}" name="decision" value="{{ choice }}"
-        {% if not mine %}disabled title="Only the {{ cp.actor | replace('_', ' ') }} can decide this"{% endif %}>{{ labels[choice] }}</button>
-    {% endfor %}
-  </form>
-  {% endif %}
-  {% if not mine %}{{ decide_as(cp.actor, persona, 'rec-' ~ cp.code, cp.decision) }}{% endif %}
+    {% if waiting %}<p class="help">{{ waiting }}</p>{% endif %}
   {% else %}
-  <p class="help">Decided by {{ 'the seller and the buyer' if cp.actor == 'seller_and_buyer' else ('the ' ~ cp.decided_by if cp.decided_by else 'the client') }}{% if cp.decided_at %}, {{ cp.decided_at | et }}{% endif %}.</p>
-  {% if persona != 'presenter' %}{{ back_to_presenter('rec-' ~ cp.code) }}{% endif %}
+    {{ decided_line(cp, change) }}
   {% endif %}
   <details class="rec-more"><summary>Why this is {{ 'theirs' if cp.actor == 'seller_and_buyer' else 'the ' ~ cp.actor ~ "'s" }}</summary>
     <p class="rec-rule">{{ cp.rule_text }}</p>
-    <p><b>Whose decision:</b> {{ cp.who_text }}.{% if cp.status == 'pending' %} The next step waits for it.{% endif %}</p>
+    <p><b>Whose decision:</b> {{ cp.who_text }}.{% if cp.status == 'pending' %} What comes next waits for it.{% endif %}</p>
     <p class="rec-ids">Record {{ cp.code }}. {{ ids(cp) }}</p>
   </details>
 </div>
 {%- endmacro %}
 
-{# A record as a small chip: what kind it is and what it says; the code is kept as data for the timeline. #}
+{# A record as a small chip: what kind it is; the code is kept as data for the timeline. #}
 {% macro chip(cp) -%}
-<span class="chip chip-{{ cp.kind }} chip-{{ cp.status }}" title="{{ cp.code }}: {{ cp.rule_text }}" data-code="{{ cp.code }}">
+<span class="chip chip-{{ cp.kind }} chip-{{ cp.status }}" data-code="{{ cp.code }}">
   <b>{{ kind_label[cp.kind] if cp.kind != 'client_decision' else 'Client decision' }}</b>{% if cp.kind == 'law_marker' and cp.law_actor %}: {{ law_actor_label[cp.law_actor] }}{% endif %}
-  {%- if cp.status == 'pending' %} · waiting{% elif cp.status == 'planned' %} · planned{% endif %}</span>
+  {%- if cp.status == 'pending' %} · waiting{% elif cp.status == 'planned' %} · planned{% elif cp.status == 'superseded' %} · changed{% endif %}</span>
 {%- endmacro %}
 
 {% macro source_chip(f) -%}
-<span class="src src-{{ f.source }}" title="{{ (f.inferred_reason or f.source_ref or '') }}">{{ {'public_record': 'Public record', 'seller': 'Seller', 'inferred': 'AI inferred'}[f.source] or f.source }}</span>
-{%- endmacro %}
-
-{# "Decide as the seller": one tap switches the persona and comes back to the same card. The decision is still the
-   client's own: the record service checks the persona when it is made. #}
-{% macro decide_as(actor, persona, anchor, decided='') -%}
-{% set who = ['seller', 'buyer'] if actor == 'seller_and_buyer' else [actor] %}
-<div class="decide-as">
-  <p class="help">You are viewing as the {{ persona }}. {% if actor == 'seller_and_buyer' %}The seller and the buyer each decide this.{% else %}Only the {{ actor }} decides this.{% endif %}</p>
-  <div class="buttons">
-  {% for p in who if p != persona and (p ~ '=') not in (decided or '') %}
-    <form method="post" action="/persona"><input type="hidden" name="persona" value="{{ p }}"><input type="hidden" name="back" value="{{ request.url.path }}#{{ anchor }}">
-      <button class="button is-warning" data-decide-as="{{ p }}">Decide as the {{ p }}</button></form>
-  {% endfor %}
-  </div>
-</div>
-{%- endmacro %}
-
-{% macro back_to_presenter(anchor) -%}
-<form method="post" action="/persona" class="back-to-presenter"><input type="hidden" name="persona" value="presenter"><input type="hidden" name="back" value="{{ request.url.path }}#{{ anchor }}">
-  <button class="button is-small is-light">Back to the Presenter</button></form>
+<span class="src src-{{ f.source }}" title="{{ (f.inferred_reason or f.source_ref or '') | plain }}">{{ {'public_record': 'Public record', 'seller': 'Seller', 'inferred': 'AI'}[f.source] or f.source }}</span>
 {%- endmacro %}
 
 {# What a screen is waiting for (app/demo/walk.py): what is missing, on which step, who must do it, and the way
    there. Shown instead of redirecting, so a step link always lands where it was clicked. #}
 {% macro gate_card(g) -%}
 <div class="gate-card" id="gate-card" data-missing="{{ g.missing.key }}" data-step="{{ g.step.n }}">
-  <p class="gate-head"><span class="rec-badge">Not yet</span> This screen needs an earlier step first</p>
-  {% if g.message %}<p id="gate"><b>Refused for now:</b> {{ g.message }}</p>{% endif %}
-  <p><b>Still to do:</b> {{ g.missing.what }}.</p>
-  <p><b>Where:</b> step {{ g.step.shown }}, {{ g.step.title }}. <b>Who:</b> {{ g.who_label }}{% if g.missing.decision %}: their own decision{% endif %}.</p>
-  <div class="buttons">
-  {% for p in g.decide_as if p != persona %}
-    <form method="post" action="/persona"><input type="hidden" name="persona" value="{{ p }}"><input type="hidden" name="back" value="{{ g.missing.link }}">
-      <button class="button is-warning" data-decide-as="{{ p }}">Decide as the {{ p }}</button></form>
-  {% endfor %}
-    <a class="button {{ 'is-light' if g.decide_as else 'is-primary' }}" href="{{ g.missing.link }}" id="gate-go">Go to step {{ g.step.shown }}: {{ g.step.title }}</a>
-  {% if persona == 'presenter' and g.can_fast_forward %}
-    <form method="post" action="/demo/fast-forward/{{ g.target.n }}"><input type="hidden" name="back" value="{{ request.url.path }}">
-      <button class="button is-info is-light" id="gate-ff">Fast-forward the demo to here</button></form>
+  <p class="gate-head"><span class="rec-badge">Not yet</span> This step comes later in the sale</p>
+  <p><b>Still to do first:</b> {{ g.missing.what }}{% if g.step.n %}, on step {{ g.step.n }} ({{ g.step.title }}){% endif %}. <b>Who:</b> {{ g.who_label }}.</p>
+  {% if g.message %}<p id="gate">{{ g.message | plain }}</p>{% endif %}
+  <p><a href="{{ g.missing.link }}" id="gate-go">Go to {% if g.step.n %}step {{ g.step.n }}: {% endif %}{{ g.step.title }}</a></p>
+  {% if presenting %}
+  <form method="post" action="/demo/skip"><input type="hidden" name="route" value="{{ g.target.route or request.url.path }}">
+    <button class="button is-light" id="gate-ff">Skip ahead: play the steps before this one</button></form>
+  <p class="help">Skip ahead plays the earlier steps the way the demo script does, with the recorded AI answers (no
+  cost). Each seller or buyer decision it plays is marked "played by the demo".</p>
   {% endif %}
-  </div>
-  {% if persona == 'presenter' and g.can_fast_forward %}<p class="help">Fast-forward plays the earlier steps the way the demo
-    script does, with the recorded AI answers (no cost). Each seller or buyer decision is recorded as theirs.{% if g.missing.code %} (Waiting on record {{ g.missing.code }}.){% endif %}</p>{% endif %}
 </div>
 {%- endmacro %}
 
-{# Which AI answered: live, a recorded run (replayed at no cost), or the test double. The model and cost sit in
-   the tooltip, not on the screen. #}
+{# Which AI answered: live, a recorded run (replayed at no cost), or the test double. The model and the recording's
+   time sit in the tooltip: the screens show deal times only (one clock). #}
 {% macro ai_badge(mode, recorded_at=None, model=None) -%}
 {% if mode == 'live' %}<span class="mode-badge mode-live" data-mode="live" title="{{ model or '' }}">Live AI</span>
-{% elif mode == 'replay' %}<span class="mode-badge" data-mode="replay" title="The AI's own answers from an earlier live run, replayed at no cost{% if model %}; model {{ model }}{% endif %}">Recorded run{% if recorded_at %}, {{ recorded_at | et }}{% endif %}</span>
-{% else %}<span class="mode-badge" data-mode="{{ mode }}" title="{{ model or '' }}">Test AI ({{ mode }})</span>{% endif %}
+{% elif mode == 'replay' %}<span class="mode-badge" data-mode="replay" title="The AI's own answer from an earlier live run, replayed at no cost{% if recorded_at %}; recorded {{ recorded_at | et }}{% endif %}{% if model %}; model {{ model }}{% endif %}">Recorded AI answer</span>
+{% else %}<span class="mode-badge" data-mode="{{ mode }}" title="{{ model or '' }}">Test AI</span>{% endif %}
 {%- endmacro %}
 
-{# The top-right badge for the whole app, with its one-line explanation. #}
-{% macro mode_badge(mode) -%}
-{% if mode == 'live' %}<span class="mode-badge mode-live" data-mode="live">Live AI</span><span class="mode-note">each answer is a real model call</span>
-{% elif mode == 'replay' %}<span class="mode-badge" data-mode="replay">Recorded run</span><span class="mode-note">the AI's real answers, replayed at no cost</span>
-{% else %}<span class="mode-badge" data-mode="{{ mode }}">Test AI ({{ mode }})</span>{% endif %}
+{# The information wall, side by side (decision 49): what the seller's AI and the buyer's AI can each see. #}
+{% macro wall(rows) -%}
+<div class="wall" id="wall">
+  <p class="wall-h">What each side's AI can see</p>
+  <table class="wall-table">
+    <thead><tr><th scope="col"></th><th scope="col">The seller's AI</th><th scope="col">The buyer's AI</th></tr></thead>
+    <tbody>{% for what, seller_side, buyer_side in rows %}<tr><th scope="row">{{ what }}</th>
+      <td class="{{ 'hidden-cell' if seller_side == 'hidden' }}">{{ seller_side }}</td>
+      <td class="{{ 'hidden-cell' if buyer_side == 'hidden' }}">{{ buyer_side }}</td></tr>{% endfor %}</tbody>
+  </table>
+  <p class="help">The firm acts for both sides with their consent, through two separate AIs. Neither AI may tell the other side's limits.</p>
+</div>
 {%- endmacro %}
 
-{# The heading block of a step screen: which step, the step's screens as tabs, then the outcome. #}
-{% macro screen_tabs() -%}
-{% if active_step %}
-<p class="eyebrow">Step {{ active_step.shown }} of {{ steps | length }} · {{ active_step.title }}</p>
-{% if active_step.screens | length > 1 %}
-<ul class="screen-tabs" aria-label="Screens in this step">
-  {% for sc in active_step.screens %}<li><a href="{{ sc.route }}" {% if screen and sc.route == screen.route %}aria-current="page"{% endif %}>{{ sc.title }}</a></li>{% endfor %}
-</ul>
+{# The one action bar at the foot of every screen (decision 47): Back on the left; the one primary button on the
+   right, and any quiet secondary choice beside it. #}
+{% macro action_bar() -%}
+{% if bar %}
+<div class="actionbar" id="actionbar">
+  <a class="ab-back" href="{{ prev_stop.route if prev_stop else '/' }}" id="ab-back">&larr; Back</a>
+  <div class="ab-right">
+    {% for a in secondary %}{{ bar_button(a, quiet=True) }}{% endfor %}
+    {{ bar_button(bar) }}
+  </div>
+</div>
 {% endif %}
-{% endif %}
+{%- endmacro %}
+
+{% macro bar_button(a, quiet=False) -%}
+{% set cls = 'is-quiet' if quiet else {'ai': 'is-info', 'seller': 'is-warning', 'buyer': 'is-warning', 'person': 'is-dark', 'form': 'is-primary', 'continue': 'is-primary', 'link': 'is-primary'}[a.kind] %}
+{% set ident = 'ab-secondary' if quiet else 'ab-primary' %}
+{% if a.href %}<a class="button {{ cls }} {{ ident }}" href="{{ a.href }}" {% if not quiet %}id="ab-primary"{% endif %} data-kind="{{ a.kind }}">{{ a.label }}{% if a.kind == 'continue' %} &rarr;{% endif %}</a>
+{% elif a.form %}<button class="button {{ cls }} {{ ident }}" form="{{ a.form }}" {% if a.name %}name="{{ a.name }}" value="{{ a.value }}"{% endif %} {% if not quiet %}id="ab-primary"{% endif %} data-kind="{{ a.kind }}" data-key="{{ a.key }}" {% if a.working and not quiet %}data-working{% endif %} {% if a.label_template %}data-label-template="{{ a.label_template }}"{% endif %}>{{ a.label }}</button>
+{% else %}<form method="post" action="{{ a.url }}" class="ab-form">{% for k, v in a.fields.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+  <button class="button {{ cls }} {{ ident }}" {% if not quiet %}id="ab-primary"{% endif %} data-kind="{{ a.kind }}" data-key="{{ a.key }}" {% if a.working and not quiet %}data-working{% endif %}>{{ a.label }}</button></form>{% endif %}
+{%- endmacro %}
+
+{# A form field's error, next to the field (fresh-eyes audit 27). #}
+{% macro field_error(errors, name) -%}
+{% if errors and errors.get(name) %}<span class="field-error" id="err-{{ name }}">{{ errors[name] }}</span>{% endif %}
+{%- endmacro %}
+
+{# In a recorded demo, the free figures are the recorded ones (fresh-eyes audit 4): said once, beside the fields. #}
+{% macro recorded_note() -%}
+{% if recorded %}<p class="recorded-note">This recorded demo uses the figures it was recorded with; any figure works in the live demo.</p>{% endif %}
 {%- endmacro %}

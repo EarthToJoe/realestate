@@ -11,6 +11,8 @@ Every write also appends an audit event.
 
 from __future__ import annotations
 
+import contextvars
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -35,6 +37,12 @@ class NotYourDecision(Exception):
 # Which personas may decide for which actor value in the catalogue.
 DECIDERS = {"seller": {"seller"}, "buyer": {"buyer"}, "seller_and_buyer": {"seller", "buyer"}}
 
+# Set while the demo plays a decision for a client (fast-forward, "Do this screen for me"): the record says so, on its
+# card and on the timeline ("played by the demo"), so nobody mistakes a scripted consent for a person's (audit F18).
+PLAYED: contextvars.ContextVar[bool] = contextvars.ContextVar("played", default=False)
+# Statuses that no longer count: a record superseded by a change (decision 48) stays on the timeline as history.
+GONE = ("superseded",)
+
 
 def _new(s: Session, deal_id: int, code: str, *, status: str, reason: str | None = None,
          attached_to: str | None = None, step: int | None = None) -> Checkpoint:
@@ -52,16 +60,48 @@ def _new(s: Session, deal_id: int, code: str, *, status: str, reason: str | None
     return cp
 
 
-def records(s: Session, deal_id: int, code: str | None = None) -> list[Checkpoint]:
+def records(s: Session, deal_id: int, code: str | None = None, *, history: bool = False) -> list[Checkpoint]:
+    """The deal's records (of one code), oldest first. Superseded records are left out unless `history` is asked
+    for: the timeline shows them as changes; everything else reads only what stands."""
     q = select(Checkpoint).where(Checkpoint.deal_id == deal_id)
     if code:
         q = q.where(Checkpoint.code == code)
+    if not history:
+        q = q.where(Checkpoint.status.not_in(GONE))
     return list(s.execute(q.order_by(Checkpoint.id)).scalars())
 
 
 def latest(s: Session, deal_id: int, code: str) -> Checkpoint | None:
     rs = records(s, deal_id, code)
     return rs[-1] if rs else None
+
+
+def supersede(s: Session, deal_id: int, code: str, *, why: str, where=None) -> list[Checkpoint]:
+    """A change (decision 48): the records of `code` that stand (optionally only those `where(cp)` picks) are marked
+    superseded, never deleted, so the timeline keeps the history. Planned and standing records are left alone."""
+    out = []
+    for cp in records(s, deal_id, code):
+        if cp.status == "planned" or catalogue.get(code).standing or (where and not where(cp)):
+            continue
+        cp.status = "superseded"
+        out.append(cp)
+    if out:
+        s.flush()
+        record_event(s, actor="system", kind="change", entity="checkpoint", entity_id=out[-1].id,
+                     summary=f"{code} superseded ({len(out)} record{'s' if len(out) > 1 else ''}): {why}")
+    return out
+
+
+def reopen(s: Session, deal_id: int, code: str, *, why: str, attached_to: str | None = None,
+           where=None) -> Checkpoint:
+    """A client decision made again: the standing record is superseded and a new pending one opens."""
+    old = [cp for cp in records(s, deal_id, code) if not where or where(cp)]
+    attached_to = attached_to or (old[-1].attached_to if old else None)
+    supersede(s, deal_id, code, why=why, where=where)
+    cp = _new(s, deal_id, code, status="pending", reason=f"Re-opened: {why}", attached_to=attached_to)
+    record_event(s, actor="system", kind="change", entity="checkpoint", entity_id=cp.id,
+                 summary=f"{code} re-opened for the {catalogue.get(code).actor.replace('_', ' ')}: {why}")
+    return cp
 
 
 def open_decision(s: Session, deal_id: int, code: str, *, reason: str | None = None,
@@ -106,11 +146,13 @@ def decide(s: Session, checkpoint: Checkpoint, *, persona: str, decision: str, r
         checkpoint.status = "declined" if declined else "done"
     checkpoint.decided_by = persona
     checkpoint.decided_at = now()
+    checkpoint.played = bool(checkpoint.played) or PLAYED.get()
     if reason:
         checkpoint.reason = reason
     s.flush()
     record_event(s, actor=persona, kind="client_decision", entity="checkpoint", entity_id=checkpoint.id,
-                 summary=f"{checkpoint.code} {decision} by the {persona}: {checkpoint.title}")
+                 summary=f"{checkpoint.code} {decision} by the {persona}"
+                         f"{' (played by the demo)' if PLAYED.get() else ''}: {checkpoint.title}")
     return checkpoint
 
 

@@ -1,0 +1,17 @@
+/* Per-screen styles for the one-path redesign (decision 51). Each block belongs to one group of screens; keep edits
+   inside your own block. app.css holds everything shared. */
+
+/* ---- 4-5 The price, the listing ---- */
+/* end 4-5 */
+
+/* ---- 6-7 On the market, enquiries ---- */
+/* end 6-7 */
+
+/* ---- 8-9 The buyer ---- */
+/* end 8-9 */
+
+/* ---- 10-11 The seller decides, the contract ---- */
+/* end 10-11 */
+
+/* ---- finale and the firm's campaign ---- */
+/* end finale */

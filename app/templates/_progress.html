@@ -1,0 +1,14 @@
+{# The progress list (decision 51): done ✓, "you are here", started, or not started. A list, not a control panel. #}
+<p class="steps-title">The sale, step by step</p>
+<ol class="plist">
+{% for st in steps %}{% set status = statuses.get(st.route, 'todo') %}{% set here = screen and screen.route == st.route %}
+  <li class="ps-{{ status }}{{ ' ps-here' if here }}" data-step="{{ st.n }}" data-status="{{ status }}">
+    <a href="{{ st.route }}" {% if here %}aria-current="step"{% endif %}><span class="n" aria-hidden="true">{% if status == 'done' %}&#10003;{% else %}{{ st.n }}{% endif %}</span>
+      <span class="st-title">{{ st.short }}<span class="st">{% if here %}You are here{% elif status == 'done' %}Done{% elif status == 'started' %}In progress{% endif %}</span></span></a>
+  </li>
+{% endfor %}
+</ol>
+<ul class="plist plist-end">
+  <li class="{{ 'ps-here' if screen and screen.route == finale.route }}"><a href="{{ finale.route }}" {% if screen and screen.route == finale.route %}aria-current="step"{% endif %}><span class="n" aria-hidden="true">&#9733;</span><span class="st-title">{{ finale.short }}</span></a></li>
+  <li class="{{ 'ps-here' if screen and screen.route == after.route }}"><a href="{{ after.route }}" {% if screen and screen.route == after.route %}aria-current="step"{% endif %}><span class="n" aria-hidden="true">+</span><span class="st-title">{{ after.short }}</span></a></li>
+</ul>

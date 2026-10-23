@@ -1,32 +1,23 @@
-{# The presenter-notes layer (decision 40) and, in the guided demo, the narration card (SC11): what to say, what to
-   point at, what to do and which marker or decision appears, from app/demo/steps.yaml. Closed by default; in the
-   guided demo it opens on each screen until the presenter closes it (remembered on this device). The audience
-   layer underneath never carries the narration. The controls come first, so Next is always in reach. #}
+{# The presenter's notes (decision 50): only with "I'm presenting" on. A drawer that never covers the content: on a
+   laptop the content column narrows; on a phone it is a bottom sheet that starts closed. From app/demo/steps.yaml. #}
 {% set sc = screen or intro_notes %}
-<section class="presenter-notes" id="presenter-notes" hidden aria-label="Presenter notes" data-guided="{{ 'on' if guide else 'off' }}"
+<aside class="presenter-notes" id="presenter-notes" hidden aria-label="Presenter notes"
   data-spotlight='{{ (sc.spotlight or []) | tojson }}'>
   <div class="notes-head">
     <div>
-      {% if screen %}<p class="notes-where">Step {{ active_step.shown }} · {{ active_step.title }}{% if guide %} · screen {{ screen.k }} of {{ walk_screens | length }}{% endif %}</p>
+      {% if screen %}<p class="notes-where">{% if screen.n %}Step {{ screen.n }} of {{ steps | length }}{% else %}{{ screen.short }}{% endif %} · about {{ sc.minutes }} min</p>
       <h2>{{ screen.title }}</h2>{% else %}<p class="notes-where">Before step 1 · about {{ sc.minutes }} min</p><h2>Introduction</h2>{% endif %}
     </div>
     <button type="button" class="notes-close" data-notes-close aria-label="Close the presenter notes">&times;</button>
-  </div>
-  <div class="buttons notes-actions">
-    {% if next_screen %}<a class="button is-small is-dark" href="{{ next_screen[1].route }}" id="notes-next">Next: {{ next_screen[1].title }} &rarr;</a>{% endif %}
-    {% if screen and playable and persona == 'presenter' %}
-    <form method="post" action="/demo/play"><input type="hidden" name="route" value="{{ screen.route }}">
-      <button class="button is-small is-info is-light" id="play-screen" title="Plays this screen's taps the way the script does, with the recorded AI answers; each client decision is recorded as the client's">Do this screen for me</button></form>
-    {% endif %}
-    {% if sc.spotlight %}<button type="button" class="button is-small is-light" data-spotlight-start id="spotlight-start">Spotlight</button>{% endif %}
   </div>
   <p><span class="notes-k">Say:</span> {{ sc.say }}</p>
   {% if sc.point %}<p><span class="notes-k">Point at:</span> {{ sc.point }}</p>{% endif %}
   {% if sc.click %}<p><span class="notes-k">Do:</span> {{ sc.click }}</p>{% endif %}
   {% if sc.marker %}<p><span class="notes-k">Markers and decisions:</span> {{ sc.marker }}</p>{% endif %}
-  <form method="post" action="/demo/guide" class="notes-guide">
-    <input type="hidden" name="back" value="{{ request.url.path }}">
-    {% if guide %}<input type="hidden" name="on" value="off"><button class="button is-text is-small" id="guide-off">End the guided demo</button>
-    {% else %}<input type="hidden" name="on" value="on"><button class="button is-text is-small" id="guide-on">Guided demo: open these notes on every screen</button>{% endif %}
-  </form>
-</section>
+  <div class="buttons notes-actions">
+    {% if screen and playable %}<form method="post" action="/demo/play"><input type="hidden" name="route" value="{{ screen.route }}">
+      <button class="button is-small is-info is-light" id="notes-play">Do this screen for me</button></form>{% endif %}
+    {% if sc.spotlight %}<button type="button" class="button is-small is-light" data-spotlight-start>Spotlight</button>{% endif %}
+  </div>
+  {% block presenter_extra %}{% endblock %}
+</aside>

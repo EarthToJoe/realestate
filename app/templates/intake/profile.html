@@ -1,16 +1,62 @@
 {% extends "base.html" %}
+{% from "components.html" import source_chip, ai_badge with context %}
 {% block content %}
 {% set fx = {} %}{% for f in deal.property.facts %}{{ fx.update({f.field: f.value}) or '' }}{% endfor %}
-<div class="outcome">
+{% set n = {'public_record': 0, 'seller': 0, 'inferred': 0} %}
+{% for group, facts in groups %}{% for f in facts %}{{ n.update({f.source: n.get(f.source, 0) + 1}) or '' }}{% endfor %}{% endfor %}
+{% set needed = items | selectattr('required') | list %}
+<div class="outcome {{ 'is-done' if inferred }}">
   <h1 class="page-title">{{ deal.property.street }}, {{ deal.property.city }}</h1>
   <p class="muted">{% if deal.property.municipality %}{{ deal.property.municipality }}, {{ deal.property.county }} County · {% endif %}NY {{ deal.property.zip }}{% if deal.property.upi %} · parcel {{ deal.property.upi }}{% endif %}</p>
   {% set key = [('ArchitecturalStyle', 'Style'), ('YearBuilt', 'Built'), ('BedroomsTotal', 'Bedrooms'), ('BathroomsFull', 'Full baths'), ('LivingArea', 'Living area, sq ft'), ('LotSizeAcres', 'Acres')] %}
   {% if fx %}<dl class="fact-list">{% for k, label in key if fx.get(k) %}<div><dt>{{ label }}</dt><dd>{{ fx[k] }}</dd></div>{% endfor %}</dl>{% endif %}
+  <p class="status-line" id="source-counts" style="margin-top:12px">{{ n.public_record + n.seller + n.inferred }} facts:
+    <span class="src src-public_record">Public record</span> {{ n.public_record }}
+    <span class="src src-seller">Seller</span> {{ n.seller }} <span class="src src-inferred">AI</span> {{ n.inferred }}</p>
 </div>
 {% if not deal.property.is_demo_house %}
-<div class="notification is-light">No public record was found for this address in the demo's records (the POC
-reads one fixture house; real lookups are out of scope). The profile shows the seller's facts only.</div>
+<div class="notification is-light">No public record was found for this address in the demo's records (the demonstration
+reads one house; real lookups are out of scope). The profile shows the seller's facts only.</div>
 {% endif %}
-<div id="profile-body">{% include "intake/_profile_body.html" %}</div>
-<div class="actions"><a class="button is-next" href="/intake/disclosures">Next: disclosure checklist &rarr;</a></div>
+
+<div class="ai-panel" id="ai-panel">
+  {% if inferred %}
+  <p class="ai-by">The AI's research</p>
+  <p>The AI added <b>{{ inferred | length }} facts</b> the record leaves out and worked out {{ n.inferred - (inferred | length) }}
+  more from the record itself (such as the lead-paint rule): {{ n.inferred }} facts marked <span class="src src-inferred">AI</span>, each with its reason.</p>
+  {% else %}
+  <p>The public record leaves gaps. The AI can infer some of them from what is recorded, and says why.</p>
+  {% endif %}
+</div>
+
+<h2 class="section-title" id="checklist">The disclosures this house needs: {{ needed | length }} of {{ items | length }}</h2>
+<p>Worked out from the house's facts by rule, with no model involved.</p>
+<table class="table is-fullwidth" id="checklist-table">
+  <thead><tr><th>Disclosure</th><th>Needed?</th><th>When</th></tr></thead>
+  {% for d in items %}
+  <tr data-kind="{{ d.kind }}">
+    <td><b>{{ d.title | plain }}</b></td>
+    <td data-label="Needed?">{% if d.required %}<b>Yes</b>{% else %}No{% endif %}{% if d.required_reason %}<br><small class="muted">{{ d.required_reason | plain }}</small>{% endif %}</td>
+    <td data-label="When">{% if d.kind == 'pcds' %}{% if d.acknowledged_at %}<span class="check-ok">&#10003;</span> completed by the seller{% else %}The seller completes it before the contract is signed (step 11){% endif %}
+      {% elif d.acknowledged_at %}<span class="check-ok">&#10003;</span> acknowledged{% elif d.delivered_at %}<span class="check-ok">&#10003;</span> sent by the AI{% else %}{{ d.trigger }}{% endif %}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2 class="section-title">Show the working</h2>
+{% for group, facts in groups %}
+<details class="working">
+  <summary>{{ 'New facts the AI added' if group == 'Inferred by the AI' else group }} <span class="sum-note">{{ facts | length }} facts</span></summary>
+  <div class="working-body">
+  <table class="table is-narrow is-fullwidth facts">
+    {% for f in facts %}
+    <tr data-field="{{ f.field }}" data-source="{{ f.source }}">
+      <td style="width:30%"><b>{{ f.label }}</b></td><td data-label="Value">{{ f.value | yesno }}</td><td style="width:140px">{{ source_chip(f) }}</td>
+      <td class="reason" data-label="Why">{% if f.source == 'inferred' %}{{ f.inferred_reason | plain }}{% if f.confidence %} ({{ f.confidence }} confidence){% endif %}{% elif f.source_ref %}{{ f.source_ref | plain | truncate(90) }}{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+</details>
+{% endfor %}
 {% endblock %}

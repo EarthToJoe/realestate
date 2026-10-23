@@ -2,26 +2,30 @@
 {% block content %}
 <div class="home-hero">
   <h1 class="page-title">An AI real estate agent, from listing to signed contract</h1>
-  <p class="lead">One Hudson Valley house sale, start to finish. The AI is the agent on both sides and does every
-  agent's job; the seller and the buyer make their own decisions.</p>
-  <p>Wherever New York law today requires a licensed broker or a lawyer, a red <b>NY law today</b> note says so in
-  one sentence. It is recorded and does not stop the sale.</p>
+  <p class="lead">One Hudson Valley house sale, start to finish, in eleven steps. The AI is the agent on both sides
+  and does every agent's job.</p>
+  <p class="you-play" id="you-play">You play the seller and the buyer. The amber buttons are their decisions. The AI
+  does everything else.</p>
+  <p>Wherever New York law today requires a licensed broker or a lawyer, a red <b>NY law today</b> note says so in one
+  sentence. Recorded on the deal timeline; it does not stop the flow.</p>
   <div class="actions">
-    <a class="button is-primary" href="/demo/start" id="start-demo">Start demo</a>
-    {% if deal %}<a class="button is-light" href="/intake/profile">Continue the current sale</a>
-    <a class="button is-light" href="/timeline">See the deal timeline</a>{% endif %}
+    {% if deal %}
+    <a class="button is-primary" href="{{ resume }}" id="start-demo">Continue where you left off</a>
+    <a class="button is-light" href="/demo/start" id="start-over">Start over</a>
+    {% else %}
+    <a class="button is-primary" href="/demo/start" id="start-demo">Start</a>
+    {% endif %}
   </div>
-  <p class="help">Start demo asks before it resets the sale, then opens step 1. Any step can be opened at any time:
-  if it needs an earlier step, it says what is missing and offers to fast-forward.</p>
+  <p class="help">Each screen ends in one button at the bottom: press it to go on. "Back" keeps everything you
+  entered, and every decision has a "Change" link once it is made.</p>
 </div>
 <h2 class="section-title">How to read the screens</h2>
 <div class="legend">
   <div><span class="chip chip-automated"><b>AI</b></span> Blue is the AI at work: what it wrote, sent or worked out.</div>
-  <div><span class="chip chip-client_decision"><b>Client decision</b></span> Amber is a decision only the seller or the buyer can make.</div>
+  <div><span class="chip chip-client_decision"><b>Client decision</b></span> Amber is a decision only the seller or the buyer can make: you press it for them.</div>
   <div><span class="chip chip-law_marker"><b>NY law today</b></span> Red is where New York law today requires a licensed broker or a lawyer.</div>
   <div><span class="chip chip-human_required"><b>A person</b></span> Grey is a step a person or another firm does: a notary, an inspector, the owner at the door.</div>
 </div>
-<p class="help" style="margin-top:12px">Where each property fact came from: <span class="src src-public_record">Public record</span>
-  <span class="src src-seller">Seller</span> <span class="src src-inferred">AI inferred</span>.
-  The presenter's script is under <b>Presenter notes</b>, bottom right; "View as" switches between the presenter, the seller and the buyer.</p>
+<p class="help" style="margin-top:12px">Presenting to someone? "I'm presenting" in the menu (top right) adds the
+presenter's notes, "Do this screen for me" and skip ahead.</p>
 {% endblock %}

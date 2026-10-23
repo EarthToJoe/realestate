@@ -9,13 +9,13 @@ from fastapi import Depends, FastAPI, Form, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
-from app import db, logging_setup, pii
+from app import db, humanize, logging_setup, pii
 from app.db import get_session
 from app.config import Settings
 from app.logging_setup import log
 from app.model.provider import ModelProvider, make_provider
 from app.records.service import GateError, NotYourDecision
-from app.web import APP_DIR, COOKIE, GUIDE_COOKIE, PERSONAS, render
+from app.web import APP_DIR, COOKIE, PERSONAS, merged_routes, render
 
 
 def _register_people() -> None:
@@ -48,6 +48,13 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     app.state.provider = provider or make_provider(settings)
     app.mount("/static", StaticFiles(directory=str(APP_DIR / "static")), name="static")
 
+    # Old screens merged into the path (decision 51) keep their addresses: each redirects to its new screen and
+    # anchor, so the review pages, the tests and any saved link still land. Registered before the module routers.
+    for old, (new, anchor) in merged_routes().items():
+        app.add_api_route(old, (lambda target: (lambda: RedirectResponse(target, status_code=303)))(f"{new}#{anchor}"),
+                          methods=["GET"], include_in_schema=False)
+
+    from app.demo.routes import router as demo_router
     from app.modules.intake.routes import router as intake_router
     from app.modules.timeline.routes import router as timeline_router
     from app.modules.pricing.routes import router as pricing_router
@@ -62,53 +69,65 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     from app.modules.people.routes import router as people_router
     from app.fairhousing.check import FairHousingBlocked
 
-    for r in (intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
+    for r in (demo_router, intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
               buyer_router, contract_router, timeline_router, brand_router, people_router):
         app.include_router(r)
 
-    @app.exception_handler(FairHousingBlocked)
-    async def fh_blocked(request: Request, exc: FairHousingBlocked):
+    def _refused(request: Request, status: int, title: str, message: str):
+        """Every refusal in plain words, with the way back to the screen it came from (decision 47)."""
+        from urllib.parse import urlparse
+
+        from app.web import screen_for
+
         s = db.new_session()
         try:
-            return render(request, s, "refused.html", status_code=409,
-                          title="Refused: the fair-housing check has not passed", message=str(exc), code=None)
+            ref = urlparse(request.headers.get("referer") or "")
+            back = ref.path if ref.path.startswith("/") and ref.netloc in ("", request.url.netloc) else None
+            if request.url.path.startswith("/path/act/") or request.url.path.startswith("/path/change/"):
+                from app.demo.walk import BY_KEY
+
+                m = BY_KEY.get(request.url.path.rsplit("/", 1)[-1])
+                back = back or (m.route if m else None)
+            st, _ = screen_for(back or "")
+            return render(request, s, "refused.html", status_code=status, title=title, message=message,
+                          back=back or "/", back_title=st["title"] if st else None, code=None)
         finally:
             s.close()
+
+    @app.exception_handler(FairHousingBlocked)
+    async def fh_blocked(request: Request, exc: FairHousingBlocked):
+        return _refused(request, 409, "Not yet: the fair-housing check has not passed", str(exc))
 
     @app.exception_handler(GateError)
     async def gate_refused(request: Request, exc: GateError):
-        s = db.new_session()
-        try:
-            return render(request, s, "refused.html", status_code=409, title="Refused: a client decision comes first",
-                          message=exc.message, code=exc.code)
-        finally:
-            s.close()
+        return _refused(request, 409, "Not yet: a decision comes first", humanize.gate_message(exc.message))
 
     @app.exception_handler(NotYourDecision)
     async def not_yours(request: Request, exc: NotYourDecision):
-        s = db.new_session()
-        try:
-            return render(request, s, "refused.html", status_code=403, title="Refused: not your decision",
-                          message=str(exc), code=None)
-        finally:
-            s.close()
+        return _refused(request, 403, "That is someone else's decision", humanize.gate_message(str(exc)))
 
     from app.web import NotFound
 
     @app.exception_handler(NotFound)
     async def not_found(request: Request, exc: NotFound):
-        s = db.new_session()
-        try:
-            return render(request, s, "refused.html", status_code=404, title="Not found", message=str(exc), code=None)
-        finally:
-            s.close()
+        return _refused(request, 404, "Not found", str(exc))
 
     @app.exception_handler(ValueError)
     async def not_accepted(request: Request, exc: ValueError):
+        return _refused(request, 422, "Not accepted", humanize.gate_message(str(exc)))
+
+    from app.demo.recorded import OffScript
+
+    @app.exception_handler(OffScript)
+    async def off_script(request: Request, exc: OffScript):
         s = db.new_session()
         try:
-            return render(request, s, "refused.html", status_code=422, title="Not accepted", message=str(exc),
-                          code=None)
+            from app.web import screen_for
+
+            st, _ = screen_for(exc.back.split("#")[0].split("?")[0])
+            return render(request, s, "refused.html", status_code=409, title="Not in the recorded demo",
+                          message=exc.message, put_back=exc.back, put_back_label=exc.label, back=exc.back,
+                          back_title=st["title"] if st else None, code=None)
         finally:
             s.close()
 
@@ -117,12 +136,28 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     @app.exception_handler(ReplayMiss)
     @app.exception_handler(SpendCapReached)
     async def ai_unavailable(request: Request, exc: Exception):
-        s = db.new_session()
-        try:
-            return render(request, s, "refused.html", status_code=503, title="The AI's answer is not recorded",
-                          message=f"{exc} Nothing was changed.", code=None)
-        finally:
-            s.close()
+        from app.demo.path import plain_failure
+
+        return _refused(request, 503, "The AI did not run", plain_failure(exc, True) + " Nothing was changed.")
+
+    from starlette.exceptions import HTTPException as StarletteHTTPException
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_error(request: Request, exc: StarletteHTTPException):
+        """A GET to an action's address (a refresh or Back after a form) lands on its screen, never on
+        {"detail": "Method Not Allowed"} (fresh-eyes audit 5)."""
+        if exc.status_code == 405 and request.method == "GET":
+            from app.web import screen_for
+
+            parts = request.url.path.rstrip("/").split("/")
+            for i in range(len(parts), 1, -1):
+                st, _ = screen_for("/".join(parts[:i]))
+                if st:
+                    return RedirectResponse(st["route"], status_code=303)
+            return RedirectResponse("/", status_code=303)
+        if exc.status_code == 404 and request.method == "GET":
+            return _refused(request, 404, "Not found", "There is no page at this address.")
+        return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
 
     @app.get("/")
     def home(request: Request, s=Depends(get_session)):
@@ -136,92 +171,12 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
 
     @app.post("/persona")
     def set_persona(request: Request, persona: str = Form(...), back: str = Form("/")):
+        """"View as" (in the menu): whose eyes the screens use for the access log and the information wall."""
         target = back if back.startswith("/") and not back.startswith("//") else "/"
         resp = RedirectResponse(target, status_code=303)
         if persona in PERSONAS:
             resp.set_cookie(COOKIE, persona, httponly=True, samesite="lax")
         return resp
-
-    def _local(path: str | None, default: str = "/") -> str:
-        return path if path and path.startswith("/") and not path.startswith("//") else default
-
-    @app.get("/demo/start")
-    def demo_start(request: Request, back: str = "/", s=Depends(get_session)):
-        """Start demo asks first: the reset removes the current deal."""
-        return render(request, s, "demo_start.html", back=_local(back))
-
-    @app.post("/demo/reset")
-    def demo_reset():
-        """Start demo: rebuild the database from the seed (the spend log is kept), act as the Presenter."""
-        db.reset_all()
-        log.info("demo_reset")
-        resp = RedirectResponse("/intake?demo=1&started=1", status_code=303)
-        resp.set_cookie(COOKIE, "presenter", httponly=True, samesite="lax")
-        resp.set_cookie(GUIDE_COOKIE, "on", httponly=True, samesite="lax")  # Start demo starts the guided demo
-        return resp
-
-    @app.post("/demo/guide")
-    def demo_guide(on: str = Form("on"), back: str = Form("/")):
-        """Turn the guided demo on (notes open on every screen, screen k of N, Next) or off."""
-        resp = RedirectResponse(_local(back), status_code=303)
-        if on == "on":
-            resp.set_cookie(GUIDE_COOKIE, "on", httponly=True, samesite="lax")
-        else:
-            resp.delete_cookie(GUIDE_COOKIE)
-        return resp
-
-    @app.post("/demo/play")
-    def demo_play(request: Request, route: str = Form(...), s=Depends(get_session)):
-        """Guided demo, Presenter only: "Do this screen for me" plays this screen's taps the way the script does
-        (the same plays as fast-forward, on the recorded replays), each client decision recorded as the client's."""
-        from app.demo import walk
-        from app.web import persona, screen_for
-
-        if persona(request) != "presenter":
-            raise NotYourDecision("Only the Presenter can play a screen of the demo.")
-        st, sc = screen_for(route)
-        if sc is None:
-            raise ValueError("That is not a screen of the demo.")
-        played = walk.play_screen(s, request.app.state.provider, route)
-        log.info("demo_play", route=route, played=[m.key for m in played])
-        return RedirectResponse(route, status_code=303)  # the screen opens on its outcome, at the top
-
-    @app.post("/demo/fast-forward/{n}")
-    async def demo_fast_forward(n: int, request: Request, s=Depends(get_session)):
-        """Presenter only: play the steps before step n with the demo's scripted choices (replays, $0), each client
-        decision recorded as the client's, then open the step (the screen the presenter was on, if it is in it)."""
-        from app.demo import walk
-        from app.web import persona, screen_for, steps
-
-        if persona(request) != "presenter":
-            raise NotYourDecision("Only the Presenter can fast-forward the demo.")
-        st = next((x for x in steps() if x["n"] == n), None)
-        if st is None or not st["built"]:
-            raise ValueError(f"Step {n} is not built yet, so there is nothing to fast-forward to.")
-        back = _local(str((await request.form()).get("back") or ""), "")
-        back_step, _ = screen_for(back)
-        if not (back_step and back_step["n"] == n):
-            back = st["screens"][0]["route"]
-        played = walk.fast_forward(s, request.app.state.provider, n, back)
-        log.info("demo_fast_forward", step=n, played=[m.key for m in played])
-        return RedirectResponse(back, status_code=303)
-
-    @app.get("/step/{n}")
-    def step_placeholder(n: int, request: Request, s=Depends(get_session)):
-        from app.records import service as records
-        from app.web import current_deal, steps
-
-        st = next((x for x in steps() if x["n"] == n), None)
-        if st and st["built"]:
-            return RedirectResponse(st["screens"][0]["route"], status_code=303)
-        deal = current_deal(s)
-        gate = None
-        if n in (2, 3, 4) and deal:
-            try:  # no marketing before the listing agreement is signed (L9)
-                records.require(s, deal.id, "CP-03", action=f"start step {n}")
-            except GateError as e:
-                gate = e.message
-        return render(request, s, "placeholder.html", step=st, gate=gate)
 
     # Review pages keep their addresses: mounted last, so app routes win and everything else falls through.
     if settings.review_dir.is_dir():

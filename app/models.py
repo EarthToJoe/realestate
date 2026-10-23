@@ -125,11 +125,12 @@ class Checkpoint(Base):
     ws3_ids: Mapped[list] = mapped_column(JSON, default=list, info=SYS)
     research_link: Mapped[str | None] = mapped_column(String(300), info=SYS)
     blocking: Mapped[bool] = mapped_column(Boolean, default=False, info=SYS)
-    status: Mapped[str] = mapped_column(String(12), info=SYS)  # pending | done | declined | simulated | planned
+    status: Mapped[str] = mapped_column(String(12), info=SYS)  # pending|done|declined|simulated|planned|superseded
     decision: Mapped[str | None] = mapped_column(String(40), info=SYS)
     decided_by: Mapped[str | None] = mapped_column(String(20), info=SYS)
     decided_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), info=SYS)
     attached_to: Mapped[str | None] = mapped_column(String(80), info=SYS)  # e.g. "disclosure:3"
+    played: Mapped[bool] = mapped_column(Boolean, default=False, info=SYS)  # decided by the demo's script, not a person
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
 
 

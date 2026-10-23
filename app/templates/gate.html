@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{# A step screen with nothing to show yet: the gate card (base.html) says what it waits for and how to get there. #}
+{# A step screen with nothing to show yet: the "not yet" card says what it waits for and how to get there. #}
 {% block content %}
-<h1 class="page-title">{% if screen %}{{ screen.title }}{% else %}Not ready yet{% endif %}</h1>
-<p id="gate-empty">Nothing to show here yet for the current deal. The card above says what comes first.</p>
+<p id="gate-empty" class="help">Nothing to show here yet in this sale.</p>
 {% endblock %}

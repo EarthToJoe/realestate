@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{# "Change" (decision 48): says exactly what re-opens before anything does. #}
+{% block title %}Change {{ label }}{% endblock %}
+{% block content %}
+<h1 class="page-title">Change {{ label }}?</h1>
+<div class="notification is-warning is-light" id="change-confirm">
+  {% if reopens %}
+  <p><b>Changing {{ label }} re-opens {{ reopens_text }}</b>, because {{ 'it depends' if reopens | length == 1 else 'they depend' }} on it.
+  Everything else in the sale stays as it is, including what you typed.</p>
+  {% else %}
+  <p><b>Nothing else depends on {{ label }}</b>, so only it re-opens. Everything else stays as it is.</p>
+  {% endif %}
+  <p>The earlier decision stays on the deal timeline, marked as changed.</p>
+</div>
+<form method="post" action="{{ action or '/path/change/' ~ key }}" class="buttons" id="change-form">
+  {% for k, v in (hidden or {}).items() %}{% if v is string %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% else %}{% for x in v %}<input type="hidden" name="{{ k }}" value="{{ x }}">{% endfor %}{% endif %}{% endfor %}
+  <button class="button is-primary" id="confirm-change">Yes, change {{ label }}</button>
+  <a href="{{ back }}" id="cancel-change" class="clear-link">No, keep it</a>
+</form>
+{% endblock %}

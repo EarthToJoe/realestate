@@ -1,9 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Refused{% endblock %}
+{% block title %}Not yet{% endblock %}
 {% block content %}
 <div class="notification is-warning" id="refused">
   <p class="gate-head">{{ title }}</p>
-  <p>{{ message }}</p>
+  <p>{{ message | plain }}</p>
+  {% if put_back %}<p>{{ put_back_note }}</p>{% endif %}
 </div>
-<p><a href="javascript:history.back()">Go back</a> · <a href="/timeline">Deal timeline</a></p>
+<div class="buttons">
+  {% if put_back %}<a class="button is-primary" href="{{ put_back }}" id="put-back">{{ put_back_label or 'Put the recorded figure back' }}</a>{% endif %}
+  <a class="button {{ 'is-light' if put_back else 'is-primary' }}" href="{{ back or '/' }}" id="refused-back">Back to {{ back_title or 'the sale' }}</a>
+</div>
 {% endblock %}

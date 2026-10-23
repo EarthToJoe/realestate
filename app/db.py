@@ -57,6 +57,11 @@ def create_all() -> None:
     with _engine.begin() as conn:
         for ddl in AUDIT_TRIGGERS:
             conn.execute(text(ddl))
+        # The one column added since the tables were first made (decision 48: decisions played by the demo say so).
+        # create_all never alters a table, so a database from before it gets the column here.
+        cols = {r[1] for r in conn.execute(text("PRAGMA table_info(checkpoint)"))}
+        if cols and "played" not in cols:
+            conn.execute(text("ALTER TABLE checkpoint ADD COLUMN played BOOLEAN DEFAULT 0"))
 
 
 # Kept across a demo reset: the spend log, so the spend cap counts every live call ever made.
