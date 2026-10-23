@@ -64,7 +64,7 @@ STANDARD_SOURCE = ("Bar-association Residential Contract of Sale (form 11-2000),
 # What e-signature covers and what it does not (L34, L35, L45). Rows: document, who signs, how, law, when.
 SIGNING_MAP = [
     {"doc": "Contract of sale and rider", "who": "Seller and buyer", "how": "e-sign", "law": "L34; L24",
-     "when": "Now (step 7)"},
+     "when": "Now (step 8)"},
     {"doc": "Property Condition Disclosure Statement", "who": "Seller signs; buyer acknowledges receipt",
      "how": "e-sign", "law": "L43; L34", "when": "Seller: done in CP-04; buyer: with the contract"},
     {"doc": "Accepted-offer memorandum", "who": "No signature (sent to both parties)", "how": "sent",
@@ -110,7 +110,7 @@ def accepted(deal: Deal) -> dict:
     a = offers.state(deal).get("accepted")
     if not a:
         raise records.GateError("CP-12", "There is no agreed offer yet: the contract follows the seller's decision "
-                                         "and the negotiation in step 6.")
+                                         "and the negotiation in step 7.")
     return a
 
 

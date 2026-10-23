@@ -57,9 +57,11 @@ COPY_FACTS = ["PropertySubType", "ArchitecturalStyle", "YearBuilt", "LivingArea"
 
 
 def artifacts(s: Session, deal: Deal) -> list[CopyArtifact]:
-    rows = s.execute(select(CopyArtifact).where(CopyArtifact.deal_id == deal.id)).scalars().all()
+    """The listing's own copy (step 3); the firm's campaign (step 10) shares the table under its own channels."""
     order = {c: i for i, (c, _) in enumerate(CHANNELS)}
-    return sorted(rows, key=lambda a: order.get(a.channel, 99))
+    rows = s.execute(select(CopyArtifact).where(CopyArtifact.deal_id == deal.id,
+                                                CopyArtifact.channel.in_(list(order)))).scalars().all()
+    return sorted(rows, key=lambda a: order[a.channel])
 
 
 def get(s: Session, deal: Deal, artifact_id: int) -> CopyArtifact:
@@ -251,7 +253,7 @@ def mls_package(s: Session, deal: Deal) -> list[dict]:
         "PropertyType": "Residential", "UnparsedAddress": f"{p.street}, {p.city}, NY {p.zip}",
         "CountyOrParish": p.county, "Municipality": p.municipality,
         "PublicRemarks": (remarks.text if remarks and remarks.status == "ready" else None),
-        "ListingAgreement": "Signed (CP-03)" if records.is_done(s, deal.id, "CP-03") else None,
+        "ListingAgreement": "Signed" if records.is_done(s, deal.id, "CP-03") else None,
         "ListingExposure": (cp07.reason if cp07 and cp07.status == "done" else None),
         "Photos": None,  # no photos yet: the licensed photographer is a vendor booking; never portal photos (WS3-R8)
     }

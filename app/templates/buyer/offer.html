@@ -8,7 +8,7 @@
   {% if bstate.agreed %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/contract">Next: the contract &rarr;</a></div>{% endif %}
 </div>
 {% if not see_private %}<div class="notification is-light" id="wall-note">You are viewing as the {{ persona }}. The buyer's AI's advice and
-  the buyer's private limits are hidden from the seller's side (information wall, decision 24).</div>
+  the buyer's private limits are hidden from the seller's side (the information wall between the two AIs).</div>
 {% else %}
 {% set mine = (persona == 'buyer') %}
 <div class="ai-panel" id="advice">
@@ -27,7 +27,7 @@
     <tr><td class="muted">Risks</td><td data-label="Risks">{{ bstate.advice.risks | join('; ') }}</td></tr>
   </tbody></table>
   </details>
-  <p class="help">Not binding until a formal contract of sale is signed by both parties (L24).</p>
+  <p class="help">Not binding until a formal contract of sale is signed by both parties.</p>
 {% elif cp17 and cp17.status == 'done' %}
   <form method="post" action="/buyer/offer/advise"><button class="button is-info" id="buyer-ai-advise">Let the buyer's AI advise and draft the offer</button></form>
 {% else %}
@@ -51,7 +51,7 @@
 {% endif %}
 {% for c in cp31 %}{% if loop.first %}{{ law_marker(c) }}{% endif %}{% endfor %}
 {% if bstate.offer %}<div class="notification is-success is-light" id="offer-sent">Offer sent to the seller's side as offer B: {{ bstate.offer.price | money }},
-  closing in {{ bstate.offer.closing_days }} days. The seller's AI presents it to the seller (<a href="/offers">step 6</a>).</div>{% endif %}
+  closing in {{ bstate.offer.closing_days }} days. The seller's AI presents it to the seller (<a href="/offers">step 7</a>).</div>{% endif %}
 
 <h2 class="section-title" id="counter">The seller's counter and the buyer's reply</h2>
 <ol class="tl-log">
@@ -86,6 +86,6 @@
 {% endif %}
 {% for c in cp13 %}{% if loop.last %}{{ law_marker(c) }}{% endif %}{% endfor %}
 {% if bstate.agreed %}<div class="notification is-success is-light" id="buyer-agreed">Agreed: {{ bstate.agreed.final_price | money }}, closing in {{ bstate.agreed.closing_days }} days.
-  Not binding until both sign the contract (<a href="/contract">step 7</a>).</div>{% endif %}
+  Not binding until both sign the contract (<a href="/contract">step 8</a>).</div>{% endif %}
 {% endif %}
 {% endblock %}

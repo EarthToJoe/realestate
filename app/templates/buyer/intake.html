@@ -58,7 +58,7 @@
 </div>
 {% if cp16 %}{{ decision(cp16, persona, '/buyer/sign', labels={'sign': 'Acknowledge the agency form and sign the buyer agreement', 'decline': 'Decline'}) }}{% endif %}
 <details class="working" id="buyer-agreement" {{ 'open' if not signed }}>
-  <summary>The buyer agreement <span class="sum-note">simulated e-sign; before any tour (L15)</span></summary>
+  <summary>The buyer agreement <span class="sum-note">simulated e-sign; before any tour</span></summary>
   <div class="working-body"><ul>{% for t in agreement_terms.terms %}<li>{{ t }}</li>{% endfor %}</ul></div>
 </details>
 {% if cp30 %}{{ law_marker(cp30) }}{% endif %}

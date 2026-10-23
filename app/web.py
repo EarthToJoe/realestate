@@ -26,8 +26,13 @@ templates.env.globals.update(decision_label=humanize.decision_label, whose=human
                              authority_label=humanize.AUTHORITY_LABELS, authority_value=humanize.authority_value,
                              plain_of=lambda code: catalogue.get(code).plain)
 
+class NotFound(LookupError):
+    """A record the request names is not in this deal (shown as a plain 404 page)."""
+
+
 PERSONAS = {"presenter": "Presenter", "seller": "Seller", "buyer": "Buyer"}
 COOKIE = "persona"
+GUIDE_COOKIE = "guide"  # "on" while the guided demo runs (Start demo turns it on; "End the guided demo" off)
 
 
 def persona(request: Request) -> str:
@@ -37,7 +42,33 @@ def persona(request: Request) -> str:
 
 @lru_cache(maxsize=1)
 def steps() -> list[dict]:
-    return yaml.safe_load((APP_DIR / "demo" / "steps.yaml").read_text())["steps"]
+    """The steps in the order the demo walks them (the order of steps.yaml). `n` is the step's number in the success
+    criteria, used by records, routes and tests; `shown` is the number on screen, its place in the walk (Q47), so a
+    presenter never says "now step 8, then step 6". Each screen also gets its place in the whole walk (`k`)."""
+    out = yaml.safe_load((APP_DIR / "demo" / "steps.yaml").read_text())["steps"]
+    k = 0
+    for i, st in enumerate(out, 1):
+        st["shown"] = i
+        for sc in st["screens"]:
+            k += 1
+            sc["k"] = k
+    return out
+
+
+@lru_cache(maxsize=1)
+def intro() -> dict:
+    """The introduction's presenter notes (before step 1)."""
+    return yaml.safe_load((APP_DIR / "demo" / "steps.yaml").read_text())["intro"]
+
+
+def screens() -> list[tuple[dict, dict]]:
+    """Every (step, screen) in walk order."""
+    return [(st, sc) for st in steps() for sc in st["screens"]]
+
+
+def shown(n: int) -> int:
+    """The on-screen number of the step whose success-criteria number is n."""
+    return next((st["shown"] for st in steps() if st["n"] == n), n)
 
 
 def screen_for(route: str) -> tuple[dict | None, dict | None]:
@@ -79,13 +110,24 @@ def render(request: Request, s: Session, template: str, status_code: int = 200, 
         "kind_label": catalogue.KIND_LABEL, "law_actor_label": catalogue.LAW_ACTOR_LABEL,
         "launch_routes": {c: (e.launch_route, e.launch_link) for c, e in catalogue.load().items() if e.launch_route},
     }
+    # Where this screen sits in the walk, for the step bar, the presenter's box and the guided demo (SC11).
+    flat = screens()
+    i = next((j for j, (_, sc) in enumerate(flat) if screen and sc["route"] == screen["route"]), -1)
+    base.update(walk_screens=flat, here=i, prev_screen=flat[i - 1] if i > 0 else None,
+                next_screen=flat[i + 1] if 0 <= i < len(flat) - 1 else (flat[0] if i < 0 else None),
+                guide=request.cookies.get(GUIDE_COOKIE) == "on")
     if "walk_gate" not in ctx or "ff_steps" not in ctx:
         from app.demo import walk
 
         base["walk_gate"] = walk.gate_for(s, deal, request.url.path, ctx.get("gate"))
         base["ff_steps"] = walk.fast_forward_steps(s, deal) if base["persona"] == "presenter" else set()
+        base["playable"] = (walk.playable(s, deal, screen["route"])
+                            if screen and base["persona"] == "presenter" else [])
     base.update(ctx)
     return templates.TemplateResponse(request, template, base, status_code=status_code)
+
+
+templates.env.globals.update(shown=shown)
 
 
 def gate_page(request: Request, s: Session):

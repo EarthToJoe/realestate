@@ -1,0 +1,21 @@
+{# The two checks on one campaign piece: the fair-housing pipeline (as in step 3) and the claims check (code). #}
+{% set art = p.art %}{% set res = p.res %}{% set blocks = p.claims | selectattr('tier', 'equalto', 'block') | list %}
+<details class="rec-more fh-panel" data-passed="{{ 'yes' if res and res.passed and not blocks else 'no' }}" {{ 'open' if (res and not res.passed) or blocks }}>
+  <summary>{% if not res %}Checks: not run yet{% elif res.passed and not blocks %}<span class="check-ok">&#10003;</span>&nbsp;Fair-housing and claims checks passed{% else %}<span class="check-fail">&#10007;</span>&nbsp;Refused: {{ 'a claim the firm may not make' if blocks else 'the fair-housing check' }}{% endif %}</summary>
+  {% for c in p.claims %}
+  <div class="finding finding-{{ c.tier }}" data-rule="{{ c.rule_id }}">
+    <span class="tag {{ 'is-danger' if c.tier == 'block' else 'is-warning' }} is-light">{{ 'refused' if c.tier == 'block' else 'warning' }}</span>
+    "<i>{{ c.phrase }}</i>": {{ c.what }}<br><small class="muted"><b>Why:</b> {{ c.basis }}</small>
+  </div>
+  {% endfor %}
+  {% if res %}
+    {% for f in res.findings %}
+    <div class="finding finding-{{ f.tier }}" data-rule="{{ f.rule_id }}">
+      <span class="tag {{ 'is-danger' if f.tier == 'block' else 'is-warning' }} is-light">{{ 'blocks publishing' if f.tier == 'block' else 'warning' }}</span>
+      "<i>{{ f.phrase }}</i>": {{ f.explanation }}<br><small class="muted"><b>Legal basis:</b> {{ f.basis }} · rule {{ f.rule_id }}</small>
+    </div>
+    {% endfor %}
+    {% if not res.findings and not p.claims %}<p>No findings.</p>{% endif %}
+    <p class="help">Fair housing: written rules {{ res.rules_version }}, then a model review pass{% if res.model_mode %} ({{ res.model_mode }}){% endif %}. Claims: code checks for "licensed", replacing agents or lawyers, telling anyone they do not need a lawyer, reviews and guarantees (L54, L23).</p>
+  {% endif %}
+</details>

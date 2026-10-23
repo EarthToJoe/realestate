@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Erase the {{ p.role }}'s data{% endblock %}
+{% block content %}
+<h1 class="page-title">Erase the {{ p.role }}'s personal data?</h1>
+<div class="notification is-warning is-light" id="erase-confirm">
+  <p><b>This erases the {{ p.role }}'s name, e-mail, phone, address and any financial details.</b> Documents
+  never stored names, so they will show "[erased]". {{ retention }} The erase is recorded in the audit log.</p>
+</div>
+<div class="rec rec-human" id="erase-hurdle">
+  <div class="rec-head"><span class="rec-badge">A rule to weigh</span></div>
+  <p class="rec-plain">New York requires a brokerage to keep its transaction records for three years.</p>
+  <details class="rec-more"><summary>Why</summary>
+    <p>Listing and buyer agreements, contracts, disclosures and their signed acknowledgments must be kept three years
+    (19 NYCRR 175.23; RPL §443; L17). In production, a request inside that period would erase marketing and other
+    data at once and the signed records once the period ends. This demonstration erases on request to show that it
+    works.</p>
+  </details>
+</div>
+<div class="buttons">
+  <form method="post" action="/people/{{ p.id }}/delete"><button class="button is-danger" id="confirm-erase">Yes, erase it</button></form>
+  <a class="button is-light" href="/people/{{ p.id }}">Cancel</a>
+</div>
+{% endblock %}

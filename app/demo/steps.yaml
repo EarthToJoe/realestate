@@ -1,6 +1,22 @@
-# One entry per step and screen: the step list, the presenter notes and docs/DEMO-SCRIPT.md all come from here
+# The demo, one entry per step and screen, in the order the demo walks it: the step list, the presenter notes, the
+# guided demo (narration card, spotlights, "Do this screen for me") and docs/DEMO-SCRIPT.md all come from here
 # (spec section 8). scripts/gen-demo-script.py writes the script; a test fails if the committed file differs.
-# `built: false` steps show a "coming in slice N" screen until their slice lands.
+#
+# Numbering (Q47, 2026-10-23): screens number the steps in this order, 1 to 10, so a presenter never says "now step 8,
+# then step 6". `n` is the step's number in the success criteria (SC1 to SC10), kept for records, routes and tests;
+# the buyer's side is SC8 but shown as step 6, the offers SC6 shown as 7, the contract SC7 shown as 8.
+#
+# Per screen: click (what the presenter does), say (what to say, about 60 words), point (what to point at),
+# marker (which marker or decision appears), spotlight (Driver.js: an element and a short caption the audience may
+# see; captions carry no codes). Per step: minutes (target, with the talk).
+intro:
+  minutes: 0.5
+  say: >-
+    This is a demonstration of one Hudson Valley house sale, from the listing to the signed contract, with an AI as
+    the agent on both sides. The seller and the buyer make their own decisions. Wherever New York law today needs a
+    licensed broker or a lawyer, a red note says so; it is recorded and does not stop the sale. Everything is
+    simulated: nothing is sent.
+  point: The four colours on the home page.
 steps:
   - n: 1
     title: Intake
@@ -10,41 +26,58 @@ steps:
     screens:
       - route: /intake
         title: Address and facts
-        click: Click "Use demo house", then "Start intake".
+        click: Tap "Use demo house", then "Start intake".
         say: >-
-          The seller types an address and a handful of facts the public record leaves out: parking, condition,
-          roof, taxes, and the four state notice questions. The demo house is a real address in Holmes, so every
-          screen carries the DEMONSTRATION mark; the seller is a fictional person and no owner name is stored.
-        marker: none; the AI sends three notices as soon as the seller submits (CP-24, blue)
+          The seller starts with an address and the few facts the public record leaves out: parking, condition,
+          roof, taxes and four questions the state requires. The house is a real address in Holmes, so every screen
+          carries the DEMONSTRATION mark; the seller is fictional and no owner name is stored. When the seller
+          submits, the AI sends the three notices New York requires at first contact.
+        point: The DEMONSTRATION strip at the top; the state's four questions at the end of the form.
+        marker: none; the AI sends three notices when the seller submits (CP-24, blue)
+        spotlight:
+          - {el: ".demo-mark", text: "Every screen carries this mark: a real address, fictional people, nothing sent."}
+          - {el: "#intake-form", text: "The seller's own facts: what the public record leaves out."}
       - route: /intake/profile
         title: Property profile
-        click: Click "Let the AI fill the gaps".
+        click: Tap "Let the AI fill the gaps".
         say: >-
-          Every fact shows where it came from: grey is the public record, amber is what the seller told us, blue
-          is what the AI inferred, with its reason and confidence. The AI fills only facts about the house, never
-          the seller's disclosure answers. The badge at the top says whether this is the AI live or a recorded run.
+          Every fact shows where it came from: grey from the public record, amber from the seller, blue inferred by
+          the AI, each with its reason. The AI fills gaps about the house, never the seller's own disclosure
+          answers. The badge at the top always says whether the AI is live or a recorded run.
+        point: The three source counts; one blue "AI inferred" fact and its reason.
         marker: none
+        spotlight:
+          - {el: "#source-counts", text: "Where every fact came from: the public record, the seller, or the AI."}
+          - {el: "#ai-panel", text: "The AI's work: what it inferred, and what the seller should confirm."}
+          - {el: ".topbar .mode-badge", text: "Live AI or a recorded run: always labelled, never passed off."}
       - route: /intake/disclosures
         title: Disclosure checklist
-        click: Tap "Decide as the seller" on the seller's disclosure card if you want to show the seller's form; it can wait for step 7.
+        click: Nothing to tap. The seller's own form can wait for the contract (step 8).
         say: >-
-          The AI works out which disclosures this house needs from the facts: lead paint is not required because
-          it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is
-          the seller's own: the software never pre-fills it. That is an amber "Your decision" card: only the seller
-          can complete it, and contract signing waits for it.
+          From the facts, the AI works out which disclosures this house needs: no lead-paint form, because it was
+          built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is the
+          seller's own: the software never fills it in. The amber card is a decision only the seller can make, and
+          contract signing waits for it.
+        point: The amber card for the seller's disclosure form.
         marker: CP-04 seller decision (amber, blocks contract signing)
+        spotlight:
+          - {el: "#checklist", text: "Which disclosures this house needs, and why."}
+          - {el: "#rec-CP-04", text: "Only the seller completes this form; the contract waits for it."}
       - route: /intake/onboarding
         title: Seller onboarding
         click: >-
-          As Seller, acknowledge the agency form. As Presenter, click "Let the AI accept the listing". As Seller,
-          sign the listing agreement. (Try signing before acknowledging: the app refuses and says why.)
+          Tap "Decide as the seller" and acknowledge the agency form. Back as the Presenter, tap "Let the AI accept
+          the listing". Then "Decide as the seller" again and sign the listing agreement.
         say: >-
-          The AI gives the listing presentation, runs a conflicts check and accepts the listing. The red "NY law
-          today" marker says what the research found: accepting a listing for a fee is a licensed broker's act.
-          It is recorded and counted, and it does not stop the flow. The seller acknowledges the agency form and
-          signs the listing agreement, with the state's exclusive-listing explanation printed on it: those are the
-          seller's own decisions, and nothing is marketed until the agreement is signed.
+          The AI gives the listing presentation, checks for conflicts and accepts the listing. The red note is the
+          research: in New York today, taking a listing for a fee is a licensed broker's act. It is recorded and
+          counted, and it does not stop the sale. The seller acknowledges the agency form and signs the listing
+          agreement, the seller's own decisions; nothing is marketed until it is signed.
+        point: The red "NY law today" note, then the seller's signed agreement.
         marker: CP-01 and CP-03 seller decisions (amber); CP-02 NY law today (red, licensed broker)
+        spotlight:
+          - {el: "#rec-CP-02", text: "A red note: an act New York reserves to a licensed broker. Recorded, never a stop."}
+          - {el: "#rec-CP-03", text: "The seller's own decision: the AI cannot sign for the seller."}
   - n: 2
     title: Pricing
     slice: 2
@@ -52,53 +85,66 @@ steps:
     minutes: 1.5
     screens:
       - route: /pricing
-        title: Comparable sales and adjustments
-        click: Open "Pricing". Open "Every adjustment, line by line" to show the arithmetic.
+        title: Comparable sales
+        click: Open "Every adjustment, line by line" only if someone asks how the numbers work.
         say: >-
-          Eight real sales from the county's public sales records, all within about four miles. The code, not the
-          model, adjusts each one toward this house: date of sale, size, finished basement, lot, age, rooms, central
-          air and style, at the rates printed on the screen. Sales needing large adjustments or far away are flagged
-          and weigh less. The label says what this is: a comparative market analysis, not an appraisal.
-        marker: none on this screen; the range is computed in code
+          Eight real sales from the county's public records, all within about four miles. Code, not the model,
+          adjusts each one toward this house: date, size, basement, lot, age, rooms, air conditioning and style, at
+          the rates on the screen. Weak sales are flagged and count for less. The label says what this is: a market
+          analysis, not an appraisal.
+        point: The range at the top and the "not an appraisal" label.
+        marker: none; the range is computed in code
+        spotlight:
+          - {el: "#range", text: "The price range, computed in code from the adjusted sales."}
+          - {el: "#cma-label", text: "A comparative market analysis, not an appraisal."}
       - route: /pricing/advice
-        title: The AI's advice, net sheet and the seller's price
+        title: The AI's price advice
         click: >-
-          Click "Let the AI recommend a price". Tap "Decide as the seller" and click "Choose this list price". (Try
-          step 3 first: the copy refuses to start until the seller chooses.)
+          Tap "Let the AI recommend a price", then "Decide as the seller" and "Choose this list price". (Step 3
+          refuses to start until the seller chooses.)
         say: >-
-          The AI explains the method in plain words, names the weaker sales, and recommends a list price with its
-          reasoning and the net sheet. The red marker is the research: advising a seller on price is the listing
-          agent's fiduciary duty, which New York reserves to a licensed broker. It is recorded and does not stop the
-          flow. The price itself is the seller's decision, and the listing copy waits for it.
+          The AI explains its method, names the weaker sales and recommends a list price, with its reasons and what
+          the seller would keep. The red note: advising a seller on price is a licensed broker's duty in New York
+          today. The price itself is the seller's decision, and the listing copy waits for it.
+        point: The recommended price, the red note, then the seller's choice.
         marker: CP-25 NY law today (red, licensed broker); CP-05 seller decision (amber, blocks step 3)
+        spotlight:
+          - {el: "#recommended", text: "The AI's recommended list price, with its reasons."}
+          - {el: "#rec-CP-25", text: "Price advice is a licensed broker's duty in New York today."}
+          - {el: "#rec-CP-05", text: "The seller chooses the price."}
   - n: 3
     title: Listing copy
     slice: 2
     built: true
-    minutes: 2.0
+    minutes: 1.5
     screens:
       - route: /copy
         title: Drafts and the fair-housing check
         click: >-
-          Click "Let the AI write the copy". On the portal description click "Plant a violation (demo)", then "Let
-          the AI apply the fix and re-check", then "Let the AI mark passing copy ready to publish".
+          Tap "Let the AI write the copy". Open the portal description and tap "Plant a violation (demo)", then
+          "Let the AI apply the fix and re-check", then "Let the AI mark passing copy ready to publish".
         say: >-
-          The AI writes the MLS remarks, the portal description, three social posts and the flyer, and every piece
-          goes through the fair-housing check: our written rules for every federal and New York protected class and
-          for steering, then a model review for coded language. Plant a violation: "perfect for a young family,
-          steps from the church". It is caught with the rule, the class, the legal basis and a fixed version. The
-          AI applies the fix, the re-check passes, and only then can the AI mark it ready to publish. Marking an ad
-          ready is a broker's act in New York: the red marker.
+          The AI writes the MLS remarks, the portal description, three social posts and the flyer. Every piece goes
+          through the fair-housing check: written rules for every federal and New York protected class, then a
+          model review. Plant a violation, "perfect for a young family, steps from the church": caught, with the
+          rule and a fix. Only passing copy can be marked ready, and marking an ad ready is a broker's act today.
+        point: The planted sentence highlighted, the fixed version, then the red note.
         marker: CP-26 fair-housing pass (blue, per piece); CP-06 NY law today (red, per piece)
+        spotlight:
+          - {el: "[data-channel=portal]", text: "The fair-housing check on the portal description."}
+          - {el: "#rec-CP-06", text: "Marking an ad ready to publish is a broker's act in New York today."}
       - route: /copy/mls
         title: MLS pre-check and package
-        click: Open "MLS pre-check and package"; open the flyer PDF.
+        click: Open the flyer (PDF) if you want to show it.
         say: >-
-          The remarks are checked against OneKey's rules: no contact details or showing instructions, no
-          compensation, never "free". The package lists every field in OneKey order with RESO names. The flyer PDF
-          carries the DEMONSTRATION mark on every page, because the house is a real address and nobody authorised a
-          listing.
+          The remarks are checked against OneKey's rules: no contact details, no showing instructions, no
+          commission, never "free". The package lists every field in OneKey's order for the person who keys it in.
+          The flyer carries the DEMONSTRATION mark on every page.
+        point: The ticks of the MLS pre-check.
         marker: none on this screen
+        spotlight:
+          - {el: "#mls-checks", text: "OneKey's rules for the public remarks, checked in code."}
+          - {el: "#mls-package", text: "Every field, in OneKey's order, ready for the person who keys it in."}
   - n: 4
     title: Marketing plan
     slice: 2
@@ -108,15 +154,18 @@ steps:
       - route: /channels
         title: Channel board
         click: >-
-          As Seller, choose "Publish to Internet" and sign. As Presenter, click "Record the MLS entry (simulated)"
-          and watch the portal and website cards change.
+          Tap "Decide as the seller", choose "Publish to Internet" and sign. Back as the Presenter, tap "Record the
+          MLS entry (simulated)" and watch the portal cards change.
         say: >-
-          Every card says honestly who does the work. OneKey MLS has no listing-input API, so a licensed MLS
-          participant keys the listing from the AI's package: the grey "human required" marker, linked to the
-          research. Zillow, Realtor.com, Redfin and Homes.com are fed from the MLS, not by us. The firm's own page
-          waits for the MLS entry under the Clear Cooperation rule. The seller signs the exposure choice and the
-          lockbox and photo authorisations: their decision.
+          Each card says who really does the work. OneKey has no way for software to enter a listing, so a licensed
+          MLS member keys it in from the AI's package: the grey "a person does this" note. Zillow, Realtor.com,
+          Redfin and Homes.com are fed from the MLS. The seller signs the exposure choice and the lockbox and photo
+          permissions.
+        point: The grey MLS card, then the portal cards.
         marker: CP-07 seller decision (amber); CP-08 human required (grey)
+        spotlight:
+          - {el: "#rec-CP-08", text: "No software route into the MLS: a licensed member keys the listing."}
+          - {el: "#rec-CP-07", text: "The seller's own choices: exposure, lockbox, photographer."}
   - n: 5
     title: Communications
     slice: 3
@@ -124,21 +173,21 @@ steps:
     minutes: 1.5
     screens:
       - route: /inbox
-        title: Fact sheet, authority and shared inbox
+        title: Fact sheet, authority and inbox
         click: >-
-          As Seller, approve the fact sheet and the AI's authority (allow self-guided tours). Then click "Let all of
-          them arrive" and read the threads; as Seller, answer the two cards under "For the seller to decide".
+          Tap "Decide as the seller" and approve the fact sheet and the AI's authority (allow self-guided tours).
+          As the Presenter, tap "Let all of them arrive"; answer the seller's two cards as the seller.
         say: >-
-          Nothing leaves until the seller approves the facts and the AI's authority. Then eight simulated enquiries
-          arrive and the AI deals with each on its own: it answers from the approved facts and discloses the oil heat
-          and the septic; it books an owner-hosted showing and a self-guided tour; it refuses to rate schools or the
-          area and points to official sources; it says it can't give legal advice. Only two things reach the
-          seller: a price question and a showing outside the seller's hours. Every message carries the firm's
-          identity block, passed the fair-housing check, and the first one on each thread carries the agency form.
-          Each one that discusses the listing records a red CP-09 marker: in New York today that is a licensed act.
+          Nothing goes out until the seller approves the facts and what the AI may agree. Then eight enquiries
+          arrive and the AI answers each on its own: it discloses the oil heat and the septic, books an
+          owner-hosted showing and a self-guided tour, declines to rate schools and gives no legal advice. Only two
+          questions reach the seller. Each message about the house is a red note: a licensed act today.
+        point: The thread list, then the seller's two cards.
         marker: CP-27 seller decision (amber); CP-09 and CP-28 NY law today (red); CP-10 human required (grey); CP-24 and CP-29 AI did it (blue)
-  # Walk order: step 8 (the buyer's side) is walked before step 6, because offer B in step 6 comes from the firm's
-  # own buyer. The step list on screen stays in number order (decision 34).
+        spotlight:
+          - {el: "#rec-CP-27", text: "What the AI may say and agree: the seller approves it first."}
+          - {el: "#inbox", text: "Every enquiry answered by the AI, fair-housing checked, signed with the firm's name."}
+          - {el: "#cards", text: "Only the seller's own decisions reach the seller."}
   - n: 8
     title: Buyer side
     slice: 3
@@ -146,47 +195,61 @@ steps:
     minutes: 2.0
     screens:
       - route: /buyer
-        title: Buyer intake and representation
+        title: Buyer intake
         click: >-
-          Click "Use the demo buyer (fictional)", then "Become a client of the firm". As Buyer, acknowledge the
-          agency form and sign the buyer agreement.
+          Tap "Use the demo buyer (fictional)", then "Become a client of the firm". Then "Decide as the buyer":
+          acknowledge the agency form and sign the buyer agreement.
         say: >-
-          The same system from the buyer's side. The intake asks about the home and the money only, never about
-          family, religion or any protected trait. The AI takes the buyer on as a client, a broker's act in New York
-          today (red CP-30), sends the agency form, the fair-housing notice and the "not legal services" notice, and
-          the buyer agreement with a stated, negotiable fee. The buyer's private limit goes to the buyer's AI only:
-          the seller's AI never sees it.
+          Now the same sale from the buyer's side. The intake asks about the home and the money, never about family,
+          religion or any protected trait. The AI takes the buyer on as a client, a broker's act today, and sends
+          the notices and a buyer agreement with a stated, negotiable fee. The buyer's private limit goes to the
+          buyer's AI only.
+        point: The buyer's private limit, then the red note.
         marker: CP-30 NY law today (red); CP-24 AI did it (blue); CP-16 buyer decision (amber)
+        spotlight:
+          - {el: "#buyer-private", text: "Only the buyer's AI sees this; the seller's AI never does."}
+          - {el: "#rec-CP-30", text: "Taking on a client is a broker's act in New York today."}
+          - {el: "#rec-CP-16", text: "The buyer's own decision, before any tour."}
       - route: /buyer/search
         title: Search and alerts
-        click: Click "Save the search and let the AI send the alert".
+        click: Tap "Save the search and let the AI send the alert".
         say: >-
-          Fictional listings and this firm's own listing. The filters are the home's facts only: there is no
-          school-rating or neighbourhood filter, so the search cannot steer. The buyer's AI writes the alert; it is
-          fair-housing checked and carries the firm's identity block, like every message.
+          The search uses the home's facts only: there is no school-rating or neighbourhood filter, so it cannot
+          steer. The buyer's AI writes the alert, fair-housing checked and signed with the firm's name, like every
+          message.
+        point: The filters (facts only), then the alert.
         marker: CP-09 NY law today (red); CP-24 AI did it (blue)
+        spotlight:
+          - {el: "#search-form", text: "Facts about the home only: nothing that could steer."}
+          - {el: "#alerts", text: "The alert, written by the buyer's AI."}
       - route: /buyer/tour
-        title: Tour request and dual-agency consent
+        title: Tour and dual-agency consent
         click: >-
-          Click "Ask the AI to book a tour". As Buyer, then as Seller, consent to dual agency.
+          Tap "Ask the AI to book a tour". Then "Decide as the buyer" and "Decide as the seller" to consent to dual
+          agency.
         say: >-
-          The code refuses a tour before the buyer agreement is signed. The seller's AI books it inside the
-          seller's hours: self-guided, a red marker because New York has not decided whether an unaccompanied tour
-          is a licensed showing. Because the firm also acts for the seller, both clients consent in writing to dual
-          agency before the buyer can make an offer: each keeps its own AI and its own secrets.
+          The code refuses a tour before the buyer agreement is signed. The tour is self-guided, a red note because
+          New York has not decided whether an unaccompanied tour is a licensed showing. The firm now acts for both
+          sides, so both clients consent in writing to dual agency; each keeps its own AI and its own secrets.
+        point: The booked tour, then the two consents.
         marker: CP-29 AI did it (blue); CP-28 NY law today (red); CP-17 seller and buyer decision (amber)
+        spotlight:
+          - {el: "#booked", text: "The tour, booked inside the seller's hours."}
+          - {el: "#rec-CP-17", text: "Both clients consent: the firm acts for both."}
       - route: /buyer/offer
-        title: Offer advice, draft and approval
+        title: The buyer's offer
         click: >-
-          Click "Let the buyer's AI advise and draft the offer". As Buyer, approve and send it. Later, after the
-          seller's counter in step 6, come back: "Let the buyer's AI advise on the counter", and as Buyer approve the
-          reply.
+          Tap "Let the buyer's AI advise and draft the offer", then "Decide as the buyer" and approve it. After the
+          seller's counter (step 7), come back here to approve the buyer's reply.
         say: >-
-          The buyer's AI advises on price and terms from the buyer's own answers, the public sales and the house's
-          facts, and drafts the offer: a broker's act today (red CP-31). Only the buyer can approve it; then it goes
-          to the seller's side as offer B. When the seller counters, the buyer's AI advises again, the buyer approves
-          the reply, and the buyer's AI sends exactly that: negotiating for the buyer, a red CP-13.
+          The buyer's AI advises on price and terms from the buyer's own answers and the public sales, and drafts
+          the offer: a broker's act today. Only the buyer can approve it; then it reaches the seller as offer B. When
+          the seller counters, the buyer's AI advises again and sends only the reply the buyer approves.
+        point: The buyer's AI's advice, then the buyer's approval.
         marker: CP-31 and CP-13 NY law today (red); CP-18 buyer decision (amber)
+        spotlight:
+          - {el: "#advice", text: "The buyer's AI advises the buyer."}
+          - {el: "#rec-CP-18", text: "Only the buyer approves the offer."}
   - n: 6
     title: Offers
     slice: 3
@@ -194,52 +257,57 @@ steps:
     minutes: 1.5
     screens:
       - route: /offers
-        title: Offer comparison, advice, decision and negotiation
+        title: Offers, advice and negotiation
         click: >-
-          Click "Let the AI present the offers and advise". As Seller, counter offer B at the suggested figures
-          (price, the lowest price the AI may agree, closing date and periods). Click "Let the AI send the seller's
-          counter". As Presenter, try a counter by hand below the seller's lowest price and watch it refused. Then go
-          to step 8's offer screen for the buyer's reply, and come back: the seller's AI has answered on its own.
+          Tap "Let the AI present the offers and advise". "Decide as the seller" and counter offer B at the
+          suggested figures. Tap "Let the AI send the seller's counter". The buyer's reply is approved on step 6's
+          offer screen ("Do this screen for me" plays the whole negotiation).
         say: >-
-          Two written offers: one from an outside buyer's agent, one from the firm's own buyer. Code builds the
-          comparison and each net sheet; the seller's AI presents every offer and advises, a licensed act in New York
-          today (red CP-11). The seller decides: accept, counter or reject, and the limits of the counter: price,
-          closing date, inspection and mortgage periods, requests. The seller's AI negotiates with the buyer's AI on
-          its own, each act a red CP-13. Anything outside the seller's decision is refused by code and goes back to
-          the seller. Nothing is binding until both sign a contract.
+          Two offers: one through an outside buyer's agent, one from the firm's own buyer. Code builds the
+          comparison and what the seller keeps; the seller's AI presents and advises, a licensed act today. The
+          seller decides: accept, counter or reject, and the limits of the counter. The two AIs then negotiate
+          inside those limits; anything outside goes back to the seller. Nothing binds until both sign the contract.
+        point: The AI's recommendation, the seller's decision, then the agreed price.
         marker: CP-11 and CP-13 NY law today (red); CP-12 seller decision (amber)
+        spotlight:
+          - {el: "#offers-table", text: "Both offers side by side, with what the seller keeps."}
+          - {el: "#advice", text: "The seller's AI presents every offer and advises."}
+          - {el: "#rec-CP-12", text: "The seller decides, and sets the limits for the AI."}
+          - {el: "#accepted", text: "Agreed inside the seller's limits. Not binding until both sign."}
   - n: 7
     title: Contract
     slice: 3
     built: true
-    minutes: 2.0
+    minutes: 1.5
     screens:
       - route: /contract
-        title: Memorandum, contract draft, side-by-side, signing
+        title: Contract draft and signing
         click: >-
-          Click "Let the AI draft the contract and rider". Read the red CP-14 marker. Click "Open the contract for
-          signing" and watch it refused: the seller's disclosure statement is missing. Open the form (next screen),
-          then come back, attach the disclosures, open signing, and sign as Seller and as Buyer. Open the PDF and the
-          DOCX.
+          Tap "Let the AI draft the contract and rider". Tap "Open the contract for signing" and watch it refused:
+          the seller's disclosure form is missing. Complete it on the next screen, come back, attach the
+          disclosures, open signing, and sign as the seller and as the buyer.
         say: >-
-          The memorandum goes to both parties. The AI drafts the contract of sale and rider for both of them, in the
-          bar-association long form's order, with a side-by-side note for each of its 28 paragraphs. Code checks the
-          draft against the deal and refuses any wording that says a lawyer is unnecessary. The red marker says it
-          plainly: in New York today only a lawyer may draft a contract of sale for another; at launch the lawful
-          route is the firm's paper subject to each party's attorney's approval. Signing waits for the seller's own
-          disclosure statement. The signing map shows what e-signature cannot do: the deed's notary, a power of
-          attorney's witnesses, the smoke-detector affidavit. Every page of the PDF and the DOCX carries the label.
+          The AI drafts the contract of sale and rider for both parties, in the bar-association form's order, and
+          code checks it against the deal. The red note says it plainly: in New York today only a lawyer may draft a
+          contract for someone else. Signing waits for the seller's disclosure form. The signing map shows what
+          e-signature cannot do: the deed's notary and the smoke-detector affidavit.
+        point: The red note, the signing map, then the PDF.
         marker: CP-32 AI did it (blue); CP-14 NY law today (red); CP-15 human required (grey); CP-33 seller and buyer decision (amber)
+        spotlight:
+          - {el: "#rec-CP-14", text: "Only a lawyer may draft a contract for someone else in New York today."}
+          - {el: "#signing-map", text: "What e-signature can and cannot do."}
+          - {el: "#pdf-link", text: "Every page of the draft carries the demonstration label."}
       - route: /disclosures/pcds
-        title: The seller's Property Condition Disclosure Statement
+        title: The seller's disclosure form
         click: >-
-          As Seller, click "Seller: submit my prepared answers" (or answer the 56 questions by hand). Then back to
-          the contract.
+          Tap "Decide as the seller", then "Seller: submit my prepared answers". Then back to the contract.
         say: >-
-          The full current form, 56 questions, effective July 2025. Every field starts blank: the seller completes
-          it from their own knowledge, and the software never fills it in. The demo seller's answers are fiction,
-          labelled as such.
+          The state's current disclosure form: 56 questions. Every answer starts blank, and the seller fills it in
+          from their own knowledge; the software never does. The demo seller's answers are fiction.
+        point: The blank form, then the seller's submitted answers.
         marker: CP-04 seller decision (amber)
+        spotlight:
+          - {el: "#pcds-prepared", text: "The seller's own answers; the software never fills them in."}
   - n: 9
     title: Deal timeline
     slice: 1
@@ -248,23 +316,51 @@ steps:
     screens:
       - route: /timeline
         title: Deal timeline and hurdle map
-        click: Open "Deal timeline" in the step list.
+        click: Open "The hurdle map", then "What the AI did".
         say: >-
-          This page is built only from the records the other screens wrote; nothing is drawn by hand. The four
-          totals and the ten step cards are the whole sale on one screen: blue is what the AI did, amber what the
-          seller or buyer decided, red where New York law today requires a licensed broker or a lawyer, grey the
-          people and third parties outside the software. The red note below them stands for the whole firm: New
-          York requires a licensed broker of record, and this demonstration has none. Open any step for its full
-          record, or the hurdle map for every red note with its rule and a link to the research.
+          This page is built only from the records the other screens wrote. Blue is what the AI did, amber what the
+          seller or buyer decided, red where New York law today needs a licensed broker or a lawyer, grey the people
+          and firms outside the software, down to the closing. The hurdle map lists every red note with its rule;
+          the last list is every act a supervising broker would review.
+        point: The four totals, the road to closing, then the hurdle map.
         marker: every record so far; CP-35 standing; CP-20 to CP-23 and CP-34 planned
+        spotlight:
+          - {el: "#tl-counts", text: "The whole sale in four numbers, from the records."}
+          - {el: "#closing", text: "The road to closing: the third parties and their dates."}
+          - {el: "#hurdle-map", text: "Every place NY law today needs a licensed broker or a lawyer."}
+          - {el: "#agent-acts", text: "Every act a supervising broker would review."}
   - n: 10
     title: Marketing the business
     slice: 4
-    built: false
-    minutes: 0.5
+    built: true
+    minutes: 1.0
     screens:
-      - route: /step/10
-        title: Marketing the business
-        click: (slice 4)
-        say: Coming in slice 4.
-        marker: CP-26 automated; CP-19 NY law today
+      - route: /brand
+        title: The firm's campaign
+        click: >-
+          Tap "Let the AI write the campaign". On the landing page tap "Try a bolder headline (demo)" and watch it
+          refused; then "Let the AI remove it and re-check".
+        say: >-
+          Last, the AI markets the firm itself: a landing page for sellers, a local ad and a free seller's guide.
+          The same fair-housing check runs, plus a check on claims. Try the headline the idea invites, "the AI that
+          replaces your agent and your lawyer": refused. Advertising law bars that claim while the law still needs
+          them, and no one may be told they do not need a lawyer.
+        point: The refused headline, then the notices the page carries.
+        marker: CP-26 AI did it (blue, per piece)
+        spotlight:
+          - {el: "#piece-brand_landing", text: "The landing page, checked like every other piece of copy."}
+          - {el: "#notices", text: "The notices the law requires, added by code, never by the AI."}
+      - route: /brand/targeting
+        title: Who sees the ad
+        click: >-
+          Tap "Let the AI set the targeting". Open "What the code will not let the AI do" and tap "Try to target
+          ages 25 to 44 (demo)". Then "Let the AI publish the campaign (simulated)".
+        say: >-
+          Housing ads may not pick people by age, gender, family, ZIP code or a lookalike of past clients, so the
+          AI may only choose a place, by radius. Try age: refused by code. The AI publishes, simulated, and the red
+          note says that in New York today only a licensed broker may place the firm's own ads.
+        point: The targeting (place only), the refused age, then the red note.
+        marker: CP-19 NY law today (red)
+        spotlight:
+          - {el: "#targeting", text: "Place by radius, everyone 18 and over: nobody picked for who they are."}
+          - {el: "#rec-CP-19", text: "Only a licensed broker may place the firm's ads in New York today."}

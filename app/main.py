@@ -15,7 +15,7 @@ from app.config import Settings
 from app.logging_setup import log
 from app.model.provider import ModelProvider, make_provider
 from app.records.service import GateError, NotYourDecision
-from app.web import APP_DIR, COOKIE, PERSONAS, render
+from app.web import APP_DIR, COOKIE, GUIDE_COOKIE, PERSONAS, render
 
 
 def _register_people() -> None:
@@ -24,7 +24,7 @@ def _register_people() -> None:
 
     s = db.new_session()
     try:
-        for p in s.query(Person).all():
+        for p in s.query(Person).filter(Person.erased_at.is_(None)).all():
             for value, label in ((p.legal_name, f"[{p.token}]"), (p.email, "[EMAIL]"), (p.phone, "[PHONE]"),
                                  (p.mailing_address, "[ADDRESS]")):
                 pii.MASKER.register(value, label)
@@ -58,10 +58,12 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     from app.disclosures.routes import router as pcds_router
     from app.modules.buyer.routes import router as buyer_router
     from app.modules.contract.routes import router as contract_router
+    from app.modules.brand.routes import router as brand_router
+    from app.modules.people.routes import router as people_router
     from app.fairhousing.check import FairHousingBlocked
 
     for r in (intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
-              buyer_router, contract_router, timeline_router):
+              buyer_router, contract_router, timeline_router, brand_router, people_router):
         app.include_router(r)
 
     @app.exception_handler(FairHousingBlocked)
@@ -91,6 +93,16 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
         finally:
             s.close()
 
+    from app.web import NotFound
+
+    @app.exception_handler(NotFound)
+    async def not_found(request: Request, exc: NotFound):
+        s = db.new_session()
+        try:
+            return render(request, s, "refused.html", status_code=404, title="Not found", message=str(exc), code=None)
+        finally:
+            s.close()
+
     @app.exception_handler(ValueError)
     async def not_accepted(request: Request, exc: ValueError):
         s = db.new_session()
@@ -114,7 +126,9 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
 
     @app.get("/")
     def home(request: Request, s=Depends(get_session)):
-        return render(request, s, "home.html")
+        from app.web import intro
+
+        return render(request, s, "home.html", intro_notes=intro())
 
     @app.get("/healthz")
     def healthz():
@@ -143,7 +157,35 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
         log.info("demo_reset")
         resp = RedirectResponse("/intake?demo=1&started=1", status_code=303)
         resp.set_cookie(COOKIE, "presenter", httponly=True, samesite="lax")
+        resp.set_cookie(GUIDE_COOKIE, "on", httponly=True, samesite="lax")  # Start demo starts the guided demo
         return resp
+
+    @app.post("/demo/guide")
+    def demo_guide(on: str = Form("on"), back: str = Form("/")):
+        """Turn the guided demo on (notes open on every screen, screen k of N, Next) or off."""
+        resp = RedirectResponse(_local(back), status_code=303)
+        if on == "on":
+            resp.set_cookie(GUIDE_COOKIE, "on", httponly=True, samesite="lax")
+        else:
+            resp.delete_cookie(GUIDE_COOKIE)
+        return resp
+
+    @app.post("/demo/play")
+    def demo_play(request: Request, route: str = Form(...), s=Depends(get_session)):
+        """Guided demo, Presenter only: "Do this screen for me" plays this screen's taps the way the script does
+        (the same plays as fast-forward, on the recorded replays), each client decision recorded as the client's."""
+        from app.demo import walk
+        from app.web import persona, screen_for
+
+        if persona(request) != "presenter":
+            raise NotYourDecision("Only the Presenter can play a screen of the demo.")
+        st, sc = screen_for(route)
+        if sc is None:
+            raise ValueError("That is not a screen of the demo.")
+        played = walk.play_screen(s, request.app.state.provider, route)
+        log.info("demo_play", route=route, played=[m.key for m in played])
+        anchor = next((m.link.split("#", 1)[1] for m in reversed(played) if m.route == route and "#" in m.link), "")
+        return RedirectResponse(route + (f"#{anchor}" if anchor else ""), status_code=303)
 
     @app.post("/demo/fast-forward/{n}")
     async def demo_fast_forward(n: int, request: Request, s=Depends(get_session)):

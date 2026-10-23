@@ -37,10 +37,12 @@ DECIDERS = {"seller": {"seller"}, "buyer": {"buyer"}, "seller_and_buyer": {"sell
 
 
 def _new(s: Session, deal_id: int, code: str, *, status: str, reason: str | None = None,
-         attached_to: str | None = None) -> Checkpoint:
+         attached_to: str | None = None, step: int | None = None) -> Checkpoint:
+    """`step` overrides the catalogue's step for a per-item record written on another step (a CP-24 notice sent
+    to the buyer belongs to step 8, a CP-26 pass on the firm's campaign to step 10), so the timeline puts it there."""
     e = catalogue.get(code)
     cp = Checkpoint(
-        deal_id=deal_id, code=code, step=e.step, kind=e.kind, title=e.title, actor=e.actor,
+        deal_id=deal_id, code=code, step=step or e.step, kind=e.kind, title=e.title, actor=e.actor,
         law_actor=e.law_actor, side=e.side, rule_text=e.rule, who_text=e.who, reason=reason,
         f_ids=list(e.f_ids), l_ids=list(e.l_ids), ws3_ids=list(e.ws3_ids), research_link=e.link,
         blocking=e.blocking, status=status, attached_to=attached_to,
@@ -128,7 +130,8 @@ def require(s: Session, deal_id: int, *codes: str, action: str) -> None:
                                   f"{e.who.lower()}'s decision. Why: {e.rule}")
 
 
-def mark_law(s: Session, deal_id: int, code: str, *, reason: str, attached_to: str | None = None) -> Checkpoint:
+def mark_law(s: Session, deal_id: int, code: str, *, reason: str, attached_to: str | None = None,
+             step: int | None = None) -> Checkpoint:
     """Record an agent act the AI did where NY law today requires a licensed person or a lawyer. Never blocks."""
     e = catalogue.get(code)
     if e.kind != "law_marker":
@@ -137,39 +140,44 @@ def mark_law(s: Session, deal_id: int, code: str, *, reason: str, attached_to: s
         existing = latest(s, deal_id, code)
         if existing and existing.status == "done":
             return existing
-    cp = _new(s, deal_id, code, status="planned" if e.planned else "done", reason=reason, attached_to=attached_to)
+    cp = _new(s, deal_id, code, status="planned" if e.planned else "done", reason=reason, attached_to=attached_to,
+              step=step)
     record_event(s, actor="ai", kind="ai_action", entity="checkpoint", entity_id=cp.id,
                  summary=f"{code} AI act (NY law today: {e.law_actor}): {reason}")
     return cp
 
 
-def record_auto(s: Session, deal_id: int, code: str, *, reason: str, attached_to: str | None = None) -> Checkpoint:
+def record_auto(s: Session, deal_id: int, code: str, *, reason: str, attached_to: str | None = None,
+                step: int | None = None) -> Checkpoint:
     e = catalogue.get(code)
     if e.kind != "automated":
         raise ValueError(f"{code} is a {e.kind}, not automated")
-    cp = _new(s, deal_id, code, status="done", reason=reason, attached_to=attached_to)
+    cp = _new(s, deal_id, code, status="done", reason=reason, attached_to=attached_to, step=step)
     record_event(s, actor="ai", kind="ai_action", entity="checkpoint", entity_id=cp.id, summary=f"{code} {reason}")
     return cp
 
 
-def record_human(s: Session, deal_id: int, code: str, *, reason: str, simulated: bool = True) -> Checkpoint:
+def record_human(s: Session, deal_id: int, code: str, *, reason: str, simulated: bool = True,
+                 step: int | None = None) -> Checkpoint:
     e = catalogue.get(code)
     if e.kind != "human_required":
         raise ValueError(f"{code} is a {e.kind}, not human required")
-    cp = _new(s, deal_id, code, status="simulated" if simulated else "done", reason=reason)
+    cp = _new(s, deal_id, code, status="simulated" if simulated else "done", reason=reason, step=step)
     record_event(s, actor="presenter", kind="system", entity="checkpoint", entity_id=cp.id,
                  summary=f"{code} human-required step recorded (simulated): {reason}")
     return cp
 
 
-def plan(s: Session, deal_id: int, code: str) -> Checkpoint:
-    """A planned record (third-party steps, planned markers, the standing CP-35 marker)."""
-    existing = latest(s, deal_id, code)
-    if existing:
-        return existing
+def plan(s: Session, deal_id: int, code: str, *, reason: str | None = None,
+         attached_to: str | None = None) -> Checkpoint:
+    """A planned record (third-party steps, planned markers, the standing CP-35 marker). A per-item code is planned
+    once per item (`attached_to`, e.g. "closing:mortgage"), any other code once."""
     e = catalogue.get(code)
+    for existing in records(s, deal_id, code):
+        if not (e.per_item and attached_to) or existing.attached_to == attached_to:
+            return existing
     status = "done" if e.standing else "planned"
-    reason = ("Standing: shown in the identity block on every page" if e.standing
-              else "Planned: shown on the timeline, not acted in the demo")
-    cp = _new(s, deal_id, code, status=status, reason=reason)
+    reason = reason or ("Standing: shown in the identity block on every page" if e.standing
+                        else "Planned: shown on the timeline, not acted in the demo")
+    cp = _new(s, deal_id, code, status=status, reason=reason, attached_to=attached_to)
     return cp

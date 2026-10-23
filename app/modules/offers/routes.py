@@ -37,7 +37,7 @@ def offers(request: Request, s=Depends(get_session)):
     return render(request, s, "offers/offers.html", gate=gate, offers=table, st=st,
                   cp11=records.latest(s, deal.id, "CP-11"), cp12=records.latest(s, deal.id, "CP-12"),
                   cp13=[c for c in records.records(s, deal.id, "CP-13") if c.attached_to == "offers:seller"],
-                  cp17=records.latest(s, deal.id, "CP-17"), not_binding=service.NOT_BINDING,
+                  cp17=records.latest(s, deal.id, "CP-17"), not_binding=service.NOT_BINDING.replace(" (L24)", ""),
                   defaults=service.DECISION_DEFAULTS, terms_text=service.terms_text,
                   not_ready=request.query_params.get("not_ready"))
 

@@ -63,7 +63,7 @@ records:
     rule: The seller completes and delivers the current Property Condition Disclosure Statement (RPL §462, form effective 2025-07-01) before the buyer signs a contract; an agent informs the seller of the duty but does not fill it in, so this software never pre-fills an answer.
     who: The seller
     choices: [complete, decline]
-    blocks: Contract signing (step 7)
+    blocks: Contract signing (step 8)
     f_ids: [F15, F59]
     l_ids: [L43]
     link: ws2
@@ -323,6 +323,7 @@ records:
     rule: The lender issues the commitment, a licensed appraiser values the house and a title company insures title.
     who: Lender, appraiser, title company
     planned: true
+    per_item: true  # one record each: appraisal, mortgage commitment, title (app/records/road.py)
     f_ids: [F60, F61, F62]
     l_ids: []
     link: ws1
@@ -337,6 +338,7 @@ records:
     rule: Closing is run by the title company and lender; the deed is signed in ink before a notary.
     who: "Title company, lender, notary; the parties"
     planned: true
+    per_item: true  # one record each: walkthrough, closing
     f_ids: [F66, F67, F68]
     l_ids: [L35]
     link: ws2

@@ -5,14 +5,15 @@
 <h1 class="page-title">{% if cp04 and cp04.status == 'done' %}The seller completed the disclosure statement{% else %}The seller's Property Condition Disclosure Statement{% endif %}</h1>
 <p class="help">{{ form.statute }} · <span id="pcds-version">form of {{ form.version }}</span> · {{ questions() | length }} questions</p>
 <p>The seller completes this form; the software never fills in an answer. Every field starts blank. It is delivered
-to the buyer before the buyer signs the contract (L43), so the contract step waits for it.</p>
+to the buyer before the buyer signs the contract, so the contract step waits for it.</p>
 </div>
 {% if cp04 %}{{ decision(cp04, persona, '#pcds-form', advice="Answer from your own actual knowledge; \"Unkn\" is an allowed answer. The AI does not help fill this in.", labels={}) }}{% endif %}
 
 {% if cp04 and cp04.status == 'done' %}
 <div class="notification is-success is-light" id="pcds-done">Completed by the seller{% if saved._prepared_demo %} (the demo seller's prepared answers){% endif %}
   on the {{ saved._form_version }} form. <a href="/disclosures/pcds/print" target="_blank">Printable copy</a></div>
-{% include "disclosures/_pcds_body.html" %}
+<details class="working" id="pcds-answers"><summary>Show all {{ questions() | length }} answers <span class="sum-note">the seller's own, read-only</span></summary>
+<div class="working-body">{% include "disclosures/_pcds_body.html" %}</div></details>
 {% else %}
 {% set mine = (persona == 'seller') %}
 {% if error %}<div class="notification is-danger is-light" id="pcds-error">{{ error }}</div>{% endif %}
@@ -29,6 +30,8 @@ to the buyer before the buyer signs the contract (L43), so the contract step wai
   <p><b>Instructions to the seller:</b></p><ul>{% for i in form.instructions %}<li>{{ i }}</li>{% endfor %}</ul>
   <p>{{ form.seller_statement }}</p>
 </div></details>
+<details class="working" id="pcds-all"><summary>Show all questions <span class="sum-note">{{ form.sections | length }} sections, {{ questions() | length }} questions, every answer blank</span></summary>
+<div class="working-body">
 <form method="post" action="/disclosures/pcds{{ '?back=' ~ request.query_params.get('back') if request.query_params.get('back') }}" id="pcds-form">
 {% for sec in form.sections %}
 <h2 class="section-title">{{ sec.title }}</h2>
@@ -63,5 +66,6 @@ to the buyer before the buyer signs the contract (L43), so the contract step wai
 <button class="button is-warning" style="margin-top:8px" {{ 'disabled' if not mine }}>Sign and submit my answers (seller)</button>
 {% if not mine %}<p class="help">You are viewing as the {{ persona }}: only the seller answers this form ("Decide as the seller" on the card above).</p>{% endif %}
 </form>
+</div></details>
 {% endif %}
 {% endblock %}

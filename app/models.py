@@ -317,5 +317,15 @@ class ContractState(Base):
     state: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
 
 
+class BrandState(Base):
+    """Step 10: the firm's own campaign beyond its three pieces of copy (which are `copy_artifact` rows): the ad
+    targeting the AI chose, refused targeting attempts, and the simulated publication, one row per deal. No PII."""
+
+    __tablename__ = "brand_state"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    state: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
+
+
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run
 # survives the demo reset and ships with the image. See app/model/provider.py.

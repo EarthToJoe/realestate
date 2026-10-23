@@ -94,7 +94,7 @@ def board(s: Session, deal: Deal) -> list[dict]:
     if cp08:
         mls_status = "keyed in (simulated)"
     elif not cp07 or cp07.status != "done":
-        mls_status = "waiting for the seller's authorisations (CP-07)"
+        mls_status = "waiting for the seller's authorisations"
     elif "mls_remarks" not in ready:
         mls_status = "waiting for the remarks to be marked ready (step 3)"
     else:
@@ -139,16 +139,16 @@ def board(s: Session, deal: Deal) -> list[dict]:
     auth = (cp07.reason or "") if cp07 and cp07.status == "done" else ""
     for cid, name, needs, detail in (
         ("photos", "Photos", "photographer", "A licensed photographer (OneKey Rule 603); AI-altered images are "
-                                              "labelled; no portal or other brokers' photos are ever used (WS3-R8)."),
-        ("sign", "Yard sign", None, "Sign vendor installs; the sign names the firm (L10)."),
+                                              "labelled; no portal or other brokers' photos are ever used."),
+        ("sign", "Yard sign", None, "Sign vendor installs; the sign names the firm."),
         ("lockbox", "Lockbox", "lockbox", "Needs the seller's lockbox authorisation (OneKey Rule 405.4); keys and "
                                           "PINs may not be lent (Rule 405.8)."),
     ):
         ok = needs is None or (needs == "photographer" and "photographer" in auth) or (needs == "lockbox" and "lockbox" in auth)
         cards.append({"id": cid, "name": name, "kind": "vendor",
-                      "status": "vendor booking (simulated)" if ok else "waiting for the seller's authorisation (CP-07)",
+                      "status": "vendor booking (simulated)" if ok else "waiting for the seller's authorisation",
                       "detail": detail, "ids": ["WS3-R3", "WS3-R8"] if cid == "photos" else ["WS3-R3"], "link": WS3})
     cards.append({"id": "open_house", "name": "Open house", "kind": "owner", "status": "owner hosts (step 5)",
-                  "detail": "Someone must open the door; the owner may show their own home (CP-10, step 5).",
+                  "detail": "Someone must open the door; the owner may show their own home.",
                   "ids": ["F39", "F40", "L19", "WS3-R4"], "link": WS3})
     return cards

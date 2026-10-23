@@ -4,9 +4,9 @@
 {% set consented = cp17 and cp17.status == 'done' %}
 <div class="outcome {{ 'is-done' if bstate.tour and consented }}">
   <h1 class="page-title">{% if bstate.tour %}Tour booked: {{ bstate.tour.when | slot }}, {{ bstate.tour.kind }}{% else %}The buyer asks to see {{ listing.street }}{% endif %}</h1>
-  <p>{{ listing.street }} is the firm's own listing at {{ listing.price | money }}. No tour before a signed buyer agreement
-  (L15): the code refuses it. Because the firm also acts for the seller, both clients must consent in writing to dual
-  agency before the firm's buyer can make an offer (L13).</p>
+  <p>{{ listing.street }} is the firm's own listing at {{ listing.price | money }}. No tour before a signed buyer agreement:
+  the code refuses it. Because the firm also acts for the seller, both clients must consent in writing to dual
+  agency before the firm's buyer can make an offer.</p>
   {% if bstate.tour and consented %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/buyer/offer">Next: the offer &rarr;</a></div>{% endif %}
 </div>
 {% if cp16 and cp16.status != 'done' %}<div class="notification is-warning is-light" id="tour-blocked">A tour request is refused until the buyer signs

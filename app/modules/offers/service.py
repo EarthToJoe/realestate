@@ -158,7 +158,7 @@ def advise(s: Session, deal: Deal, provider: ModelProvider) -> dict:
     table = compare(s, deal)
     if len(table) < 2:
         raise NotReady("Only offer A is in. Offer B, from the firm's own buyer, has not arrived yet: the buyer is "
-                       "still working with the buyer's AI (step 8).")
+                       "still working with the buyer's AI (step 6).")
     system = (PROMPTS / f"{PROMPT_VERSION}.md").read_text()
     result = provider.generate("offers.advise", OfferAdvice, model_context(deal, table), s=s, module="offers",
                                system=system, prompt_version=PROMPT_VERSION, side="seller")

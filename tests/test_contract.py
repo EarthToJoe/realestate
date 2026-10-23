@@ -56,7 +56,7 @@ def test_memorandum_draft_and_cp14_marker_with_launch_route(client, session, pro
     for i in ("F52", "L21", "L22", "L25"):
         assert f">{i}<" in block
     assert records.latest(session, deal.id, "CP-14").status == "done"
-    assert 'data-passed="yes"' in r.text and contract.LABEL in r.text
+    assert 'data-passed="yes"' in r.text and contract.LABEL.replace(" (L21, L22)", "") in r.text
     req = next(x for x in provider.requests if x["task"] == "contract.draft")
     body = json.dumps(req)
     for leak in ("Dana", "Okafor", "Whitfield", "example.com", "555-01", "maximum_price", "665000", "lowest_price",

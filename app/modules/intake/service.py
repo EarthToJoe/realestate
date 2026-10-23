@@ -128,9 +128,13 @@ def start_intake(s: Session, data: IntakeInput, connector: FixtureRecords | None
                             attached_to=f"disclosure:{d.id}")
     records.open_decision(s, deal.id, "CP-01", attached_to="disclosure:agency")
     records.open_decision(s, deal.id, "CP-04", attached_to="disclosure:pcds")
-    # Standing and planned records, so the timeline shows the whole sale from the start.
-    for code in ("CP-35", "CP-20", "CP-21", "CP-22", "CP-23", "CP-34"):
-        records.plan(s, deal.id, code)
+    # Standing and planned records, so the timeline shows the whole sale from the start: the standing CP-35 and
+    # the road from the signed contract to closing, one planned record per item (app/records/road.py).
+    from app.records.road import ROAD
+
+    records.plan(s, deal.id, "CP-35")
+    for code, key, what, who, _, _ in ROAD:
+        records.plan(s, deal.id, code, reason=f"Planned: {what}. Who: {who}.", attached_to=f"closing:{key}")
     return deal
 
 

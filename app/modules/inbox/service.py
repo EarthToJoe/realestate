@@ -211,11 +211,11 @@ def send(s: Session, deal: Deal, provider: ModelProvider, *, thread: str, party:
     if first:
         records.record_auto(s, deal.id, "CP-24", reason=f"First contact on thread {thread} ({party}): agency "
                                                         "disclosure form and fair-housing notice sent (simulated)",
-                            attached_to=f"message:{m.id}")
+                            attached_to=f"message:{m.id}", step=8 if side == "buyer" else None)
     if discusses_listing:
         records.mark_law(s, deal.id, "CP-09", reason=f"The {side}'s AI sent a message on thread {thread} to "
                                                       f"{party} ({topic}) without the {side} reviewing it",
-                         attached_to=f"message:{m.id}")
+                         attached_to=f"message:{m.id}", step=8 if side == "buyer" else None)
     record_event(s, actor="ai", kind="ai_action", entity="message", entity_id=m.id,
                  summary=f"The {side}'s AI sent a message on thread {thread} ({topic}, sent (simulated))")
     s.flush()

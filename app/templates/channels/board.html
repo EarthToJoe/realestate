@@ -26,7 +26,7 @@
     {% endfor %}
     <p class="label" style="margin:10px 0 4px">What the seller authorises</p>
     {% for key, label, rule in authorisations %}
-    <label class="checkbox"><input type="checkbox" name="granted" value="{{ key }}" checked {{ 'disabled' if not mine }}> <span>{{ label }} <small class="muted">({{ rule }})</small></span></label>
+    <label class="checkbox" title="{{ rule }}"><input type="checkbox" name="granted" value="{{ key }}" checked {{ 'disabled' if not mine }}> <span>{{ label }}</span></label>
     {% endfor %}
     <div class="buttons">
       <button class="button is-warning" name="decision" value="sign" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Sign (simulated e-sign)</button>
@@ -49,13 +49,14 @@
   <div class="card-ch kind-{{ c.kind }}" id="card-{{ c.id }}" data-kind="{{ c.kind }}">
     <p class="ch-name">{% if c.kind == 'human_required' %}&#9995; {% endif %}<b>{{ c.name }}</b></p>
     <p class="ch-status"><span class="muted">{{ {'human_required': 'A person does this', 'fed': 'Fed from the MLS', 'automated': 'The AI', 'vendor': 'Vendor booking', 'owner': 'The owner hosts'}[c.kind] }}:</span> <b>{{ c.status }}</b></p>
-    {% if c.human_step %}<p><small>&#9995; <b>A person does this:</b> {{ c.human_step }}.</small></p>{% endif %}
+
     {% if c.action == 'mls' %}
     <form method="post" action="/channels/mls-entry"><button class="button is-small is-light" id="mls-entry"
       {% if persona != 'presenter' %}disabled title="Only the Presenter records a simulated human step"{% endif %}>Record the MLS entry (simulated)</button></form>
     <p style="margin-top:6px"><small><a href="/copy/mls">See the package the AI prepared</a></small></p>
     {% endif %}
     <details class="rec-more"><summary>How it works</summary>
+      {% if c.human_step %}<p><small>&#9995; <b>A person does this:</b> {{ c.human_step }}.</small></p>{% endif %}
       <p><small>{{ c.detail }}</small></p>
       <p class="rec-ids">{% for i in c.ids %}<span class="tag is-light">{{ i }}</span> {% endfor %}<a href="{{ c.link }}" target="_blank" rel="noopener">Read the finding</a></p>
     </details>

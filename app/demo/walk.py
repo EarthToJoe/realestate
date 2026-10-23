@@ -1,6 +1,7 @@
 """The demo's scripted walk, for the Presenter: what each screen is waiting for, and fast-forward.
 
-The walk is a list of milestones in the demo's walk order (steps 1 to 5, 8, 6, 7: decision 34), each with a check
+The walk is a list of milestones in the demo's walk order (steps 1 to 5, 8, 6, 7, then 10: decision 34; on screen
+they are numbered in that order, 1 to 10, Q47), each with a check
 ("is it done in the current deal?") and a play ("do it the way the demo does"). The plays make exactly the choices
 `scripts/live-flow.sh` makes, through the same service calls the screens use, so model calls hit the recorded
 replays ($0). Client decisions are recorded as the client's (persona "seller" or "buyer"); the record service still
@@ -326,6 +327,43 @@ def _sign_contract(s, deal, provider):
             contract.sign(s, deal, p, "sign")
 
 
+def _brand_state(key):
+    def check(s, deal):
+        from app.modules.brand import service as brand
+
+        return bool(brand.state(deal).get(key))
+    return check
+
+
+def _campaign_drafted(s, deal):
+    from app.modules.brand import service as brand
+
+    return bool(brand.artifacts(s, deal))
+
+
+def _campaign(s, deal, provider):
+    """As the demo does it: the AI writes the campaign; the presenter tries the bold headline; the AI removes it."""
+    from app.modules.brand import service as brand
+
+    brand.draft(s, deal, provider)
+    landing = next((a for a in brand.artifacts(s, deal) if a.channel == "brand_landing"), None)
+    if landing is not None and landing.version == 1 and landing.status == "passed":
+        brand.plant(s, deal, landing, provider)
+        brand.apply_fix(s, deal, landing, provider)
+
+
+def _targeting(s, deal, provider):
+    from app.modules.brand import service as brand
+
+    brand.set_targeting(s, deal)
+
+
+def _publish(s, deal, provider):
+    from app.modules.brand import service as brand
+
+    brand.publish(s, deal)
+
+
 # ---- the walk, in walk order ---------------------------------------------------------------------------------------
 
 M = Milestone
@@ -391,6 +429,13 @@ WALK: list[Milestone] = [
       anchor="rec-CP-33"),
     M("signed", 7, "The seller and the buyer sign the contract", "seller_and_buyer", "/contract", _done("CP-33"),
       _sign_contract, code="CP-33"),
+    # Step 10 Marketing the business (after the timeline in the walk; nothing in it needs the deal's progress)
+    M("campaign", 10, "The AI writes and checks the firm's campaign", "ai", "/brand", _campaign_drafted, _campaign,
+      code="CP-26", anchor="campaign-outcome"),
+    M("targeting", 10, "The AI sets the ad's targeting", "ai", "/brand/targeting", _brand_state("targeting"),
+      _targeting, anchor="targeting"),
+    M("publish", 10, "The AI publishes the firm's campaign", "ai", "/brand/targeting", _brand_state("published"),
+      _publish, code="CP-19", optional=True, anchor="published"),
 ]
 BY_KEY = {m.key: m for m in WALK}
 
@@ -407,6 +452,8 @@ NEEDS = {
     "/contract": "agreed",
     "/disclosures/pcds": "intake",
     "/timeline": "intake",
+    "/brand": "intake", "/brand/targeting": "campaign",
+    "/people": "intake",
 }
 
 
@@ -459,7 +506,7 @@ class Gate:
 
 
 def _step(n: int) -> dict:
-    return next((st for st in steps() if st["n"] == n), {"n": n, "title": f"Step {n}"})
+    return next((st for st in steps() if st["n"] == n), {"n": n, "shown": n, "title": f"Step {n}"})
 
 
 def gate_for(s: Session, deal: Deal | None, path: str, message: str | None = None) -> Gate | None:
@@ -486,6 +533,31 @@ def _deciders(s: Session, deal: Deal | None, m: Milestone) -> list[str]:
         return [m.who]
     cp = records.latest(s, deal.id, m.code) if deal else None
     return [p for p in ("seller", "buyer") if f"{p}=" not in ((cp.decision if cp else None) or "")]
+
+
+def screen_plan(route: str) -> list[Milestone]:
+    """What "Do this screen for me" plays (guided demo): the walk up to and including the last milestone done on
+    this screen. Empty for a screen with nothing to do (the comparables, the MLS package, the timeline)."""
+    last = max((i for i, m in enumerate(WALK) if m.route == route), default=-1)
+    return WALK[:last + 1]
+
+
+def playable(s: Session, deal: Deal | None, route: str) -> list[Milestone]:
+    """The milestones "Do this screen for me" would still play here."""
+    return [m for m in screen_plan(route) if not is_done(s, deal, m)]
+
+
+def play_screen(s: Session, provider, route: str) -> list[Milestone]:
+    """Play `screen_plan(route)` the way the demo does (the same plays as fast-forward); commits after each."""
+    played = []
+    for m in screen_plan(route):
+        deal = current_deal(s)
+        if is_done(s, deal, m):
+            continue
+        m.play(s, deal, provider)
+        s.commit()
+        played.append(m)
+    return played
 
 
 def fast_forward(s: Session, provider, n: int, path: str | None = None) -> list[Milestone]:

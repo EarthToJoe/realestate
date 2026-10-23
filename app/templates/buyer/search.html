@@ -4,7 +4,7 @@
 <div class="outcome">
   <h1 class="page-title">{{ matches | length }} home{{ '' if matches | length == 1 else 's' }} match the buyer's search{% if firm_listing %}, including this firm's listing{% endif %}</h1>
   <p>Fictional listings plus the firm's own. The search filters on the home's facts only ({{ filters | join(', ') | replace('_', ' ') }}):
-  there is no school-rating, neighbourhood or people filter, so it cannot steer (L37).</p>
+  there is no school-rating, neighbourhood or people filter, so it cannot steer.</p>
   <div class="actions" style="margin-bottom:0"><a class="button is-next" href="/buyer/tour">Next: ask for a tour &rarr;</a></div>
 </div>
 <details class="working" {{ 'open' if not msgs }}>

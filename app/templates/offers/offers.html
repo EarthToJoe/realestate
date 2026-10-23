@@ -13,7 +13,7 @@
   {% if st.accepted %}<div class="actions" style="margin-bottom:0"><a class="button is-next" href="/contract">Next: the contract &rarr;</a></div>{% endif %}
 </div>
 {% if persona == 'buyer' %}<div class="notification is-light" id="wall-note">You are viewing as the buyer. This is the seller's
-  screen: the seller's AI's advice and the seller's limits are hidden from the buyer (information wall, decision 24).
+  screen: the seller's AI's advice and the seller's limits are hidden from the buyer (the information wall between the two AIs).
   Your side is on <a href="/buyer/offer">the buyer's offer screen</a>.</div>{% endif %}
 
 {% if cp17 %}{{ decision(cp17, persona, '/offers/consent', labels={'consent': 'Consent to dual agency', 'decline': 'Decline'}) }}{% endif %}
@@ -22,7 +22,9 @@
   {% for o in offers %}
   <div class="offer-card {{ 'is-suggested' if adv.suggested_offer == o.label and persona != 'buyer' }}" data-offer="{{ o.label }}">
     <h3>Offer {{ o.label }}: {{ o.price | money }}</h3>
+    <p class="offer-line">Seller keeps <b id="net-{{ o.label }}">{{ o.net_before_mortgage | money }}</b> · {{ o.financing }} · closing in {{ o.closing_days }} days</p>
     <p class="help">{{ o.party }}{% if o.side == 'firm_buyer' %}<br><span class="tag is-warning is-light">dual agency: the firm acts for both</span>{% endif %}</p>
+    <details class="rec-more"><summary>All the terms</summary>
     <dl class="kv">
       <dt>Versus list</dt><dd>{{ '{:+,}'.format(o.vs_list) }}</dd>
       <dt>Financing</dt><dd>{{ o.financing }}</dd>
@@ -30,23 +32,25 @@
       <dt>Conditions</dt><dd>{{ o.contingencies | join('; ') }}; inspection {{ o.inspection_days }} days; mortgage commitment {{ o.mortgage_days }} days</dd>
       <dt>Closing</dt><dd>{{ o.closing_days }} days</dd>
       <dt>Requests</dt><dd>{{ o.requests | join('; ') or 'None' }}</dd>
-      <dt>Seller keeps</dt><dd id="net-{{ o.label }}"><b>{{ o.net_before_mortgage | money }}</b> <small class="muted">before any mortgage</small></dd>
+      <dt>Seller keeps</dt><dd><b>{{ o.net_before_mortgage | money }}</b> <small class="muted">before any mortgage</small></dd>
     </dl>
+    </details>
   </div>
   {% endfor %}
 </div>
 {% if offers | length < 2 %}<p class="notification is-light" id="waiting-b">Offer B, from the firm's own buyer, has not arrived:
-  the buyer is working with the buyer's AI (<a href="/buyer">step 8</a>).</p>{% endif %}
+  the buyer is working with the buyer's AI (<a href="/buyer">step 6</a>).</p>{% endif %}
 <p class="help">"Seller keeps" is computed in code: flat fee, NY transfer tax (0.4%), estimated attorney and recording costs; see step 2 for the lines.</p>
 
 {% if persona != 'buyer' %}
 <div class="ai-panel" id="advice">
 {% if st.advice %}
   <p class="ai-by">The seller's AI presents every offer · {{ ai_badge(st.advice.mode, st.advice.recorded_at, st.advice.model) }}</p>
-  <p id="recommendation"><b>Recommendation.</b> {{ st.advice.recommendation }}</p>
   <p><b>Suggested:</b> {{ st.advice.suggested_action }} offer {{ st.advice.suggested_offer }} at {{ st.advice.suggested_counter_price | money }},
-    agreeing down to {{ st.advice.suggested_lowest_price | money }}, closing in {{ st.advice.suggested_closing_days }} days. {{ st.advice.suggested_terms }}</p>
-  <details class="rec-more"><summary>The AI on each offer</summary>
+    agreeing down to {{ st.advice.suggested_lowest_price | money }}, closing in {{ st.advice.suggested_closing_days }} days.</p>
+  <details class="rec-more"><summary>The AI's reasoning, and each offer</summary>
+  <p id="recommendation"><b>Recommendation.</b> {{ st.advice.recommendation }}</p>
+  {% if st.advice.suggested_terms %}<p>{{ st.advice.suggested_terms }}</p>{% endif %}
   {% for v in st.advice.offers %}<p><b>Offer {{ v.label }}.</b> {{ v.summary }} <i>Risks:</i> {{ v.risks | join('; ') }}. <i>Advice:</i> {{ v.advice }}</p>{% endfor %}
   </details>
 {% else %}
@@ -102,7 +106,7 @@
 {% if not st.accepted and not st.ended %}
   <div class="buttons">
   {% if not st.thread %}<form method="post" action="/offers/negotiate"><button class="button is-info" id="ai-negotiate">Let the AI send the seller's counter</button></form>
-  {% elif st.thread[-1]['from'] == "seller's AI" and st.decision.offer == 'B' %}<p class="help" id="waiting-buyer">Waiting for the buyer's side: the buyer's AI advises the buyer, and the buyer approves the reply (<a href="/buyer/offer">step 8</a>).</p>
+  {% elif st.thread[-1]['from'] == "seller's AI" and st.decision.offer == 'B' %}<p class="help" id="waiting-buyer">Waiting for the buyer's side: the buyer's AI advises the buyer, and the buyer approves the reply (<a href="/buyer/offer">step 6</a>).</p>
   {% elif st.thread[-1]['from'] != "seller's AI" %}<form method="post" action="/offers/negotiate"><button class="button is-info" id="ai-negotiate">Let the AI take the next step</button></form>{% endif %}
   </div>
   <details class="rec-more" id="try-counter-fold"><summary>Presenter: try a counter by hand</summary>

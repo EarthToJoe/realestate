@@ -8,25 +8,26 @@
   <h1 class="page-title">The sale so far: {{ done.n }} of {{ tl.rows | length }} steps done</h1>
   <p>Built only from the records the other screens wrote; nothing here is drawn by hand.</p>
   <div class="tl-totals" id="tl-counts" style="margin:12px 0 0">
-    <div class="t-ai"><span class="big-number">{{ c.automated }}</span> things the AI did</div>
-    <div class="t-dec"><span class="big-number">{{ c.decisions_done }}</span> client decisions{% if c.decisions_pending %}, {{ c.decisions_pending }} waiting{% endif %}</div>
-    <div class="t-law"><span class="big-number">{{ c.markers }}</span> places NY law today needs a licensed broker ({{ c.markers_L }}) or a lawyer ({{ c.markers_A }})</div>
-    <div class="t-hum"><span class="big-number">{{ c.human_required + c.third_party }}</span> steps for a person or another firm</div>
+    <div class="t-ai" data-count="automated"><span class="big-number">{{ c.automated }}</span> things the AI did</div>
+    <div class="t-dec" data-count="decisions"><span class="big-number">{{ c.decisions_done }}</span> client decisions{% if c.decisions_pending %}, {{ c.decisions_pending }} waiting{% endif %}</div>
+    <div class="t-law" data-count="markers"><span class="big-number">{{ c.markers }}</span> places NY law today needs a licensed broker ({{ c.markers_L }}) or a lawyer ({{ c.markers_A }})</div>
+    <div class="t-hum" data-count="people"><span class="big-number">{{ c.human_required + c.third_party }}</span> steps for a person ({{ c.human_required }}) or another firm ({{ c.third_party }} planned)</div>
   </div>
 </div>
 
 <div class="tl-grid" id="timeline-summary">
 {% for row in tl.rows %}
   {% set k = {'automated': 0, 'client_decision': 0, 'law_marker': 0, 'human_required': 0, 'third_party': 0} %}
-  {% for cp in row.records if cp.status != 'planned' %}{{ k.update({cp.kind: k[cp.kind] + 1}) or '' }}{% endfor %}
-  <a class="tl-step {{ '' if row.built else 'later' }}" href="#tl-step-{{ row.n }}">
-    <div class="tl-n">Step {{ row.n }}{% if row.n in waiting_steps %} · <span style="color:var(--dec)">waiting</span>{% elif row.n in done_steps %} · <span style="color:var(--accent)">&#10003; done</span>{% elif not row.built %} · coming soon{% endif %}</div>
+  {% for cp in row.records %}{{ k.update({cp.kind: k[cp.kind] + 1}) or '' }}{% endfor %}
+  <a class="tl-step {{ '' if row.built else 'later' }}" href="#tl-step-{{ row.n }}" data-step="{{ row.n }}">
+    <div class="tl-n">Step {{ row.shown }}{% if row.n in waiting_steps %} · <span style="color:var(--dec)">waiting</span>{% elif row.n in done_steps %} · <span style="color:var(--accent)">&#10003; done</span>{% elif not row.built %} · coming soon{% endif %}</div>
     <div class="tl-t">{{ row.title }}</div>
     <div class="tl-c">
       {% if k.automated %}<span><i class="dot dot-ai"></i>{{ k.automated }} AI</span>{% endif %}
       {% if k.client_decision %}<span><i class="dot dot-wait"></i>{{ k.client_decision }} decision{{ 's' if k.client_decision > 1 }}</span>{% endif %}
       {% if k.law_marker %}<span><i class="dot dot-law"></i>{{ k.law_marker }} law</span>{% endif %}
       {% if k.human_required %}<span><i class="dot"></i>{{ k.human_required }} person</span>{% endif %}
+      {% if k.third_party %}<span><i class="dot"></i>{{ k.third_party }} planned</span>{% endif %}
       {% if not row.records %}<span>nothing yet</span>{% endif %}
     </div>
   </a>
@@ -35,11 +36,50 @@
 
 {% for cp in tl.standing %}{{ law_marker(cp) }}{% endfor %}
 
+<details class="working" id="closing">
+  <summary>The road to closing <span class="sum-note">{{ tl.road | length }} planned steps{% if tl.signed_on %}, dated from the signing{% endif %}</span></summary>
+  <div class="working-body">
+  <p class="help">{% if tl.signed_on %}Dated from the contract signed {{ tl.signed_on.strftime('%a %-d %b %Y') }} and its agreed terms.{% else %}Dates appear once the contract is signed (step {{ shown(7) }}).{% endif %} Planned, not acted in the demo: each is a firm or a person outside the software.</p>
+  <ol class="tl-log road">
+  {% for it in tl.road %}
+    <li data-road="{{ (it.record.attached_to or '').replace('closing:', '') }}" data-code="{{ it.record.code }}">{{ chip(it.record) }} <b>{{ it.what }}</b>{% if it.when %} <span class="when">· by {{ it.when.strftime('%a %-d %b') }}</span>{% endif %}<br><small class="muted">{{ it.who }}</small></li>
+  {% endfor %}
+  </ol>
+  </div>
+</details>
+
+<details class="working" id="hurdle-map">
+  <summary>The hurdle map <span class="sum-note">every NY law today note and every step for a person, by step</span></summary>
+  <div class="working-body">
+{% for row, hs in tl.hurdles %}
+  <h3>Step {{ row.shown }}. {{ row.title }}</h3>
+  {% for h in hs %}{% set cp = h.record %}
+  <div class="hurdle" data-code="{{ cp.code }}">
+    {% if h.times > 1 %}<p class="help hurdle-times">Recorded {{ h.times }} times on this step{% if cp.code == 'CP-09' %}: once for each message{% endif %}.</p>{% elif cp.status == 'planned' %}<p class="help hurdle-times">Planned: after the inspection.</p>{% endif %}
+    {% if cp.kind == 'law_marker' %}{{ law_marker(cp) }}{% else %}{{ human_required(cp) }}{% endif %}
+  </div>
+  {% endfor %}
+{% endfor %}
+  </div>
+</details>
+
+<details class="working" id="agent-acts">
+  <summary>What the AI did that NY law reserves <span class="sum-note">{{ tl.acts | length }} acts, in order: what a supervising broker would review</span></summary>
+  <div class="working-body">
+  <ol class="tl-log">
+  {% for row, cp in tl.acts %}
+    <li data-code="{{ cp.code }}"><span class="chip chip-law_marker"><b>Step {{ row.shown }}</b>{% if cp.law_actor %}: {{ law_actor_label[cp.law_actor] }}{% endif %}</span> {{ cp.reason or cp.title }} <span class="when">· {{ cp.created_at | et }}</span></li>
+  {% else %}<li class="muted">Nothing yet.</li>{% endfor %}
+  </ol>
+  <p class="help">Besides these, the AI did {{ c.automated }} things New York law does not reserve (notices sent, fair-housing checks passed, showings booked, documents assembled).</p>
+  </div>
+</details>
+
 <h2 class="section-title">The full record, step by step</h2>
 <div id="timeline-rows">
 {% for row in tl.rows %}
 <details class="working tl-row" data-step="{{ row.n }}" id="tl-step-{{ row.n }}">
-  <summary>{{ row.n }}. {{ row.title }} <span class="sum-note">{% if row.records %}{{ row.records | length }} record{{ 's' if row.records | length != 1 }}{% elif not row.built %}coming soon{% else %}no records yet{% endif %}</span></summary>
+  <summary>{{ row.shown }}. {{ row.title }} <span class="sum-note">{% if row.records %}{{ row.records | length }} record{{ 's' if row.records | length != 1 }}{% elif not row.built %}coming soon{% else %}no records yet{% endif %}</span></summary>
   <div class="working-body">
   <ul class="tl-log">
   {% for cp in row.records %}
@@ -54,14 +94,4 @@
 </details>
 {% endfor %}
 </div>
-
-<details class="working" id="hurdle-map">
-  <summary>The hurdle map <span class="sum-note">every NY law today note and every step for a person, by step</span></summary>
-  <div class="working-body">
-{% for row, hs in tl.hurdles %}
-  <h3>{{ row.n }}. {{ row.title }}</h3>
-  {% for cp in hs %}{% if cp.kind == 'law_marker' %}{{ law_marker(cp) }}{% else %}{{ human_required(cp) }}{% endif %}{% endfor %}
-{% endfor %}
-  </div>
-</details>
 {% endblock %}

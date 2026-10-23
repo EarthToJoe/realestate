@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ screen.title if screen else 'Home' }}{% endblock %} · {{ firm.name }} (demonstration)</title>
+<title>{% block title %}{{ active_step.title if active_step else 'Home' }}{% endblock %} · {{ firm.name }}</title>
 <link rel="stylesheet" href="/static/vendor/bulma.min.css">
+<link rel="stylesheet" href="/static/vendor/driver.css">
 <link rel="stylesheet" href="/static/app.css">
 <script src="/static/vendor/htmx.min.js" defer></script>
 {% block head %}{% endblock %}
 </head>
-<body>
+<body class="{{ 'guided' if guide }}">
 {% from "components.html" import law_marker, ai_badge, mode_badge, gate_card, screen_tabs with context %}
-{% set flat = [] %}{% for st in steps | sort(attribute='n') %}{% for sc in st.screens %}{{ flat.append((st, sc)) or '' }}{% endfor %}{% endfor %}
-{% set here = namespace(i=-1) %}{% for st, sc in flat %}{% if screen and sc.route == screen.route %}{% set here.i = loop.index0 %}{% endif %}{% endfor %}
 <div class="demo-mark" role="note">DEMONSTRATION: not a listing, not for sale through this firm, no owner authority. Fictional people; nothing is sent.</div>
 <nav class="topbar">
   <a href="/" class="brand">{{ firm.name }} <small>demonstration</small></a>
@@ -26,27 +25,38 @@
     </form>
   </span>
 </nav>
-{# Phone: one compact bar, "Step 2 of 10: Pricing", back and forward through the screens, and the full list. #}
+{# Phone: one compact sticky bar: where you are (numbered in walk order, Q47), back and forward through the screens in
+   walk order, the presenter notes and the full list. Nothing floats over the content. #}
 <nav class="stepbar" aria-label="Where you are in the sale">
-  {% set prev = flat[here.i - 1] if here.i > 0 else None %}{% set nxt = flat[here.i + 1] if here.i >= 0 and here.i + 1 < flat | length else None %}
-  <a class="pill" href="{{ prev[1].route if prev else '#' }}" aria-label="Previous screen" {% if not prev %}aria-disabled="true"{% endif %}>&larr;</a>
-  <span class="sb-where">{% if active_step %}Step {{ active_step.n }} of {{ steps | length }}: {{ active_step.title }}{% else %}{{ firm.name }}<small>The sale, step by step</small>{% endif %}</span>
-  <a class="pill" href="{{ nxt[1].route if nxt else (flat[0][1].route if here.i < 0 else '#') }}" aria-label="Next screen" {% if here.i >= 0 and not nxt %}aria-disabled="true"{% endif %}>&rarr;</a>
-  <a href="#step-list" class="pill pill-all">Steps</a>
+  <a class="pill" href="{{ prev_screen[1].route if prev_screen else '#' }}" aria-label="Previous screen" {% if not prev_screen %}aria-disabled="true"{% endif %}>&larr;</a>
+  <span class="sb-where">{% if active_step %}Step {{ active_step.shown }} of {{ steps | length }}: {{ active_step.title }}{% else %}{{ firm.name }}<small>The sale, step by step</small>{% endif %}</span>
+  <a class="pill" id="sb-next" href="{{ next_screen[1].route if next_screen else '#' }}" aria-label="Next screen" {% if not next_screen %}aria-disabled="true"{% endif %}>&rarr;</a>
+  {% if screen or intro_notes %}<button type="button" class="pill pill-notes" data-notes-toggle aria-controls="presenter-notes">Notes</button>{% endif %}
+  <a href="#step-list" class="pill pill-all" aria-label="All steps">&#9776;</a>
 </nav>
 <div class="layout">
   <aside class="steps" id="step-list">
+   <div class="steps-inner">
     <p class="steps-title">The sale, step by step</p>
     <ol>
-    {% for st in steps | sort(attribute='n') %}
-      <li class="{{ 'active' if active_step and active_step.n == st.n }} {{ 'done' if st.n in done_steps and st.n not in waiting_steps }} {{ '' if st.built else 'later' }}">
-        <a href="{{ st.screens[0].route }}"><span class="n">{% if st.n in done_steps and st.n not in waiting_steps %}&#10003;{% else %}{{ st.n }}{% endif %}</span>
+    {% for st in steps %}
+      <li class="{{ 'active' if active_step and active_step.n == st.n }} {{ 'done' if st.n in done_steps and st.n not in waiting_steps }} {{ '' if st.built else 'later' }}" data-step="{{ st.n }}">
+        <a href="{{ st.screens[0].route }}"><span class="n">{% if st.n in done_steps and st.n not in waiting_steps %}&#10003;{% else %}{{ st.shown }}{% endif %}</span>
           <span class="st-title">{{ st.title }}{% if st.n in waiting_steps %}<span class="st st-waiting">waiting for a decision</span>{% elif not st.built %}<span class="st">coming soon</span>{% endif %}</span></a>
-        {% if st.n in ff_steps %}<form method="post" action="/demo/fast-forward/{{ st.n }}" class="ff-form"><button class="ff" data-ff="{{ st.n }}" title="Fast-forward the demo to step {{ st.n }}: plays the steps before it with the demo's scripted choices" aria-label="Fast-forward the demo to step {{ st.n }}">&#9193;</button></form>{% endif %}
+        {% if st.n in ff_steps %}<form method="post" action="/demo/fast-forward/{{ st.n }}" class="ff-form"><button class="ff" data-ff="{{ st.n }}" title="Fast-forward the demo to step {{ st.shown }}: plays the steps before it with the demo's scripted choices" aria-label="Fast-forward the demo to step {{ st.shown }}">&#9193;</button></form>{% endif %}
       </li>
     {% endfor %}
     </ol>
+    {% if screen or intro_notes %}
+    <div class="presenter-box">
+      {% if guide and here >= 0 %}<p class="pb-where">Guided demo · screen {{ here + 1 }} of {{ walk_screens | length }}</p>{% endif %}
+      <button type="button" class="button is-dark is-fullwidth" data-notes-toggle aria-controls="presenter-notes">Presenter notes</button>
+      {% if next_screen %}<a class="button is-light is-fullwidth" href="{{ next_screen[1].route }}" id="pb-next">Next: {{ next_screen[1].title }} &rarr;</a>{% endif %}
+    </div>
+    {% endif %}
     <a class="button is-light is-fullwidth start-over" href="/demo/start?back={{ request.url.path | urlencode }}">Start over</a>
+    <a class="side-link" href="/people">People and their data</a>
+   </div>
   </aside>
   <main class="content-area">
     {{ screen_tabs() }}
@@ -54,24 +64,14 @@
     {% block content %}{% endblock %}
   </main>
 </div>
-{% if screen %}
-{# Presenter notes: the presenter's crib sheet, hidden from the audience until opened (slice 4's guided mode builds on it). #}
-<details class="presenter-notes" id="presenter-notes">
-  <summary>Presenter notes</summary>
-  <div class="notes-body">
-    <h2>{{ active_step.n }}. {{ active_step.title }} · {{ screen.title }}</h2>
-    <p><span class="notes-k">Click:</span> {{ screen.click }}</p>
-    <p><span class="notes-k">Say:</span> {{ screen.say }}</p>
-    <p><span class="notes-k">Markers and decisions:</span> {{ screen.marker }}</p>
-  </div>
-</details>
-{% endif %}
+{% if screen or intro_notes %}{% include "demo/_notes.html" %}{% endif %}
 <footer class="identity" id="identity-block">
   <p><b>{{ firm.name }}</b> ({{ firm.name_note }}) · {{ firm.office_address }} · {{ firm.phone }}</p>
   <p class="broker-line"><span class="rec-badge">NY law today</span> {{ firm.broker_of_record }}. {{ cp35.plain }}
     <a href="/timeline#rec-CP-35">On the timeline</a> · <a href="{{ cp35.link }}" target="_blank" rel="noopener">Read the finding</a></p>
-  <p class="meta">{% if model_mode == 'replay' %}Recorded run: the AI's real answers from an earlier live run, replayed at no cost. {% endif %}Live model spend so far ${{ '%.4f' % live_spend }} of the ${{ '%.0f' % spend_cap }} cap · <a href="{{ review_url }}">Research documents</a></p>
+  <p class="meta">{% if model_mode == 'replay' %}Recorded run: the AI's real answers from an earlier live run, replayed at no cost. {% endif %}Live model spend so far ${{ '%.4f' % live_spend }} of the ${{ '%.0f' % spend_cap }} cap · <a href="{{ review_url }}">Research documents</a> · <a href="/people">People and their data</a></p>
 </footer>
+{% if screen or intro_notes %}<script src="/static/vendor/driver.js.iife.js"></script><script src="/static/demo.js"></script>{% endif %}
 {% block scripts %}{% endblock %}
 </body>
 </html>

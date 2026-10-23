@@ -68,7 +68,6 @@ def test_step_list_offers_fast_forward_to_the_presenter_only(client):
     page = client.get("/intake").text
     for st in BUILT:
         assert (f'data-ff="{st["n"]}"' in page) == (st["n"] != 1), st["n"]
-    assert 'data-ff="10"' not in page  # not built yet
     as_persona(client, "seller")
     assert "data-ff=" not in client.get("/intake").text
 
@@ -134,7 +133,7 @@ def test_fast_forward_is_the_presenters_only_and_only_to_built_steps(client):
     as_persona(client, "seller")
     assert client.post("/demo/fast-forward/2").status_code == 403
     as_persona(client, "presenter")
-    assert client.post("/demo/fast-forward/10").status_code == 422
+    assert client.post("/demo/fast-forward/11").status_code == 422  # no such step
     s, deal = _deal()
     s.close()
     assert deal is None

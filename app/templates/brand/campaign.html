@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, ai_badge with context %}
+{% block content %}
+{% if error %}<div class="notification is-danger is-light" id="refusal">{{ error }}</div>{% endif %}
+{% if ai_error %}<div class="notification is-light"><b>Not recorded:</b> {{ ai_error }}</div>{% endif %}
+{% if not panels %}
+<div class="outcome" id="ai-panel">
+  <h1 class="page-title">The AI markets the firm itself</h1>
+  <p>A landing page for home sellers, one local ad and a free guide for sellers, written by the AI and checked like
+  every other piece of copy.</p>
+  <form method="post" action="/brand/draft"><button class="button is-info" id="ai-campaign">Let the AI write the campaign</button></form>
+</div>
+{% else %}
+{% set passed = panels | selectattr('art.status', 'in', ['passed', 'ready']) | list %}
+<div class="outcome {{ 'is-done' if st.published }}" id="campaign-outcome">
+  <p class="ai-by">Written by the AI · {{ ai_badge(panels[0].art.mode, (st.draft or {}).recorded_at, panels[0].art.model) }}</p>
+  <h1 class="page-title">{% if st.published %}The firm's campaign is published (simulated){% else %}The AI wrote the firm's campaign: {{ passed | length }} of {{ panels | length }} pieces pass both checks{% endif %}</h1>
+  <p>Every piece went through the fair-housing check and a check on what the firm may claim. Only pieces that pass
+  both can be published.</p>
+  <div class="actions" style="margin-bottom:0"><a class="button is-next" href="/brand/targeting" id="to-targeting">Next: who sees the ad &rarr;</a></div>
+</div>
+
+{% for p in panels %}{% set parts = p.parts %}
+<section class="card-x brand-piece" id="piece-{{ p.art.channel }}" data-channel="{{ p.art.channel }}" data-status="{{ p.art.status }}">
+  <div class="rec-head" style="justify-content:space-between">
+    <h2 class="section-title" style="margin:0">{{ p.art.title }}</h2>
+    <span class="tag {{ {'ready': 'is-success', 'passed': 'is-info is-light', 'blocked': 'is-danger', 'draft': 'is-light'}[p.art.status] }}">{{ {'ready': 'published', 'passed': 'checks passed', 'blocked': 'refused', 'draft': 'not checked'}[p.art.status] }}</span>
+  </div>
+  {% if p.art.channel == 'brand_landing' %}
+  <div class="landing-preview">
+    {% if p.marked %}<div class="copy-text">{{ p.marked }}</div>{% else %}
+    <p class="lp-headline">{{ founder(parts.headline) }}</p>
+    {% for para in parts.body %}<p>{{ founder(para) }}</p>{% endfor %}
+    <p class="lp-cta"><span>{{ founder(parts.cta) }}</span></p>{% endif %}
+    <details class="rec-more" id="notices"><summary>The notices the page carries ({{ notices | selectattr('present') | list | length }} of {{ notices | length }})</summary>
+      <ul class="plain">{% for n in notices %}<li data-notice="{{ n.id }}"><span class="{{ 'check-ok' if n.present else 'check-fail' }}">{{ '✔' if n.present else '✖' }}</span> <b>{{ n.title }}.</b> {{ n.text }}
+        {% for label, url in n.links or [] %}<br><a href="{{ url }}" target="_blank" rel="noopener">{{ label }}</a>{% endfor %}
+        <br><small class="muted">{{ n.basis }}. Added by code, never by the AI.</small></li>{% endfor %}</ul>
+    </details>
+  </div>
+  {% elif p.art.channel == 'brand_ad' %}
+  <div class="ad-preview">
+    <p class="ad-sponsor">{{ firm.name }} · Sponsored · Housing ad</p>
+    {% if p.marked %}<div class="copy-text">{{ p.marked }}</div>{% else %}
+    <p class="ad-text">{{ founder(parts.text) }}</p>
+    <p class="ad-headline">{{ founder(parts.headline) }}</p>{% endif %}
+  </div>
+  {% else %}
+  <div class="magnet-preview">
+    {% if p.marked %}<div class="copy-text">{{ p.marked }}</div>{% else %}
+    <p class="lp-headline">{{ founder(parts.title) }}</p>
+    <p>{{ founder(parts.pitch) }}</p>
+    <ul>{% for x in parts.outline %}<li>{{ founder(x) }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endif %}
+  {% include "brand/_checks.html" %}
+  <div class="buttons">
+    {% if p.art.status == 'blocked' %}
+    <form method="post" action="/brand/piece/{{ p.art.id }}/fix"><button class="button is-info fix-btn">Let the AI remove it and re-check</button></form>
+    {% elif p.art.channel == 'brand_landing' and not st.published %}
+    <form method="post" action="/brand/piece/{{ p.art.id }}/plant"><button class="button is-small is-danger is-light plant-btn" title="Adds: {{ planted }}">Try a bolder headline (demo)</button></form>
+    {% endif %}
+  </div>
+</section>
+{% endfor %}
+{% if cp19 %}{{ law_marker(cp19) }}{% endif %}
+{% endif %}
+{% endblock %}

@@ -36,7 +36,7 @@
 {% if agreement %}
 <h2 class="section-title" id="agreement">The listing agreement</h2>
 <p>Exclusive right to sell, written by the AI: {{ presentation.fee }}, six months, no automatic renewal.</p>
-{% if cp03 %}{{ decision(cp03, persona, '/intake/sign', advice="Signing lets the firm market the house at the fee above. Signing needs the agency form acknowledged first (L12).", labels={'sign': 'Sign the agreement (simulated e-sign)', 'decline': 'Decline'}) }}{% endif %}
+{% if cp03 %}{{ decision(cp03, persona, '/intake/sign', advice="Signing lets the firm market the house at the fee above. Signing needs the agency form acknowledged first.", labels={'sign': 'Sign the agreement (simulated e-sign)', 'decline': 'Decline'}) }}{% endif %}
 <details class="working">
   <summary>Read the agreement <span class="sum-note">with the state's exclusive-listing explanation</span></summary>
   <div class="working-body legal-text" style="border:0;padding-top:0">
@@ -53,7 +53,7 @@
      you will not have to pay a commission to the broker. However, if another broker finds a buyer, you will owe a
      commission to both the selling broker and your present broker. <i>(19 NYCRR 175.24(b), printed in at least
      six-point type and initialled by the owner.)</i></p>
-  <p>No marketing starts until this agreement is signed (L9).</p>
+  <p>No marketing starts until this agreement is signed.</p>
   </div>
 </details>
 {% endif %}

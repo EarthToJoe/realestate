@@ -123,6 +123,20 @@ def default(task: str, context: dict) -> dict:
                      "explanation": "Implies a preferred buyer.", "suggestion": "Describe the property."}
                     for k, (cls, tier) in coded.items() if k in text.lower()]
         return {"findings": findings, "fixed_text": rules_fix(text)}
+    if task == "brand.campaign":
+        return {"landing_page": {
+                    "headline": f"Sell your {context['area'].split(' and ')[0]} home with an AI agent",
+                    "body": [f"{context['firm']} is a new kind of brokerage: AI software does the agent's work, from "
+                             "pricing to the signed contract, and you make every decision.",
+                             f"One flat fee: {context['flat_fee']}. Founded by {context['founder']}."],
+                    "call_to_action": "Start with your address"},
+                "local_ad": {"headline": "An AI agent for your sale", "text": "Pricing, marketing, offers and "
+                             "the contract draft, at one flat fee. Every decision stays yours."},
+                "lead_magnet": {"title": "What selling a home here costs and takes",
+                                "pitch": "A plain guide to the costs, the steps and the time a sale takes.",
+                                "outline": ["The steps from listing to closing", "Transfer tax and closing costs",
+                                            "Disclosures the seller completes", "How long a sale takes"]},
+                "targeting_reason": f"The ad reaches everyone {context['ad_area']}, by place only."}
     if task == "probe.mask_roundtrip":
         return {"reply": "Hello [BUYER_1], thanks for asking. The house has 3 bedrooms.", "tokens_seen": ["[BUYER_1]"]}
     raise KeyError(f"no fake output for task {task}")

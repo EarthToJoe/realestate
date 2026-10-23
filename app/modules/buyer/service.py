@@ -136,7 +136,7 @@ def start(s: Session, deal: Deal, data: dict) -> Person:
         s.add(d)
         s.flush()
         records.record_auto(s, deal.id, "CP-24", reason=f"Sent to the buyer: {title} ({l_id})",
-                            attached_to=f"disclosure:{d.id}")
+                            attached_to=f"disclosure:{d.id}", step=8)
     doc = Document(deal_id=deal.id, kind="buyer_agreement", generated_by="ai", label_version="v1")
     s.add(doc)
     s.flush()
@@ -263,15 +263,15 @@ def request_tour(s: Session, deal: Deal, provider: ModelProvider, *, self_guided
     guided = self_guided and bool(seller_auth.get("self_guided_tours"))
     records.record_auto(s, deal.id, "CP-29", reason=f"Tour of the firm's listing booked for Buyer 1, {when}: "
                         + ("self-guided" if guided else "owner-hosted") + "; access and feedback requests sent "
-                        "(simulated)", attached_to="buyer:tour")
+                        "(simulated)", attached_to="buyer:tour", step=8)
     if guided:
         records.mark_law(s, deal.id, "CP-28", reason=f"The AI arranged a self-guided tour for Buyer 1, {when}",
-                         attached_to="buyer:tour")
+                         attached_to="buyer:tour", step=8)
         body = (f"Your tour is booked: {when}, self-guided. You will get a one-time smart-lock code for that hour "
                 "only; lockbox keys and PINs are never lent. Please tell me afterwards what you thought.")
     else:
         records.record_human(s, deal.id, "CP-10", reason=f"The seller (owner) opens the door for Buyer 1's tour, "
-                                                         f"{when}")
+                                                         f"{when}", step=8)
         body = f"Your tour is booked: {when}. The owner will open the door. Please tell me afterwards what you thought."
     m = inbox.send(s, deal, provider, thread=THREAD, party=PARTY, body=body, topic="showing", discusses_listing=True,
                    side="buyer", agency_note=BUYER_AGENCY_NOTE)
@@ -432,7 +432,7 @@ def approve_reply(s: Session, deal: Deal, persona: str, decision: str, price: in
     _save(s, deal, st)
     records.mark_law(s, deal.id, "CP-13", reason=f"The buyer's AI sent Buyer 1's reply to the seller's counter: "
                                                   f"{reply['action'].replace('_', ' ')} at ${reply['price']:,}",
-                     attached_to="offers:buyer")
+                     attached_to="offers:buyer", step=8)
     offers.receive_reply(s, deal, reply, frm="buyer's AI")
     return reply
 

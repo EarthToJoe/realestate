@@ -22,3 +22,9 @@ default:
     - Contract draft and rider, disclosures attached
     - Coordination to closing
   timeline: "Listing ready in 2 days; typical Dutchess County sale 60 to 90 days to close"
+  # Step 10, the firm's own campaign. The founder is not named in the demonstration (QUESTIONS-FOR-JOE Q49): the
+  # copy carries the token [FOUNDER] and the screen shows this placeholder.
+  founder_display: "[Founder's name]"
+  area: "Dutchess County and the Hudson Valley, New York"
+  ad_center: "Pawling, NY"
+  ad_radius_miles: 15

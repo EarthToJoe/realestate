@@ -17,7 +17,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 PAGES = ["/", "/intake", "/intake/profile", "/intake/disclosures", "/intake/onboarding", "/pricing", "/pricing/advice",
          "/copy", "/copy/mls", "/channels", "/inbox", "/offers", "/buyer", "/buyer/search", "/buyer/tour",
-         "/buyer/offer", "/contract", "/disclosures/pcds", "/timeline", "/demo/start"]
+         "/buyer/offer", "/contract", "/disclosures/pcds", "/timeline", "/brand", "/brand/targeting", "/people",
+         "/demo/start"]
 
 
 def main() -> int:
@@ -40,7 +41,7 @@ def main() -> int:
             pg.goto(base + "/demo/start")
             pg.click("#confirm-reset")
             if not gates:
-                pg.request.post(base + "/demo/fast-forward/9", data={"back": "/timeline"})
+                pg.request.post(base + "/demo/play", form={"route": "/brand/targeting"})  # the whole walk
             for path in PAGES:
                 slug = path.strip("/").replace("/", "-") or "home"
                 pg.goto(base + path, wait_until="networkidle")

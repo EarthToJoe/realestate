@@ -41,7 +41,7 @@
   <p class="ai-by">{{ st.draft.title }}, version {{ st.version }} · {{ ai_badge(st.mode, st.recorded_at, st.model) }}</p>
   <p style="margin:0"><b>Code checks on the draft:</b>
     {% if st.passed %}<span class="tag is-success" data-passed="yes">passed</span>{% else %}<span class="tag is-danger" data-passed="no">blocked: signing stays shut</span>{% endif %}
-    <small class="muted">the deal's numbers, the parties, never saying a lawyer is unnecessary (L23), no attorney-approval clause (decision 26), the side-by-side</small></p>
+    <small class="muted">the deal's numbers, the parties, never saying a lawyer is unnecessary, no attorney-approval clause, the side-by-side</small></p>
   {% if st.findings %}<ul style="margin-top:6px">{% for f in st.findings %}<li data-rule="{{ f.rule }}"><span class="tag {{ 'is-danger' if f.tier == 'block' else 'is-warning' }} is-light">{{ 'blocks signing' if f.tier == 'block' else 'warning' }}</span> {{ f.message }}</li>{% endfor %}</ul>{% endif %}
 </div>
 {% if cp14 %}{{ law_marker(cp14) }}{% endif %}
@@ -50,7 +50,7 @@
 
 {% if st.draft or disclosures %}<h2 class="section-title" id="signing">Signing</h2>{% endif %}
 {% if cp04 and cp04.status != 'done' %}<p class="notification is-warning is-light" id="pcds-waiting">The seller has not completed the Property Condition Disclosure Statement.
-  It must be delivered before the buyer signs (L43), so signing is refused until it is. The software never fills it in.
+  It must be delivered before the buyer signs, so signing is refused until it is. The software never fills it in.
   <a href="/disclosures/pcds?back=/contract">Open the form</a></p>{% endif %}
 {% if refused %}<p class="notification is-warning">{{ refused }}</p>{% endif %}
 {% if st.draft and (not (st.attached and st.attached.complete) or not cp33) %}

@@ -13,7 +13,8 @@
     <p><b>Not recorded:</b> {{ ai_error }}</p>
   {% elif inferred %}
     <p class="ai-by">The AI has filled the gaps it could infer</p>
-    <p>Its {{ inferred | length }} inferences are marked <span class="src src-inferred">AI inferred</span>, each with its reason and confidence.</p>
+    <p>{{ n.inferred }} facts are marked <span class="src src-inferred">AI inferred</span>, each with its reason and
+    confidence: the {{ inferred | length }} under "Inferred by the AI" below, and {{ n.inferred - (inferred | length) }} worked out from the record itself (such as the lead-paint rule).</p>
   {% else %}
     <p>The public record leaves gaps. The AI can infer some of them from what is recorded, and says why.</p>
     <button class="button is-info" id="ai-infer" hx-post="/intake/infer" hx-target="#profile-body" hx-swap="innerHTML">

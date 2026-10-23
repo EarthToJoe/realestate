@@ -17,4 +17,5 @@ tasks:
   buyer.offer_advise: {model: claude-sonnet-5-5, max_tokens: 6000}
   buyer.counter_advise: {model: claude-sonnet-5-5, max_tokens: 6000}
   contract.draft: {model: claude-opus-5-5, max_tokens: 32000}  # decision 36: Opus after the slice-3 side-by-side
+  brand.campaign: {model: claude-sonnet-5-5, max_tokens: 6000}  # step 10: the firm's own campaign
   probe.mask_roundtrip: {model: claude-haiku-5-5, max_tokens: 400}

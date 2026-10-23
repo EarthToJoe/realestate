@@ -35,8 +35,9 @@ def contract(request: Request, s=Depends(get_session)):
         if pid:
             log_access(s, persona=persona(request), person_id=pid, fields=["legal_name"],
                        purpose="Contract screen with the parties' names", route=str(request.url.path))
-    return render(request, s, "contract/contract.html", gate=gate, memo=memo, st=st, label=service.LABEL,
-                  names=names, fill=service.fill,
+    # the screen's banner states the rule; the codes stay in the CP-14 marker's fold (the PDF and DOCX keep them)
+    return render(request, s, "contract/contract.html", gate=gate, memo=memo, st=st,
+                  label=service.LABEL.replace(" (L21, L22)", ""), names=names, fill=service.fill,
                   rows=service.side_by_side(st["draft"]) if st.get("draft") else [],
                   disclosures=service.disclosures(s, deal) if not gate else [], signing_map=service.SIGNING_MAP,
                   standard_source=service.STANDARD_SOURCE, cp14=records.latest(s, deal.id, "CP-14"),

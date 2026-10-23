@@ -107,13 +107,13 @@
   <p class="gate-head"><span class="rec-badge">Not yet</span> This screen needs an earlier step first</p>
   {% if g.message %}<p id="gate"><b>Refused for now:</b> {{ g.message }}</p>{% endif %}
   <p><b>Still to do:</b> {{ g.missing.what }}.</p>
-  <p><b>Where:</b> step {{ g.step.n }}, {{ g.step.title }}. <b>Who:</b> {{ g.who_label }}{% if g.missing.decision %}: their own decision{% endif %}.</p>
+  <p><b>Where:</b> step {{ g.step.shown }}, {{ g.step.title }}. <b>Who:</b> {{ g.who_label }}{% if g.missing.decision %}: their own decision{% endif %}.</p>
   <div class="buttons">
   {% for p in g.decide_as if p != persona %}
     <form method="post" action="/persona"><input type="hidden" name="persona" value="{{ p }}"><input type="hidden" name="back" value="{{ g.missing.link }}">
       <button class="button is-warning" data-decide-as="{{ p }}">Decide as the {{ p }}</button></form>
   {% endfor %}
-    <a class="button {{ 'is-light' if g.decide_as else 'is-primary' }}" href="{{ g.missing.link }}" id="gate-go">Go to step {{ g.step.n }}: {{ g.step.title }}</a>
+    <a class="button {{ 'is-light' if g.decide_as else 'is-primary' }}" href="{{ g.missing.link }}" id="gate-go">Go to step {{ g.step.shown }}: {{ g.step.title }}</a>
   {% if persona == 'presenter' and g.can_fast_forward %}
     <form method="post" action="/demo/fast-forward/{{ g.target.n }}"><input type="hidden" name="back" value="{{ request.url.path }}">
       <button class="button is-info is-light" id="gate-ff">Fast-forward the demo to here</button></form>
@@ -142,7 +142,7 @@
 {# The heading block of a step screen: which step, the step's screens as tabs, then the outcome. #}
 {% macro screen_tabs() -%}
 {% if active_step %}
-<p class="eyebrow">Step {{ active_step.n }} of {{ steps | length }} · {{ active_step.title }}</p>
+<p class="eyebrow">Step {{ active_step.shown }} of {{ steps | length }} · {{ active_step.title }}</p>
 {% if active_step.screens | length > 1 %}
 <ul class="screen-tabs" aria-label="Screens in this step">
   {% for sc in active_step.screens %}<li><a href="{{ sc.route }}" {% if screen and sc.route == screen.route %}aria-current="page"{% endif %}>{{ sc.title }}</a></li>{% endfor %}

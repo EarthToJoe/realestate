@@ -75,7 +75,7 @@ def test_mls_only_exposure_keeps_portals_dark(client):
     client.post("/channels/mls-entry")
     r = client.get("/channels")
     assert r.text.count("portals do not receive the listing") == 5
-    assert "waiting for the seller&#39;s authorisation (CP-07)" in r.text  # photographer not authorised
+    assert "waiting for the seller&#39;s authorisation<" in r.text  # photographer not authorised
 
 
 def test_step_links_go_to_the_built_screens(client):

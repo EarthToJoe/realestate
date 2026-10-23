@@ -51,6 +51,7 @@ small, .small, .help { font-size: .875rem; } .muted, .help { color: var(--muted)
 
 .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 70vh; }
 .steps { padding: 18px 14px; border-right: 1px solid var(--line); background: var(--surface); }
+.steps-inner { position: sticky; top: 12px; }
 .steps-title { font-size: .8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 8px 6px; }
 .steps ol { list-style: none; margin: 0 0 14px; padding: 0; }
 .steps li { display: flex; align-items: center; gap: 4px; border-radius: 8px; }
@@ -72,7 +73,7 @@ small, .small, .help { font-size: .875rem; } .muted, .help { color: var(--muted)
              min-width: 36px; min-height: 36px; border-radius: 8px; padding: 0 6px; }
 .steps .ff:hover { background: var(--bg); color: var(--ink); }
 .steps .start-over { display: block; text-align: center; margin-top: 8px; }
-.content-area { padding: 24px 32px 96px; min-width: 0; max-width: 1040px; overflow-wrap: anywhere; }
+.content-area { padding: 24px 32px 48px; min-width: 0; max-width: 1040px; overflow-wrap: anywhere; }
 .content-area pre, .content-area code { white-space: pre-wrap; word-break: break-word; }
 .content-area img, .content-area iframe, .content-area .leaflet-container { max-width: 100%; }
 .stepbar { display: none; }
@@ -84,23 +85,43 @@ small, .small, .help { font-size: .875rem; } .muted, .help { color: var(--muted)
                  border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: .9375rem; text-decoration: none; }
 .screen-tabs a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600; }
 
-.identity { border-top: 1px solid var(--line); background: var(--surface); padding: 16px 20px 80px; font-size: .875rem; color: var(--muted); }
+.identity { border-top: 1px solid var(--line); background: var(--surface); padding: 16px 20px 24px; font-size: .875rem; color: var(--muted); }
 .identity p { margin: 3px 0; max-width: 90ch; } .identity b { color: var(--ink); }
 .identity .rec-badge { vertical-align: 1px; }
 
-/* ---- Presenter notes: hidden by default, a bottom sheet (slice 4's guided mode builds on it) ---------------- */
-.presenter-notes { position: fixed; right: 16px; bottom: 16px; z-index: 40; max-width: calc(100vw - 32px); }
-.presenter-notes > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-  min-height: 44px; padding: 0 16px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 600;
-  font-size: .9375rem; box-shadow: 0 4px 14px rgba(0,0,0,.18); float: right; }
-.presenter-notes > summary::-webkit-details-marker { display: none; }
-.presenter-notes[open] > summary { margin-top: 8px; }
-.presenter-notes .notes-body { clear: both; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.2); padding: 16px 18px; width: min(560px, calc(100vw - 32px));
-  max-height: 60vh; overflow-y: auto; font-size: .9375rem; }
-.presenter-notes[open] { display: flex; flex-direction: column-reverse; align-items: flex-end; }
-.notes-body h2 { font-size: 1rem; margin: 0 0 8px; } .notes-body p { margin: 0 0 8px; }
-.notes-body .notes-k { font-weight: 650; }
+/* ---- Presenter notes and the guided demo's narration card: opened from the chrome (the phone's step bar, the
+   laptop's step list), never a button floating over the content. Closed by default; the guided demo opens it on
+   each screen until the presenter closes it. ----------------------------------------------------------------- */
+.presenter-notes { position: fixed; right: 16px; bottom: 16px; z-index: 40; width: min(460px, calc(100vw - 32px));
+  max-height: 60vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.22); padding: 14px 16px 10px; font-size: .9375rem; }
+.presenter-notes[hidden] { display: none; }
+.notes-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.notes-head h2 { font-size: 1.05rem; margin: 0; font-weight: 700; }
+.notes-where { font-size: .8125rem; color: var(--muted); margin: 0 0 2px !important; font-weight: 600; }
+.notes-close { border: 0; background: var(--bg); border-radius: 999px; width: 44px; height: 44px; font-size: 1.4rem;
+  line-height: 1; cursor: pointer; color: var(--ink); flex: none; }
+.presenter-notes p { margin: 0 0 8px; } .notes-k { font-weight: 650; }
+.notes-actions { margin: 10px 0 4px; }
+.notes-guide { margin: 0; } .notes-guide .button { padding-left: 0; }
+body.notes-open .identity { padding-bottom: calc(60vh + 24px); }
+.presenter-box { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; display: grid; gap: 8px; }
+.presenter-box .pb-where { font-size: .8125rem; color: var(--muted); font-weight: 600; margin: 0; }
+.button.is-dark { background: var(--ink); color: #fff; border-color: transparent; }
+.button.is-dark:hover { background: #000; color: #fff; }
+.side-link { display: block; text-align: center; font-size: .875rem; margin-top: 10px; }
+.driver-popover { font-family: var(--font); border-radius: 12px; }
+.driver-popover-description { font-size: 1rem; color: var(--ink); line-height: 1.45; }
+
+/* ---- Step 10: the firm's campaign, shown as it would appear ------------------------------------------------ */
+.landing-preview, .ad-preview, .magnet-preview { border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; background: var(--bg); margin: 10px 0; }
+.lp-headline { font-size: 1.2rem; font-weight: 750; line-height: 1.3; }
+.lp-cta span { display: inline-block; background: var(--accent); color: #fff; border-radius: 8px; padding: 8px 14px; font-weight: 650; }
+.ad-preview { max-width: 420px; background: var(--surface); }
+.ad-sponsor { font-size: .8125rem; color: var(--muted); }
+.ad-headline { font-weight: 700; border-top: 1px solid var(--line); padding-top: 8px; }
+.road li { display: block; }
 
 /* ---- Buttons: one primary per screen. AI acts blue, client decisions amber, navigation in the accent. ------- */
 .button { font-family: var(--font); border-radius: 8px; font-weight: 600; min-height: 44px; height: auto;
@@ -307,7 +328,7 @@ mark.fh-block { background: #f9c9c4; border-bottom: 2px solid var(--law); } mark
                    font-weight: 600; text-decoration: none; font-size: .9375rem; }
   .stepbar .pill[aria-disabled="true"] { opacity: .35; pointer-events: none; }
   .layout { display: flex; flex-direction: column; }
-  .layout .content-area { order: 1; padding: 16px 14px 96px; }
+  .layout .content-area { order: 1; padding: 16px 14px 32px; }
   .layout .steps { order: 2; border-right: 0; border-top: 1px solid var(--line); }
   .steps li > a { min-height: 44px; } .steps .ff { min-height: 44px; min-width: 44px; }
   .button, button, select, input[type=submit], .input, .stepbar .pill, .screen-tabs a { min-height: 44px; }
@@ -318,9 +339,12 @@ mark.fh-block { background: #f9c9c4; border-bottom: 2px solid var(--law); } mark
   .content-area .tag { white-space: normal; height: auto; max-width: 100%; }
   .kv { grid-template-columns: 1fr; gap: 0; } .kv dd { margin-bottom: 8px; }
   .offer-card .kv { grid-template-columns: 1fr; }
-  .presenter-notes { right: 12px; bottom: 12px; }
-  .presenter-notes .notes-body { max-height: 55vh; }
-  .identity { padding-bottom: 88px; }
+  .presenter-notes { left: 0; right: 0; bottom: 0; width: 100%; max-height: 52vh; border-radius: 16px 16px 0 0; }
+  body.notes-open .identity { padding-bottom: calc(52vh + 24px); }
+  .identity { padding-bottom: 24px; }
+  .steps-inner { position: static; }
+  .stepbar .pill-notes { font: inherit; font-size: .875rem; cursor: pointer; padding: 0 10px; }
+  .stepbar { gap: 6px; padding: 6px 10px; }
 }
 @media (max-width: 600px) {
   /* every table becomes a stack of cards: each cell on its own line with its column label */
@@ -333,4 +357,12 @@ mark.fh-block { background: #f9c9c4; border-bottom: 2px solid var(--law); } mark
   .content-area table.table td:empty { display: none; }
   .content-area table.table th[colspan] { font-size: 1rem; color: var(--ink); }
   .content-area table.table.is-striped tbody tr:not(.is-selected):nth-child(even) { background: var(--surface); }
+}
+
+/* ---- Slice 4 polish ---------------------------------------------------------------------------------------- */
+.offer-line { margin: 0 0 4px !important; }
+.notes-actions { margin: 4px 0 10px; }
+@media (max-width: 760px) {
+  .presenter-notes { max-height: 45vh; }
+  body.notes-open .identity { padding-bottom: calc(45vh + 24px); }
 }
