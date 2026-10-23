@@ -17,19 +17,21 @@ SSH here; the VPS is only the `ssh vps` alias on your Mac). One command, run onc
 repo if it exists, else from the lifeboat branch; checks disk; sets up the always-on session; and asks for
 the API key with hidden input (press Enter to accept the default "yes").
 
-From your Mac:
+From your Mac (the clone reuses the shorts checkout's own GitHub access, so nothing to type):
 ```bash
-ssh -t vps 'd=/root/projects/realestate; if [ ! -d "$d" ]; then if git ls-remote -q --exit-code https://github.com/EarthToJoe/realestate.git HEAD >/dev/null 2>&1; then git clone -q https://github.com/EarthToJoe/realestate.git "$d"; else git clone -q -b realestate-lifeboat --single-branch https://github.com/EarthToJoe/shorts.git "$d"; fi; fi; bash "$d/scripts/vps-setup.sh"'
+ssh -t vps 'd=/root/projects/realestate; [ -f "$d/scripts/vps-setup.sh" ] || git clone -q -b realestate-lifeboat --single-branch "$(git -C /root/projects/shorts remote get-url origin)" "$d"; bash "$d/scripts/vps-setup.sh"'
 ```
 From your phone, with no Mac: open the Hostinger hPanel browser terminal for the VPS (you are root there)
 and paste the same command without the `ssh -t vps '...'` wrapper:
 ```bash
-d=/root/projects/realestate; if [ ! -d "$d" ]; then if git ls-remote -q --exit-code https://github.com/EarthToJoe/realestate.git HEAD >/dev/null 2>&1; then git clone -q https://github.com/EarthToJoe/realestate.git "$d"; else git clone -q -b realestate-lifeboat --single-branch https://github.com/EarthToJoe/shorts.git "$d"; fi; fi; bash "$d/scripts/vps-setup.sh"
+d=/root/projects/realestate; [ -f "$d/scripts/vps-setup.sh" ] || git clone -q -b realestate-lifeboat --single-branch "$(git -C /root/projects/shorts remote get-url origin)" "$d"; bash "$d/scripts/vps-setup.sh"
 ```
+If it says the folder already exists (left over from the earlier attempt), first run `rmdir /root/projects/realestate`
+(it only removes an empty folder) and try again.
 Have an API key ready first: console.anthropic.com, API keys, Create key (name it `realestate`).
 Success: a session named **realestate** in your Claude app, and `/status` there says it uses the API key.
-- *If the clone fails for credentials:* the VPS already pulls the private `shorts` repo, so it should work;
-  if not, send me the error line.
+- 2026-10-23: the first version used plain HTTPS and asked for a GitHub login (which GitHub no longer accepts
+  anyway); replaced by the command above, which uses the shorts checkout's own remote URL.
 
 **Q3. Billing: answered.** Joe, 2026-10-23: "I want all this setup work to be done using the API credit."
 So: the VPS session runs on the key (step 2 above stores it, for that session only; the shorts rule stays

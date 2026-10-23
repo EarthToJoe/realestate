@@ -2,7 +2,10 @@
 # One-time setup of the always-on "realestate" Remote Control session on the VPS, next to the other
 # projects' sessions. Joe runs it once from his Mac (after creating the GitHub repo):
 #
-#   ssh -t vps 'git clone https://github.com/EarthToJoe/realestate.git /root/projects/realestate && bash /root/projects/realestate/scripts/vps-setup.sh'
+#   ssh -t vps 'd=/root/projects/realestate; [ -f "$d/scripts/vps-setup.sh" ] || git clone -q -b realestate-lifeboat --single-branch "$(git -C /root/projects/shorts remote get-url origin)" "$d"; bash "$d/scripts/vps-setup.sh"'
+#
+# The clone uses the shorts checkout's own remote URL (same repo, different branch), so it reuses whatever
+# key or token shorts already uses and never asks for a GitHub login.
 #
 # What it does (each file is backed up first; safe to re-run):
 #   0. Checks free disk and stops under 3 GB (Joe: the VPS is near its limit).
