@@ -8,6 +8,7 @@ from sqlalchemy import select
 
 from app.audit import log_access
 from app.db import get_session
+from app.disclosures import pcds
 from app.model.provider import ReplayMiss, SpendCapReached
 from app.models import Disclosure, Document
 from app.modules.intake import service
@@ -77,23 +78,7 @@ def disclosures(request: Request, s=Depends(get_session)):
         return redirect
     items = s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id).order_by(Disclosure.id)).scalars().all()
     return render(request, s, "intake/disclosures.html", items=items, cp04=records.latest(s, deal.id, "CP-04"),
-                  questions=service.PCDS_QUESTIONS)
-
-
-@router.post("/intake/pcds")
-async def pcds(request: Request, s=Depends(get_session)):
-    deal, redirect = _deal_or_redirect(s)
-    if redirect:
-        return redirect
-    form = await request.form()
-    answers = {k: str(form.get(k, "")) for k, _ in service.PCDS_QUESTIONS}
-    try:
-        service.submit_pcds(s, deal, persona(request), answers)
-    except ValueError as e:
-        items = s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id)).scalars().all()
-        return render(request, s, "intake/disclosures.html", status_code=422, items=items, error=str(e),
-                      cp04=records.latest(s, deal.id, "CP-04"), questions=service.PCDS_QUESTIONS, answers=answers)
-    return RedirectResponse("/intake/disclosures", status_code=303)
+                  questions=len(pcds.questions()))
 
 
 @router.get("/intake/onboarding")

@@ -1,0 +1,20 @@
+{# The completed PCDS, read-only: the seller's own answers. Used on screen, in the printable copy and in the
+   contract package. #}
+<div class="pcds-body" id="pcds-body">
+<p class="pcds-title"><b>{{ form.title }}</b> · {{ form.statute }}</p>
+{% if saved._prepared_demo %}<p class="pcds-demo"><b>{{ demo_note }}</b></p>{% endif %}
+<table class="table is-narrow is-fullwidth pcds-table">
+{% for sec in form.sections %}
+  <tr><th colspan="2">{{ sec.title }}</th></tr>
+  {% for q in sec.questions %}
+  <tr data-q="{{ q.n }}"><td style="width:62%">{{ q.n }}. {{ q.text }}</td>
+    <td>{% for f in fields(q) %}{% if f.label %}{{ f.label }}: {% endif %}<b>{{ (labels.get((saved.get(f.key) or '').lower()) or saved.get(f.key) or '(not asked)') }}</b>{% if not loop.last %}<br>{% endif %}{% endfor %}
+      {% if saved.get('q' ~ q.n ~ '_explain') %}<br><small>{{ saved.get('q' ~ q.n ~ '_explain') }}</small>{% endif %}</td></tr>
+  {% endfor %}
+{% endfor %}
+</table>
+{% if saved.explanation %}<p><b>Seller's explanation:</b> {{ saved.explanation }}</p>{% endif %}
+<p><small>{{ form.seller_certification }}</small></p>
+<p><small>Seller signed (simulated e-signature, L34): {{ saved._signed_at[:10] if saved._signed_at else '' }}</small></p>
+<p><small>{{ form.buyer_acknowledgment }}</small></p>
+</div>

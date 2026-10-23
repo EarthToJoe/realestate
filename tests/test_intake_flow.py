@@ -68,20 +68,10 @@ def test_client_decisions_block_until_made(client, session):
     assert records.latest(session, deal.id, "CP-04").status == "pending"
 
 
-def test_pcds_only_the_seller_answers_and_nothing_is_prefilled(client, session):
+def test_pcds_checklist_links_to_the_full_form(client):
     demo_intake(client)
     r = client.get("/intake/disclosures")
-    for name in ("owned_years", "defects", "fuel_tanks"):
-        assert re.search(rf'name="{name}" value=""', r.text), f"{name} must start blank"
-    answers = {k: "unknown" for k in ("owned_years", "occupied", "flood_insurance", "water_source", "sewage",
-                                      "roof_leaks", "basement_water", "fuel_tanks", "defects")}
-    as_persona(client, "presenter")
-    assert client.post("/intake/pcds", data=answers).status_code == 403
-    as_persona(client, "seller")
-    assert client.post("/intake/pcds", data={**answers, "defects": ""}).status_code == 422
-    assert client.post("/intake/pcds", data=answers, follow_redirects=False).status_code == 303
-    session.expire_all()
-    assert records.is_done(session, current_deal(session).id, "CP-04")
+    assert 'id="pcds-link"' in r.text and "56-question form" in r.text and 'id="rec-CP-04"' in r.text
 
 
 def test_cp02_marker_shows_rule_who_ids_and_link(client):

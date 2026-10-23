@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Property Condition Disclosure Statement</title>
+<style>
+  @page { size: letter; margin: 0.8in 0.7in;
+    @top-center { content: "DEMONSTRATION. Fictional seller's answers; not a statement about the real house."; font-size: 8pt; color: #a00; }
+    @bottom-right { content: "Page " counter(page) " of " counter(pages); font-size: 8pt; } }
+  body { font-family: sans-serif; font-size: 10pt; }
+  table { border-collapse: collapse; width: 100%; } td, th { border: 1px solid #ccc; padding: 3px; vertical-align: top; text-align: left; }
+</style></head>
+<body>
+<h1 style="font-size:14pt">{{ form.title }}</h1>
+<p>Property address: {{ deal.property.street }}, {{ deal.property.city }}, NY {{ deal.property.zip }}</p>
+{% for p in form.header %}<p><small>{{ p }}</small></p>{% endfor %}
+{% include "disclosures/_pcds_body.html" %}
+</body></html>

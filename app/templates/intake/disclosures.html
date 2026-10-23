@@ -14,20 +14,7 @@
   {% endfor %}
 </table>
 
-{{ decision(cp04, persona, '#pcds-form', advice="The software does not help fill this in. Answer from your own knowledge; \"unknown\" is an allowed answer.", labels={}) }}
-{% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
-{% if cp04.status == 'pending' %}
-<form method="post" action="/intake/pcds" id="pcds-form" class="box">
-  <p class="label">Property Condition Disclosure Statement: a selection of questions modelled on RPL §462</p>
-  <p class="help">The full current form (effective 2025-07-01) arrives with the contract step. Fields start
-  blank on purpose: only the seller answers them.</p>
-  {% for key, q in questions %}
-    <label class="label is-small">{{ q }}</label>
-    <input class="input is-small" name="{{ key }}" value="{{ answers[key] if answers else '' }}" {{ 'disabled' if persona != 'seller' }}>
-  {% endfor %}
-  <button class="button is-warning" style="margin-top:8px" {{ 'disabled' if persona != 'seller' }}>Submit my answers (seller)</button>
-  {% if persona != 'seller' %}<p class="help">Switch persona to Seller to answer.</p>{% endif %}
-</form>
-{% endif %}
+{{ decision(cp04, persona, '/disclosures/pcds', advice="The software does not help fill this in. Answer from your own knowledge; \"Unkn\" is an allowed answer. It can wait until the contract step, which needs it before anyone signs.", labels={}) }}
+<p><a class="button is-light" href="/disclosures/pcds" id="pcds-link">Open the Property Condition Disclosure Statement (the full {{ questions }}-question form)</a></p>
 <p><a class="button" href="/intake/onboarding">Next: seller onboarding &rarr;</a></p>
 {% endblock %}

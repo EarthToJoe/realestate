@@ -8,7 +8,7 @@ Flow, each act a visible screen and a record:
 3. `disclosure_checklist`: which disclosures this house needs (code, from the facts; no model).
 4. `accept_listing`: conflicts check, then the AI accepts the listing (CP-02, red "NY law today" marker) and
    generates the listing agreement, which opens CP-03 for the seller to sign. Signing needs CP-01 first (L12).
-5. `submit_pcds`: the seller's own answers to the PCDS; the software never pre-fills (CP-04, L43).
+5. The PCDS (CP-04, L43) is the seller's own form: `app/disclosures/pcds.py`, the full 7/1/25 form.
 """
 
 from __future__ import annotations
@@ -43,20 +43,6 @@ SECTION_242 = {
     "uncapped_gas_well": "Do you know of an uncapped natural gas well on the property?",
 }
 
-# A selection of questions modelled on the RPL §462 Property Condition Disclosure Statement. The full current
-# form (effective 2025-07-01) arrives with the contract step in slice 3. Blank by design: the seller answers.
-PCDS_QUESTIONS = [
-    ("owned_years", "How long have you owned the property?"),
-    ("occupied", "How long have you occupied the property?"),
-    ("flood_insurance", "Is flood insurance required on the property, or have you ever received flood-damage "
-                        "assistance?"),
-    ("water_source", "What is the source of drinking water, and has it ever been tested?"),
-    ("sewage", "What type of sewage system serves the property, and when was it last serviced?"),
-    ("roof_leaks", "Are you aware of any roof leaks, now or in the past?"),
-    ("basement_water", "Are you aware of water in the basement or any flooding or drainage problems?"),
-    ("fuel_tanks", "Are there fuel storage tanks on the property (above or below ground)?"),
-    ("defects", "Are you aware of any material defects in the structure, systems or appliances?"),
-]
 
 
 @dataclass
@@ -243,18 +229,6 @@ def sign_listing_agreement(s: Session, deal: Deal, persona: str, decision: str =
                         ).scalar_one()
         doc.signed_by = {"seller": now().isoformat()}
         deal.status = "listed"
-    return cp
-
-
-def submit_pcds(s: Session, deal: Deal, persona: str, answers: dict[str, str]):
-    cp = records.latest(s, deal.id, "CP-04")
-    if any(not (answers.get(k) or "").strip() for k, _ in PCDS_QUESTIONS):
-        raise ValueError("Every question needs the seller's own answer (\"unknown\" is an allowed answer).")
-    records.decide(s, cp, persona=persona, decision="complete", reason="Completed by the seller; delivered with "
-                   "the contract (CP-32, slice 3)")
-    d = s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id, Disclosure.kind == "pcds")).scalar_one()
-    d.answers = {k: answers[k] for k, _ in PCDS_QUESTIONS}
-    d.acknowledged_at = now()
     return cp
 
 

@@ -55,9 +55,10 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     from app.modules.channels.routes import router as channels_router
     from app.modules.inbox.routes import router as inbox_router
     from app.modules.offers.routes import router as offers_router
+    from app.disclosures.routes import router as pcds_router
     from app.fairhousing.check import FairHousingBlocked
 
-    for r in (intake_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
+    for r in (intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
               timeline_router):
         app.include_router(r)
 

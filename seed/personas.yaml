@@ -25,6 +25,87 @@ seller:
   instructions:
     authority: {price_floor: 615000, may_concede: [closing date within 30 days, leave the shed contents]}
     confidential: {motivation: Relocating for work by spring; would take a quick close over top price}
+  # The fictional seller's own answers to the full PCDS (7/1/25 form), prepared for the demonstration so the
+  # seller persona can submit them in one click (decision 34). They are fiction, not statements about the real
+  # house; where the public record speaks (flood zone X, no agricultural district, well and septic, oil heat,
+  # built 1995) they follow it. The software never pre-fills the form with them.
+  pcds_answers:
+    q1: 11 years
+    q2: 11 years
+    q3: Built 1995 (31 years)
+    q4: "no"
+    q5: "no"
+    q6: "no"
+    q7: "no"
+    q8: "no"
+    q9: "yes"
+    q10: "no"
+    q11: "no"
+    q12: "no"
+    q13: "no"
+    q14: "no"
+    q15: "no"
+    q16: "no"
+    q17: "no"
+    q18: unkn
+    q19: "no"
+    q20: "no"
+    q21: "yes"
+    q21_in_use: "yes"
+    q21_locations: Indoor heating-oil tank in the basement (replaced 2015)
+    q21_leaking: "no"
+    q22: unkn
+    q23: "no"
+    q24: "no"
+    q25: "no"
+    q26: "no"
+    q27: "no"
+    q28: "no"
+    q29: "no"
+    q30: "no"
+    q31: "no"
+    q32_type: Asphalt shingle
+    q32_defects: None known
+    q32_age: Installed 2012 (about 14 years)
+    q32_warranty: "no"
+    q33: "no"
+    q34_source: Well
+    q34_metered: na
+    q35: "yes"
+    q35_explain: Well water tested for bacteria in 2015 when the oil tank was replaced; passed. No flow-rate test.
+    q36_type: Septic
+    q36_age: Original to the house (1995)
+    q36_last_pumped: "2024"
+    q36_frequency: About every 3 years
+    q36_defects: "no"
+    q37_provider: UNKN
+    q37_amperage: 200 amp
+    q37_breakers: Circuit breakers
+    q37_poles: Public
+    q37_defects: "no"
+    q38: "no"
+    q39: "no"
+    q40: "no"
+    q41: na
+    q42: "no"
+    q43: "no"
+    q44: na
+    q45: na
+    q46: "no"
+    q47: "no"
+    q48: "no"
+    q49: "no"
+    q50: "no"
+    q51: "no"
+    q52: "no"
+    q53: na
+    q54: "no"
+    q55: "no"
+    q56: Pawling Central School District
+    explanation: >-
+      A pond lies at the back edge of the lot; the county map shows part of it inside the lot lines, and a survey
+      would confirm how much. Question 18: we do not know whether any part of the lot is a designated wetland.
+      Question 22: we do not know whether there is asbestos; none has been found. No pages attached.
 
 buyer:
   token: BUYER_1
