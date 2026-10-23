@@ -208,7 +208,7 @@ realtor drafts on the Capital Region MLS form with written attorney approval ([W
 - **New York's test is personal application, not paper.** The Court of Appeals reversed a ruling that Norman Dacey's
   do-it-yourself will-and-trust book was unauthorised practice, adopting a dissent that practice of law requires
   "personal contact or relationship with a particular individual" ([NY County Lawyers' Ass'n v. Dacey, 21 N.Y.2d 694,
-  1967](https://case-law.vlex.com/vid/21-n-2d-694-626236359)) [PRIMARY citation; holding as described by
+  1967](https://static.case.law/ny-2d/21/html/0694-01.html)) [PRIMARY citation; holding as described by
   [Hyland and Maulsby, NY Legal Ethics Reporter, c. 2015](https://www.newyorklegalethics.com/virtually-unclear-will-legal-tech-companies-bridge-justice-gap-or-fall-into-upl-abyss/),
   SECONDARY]. The same article reports a 1973 Fourth Department case finding a "Divorce Yourself Kit" seller was not
   practising law for want of personal contact (*State v. Winder*), and later cases finding unauthorised practice where a
