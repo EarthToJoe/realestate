@@ -136,3 +136,32 @@ with a dated line.
     to Max. `spend.jsonl` marks every run `api` or `max` (Max costs are notional). The $15 reserve stays because
     the Max plan cannot pay for the app's own API calls at the meeting. The build starts as soon as the
     architecture spec is revised for decision 21 (2026-10-23), not 10-25, since this answer was the only blocker.
+23. **One record type with five kinds replaces the checkpoint model (2026-10-23, architecture spec revised for
+    decision 21).** Every step record carries a `kind`: `client_decision` (the seller's or buyer's own decision;
+    the only kind that blocks), `law_marker` (an agent act the AI did where NY law today requires a licensed broker
+    or a lawyer; red, recorded, never blocks), `human_required` (a practical step with no software route, such as
+    MLS keying or a notary; the Presenter records a simulated completion), `third_party` (planned) and `automated`
+    (logged AI acts with no legal issue). The overnight CP numbers are kept where a step survives, new records are
+    CP-25 to CP-35, and all marker texts live in one catalogue file that a test checks against the traceability
+    matrix. Why: decision 21 needs the markers to be real, counted records (SC "Checkpoints are real objects") while
+    leaving the flow to the clients' decisions only; one table keeps the timeline and hurdle map built from records.
+    The personas become Seller, Buyer and Presenter; the Broker and Attorney personas are removed.
+24. **Two AI agents with an information wall (2026-10-23).** Because the AI represents both the seller and the
+    buyer in the demo deal (offer B comes from the firm's own buyer), the seller's AI and the buyer's AI are
+    separate contexts: each model call is built by `AgentContext(side)` from that side's instructions, messages and
+    offers only, and a test fails if the buyer's confidential limits reach a seller-side call or the reverse. Both
+    clients consent to dual agency (CP-17, L13); the CP-30 marker states that New York's designated-agent route
+    needs two licensees under the broker (F51). Why: an agent owes its client confidentiality (F84), and the demo
+    should show the AI keeping it rather than one model seeing both sides' bottom lines.
+25. **The identity block names no invented broker (2026-10-23, provisional, Joe to confirm: spec section 11 item 6).**
+    Every page and message carries the firm's name, office and phone (L10) and the line "Licensed broker of record:
+    required by NY law; none in this demonstration", with a standing "NY law today" marker (CP-35: L2 to L5, F73 to
+    F75). Why: decision 21 removes the human broker from the demo; inventing a licensed person would hide the
+    hurdle the brief asks to show. Alternative: the father-in-law's name as a placeholder, only with his consent.
+26. **No attorney-approval clause in the demo's offers or contract (2026-10-23, provisional, Joe to confirm: spec
+    section 11 item 5).** Offers carry "not binding until a formal contract is signed by both" (L24, which protects
+    the parties); the contract draft has no attorney-approval contingency, and every page is labelled
+    "DEMONSTRATION. Drafted by software for the parties. NY law today: only a lawyer may draft a contract of sale
+    for another (L21, L22)". The product never says a lawyer is unnecessary (L23). Why: the attorney-approval
+    wording comes from the broker's narrow fill-in privilege (L22), which software drafting a whole contract does
+    not fit anyway, and adding it would put lawyers back in the loop by contract, against decision 21.
