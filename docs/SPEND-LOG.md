@@ -57,3 +57,15 @@ own model calls (decision 19). Cross-check: the Anthropic Console usage page.
 **App live spend so far: $0.00098** of the $12 app cap (inside the $15 demo reserve). The hosted app answers the
 demo house from the recorded replay at no cost; tests use the fake provider.
 
+## 2026-10-23, morning: original idea re-spec and build slice 1 (credit, then Max: decision 22)
+
+| Tag | What | Cost (USD) | Billed to |
+|---|---|---|---|
+| RESPEC-A | Architecture spec, traceability and out-of-scope revised for decision 21 | 2.58 | API credit |
+| RESPEC-B | Executive summary, plan, assumptions, questions rewritten around the original idea; contract-route research | 4.31 | API credit |
+| BUILD-1 | Slice 1: skeleton, Step 1 Intake, first timeline, docker hosting, T1 to T8 | 8.31 | API credit |
+| setup | Smoke test of a job on the Max login | 0.00 notional | Max plan |
+| BUILD-2 | Slice 2 (running): pricing, listing copy and fair-housing pipeline, marketing plan; cap trimmed to the last $13.74 above the reserve, then continues on Max | running | API credit, then Max |
+
+**Credit after BUILD-1: $171.26 spent; $15 reserved for the demo's own calls; $13.74 left for BUILD-2.** The app's
+own live calls so far: $0.001 (two Haiku calls recording the replay).
