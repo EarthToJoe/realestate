@@ -1,0 +1,43 @@
+{
+ "request_hash": "89644a8d9ed934d93cdf2c04e81ebad1661c8a2f92f39f7f3aa281967f7bf9e2",
+ "task": "offers.advise",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "advise.v1",
+ "recorded_at": "2026-10-23 11:45 UTC",
+ "output": {
+  "offers": [
+   {
+    "label": "A",
+    "summary": "$630,000, which is $10,000 under the $640,000 list price. The buyer is putting 20% down with a conventional mortgage and a pre-approval letter, and a 10% deposit. Closing is in 60 days. The buyer asks you to leave the riding mower. Your estimated net before your mortgage payoff is $619,985.",
+    "risks": [
+     "Three contingencies: mortgage commitment (45 days), home inspection (10 days), and well and septic tests. No deadline was given for the well and septic tests, so that part is open-ended.",
+     "The 60-day closing and 45-day mortgage window leave the property off the market longer than Offer B would.",
+     "Showing feedback noted no central air and road noise. The inspection or tests could lead to requests for a price cut or repairs."
+    ],
+    "advice": "Worth working with. It gives you about $9,960 more in net than Offer B. Counter to improve it, and get a firm deadline on the well and septic tests."
+   },
+   {
+    "label": "B",
+    "summary": "$620,000, which is $20,000 under list and at the low end of the $610,000 to $650,000 pricing range. The buyer is putting 25% down with a conventional mortgage and a pre-approval letter, and a 10% deposit. Closing is in 45 days, and there are no extra requests. Your estimated net before your mortgage payoff is $610,025.",
+    "risks": [
+     "Two contingencies: mortgage commitment (30 days) and home inspection (7 days). The inspection could still lead to requests because of the missing central air and the road noise.",
+     "The price is $20,000 below list only 9 days into the listing, so you may be giving up money you could get elsewhere.",
+     "The larger down payment lowers the financing risk, but the deal is still not binding until a formal contract is signed by both sides."
+    ],
+    "advice": "This is a clean, quicker offer, but it nets nearly $10,000 less. Keep it as a backup, and do not reject it yet."
+   }
+  ],
+  "recommendation": "I suggest working with Offer A and countering rather than accepting as written. It nets about $9,960 more than Offer B, and its 20% down payment and pre-approval letter make the financing look sound. Its drawbacks are the longer 60-day closing and the open-ended well and septic test, so ask for a firm test deadline and a somewhat shorter closing. The home has been listed only 9 days and the range goes up to $650,000, so there is room to push the price up. Keep Offer B as a backup in case A's buyer walks away, and treat the mower as a small give you can trade. Nothing is binding until a formal contract is signed by both sides, and the decision is yours.",
+  "suggested_counter_price": 637000,
+  "suggested_lowest_price": 630000
+ },
+ "request": {
+  "task": "offers.advise",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 6000,
+  "prompt_version": "advise.v1",
+  "schema": "OfferAdvice",
+  "system": "You are the listing agent for a New York real estate brokerage. You act for the seller. Present every written\noffer you are given to the seller, none left out, and advise on each with your reasoning: price against the list\nprice and the pricing range, the seller's estimated net, financing, deposit, contingencies and their deadlines,\nclosing date, and the risk that the deal falls through. Then recommend which offer to work with and whether to\naccept, counter or reject it. The seller decides; you advise.\n\nUse only the data you are given; the software computed the net figures. One offer comes from the firm's own buyer\nclient: say plainly that the firm represents both sides on it (dual agency, with both clients' written consent)\nand judge it on its terms only. Offers are not binding until a formal contract is signed by both parties.\n\nIf you suggest a counter, give a round counter price and the lowest round price you suggest the seller allow you to\nagree without coming back. Plain words for a homeowner. Never mention protected characteristics of any buyer.\n",
+  "user": "{\"list_price\": 640000, \"market\": {\"days_on_market\": 9, \"pricing_range\": \"$610,000 to $650,000 (step 2)\", \"showing_feedback\": \"liked the lot and kitchen; concerns: no central air, road noise\"}, \"offers\": [{\"closing_days\": 60, \"contingencies\": [\"mortgage commitment (45 days)\", \"home inspection (10 days)\", \"well and septic tests\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage, 20% down; pre-approval letter attached\", \"label\": \"A\", \"net_before_mortgage\": 619985, \"price\": 630000, \"requests\": \"Seller to leave the riding mower\", \"vs_list\": -10000}, {\"closing_days\": 45, \"contingencies\": [\"mortgage commitment (30 days)\", \"home inspection (7 days)\"], \"deposit_pct\": 10, \"financing\": \"Conventional mortgage, 25% down; pre-approval letter attached\", \"label\": \"B\", \"net_before_mortgage\": 610025, \"price\": 620000, \"requests\": \"None\", \"vs_list\": -20000}]}"
+ }
+}

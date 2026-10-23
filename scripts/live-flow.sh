@@ -68,6 +68,20 @@ as seller -X POST "$BASE/channels/authorise" -d decision=sign --data-urlencode "
   -d granted=cooperating_brokers -d granted=lockbox -d granted=photographer -o /dev/null -w "%{http_code}\n" | sed 's/^/seller signs CP-07 -> HTTP /'
 as presenter -X POST "$BASE/channels/mls-entry" -o /dev/null -w "%{http_code}\n" | sed 's/^/presenter records MLS entry -> HTTP /'
 as presenter "$BASE/channels" -o "$OUT"; ok "portals fed from the MLS" "fed from the MLS (simulated)"
+# ---- Step 5 Communications
+as presenter -X POST "$BASE/inbox/next" -o /dev/null -w "%{http_code}\n" | sed 's/^/reply before CP-27 -> HTTP (expect 409) /'
+as presenter "$BASE/inbox" -o "$OUT"; ok "inbox: CP-27 waiting for the seller" 'id="rec-CP-27"'
+as seller -X POST "$BASE/inbox/approve" -d decision=approve -d self_guided=yes -o /dev/null -w "%{http_code}\n" | sed 's/^/seller approves CP-27 -> HTTP /'
+as presenter -X POST "$BASE/inbox/all" -o /dev/null
+as presenter "$BASE/inbox" -o "$OUT"; ok "AI replies sent (simulated)" "sent (simulated)"
+for k in 'id="rec-CP-09"' 'id="rec-CP-10"' 'id="rec-CP-28"' 'id="feedback-log"' 'class="identity-block"' 'seller-card'; do ok "inbox $k" "$k"; done
+# ---- Step 6 Offers
+as presenter -X POST "$BASE/offers/advise" -o /dev/null
+as presenter "$BASE/offers" -o "$OUT"; ok "offers: two compared, AI advice, CP-11" 'id="rec-CP-11"'
+as seller -X POST "$BASE/offers/decide" -d decision=counter -d offer=A -d counter_price=640000 -d lowest_price=635000 -o /dev/null -w "%{http_code}\n" | sed 's/^/seller counters CP-12 -> HTTP /'
+as presenter -X POST "$BASE/offers/counter" -d price=625000 -o /dev/null -w "%{http_code}\n" | sed 's/^/counter below the floor -> HTTP (expect 409) /'
+for _ in 1 2 3; do as presenter -X POST "$BASE/offers/negotiate" -o /dev/null; done
+as presenter "$BASE/offers" -o "$OUT"; ok "AI negotiated to agreement (CP-13)" 'id="accepted"'
 grep -o 'Live model spend so far \$[0-9.]*' "$OUT" | head -1
 c "$BASE/timeline" -o "$OUT"
 for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"'; do ok "timeline $k" "$k"; done

@@ -94,6 +94,19 @@ def demo_flow(c: TestClient, plant: bool = True) -> dict:
                                         "granted": ["cooperating_brokers", "lockbox", "photographer"]})
     persona(c, "presenter")
     c.post("/channels/mls-entry")
+    # slice 3: steps 5 and 6 along the same path as scripts/live-flow.sh, so the hosted demo replays them
+    c.get("/inbox")
+    persona(c, "seller")
+    c.post("/inbox/approve", data={"decision": "approve", "self_guided": "yes"})
+    persona(c, "presenter")
+    c.post("/inbox/all")
+    c.post("/offers/advise")
+    persona(c, "seller")
+    c.post("/offers/decide", data={"decision": "counter", "offer": "A", "counter_price": "640000",
+                                   "lowest_price": "635000"})
+    persona(c, "presenter")
+    for _ in range(3):
+        c.post("/offers/negotiate")
     from app.fairhousing import check as fh
 
     s = db.new_session()

@@ -9,7 +9,7 @@ Written 2026-10-23 from the architecture spec; **revised 2026-10-23 for decision
 sides and performs every agent act, including the functions WS1 classes "human or licence required", each with a
 red "NY law today" marker; the seller and the buyer make their own decisions). Status is updated as the build lands
 (planned → built → tested). Slice 1 statuses set 2026-10-23 (BUILD-1): "tested" means a pytest test and the
-live-site walk (`scripts/live-flow.sh`) check it. Slice 2 statuses set 2026-10-23 (BUILD-2): steps 2 to 4, same meaning; the live walk now covers steps 1 to 4.
+live-site walk (`scripts/live-flow.sh`) check it. Slice 2 statuses set 2026-10-23 (BUILD-2): steps 2 to 4, same meaning; the live walk now covers steps 1 to 4. Slice 3 (BUILD-3, in progress) 2026-10-23: steps 5 and 6 tested; the live walk covers steps 1 to 6; steps 7 and 8 still planned.
 
 **In the demo** = who performs it in the product: **AI**, **seller**, **buyer**, **third party** (planned, named
 on the timeline), **human required** (a practical step with no software route). **NY law today** = the marker text
@@ -37,18 +37,18 @@ client_decision, LM law_marker, HR human_required, TP third_party, AU automated.
 | `channels` / Social, Google Business Profile, Meta/Nextdoor cards (drafted, scheduled, posting stubbed) | 4 | F30 | L10, L38, WS3-C14, WS3-C15 | covered by CP-06 | AI | see CP-06 | tested (posting stays a person's job: card says so) |
 | `channels` / Vendor cards: photos, sign, lockbox; open house | 4 | F20, F27, F31, F38, F40 | L10 (sign names the firm), L19, WS3-R3, WS3-R8 | CP-10 HR for the open house | AI books; third party installs; seller hosts | none for the owner; a non-owner host would be a licensed showing (L19) | tested |
 | `channels` / Marketing-exposure choice and seller authorisations | 4 | F32, F38 | L9, L20 (pending), WS3-R2, WS3-R3 | CP-07 CD | seller | none | tested |
-| `inbox` / Seller's fact sheet and the AI's negotiating authority | 5 | F33, F84 | L9, L18 | CP-27 CD | seller | none | planned |
-| `inbox` / Shared inbox; AI answers and sends (simulated) from the fact sheet, within authority; seller sees only the seller's decisions | 5 | F2, F33, F34, F83 | L18, L23, L37, L59 (same response target for all) | CP-09 LM (per message that discusses the listing, negotiates or advises) | AI; seller decides only seller decisions | Discussing listings with prospects and negotiating: licensed broker | planned |
-| `inbox` / First-contact disclosures attached; firm identity block on every message | 5 | F8, F10 | L10, L12, L39 | CP-24 AU | AI | none | planned |
-| `inbox` / Outbox "sent (simulated)" (`MessageTransport` stub), fair-housing check on every message | 5 | F2, F33, F78 | L10, L36, L50 to L52 (no real sends) | CP-26 AU | AI | none | planned |
-| `inbox` / Legal and school/neighbourhood questions answered neutrally | 5 | F36, F53 (declined, as an agent does) | L23 (no legal advice; never discourage a lawyer), L37 | none | AI | none (the AI gives no legal advice) | planned |
-| `inbox` / Showing scheduler (24 h), access instructions, feedback log | 5 | F37, F42 | L15, WS3-R4, WS3-R5 | CP-29 AU | AI | none (scheduling is permitted to unlicensed staff, WS3-R4) | planned |
-| `inbox` / Owner-hosted showing | 5, 8 | F39 | L19 | CP-10 HR | seller (owner opens the door) | none (the owner may show their own home) | planned |
-| `inbox` / Self-guided tour (owner's own smart lock) | 5, 8 | F39 | L15, L19, WS3-R4 (OneKey Rule 405.8) | CP-28 LM | AI arranges | Unaccompanied tours unresolved; DOS treated unlicensed showing as unlicensed activity (licensed broker) | planned |
-| `offers` / Offer comparison table and net sheets | 6 | F46, F65 | L1, L24 | none (AI work shown) | AI | none | planned |
-| `offers` / AI presents every offer and advises with reasoning | 6 | F45, F47, F84 | L1, L18 | CP-11 LM | AI | Presenting offers and advising: licensed broker | planned |
-| `offers` / Seller decides: accept, counter or reject | 6 | F47 | L24 | CP-12 CD | seller | none | planned |
-| `offers` / AI negotiates the counter with the other side; code checks it against the seller's decision | 6, 8 | F48, F49 | L1, L18, L24 | CP-13 LM (per side) | AI | Negotiating price, terms, concessions: licensed broker | planned |
+| `inbox` / Seller's fact sheet and the AI's negotiating authority | 5 | F33, F84 | L9, L18 | CP-27 CD | seller | none | tested |
+| `inbox` / Shared inbox; AI answers and sends (simulated) from the fact sheet, within authority; seller sees only the seller's decisions | 5 | F2, F33, F34, F83 | L18, L23, L37, L59 (same response target for all) | CP-09 LM (per message that discusses the listing, negotiates or advises) | AI; seller decides only seller decisions | Discussing listings with prospects and negotiating: licensed broker | tested |
+| `inbox` / First-contact disclosures attached; firm identity block on every message | 5 | F8, F10 | L10, L12, L39 | CP-24 AU | AI | none | tested |
+| `inbox` / Outbox "sent (simulated)" (`MessageTransport` stub), fair-housing check on every message | 5 | F2, F33, F78 | L10, L36, L50 to L52 (no real sends) | CP-26 AU | AI | none | tested |
+| `inbox` / Legal and school/neighbourhood questions answered neutrally | 5 | F36, F53 (declined, as an agent does) | L23 (no legal advice; never discourage a lawyer), L37 | none | AI | none (the AI gives no legal advice) | tested |
+| `inbox` / Showing scheduler (24 h), access instructions, feedback log | 5 | F37, F42 | L15, WS3-R4, WS3-R5 | CP-29 AU | AI | none (scheduling is permitted to unlicensed staff, WS3-R4) | tested |
+| `inbox` / Owner-hosted showing | 5, 8 | F39 | L19 | CP-10 HR | seller (owner opens the door) | none (the owner may show their own home) | tested |
+| `inbox` / Self-guided tour (owner's own smart lock) | 5, 8 | F39 | L15, L19, WS3-R4 (OneKey Rule 405.8) | CP-28 LM | AI arranges | Unaccompanied tours unresolved; DOS treated unlicensed showing as unlicensed activity (licensed broker) | tested |
+| `offers` / Offer comparison table and net sheets | 6 | F46, F65 | L1, L24 | none (AI work shown) | AI | none | tested |
+| `offers` / AI presents every offer and advises with reasoning | 6 | F45, F47, F84 | L1, L18 | CP-11 LM | AI | Presenting offers and advising: licensed broker | tested |
+| `offers` / Seller decides: accept, counter or reject | 6 | F47 | L24 | CP-12 CD | seller | none | tested |
+| `offers` / AI negotiates the counter with the other side; code checks it against the seller's decision | 6, 8 | F48, F49 | L1, L18, L24 | CP-13 LM (per side) | AI | Negotiating price, terms, concessions: licensed broker | tested |
 | `contract` / Accepted-offer memorandum to both parties | 7 | F50 | L24 | CP-32 AU | AI | none | planned |
 | `contract` / Contract draft + rider, side-by-side with the standard form structure, page labels | 7 | F52, F54 | L21, L22, L23, L25 | CP-14 LM | AI | Drafting a contract for another is the practice of law (attorney) | planned |
 | `contract` / Disclosures attached (PCDS, lead paint, ag district, §242); signing blocked until PCDS delivered | 7 | F59 | L43, L44, L46, L60 | CP-32 AU | AI | none | planned |

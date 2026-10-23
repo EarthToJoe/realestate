@@ -1,5 +1,27 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), late: pricing fixed; slice 3 half built (Communications and Offers live)
+
+**See it:** https://realestate.hughesnode.com (house login): steps 2, 5 and 6.
+
+- **Pricing now matches the demo-house research.** The screen shows the three cross-checks (median price a foot
+  $649,782; same style $617,652; town assessment ratio $610,864) beside the adjusted sales ($635,000). Range
+  **$610,000 to $650,000**, reconciled value $625,000; the AI recommends **$640,000** and names the adjustments
+  that push away from the cross-checks. Three demonstration rates were re-examined and changed (time, basement,
+  lot); decision 30 note, Q46.
+- **Step 5 Communications:** the seller approves the fact sheet and the AI's authority first (CP-27); eight
+  simulated enquiries; the AI answers and sends on its own, fair-housing checked, identity block on every message,
+  agency form at first contact, CP-09 per message; owner-hosted showing (CP-10) and self-guided tour (CP-28);
+  only a price question and an out-of-hours showing reach the seller; feedback logged.
+- **Step 6 Offers:** two offers compared with net sheets; the AI presents and advises (CP-11); the seller counters
+  and sets the lowest price the AI may agree (CP-12); the AI negotiates to agreement at $636,000 (CP-13); a
+  counter outside the seller's decision is refused by code.
+- **Not yet:** Step 7 Contract and Step 8 Buyer side (the build job ran out of budget; it resumes from here).
+  The firm's-own-buyer offer is a fixture until step 8 exists. The AI's offer advice may suggest changing terms
+  (closing date, test deadline); the counter in this build changes price only.
+- Live walk (`scripts/live-flow.sh`) passes steps 1 to 6 on the site; 81 tests pass. App live spend in this job:
+  $0.10 + $0.02 recording and $0.03 on the hosted walk. Disk: 19 GB free.
+
 ## 2026-10-23 (day 1), evening: slice 2 is live (pricing, listing copy with the fair-housing checker, marketing plan)
 
 **See it:** https://realestate.hughesnode.com (house login). Press **Start demo**, do step 1, then steps 2 to 4 in

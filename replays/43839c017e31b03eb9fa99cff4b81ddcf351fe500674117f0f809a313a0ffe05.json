@@ -1,0 +1,29 @@
+{
+ "request_hash": "43839c017e31b03eb9fa99cff4b81ddcf351fe500674117f0f809a313a0ffe05",
+ "task": "inbox.reply",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "reply.v1",
+ "recorded_at": "2026-10-23 11:44 UTC",
+ "output": {
+  "reply": "Only part of the pond is within the lot: the seller reports that about 13% of its roughly 2.53 acres lies inside the mapped lot lines, at the edge of the lot, and a survey would confirm exactly where the boundary falls. The roof dates from 2012. The fact sheet lists no defects, but there are things to know: the house is heated with oil, no central air is recorded, water is a private well, sewer is a private septic system, and there is no garage (a paved driveway fits four cars). The baths are original but well kept, and I will find out anything further you want to know.",
+  "disclosed": [
+   "pond only about 13% inside mapped lot lines, per seller; survey would confirm",
+   "roof from 2012",
+   "oil heat",
+   "no central air recorded",
+   "private well",
+   "private septic",
+   "no garage",
+   "original baths"
+  ]
+ },
+ "request": {
+  "task": "inbox.reply",
+  "model": "claude-sonnet-5-5",
+  "max_tokens": 4000,
+  "prompt_version": "reply.v1",
+  "schema": "InboxReply",
+  "system": "You are the listing agent for a New York real estate brokerage, answering a prospective buyer's enquiry about a\nhouse. You act for the seller. The seller has approved the fact sheet and your authority; you send this reply on\nyour own, so answer only from the fact sheet you are given. Never invent a fact. If the fact sheet does not answer\npart of the question, say you will find out.\n\nDisclose known material facts honestly when they bear on the question (for example private well and septic, oil\nheat, no central air, the age of the roof). Do not hide or play down a known defect. A water feature counts as part\nof the property only if the fact sheet says so; otherwise say it is reported by the seller and a survey would\nconfirm it.\n\nPrice: say the list price only. Never suggest the seller would accept less, and never reveal anything about the\nseller's circumstances.\n\nNever describe schools' quality, safety or crime, the neighbours, or the kind of buyer the house suits. Never give\nlegal advice. Plain words, 2 to 6 sentences, no sign-off: the software adds the firm's identity block.\n",
+  "user": "{\"authority\": {\"answer_from_fact_sheet\": \"Answer any question the approved fact sheet answers, and disclose known material facts\", \"price\": \"Say the list price only. Any question about a lower price, terms or offers goes to the seller\", \"self_guided_tours\": true, \"send_without_review\": \"Send replies without the seller seeing them first (the seller sees only decisions)\", \"showing_kinds\": \"Owner-hosted showings; self-guided tours if the seller allows them below\", \"showing_windows\": {\"Sat\": [10, 16], \"Sun\": [12, 17], \"Wed\": [17, 19]}}, \"fact_sheet\": {\"Address\": \"146 Route 292, Holmes, NY\", \"Annual taxes\": \"11800\", \"Bedrooms\": \"3\", \"Cooling\": \"None recorded\", \"Finished lower level (sq ft)\": \"840\", \"Flood zone\": \"Zone X: Area of minimal flood hazard; not a special flood hazard area (SFHA false)\", \"Full baths\": \"3\", \"Heating fuel\": \"Oil\", \"List price\": \"$640,000\", \"Living area (sq ft)\": \"2,520\", \"Lot (acres)\": \"4.18\", \"Parking\": \"Paved driveway for four cars; no garage\", \"Roof\": \"2012\", \"School district\": \"Pawling Central School District\", \"Sewer\": \"Private (septic)\", \"Style\": \"Raised ranch\", \"Updates\": \"Kitchen updated 2019; original baths, well kept; new windows 2016\", \"Water\": \"Private (well)\", \"Water features\": \"No state wetland on the parcel; a pond of about 2.53 acres at the lot's edge, about 13% inside the mapped lot lines\", \"Year built\": \"1995\"}, \"firm\": \"the listing brokerage (the AI acts for the seller)\", \"question\": \"Hi, is the pond part of the property? And how old is the roof? Is there anything wrong with the house we should know about?\"}"
+ }
+}
