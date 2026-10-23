@@ -266,5 +266,24 @@ class FairHousingResult(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
 
 
+class Message(Base):
+    """Step 5 (and later 6 and 8): one simulated message in the shared inbox. An outgoing message carries the firm's
+    identity block and is sent only with a passing fair-housing result for its exact text; a held one never left.
+    Prospects are labelled roles ("Prospect A (simulated)"), never real names."""
+
+    __tablename__ = "message"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    side: Mapped[str] = mapped_column(String(10), default="seller", info=SYS)
+    thread: Mapped[str] = mapped_column(String(40), info=SYS)
+    direction: Mapped[str] = mapped_column(String(4), info=SYS)  # in | out
+    party: Mapped[str] = mapped_column(String(80), info=SYS)
+    topic: Mapped[str | None] = mapped_column(String(30), info=SYS)
+    body: Mapped[str] = mapped_column(Text, info={"source": "ai"})
+    status: Mapped[str] = mapped_column(String(20), default="received", info=SYS)  # received|sent|held|to_seller|answered
+    extra: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, info=SYS)
+
+
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run
 # survives the demo reset and ships with the image. See app/model/provider.py.

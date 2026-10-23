@@ -32,6 +32,13 @@ def default(task: str, context: dict) -> dict:
                              "adjustments leave out the pond and interior condition.",
                 "things_that_would_change_it": ["A septic or well problem at inspection",
                                                 "Confirmed pond frontage inside the lot lines"]}
+    if task == "inbox.reply":
+        sheet = context["fact_sheet"]
+        return {"reply": f"The seller reports a pond at the back edge of the lot; a survey would confirm how much "
+                         f"is inside the lot lines. The roof dates from {sheet.get('Roof', 'the seller will confirm')}. "
+                         f"Please note the house has {sheet.get('Heating fuel', 'oil')} heat, a private well and "
+                         "septic, and no central air.",
+                "disclosed": ["oil heat", "private well and septic", "no central air"]}
     if task == "copy.draft":
         price = context.get("list_price") or 0
         return {"mls_remarks": "Raised ranch on 4.18 acres in Holmes with three bedrooms and three full baths, "

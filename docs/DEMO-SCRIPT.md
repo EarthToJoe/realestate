@@ -4,7 +4,7 @@ Generated from `app/demo/steps.yaml` by `scripts/gen-demo-script.py`; do not edi
 this file and the screens drift apart). Open https://realestate.hughesnode.com (house login), press
 **Start demo**, and follow the screens in order. The narration card at the top of each screen says the same.
 
-Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 9 (Deal timeline). Target length when all ten
+Built so far: step 1 (Intake), step 2 (Pricing), step 3 (Listing copy), step 4 (Marketing plan), step 5 (Communications), step 9 (Deal timeline). Target length when all ten
 steps are built: 13.5 minutes plus a 30-second introduction.
 
 **Colours on every screen:** blue = the AI did it; amber = the seller's or buyer's own decision (the next
@@ -74,11 +74,13 @@ right) changes who is acting: Presenter, Seller or Buyer. Only the client whose 
 - **Say:** Every card says honestly who does the work. OneKey MLS has no listing-input API, so a licensed MLS participant keys the listing from the AI's package: the grey "human required" marker, linked to the research. Zillow, Realtor.com, Redfin and Homes.com are fed from the MLS, not by us. The firm's own page waits for the MLS entry under the Clear Cooperation rule. The seller signs the exposure choice and the lockbox and photo authorisations: their decision.
 - **Markers and decisions:** CP-07 seller decision (amber); CP-08 human required (grey)
 
-## 5. Communications (1.5 min) (slice 3)
+## 5. Communications (1.5 min)
 
-Not built yet. Coming in slice 3.
+### 5.1 Fact sheet, authority and shared inbox (`/inbox`)
 
-Records: CP-27, CP-09, CP-10, CP-28, CP-29.
+- **Click:** As Seller, approve the fact sheet and the AI's authority (allow self-guided tours). Then click "Let all of them arrive" and read the threads; as Seller, answer the two cards under "For the seller to decide".
+- **Say:** Nothing leaves until the seller approves the facts and the AI's authority. Then eight simulated enquiries arrive and the AI deals with each on its own: it answers from the approved facts and discloses the oil heat and the septic; it books an owner-hosted showing and a self-guided tour; it refuses to rate schools or the area and points to official sources; it says it can't give legal advice. Only two things reach the seller: a price question and a showing outside the seller's hours. Every message carries the firm's identity block, passed the fair-housing check, and the first one on each thread carries the agency form. Each one that discusses the listing records a red CP-09 marker: in New York today that is a licensed act.
+- **Markers and decisions:** CP-27 seller decision (amber); CP-09 and CP-28 NY law today (red); CP-10 human required (grey); CP-24 and CP-29 AI did it (blue)
 
 ## 6. Offers (1.5 min) (slice 3)
 

@@ -120,14 +120,23 @@ steps:
   - n: 5
     title: Communications
     slice: 3
-    built: false
+    built: true
     minutes: 1.5
     screens:
-      - route: /step/5
-        title: Communications
-        click: (slice 3)
-        say: Coming in slice 3.
-        marker: CP-27, CP-09, CP-10, CP-28, CP-29
+      - route: /inbox
+        title: Fact sheet, authority and shared inbox
+        click: >-
+          As Seller, approve the fact sheet and the AI's authority (allow self-guided tours). Then click "Let all of
+          them arrive" and read the threads; as Seller, answer the two cards under "For the seller to decide".
+        say: >-
+          Nothing leaves until the seller approves the facts and the AI's authority. Then eight simulated enquiries
+          arrive and the AI deals with each on its own: it answers from the approved facts and discloses the oil heat
+          and the septic; it books an owner-hosted showing and a self-guided tour; it refuses to rate schools or the
+          area and points to official sources; it says it can't give legal advice. Only two things reach the
+          seller: a price question and a showing outside the seller's hours. Every message carries the firm's
+          identity block, passed the fair-housing check, and the first one on each thread carries the agency form.
+          Each one that discusses the listing records a red CP-09 marker: in New York today that is a licensed act.
+        marker: CP-27 seller decision (amber); CP-09 and CP-28 NY law today (red); CP-10 human required (grey); CP-24 and CP-29 AI did it (blue)
   - n: 6
     title: Offers
     slice: 3

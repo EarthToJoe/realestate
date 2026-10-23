@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, human_required, decision, chip with context %}
+{% block content %}
+<h1 class="title is-4">5. Communications: the AI answers and books showings</h1>
+{% if gate %}
+<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{% else %}
+<p>The AI answers every enquiry and sends on its own ("sent (simulated)"), from the facts the seller approved and
+within the seller's authority. The seller sees only the seller's own decisions. Every outgoing message passes the
+fair-housing check and carries the firm's identity block.</p>
+
+<h2 class="title is-6" id="fact-sheet">Fact sheet and the AI's authority</h2>
+<div class="columns">
+  <div class="column"><table class="table is-narrow is-fullwidth"><tbody>
+    {% for k, v in (ins.fact_sheet or {}).items() %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}
+  </tbody></table></div>
+  <div class="column"><ul>
+    {% for k, v in (ins.authority or {}).items() %}<li><b>{{ k | replace('_', ' ') }}:</b>
+      {% if v is mapping %}{% for d, h in v.items() %}{{ d }} {{ h[0] }}:00 to {{ h[1] }}:00{{ '; ' if not loop.last }}{% endfor %}
+      {% else %}{{ v }}{% endif %}</li>{% endfor %}
+  </ul></div>
+</div>
+{% if cp27 and cp27.status == 'pending' %}
+{% set mine = (persona == 'seller') %}
+<div class="rec rec-decision" data-code="CP-27" id="rec-CP-27">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> <b>CP-27</b> {{ cp27.title }}
+    <span class="tag is-warning is-light">pending</span></div>
+  <p class="rec-rule">{{ cp27.rule_text }}</p>
+  <p class="rec-advice"><b>The AI's advice:</b> approve; allow self-guided tours only if you are comfortable with a
+    one-time smart-lock code (NY has not decided whether an unaccompanied tour is a licensed showing: CP-28).</p>
+  <form method="post" action="/inbox/approve">
+    <label class="checkbox"><input type="checkbox" name="self_guided" value="yes" checked {{ 'disabled' if not mine }}> Allow self-guided tours</label>
+    <div class="buttons" style="margin-top:6px">
+      <button class="button is-warning" name="decision" value="approve" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Approve</button>
+      <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Decline</button>
+    </div>
+  </form>
+  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+</div>
+{% elif cp27 %}{{ decision(cp27, persona, "/inbox/approve") }}{% endif %}
+
+{% if cp27 and cp27.status == 'done' %}
+<div class="buttons" style="margin-top:10px">
+  <form method="post" action="/inbox/next"><button class="button is-info" id="next-enquiry" {{ 'disabled' if not remaining }}>A new enquiry arrives ({{ remaining }} left)</button></form>
+  <form method="post" action="/inbox/all"><button class="button is-light" id="all-enquiries" {{ 'disabled' if not remaining }}>Let all of them arrive</button></form>
+</div>
+{% endif %}
+
+<h2 class="title is-6" id="cards">For the seller to decide</h2>
+{% for m in cards %}
+<div class="rec rec-decision seller-card" data-thread="{{ m.thread }}">
+  <div class="rec-head"><span class="rec-badge">Your decision</span> Thread {{ m.thread }}: {{ m.party }}</div>
+  <p>&ldquo;{{ m.body }}&rdquo;</p><p><small>Why it is yours: it {{ m.extra.seller_question }}.</small></p>
+  <form method="post" action="/inbox/answer/{{ m.id }}" class="buttons">
+    {% for c, label in choices[m.topic].items() %}
+    <button class="button {{ 'is-warning' if loop.first else 'is-light' }}" name="decision" value="{{ c }}" {% if persona != 'seller' %}disabled title="Only the seller can decide this"{% endif %}>{{ label }}</button>
+    {% endfor %}
+  </form>
+</div>
+{% else %}<p class="help" id="no-cards">Nothing waiting for the seller.</p>{% endfor %}
+
+<h2 class="title is-6" id="inbox">Shared inbox</h2>
+{% for t in msgs | map(attribute='thread') | unique %}
+<div class="box" id="thread-{{ t }}">
+  {% for m in msgs if m.thread == t %}
+  <div class="msg msg-{{ m.direction }}" data-status="{{ m.status }}">
+    <p><b>{{ 'From ' ~ m.party if m.direction == 'in' else 'AI to ' ~ m.party }}</b>
+      <span class="tag is-light">{{ m.topic }}</span>
+      {% if m.direction == 'out' %}<span class="tag {{ 'is-info' if m.status == 'sent' else 'is-danger' }}">{{ 'sent (simulated)' if m.status == 'sent' else m.status }}</span>
+        <span class="tag is-light">fair-housing: {{ m.extra.fair_housing }}</span>{% else %}<span class="tag is-light">{{ m.status }}</span>{% endif %}</p>
+    <p style="white-space:pre-line">{{ m.body }}</p>
+    {% if m.direction == 'out' %}<p class="identity-block"><small>{{ m.extra.identity_block }}</small></p>
+      {% if m.extra.disclosed %}<p><small>Disclosed: {{ m.extra.disclosed | join('; ') }}</small></p>{% endif %}{% endif %}
+    {% if m.extra and m.extra.showing %}<p><small>Showing: {{ m.extra.showing.when }}, {{ m.extra.showing.kind }}</small></p>{% endif %}
+    {% if m.extra and m.extra.feedback_summary %}<p id="feedback-log"><small><b>Feedback logged:</b> {{ m.extra.feedback_summary }}</small></p>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endfor %}
+
+<h2 class="title is-6">Records from this step</h2>
+{% if recs['CP-10'] %}{{ human_required(recs['CP-10'][-1]) }}{% endif %}
+{% if recs['CP-28'] %}{{ law_marker(recs['CP-28'][-1]) }}{% endif %}
+{% if recs['CP-09'] %}{{ law_marker(recs['CP-09'][-1]) }}
+<p><small>{{ recs['CP-09'] | length }} CP-09 records, one per sent message that discusses the listing, negotiates or advises.</small></p>{% endif %}
+<p>{% for c in recs['CP-24'] + recs['CP-29'] %}{{ chip(c) }} {% endfor %}</p>
+<p><a class="button is-info" href="/step/6">Next: offers &rarr;</a></p>
+{% endif %}
+{% endblock %}
