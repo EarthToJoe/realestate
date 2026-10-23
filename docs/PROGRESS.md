@@ -1,5 +1,26 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), morning: the original idea stands; build unblocked
+
+**Joe's answers:** "Keep the original idea, that is what I said I would build. I can pare it back on the future if
+need be. The idea is the idea. Completely replace the real estate agents." (decision 21) and "Do as much as you can
+with the api credit before moving to use the plan." (decision 22).
+
+**What changed:**
+- The product is the brief's idea again: the AI is the agent on both sides and drafts the contract. The research
+  findings stand unchanged; they become hurdles shown in the demo as red "NY law today" markers (where a licence
+  or lawyer is required today), not gates and not a reshaped business.
+- Success criteria amended to match (steps 2, 3, 5, 6, 7, 8, 9); Q19, Q24 and Q26 answered; Q43 (inspection) added.
+- `scripts/api-run.sh` runs jobs on the credit until about $2 is left above the $15 demo reserve, then on the Max
+  login by itself; spend is logged per run as `api` or `max`. Tested on Max.
+- To-do 35ccf6 (billing) done; a7c7fb (send the memo) on hold until the summary is rewritten.
+
+**Running now (credit):** RESPEC-A revises the architecture spec, traceability and out-of-scope list for the original
+idea and re-dates the build to start today; RESPEC-B rewrites the executive summary, plan, assumption statuses and
+questions around it. The build follows as soon as RESPEC-A lands.
+
+**Disk:** 19 GB free.
+
 ## 2026-10-23 (day 1), end of night: research, plan and summary done
 
 **Done tonight (all on hughesnode, house login: https://realestate.hughesnode.com):**
