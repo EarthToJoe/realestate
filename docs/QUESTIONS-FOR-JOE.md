@@ -11,7 +11,7 @@ shown and kept moving; your answer overrides it. Readable at https://realestate.
 >   registration, where he lives and an office, broker of record, ten people by 2026-11-06, the contract route).
 > - **Quick confirms for the demo, defaults hold if you say nothing:** Q23 in the demo the software drafts the full
 >   contract with no attorney-approval clause, under a red "NY law today" marker that names the lawful launch route
->   (the firm's paper subject to each party's attorney's approval; decision 26); Q25 recorded replay at the meeting with a live switch; Q43 the
+>   (the firm's paper subject to each party's attorney's approval; decision 26); Q25 recorded replay at the meeting with a live switch; Q45 the placeholder firm name; Q43 the
 >   free inspection shown as his idea with the research's findings.
 > - **After the meeting:** everything else (fees, tours, counties, marketing, lockboxes, scope).
 > - **Closed today by decision 21 or merged into Q44:** Q11, Q13 to Q17, Q37 (see Answered).
@@ -156,6 +156,13 @@ idea with the findings: the pitch line "you'll know what a buyer's inspector wil
 what to fix", a cap of $1,500 a listing, owed whether or not the house sells, with an inspection credit and a list of
 three licensed inspectors for sellers who decline (absorbs Q37). *Unblocks:* the plan's inspection section and the
 demo's intake step. (WS6, WS4, decision 21)
+
+**Q45. The firm's name in the demo.** The build uses the placeholder "Hudson Valley AI Realty (demonstration)" on
+every screen and message. A web search (2026-10-23) found no company of that name, but similar real ones exist
+(Century 21 Hudson Valley Realty in Poughkeepsie, Keller Williams Realty Hudson Valley Realty Group in New City).
+*Provisional:* keep the placeholder, always shown with "(demonstration)"; you or your father-in-law name the real
+firm later (his old "Hudson Valley Partners" idea, for example, after a name check with the Department of State).
+*Unblocks:* nothing now; the name is one setting in the app's brokerage config.
 
 ## Answered (newest first)
 
