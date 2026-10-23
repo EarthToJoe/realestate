@@ -184,8 +184,7 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
             raise ValueError("That is not a screen of the demo.")
         played = walk.play_screen(s, request.app.state.provider, route)
         log.info("demo_play", route=route, played=[m.key for m in played])
-        anchor = next((m.link.split("#", 1)[1] for m in reversed(played) if m.route == route and "#" in m.link), "")
-        return RedirectResponse(route + (f"#{anchor}" if anchor else ""), status_code=303)
+        return RedirectResponse(route, status_code=303)  # the screen opens on its outcome, at the top
 
     @app.post("/demo/fast-forward/{n}")
     async def demo_fast_forward(n: int, request: Request, s=Depends(get_session)):

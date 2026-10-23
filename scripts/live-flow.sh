@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Walks steps 1 to 8 on a running app the way the demo does (walk order 1-5, 8, 6, 7), and checks each screen.
+# Walks the whole demo on a running app the way the script does (walk order; on screen numbered 1 to 10, Q47),
+# checks each screen, then step 10 and the people screens.
 #   bash scripts/live-flow.sh                      the live site (house login)
 #   bash scripts/live-flow.sh http://127.0.0.1:8000  a local run
 # Clicks counted for SC1 ("profile with source chips in under 5 minutes of clicking").
@@ -18,8 +19,8 @@ ROUTES=$(grep -o 'route: /[^ ]*' "$(dirname "$0")/../app/demo/steps.yaml" | sed 
 for r in $ROUTES; do
   code=$(c "$BASE$r" -o "$OUT" -w '%{http_code}')
   if [ "$code" != 200 ]; then echo "FAIL step link $r -> HTTP $code (expect 200, never a redirect)"; fail=1
-  elif [ "$r" != /intake ] && [ "$r" != /step/10 ] && ! grep -q 'id="gate-card"' "$OUT"; then echo "FAIL $r: no gate card"; fail=1
-  else echo "ok   step link $r -> 200$([ "$r" != /intake ] && [ "$r" != /step/10 ] && echo ' with its gate card')"; fi
+  elif [ "$r" != /intake ] && ! grep -q 'id="gate-card"' "$OUT"; then echo "FAIL $r: no gate card"; fail=1
+  else echo "ok   step link $r -> 200$([ "$r" != /intake ] && echo ' with its gate card')"; fi
 done
 c "$BASE/pricing" -o "$OUT"; ok "gate card offers fast-forward" 'id="gate-ff"'
 # ---- Fast-forward the whole demo (replays, $0), then start again and walk it by hand below
@@ -158,9 +159,27 @@ DOCX=$(mktemp); as presenter "$BASE/contract/draft.docx" -o "$DOCX"
 if unzip -p "$DOCX" word/header1.xml 2>/dev/null | grep -q 'DEMONSTRATION. Drafted by software'; then echo "ok   DOCX header carries the label"; else echo "FAIL DOCX label"; fail=1; fi
 rm -f "$PDF" "$DOCX"
 grep -o 'Live model spend so far \$[0-9.]*' "$OUT" | head -1
+# ---- Step 10 Marketing the business (slice 4)
+as presenter -X POST "$BASE/brand/draft" -o /dev/null
+as presenter "$BASE/brand" -o "$OUT"; ok "campaign: three pieces" 'data-channel="brand_magnet"'; ok "campaign: notices on the landing page" 'data-notice="ai_use"'
+LP=$(grep -o 'action="/brand/piece/[0-9]*/plant"' "$OUT" | grep -o '[0-9]\+' | head -1)
+as presenter -X POST "$BASE/brand/piece/$LP/plant" -o /dev/null
+as presenter "$BASE/brand" -o "$OUT"; ok "planted claim refused (L54)" 'data-rule="CL-REPLACE"'
+as presenter -X POST "$BASE/brand/targeting/set" -o /dev/null
+as presenter -X POST "$BASE/brand/publish" -o /dev/null -w "%{http_code}\n" | sed 's/^/publish with a refused claim -> HTTP (expect 409) /'
+as presenter -X POST "$BASE/brand/piece/$LP/fix" -o /dev/null
+as presenter -X POST "$BASE/brand/targeting/try" -d criterion=age -o "$OUT" -w "%{http_code}\n" | sed 's/^/target by age -> HTTP (expect 409) /'
+ok "age targeting refused by code" 'id="refusal"'
+as presenter -X POST "$BASE/brand/publish" -o /dev/null -w "%{http_code}\n" | sed 's/^/publish -> HTTP /'
+as presenter "$BASE/brand/targeting" -o "$OUT"; ok "campaign published, CP-19" 'id="rec-CP-19"'; ok "targeting by place only" 'data-allowed="place"'
+# ---- People and their data (PII)
+as presenter "$BASE/people" -o "$OUT"; ok "people: access log" 'id="access-log"'
+SID=$(grep -o 'href="/people/[0-9]*" id="open-seller"' "$OUT" | grep -o '[0-9]\+' | head -1)
+as presenter "$BASE/people/$SID/export" -o "$OUT"; ok "export: the seller's fields" '"legal_name"'
+as buyer "$BASE/people/$SID" -o /dev/null -w "%{http_code}\n" | sed 's/^/buyer opens the seller'"'"'s data -> HTTP (expect 403) /'
 c "$BASE/timeline" -o "$OUT"
 for k in 'data-code="CP-25"' 'data-code="CP-05"' 'data-code="CP-26"' 'data-code="CP-06"' 'data-code="CP-07"' 'data-code="CP-08"' 'data-code="CP-27"' 'data-code="CP-11"' 'data-code="CP-13"' 'data-code="CP-14"' 'data-code="CP-17"' 'data-code="CP-31"' 'data-code="CP-33"'; do ok "timeline $k" "$k"; done
-for k in chip-automated chip-client_decision chip-law_marker chip-third_party 'data-code="CP-35"' 'id="hurdle-map"'; do ok "timeline $k" "$k"; done
+for k in chip-automated chip-client_decision chip-law_marker chip-third_party 'data-code="CP-35"' 'id="hurdle-map"' 'data-code="CP-19"' 'data-road="closing"' 'id="agent-acts"'; do ok "timeline $k" "$k"; done
 grep -o 'The sale so far: [^<]*' "$OUT" | head -1
 grep -o '[0-9]*</span> places NY law today[^<]*' "$OUT" | sed 's#</span>##' | head -1
 c "$BASE/docs-success-criteria.html" -o "$OUT"; ok "review page still served" "Success criteria"
