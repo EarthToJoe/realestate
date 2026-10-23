@@ -29,7 +29,7 @@ waive your share ([Op. 1237, 2022](https://nysba.org/ethics-opinion-1237/)) [PRI
 non-refundable fee, not contingent on closing", there is no per se conflict (Op. 1117 fn. 1, citing
 [Op. 1015, 2014](https://nysba.org/ethics-opinion-1015/)) [PRIMARY]. Op. 1015 adds three conditions: informed
 consent "confirmed in writing"; a combined fee that is not excessive; and, preferably, separate offices. Three
-more limits attach:
+more limits attach: *(Corrected 2026-10-23 by fact-check: Op. 1015 ¶16 states the conditions as a fixed, non-refundable fee "not contingent on the closing" and any conflict "properly waived"; the "separate offices" point is only ¶14's remark that providing legal and non-legal services from the same office weighs against their being "distinct", in which case the broker work is itself governed by the legal-ethics rules (Rule 5.7). Op. 1117 ¶7 confirms the route in 2017, after Op. 1043. Later opinions (1208 in 2020, 1237 in 2022, 1273 in 2024) repeat the "with or without client consent" sentence without mentioning the exception, and all are advisory, so ask your own ethics counsel or the NYSBA hotline before relying on it.)*
 - **Who bills:** the legal fee must be billed by your law practice, never by the LLC Joe co-owns. Rule 5.4 bars
   sharing legal fees with a nonlawyer or practising through a nonlawyer-owned entity
   ([Op. 1082](https://nysba.org/ethics-opinion-1082/)) (L28) [PRIMARY].
@@ -48,7 +48,7 @@ Brokerage customers must also be told in writing that brokerage services "are no
   (L5, L22). The seller hires an independent Hudson Valley attorney, who by local custom drafts the contract
   and holds the deposit (L25). The product offers a directory of such attorneys with no referral payments (L31).
 - *Broker and seller's lawyer.* The seller pays a fixed brokerage fee up front, non-refundable even if the
-  house never sells, and signs a written informed-consent form. Your law practice is separately engaged, and
+  house never sells *(Corrected 2026-10-23 by fact-check: "up front" is our design choice, not an Op. 1015 condition; the condition is that the fee is fixed, non-refundable and not contingent on closing)*, and signs a written informed-consent form. Your law practice is separately engaged, and
   bills the seller, to draft the contract and handle the closing. The buyer has their own lawyer. If the buyer
   has none, you may tell them only to get one (Rule 4.3, L30).
 

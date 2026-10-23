@@ -84,7 +84,7 @@ The job asks which of A7, K1, K2 and K7 the numbers hit or dodge. The answer is 
 **Related findings:**
 
 - **A9 (free inspection):** the inspection alone is $900–$1,800 per listing, paid whether or not the house sells (WS6 notes). It is the largest single reason the full build-out cannot break even. Offer it as a paid or pass-through option, or pilot it on a handful of listings.
-- **K3 (fee structure if the father-in-law is also counsel):** this constrains revenue design. New York ethics opinions bar him from being either party's lawyer on any deal where the brokerage earns a fee contingent on closing. The one narrow exception requires a **fixed, prepaid, non-refundable** broker fee with written consent ([NYSBA Op. 1015](https://nysba.org/ethics-opinion-1015/); [Op. 1043](https://nysba.org/ethics-opinion-1043/)) [PRIMARY, via WS2]. The cost model therefore assumes, per Q4, that he is never counsel on brokerage deals.
+- **K3 (fee structure if the father-in-law is also counsel):** this constrains revenue design. New York ethics opinions bar him from being either party's lawyer on any deal where the brokerage earns a fee contingent on closing. The one narrow exception requires a **fixed, prepaid, non-refundable** broker fee with written consent ([NYSBA Op. 1015](https://nysba.org/ethics-opinion-1015/); [Op. 1043](https://nysba.org/ethics-opinion-1043/)) [PRIMARY, via WS2]. *(Corrected 2026-10-23 by fact-check: the exception comes from Op. 1015 ¶16 and Op. 1117 fn. 1, not Op. 1043, which states the bar. The conditions are a fee that is fixed, non-refundable and not contingent on closing, plus informed consent confirmed in writing; "prepaid" is not an opinion requirement, only a way to make non-refundability real.)* The cost model therefore assumes, per Q4, that he is never counsel on brokerage deals.
 
 ## Getting in the door: about $2,500 cash, or $20,000 with outside legal review
 
@@ -299,12 +299,12 @@ That is about **80–125 hours of the father-in-law's time** before the first li
 
 | Competitor | Model | Price | At $510,000 | Source | Label |
 |---|---|---|---|---|---|
-| Hauseit | Listing-only "agent-assisted FSBO" (seller does showings and negotiation) | $399 / $699 / $1,199 upfront | $399–$1,199 | [Hauseit](https://www.hauseit.com/pricing/) | PRIMARY vendor (prices undated) |
+| Hauseit | Listing-only "agent-assisted FSBO" (seller does showings and negotiation) | $399 / $699 / $1,199 upfront | $399–$1,199 | [Hauseit](https://www.hauseit.com/pricing/) | PRIMARY vendor (prices undated) *(Corrected 2026-10-23 by fact-check: Hauseit's [agent-assisted FSBO page](https://www.hauseit.com/agent-assisted-fsbo/) FAQ says "our Core and Professional Assisted FSBO Plans are only available for properties located in NYC", so a Hudson Valley seller gets Base at $399 only, with no phone, email or pricing help; the pricing page's wording is broader but the FAQ is the specific restriction.)* |
 | UnoFee | Flat MLS listing, or full service via Cavestone Realty | $299.99 (6 mo) / $499.99 (12 mo); or 1.5% | $300–$500, or $7,650 | [UnoFee](https://unofee.com/) | PRIMARY vendor |
 | Houzeo | Flat MLS listing | $399–$499, $999 minimum at close on upper tiers | $399–$999 | Earlier notes ([Houzeo NY](https://www.houzeo.com/flat-fee-mls/new-york); page blank on re-check) | PRIMARY vendor, unverified today |
 | Hauseit full service | 1% listing fee | 1%, $7,500 minimum, plus $300 media | $7,800 | [Hauseit](https://www.hauseit.com/pricing/) | PRIMARY vendor |
 | Clever | Partner-agent listing | 1.5% | $7,650 | [Clever](https://listwithclever.com/real-estate-blog/6-percent-real-estate-commission-explained/) | SECONDARY |
-| Redfin | Salaried-agent listing | 2% (1% back if the seller buys with Redfin within a year); reported $6,000 NY minimum | $10,200 | [Houwzer, 24 Aug 2026](https://houwzer.com/?p=2911) | CLAIMED (competitor-published) |
+| Redfin | Salaried-agent listing | 2% (1% back if the seller buys with Redfin within a year); reported $6,000 NY minimum | $10,200 | [Houwzer, 24 Aug 2026](https://houwzer.com/?p=2911) | CLAIMED (competitor-published) *(Corrected 2026-10-23 by fact-check: Redfin's own [disclaimer page](https://www.redfin.com/disclaimer) ("Updated September 2025") states a 2.0% listing fee and a $6,000 New York "Minimum Commission", so the label is PRIMARY, though a year old.)* |
 | Homie (failed 2024) | Flat listing fee | $5,000 | $5,000 | WS5 notes ([Salt Lake Tribune](https://www.sltrib.com/news/business/2023/11/06/utah-grown-homie-vowed-disrupt/)) | SECONDARY |
 | Ridley (AI platform, Colorado) | Plan with licensed-broker help | $2,999 | $2,999 | WS5 notes ([ColoradoBiz](https://coloradobiz.com/ai-real-estate-ridley-6-4m-seed-funding/)) | SECONDARY |
 
