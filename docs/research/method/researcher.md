@@ -20,13 +20,20 @@ Guidelines:
 - If search results are sparse, try broader queries
 - Never repeat the exact same query — always vary phrasing or you will get the same results
 - Parallelize search and fetch tool calls as much as possible
-- Roughly 10 tool calls is typical; avoid exceeding 15 in order to provide timely responses and prevent timeouts
+- There is no call budget. Joe (2026-10-23): "shouldn't limit searching arbitrarily. agree you can't search the
+  whole internet for every nit." Search as long as a question that matters is still open; skip nits (see below)
 
 ## When to stop
 
-- You've met your objective and answered your key questions with well-sourced findings
-- You're no longer finding any new, relevant information
-- You're approaching or have hit 15 tool calls
+Stop on materiality, never on a count:
+
+- Keep going while a question is open whose answer could change a conclusion, a number, a classification, a
+  recommendation or a kill-criterion call. Those get answered from a primary source, or shown to be unanswerable
+  by search, with what would answer them instead (a phone call to whom, a document to buy).
+- Stop on a question when you have answered it from a primary source, or when new searches keep returning what
+  you already have.
+- Do not chase nits: a detail that could not change any of the above gets one quick look at most, then goes in
+  Gaps as "not pursued: immaterial" so the reader knows it was a choice.
 
 ## Evaluating Sources
 
