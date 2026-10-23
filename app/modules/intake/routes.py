@@ -13,7 +13,7 @@ from app.model.provider import ReplayMiss, SpendCapReached
 from app.models import Disclosure, Document
 from app.modules.intake import service
 from app.records import service as records
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -47,9 +47,9 @@ async def intake_submit(request: Request, s=Depends(get_session)):
 
 @router.get("/intake/profile")
 def profile(request: Request, s=Depends(get_session)):
-    deal, redirect = _deal_or_redirect(s)
-    if redirect:
-        return redirect
+    deal = current_deal(s)
+    if deal is None:
+        return gate_page(request, s)
     inferred = [f for f in deal.property.facts if f.group == "Inferred by the AI"]
     return render(request, s, "intake/profile.html", groups=service.profile_groups(deal), inferred=inferred)
 
@@ -73,9 +73,9 @@ def infer(request: Request, s=Depends(get_session)):
 
 @router.get("/intake/disclosures")
 def disclosures(request: Request, s=Depends(get_session)):
-    deal, redirect = _deal_or_redirect(s)
-    if redirect:
-        return redirect
+    deal = current_deal(s)
+    if deal is None:
+        return gate_page(request, s)
     items = s.execute(select(Disclosure).where(Disclosure.deal_id == deal.id).order_by(Disclosure.id)).scalars().all()
     return render(request, s, "intake/disclosures.html", items=items, cp04=records.latest(s, deal.id, "CP-04"),
                   questions=len(pcds.questions()))
@@ -83,9 +83,9 @@ def disclosures(request: Request, s=Depends(get_session)):
 
 @router.get("/intake/onboarding")
 def onboarding(request: Request, s=Depends(get_session)):
-    deal, redirect = _deal_or_redirect(s)
-    if redirect:
-        return redirect
+    deal = current_deal(s)
+    if deal is None:
+        return gate_page(request, s)
     notices = s.execute(select(Disclosure).where(
         Disclosure.deal_id == deal.id, Disclosure.kind.in_(("agency", "fair_housing", "not_legal_services")))
     ).scalars().all()

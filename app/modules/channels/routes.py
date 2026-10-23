@@ -9,7 +9,7 @@ from app.db import get_session
 from app.modules.channels import service
 from app.records import service as records
 from app.records.service import GateError, NotYourDecision
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ router = APIRouter()
 def board(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     gate = None
     try:
         service.open_authorisations(s, deal)

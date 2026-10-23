@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% from "components.html" import law_marker, human_required, decision, chip with context %}
+{% from "components.html" import law_marker, human_required, decision, chip, decide_as with context %}
 {% block content %}
 <h1 class="title is-4">5. Communications: the AI answers and books showings</h1>
 {% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{# the gate card in base.html shows what is missing #}
 {% else %}
 <p>The AI answers every enquiry and sends on its own ("sent (simulated)"), from the facts the seller approved and
 within the seller's authority. The seller sees only the seller's own decisions. Every outgoing message passes the
@@ -35,7 +35,7 @@ fair-housing check and carries the firm's identity block.</p>
       <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Decline</button>
     </div>
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as('seller', persona, 'rec-CP-27') }}{% endif %}
 </div>
 {% elif cp27 %}{{ decision(cp27, persona, "/inbox/approve") }}{% endif %}
 
@@ -56,6 +56,7 @@ fair-housing check and carries the firm's identity block.</p>
     <button class="button {{ 'is-warning' if loop.first else 'is-light' }}" name="decision" value="{{ c }}" {% if persona != 'seller' %}disabled title="Only the seller can decide this"{% endif %}>{{ label }}</button>
     {% endfor %}
   </form>
+  {% if persona != 'seller' %}{{ decide_as('seller', persona, 'cards') }}{% endif %}
 </div>
 {% else %}<p class="help" id="no-cards">Nothing waiting for the seller.</p>{% endfor %}
 

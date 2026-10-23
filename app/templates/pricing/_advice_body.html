@@ -1,4 +1,4 @@
-{% from "components.html" import law_marker, decision, ai_badge with context %}
+{% from "components.html" import law_marker, decision, ai_badge, decide_as with context %}
 {% set sm = pa.summary %}
 <div class="ai-panel" id="ai-panel">
 {% if advice %}
@@ -58,7 +58,7 @@
       value="{{ advice.recommended_price if advice else '' }}" {% if not mine %}disabled{% endif %}></div>
     <div class="control"><button class="button is-warning" {% if not mine %}disabled title="Only the seller can decide this"{% endif %}>Choose this list price</button></div>
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as('seller', persona, 'rec-CP-05') }}{% endif %}
   {% else %}
   <p id="chosen-price"><b>{{ cp05.reason }}.</b> Decided by the {{ cp05.decided_by }}.</p>
   <p><a class="button is-info" href="/copy">Next: listing copy &rarr;</a></p>

@@ -12,7 +12,7 @@ from app.disclosures import pcds
 from app.modules.contract import documents, service
 from app.records import service as records
 from app.records.service import GateError
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ router = APIRouter()
 def contract(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     gate, memo = None, None
     try:
         memo = service.memorandum(deal)

@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from app.db import get_session
 from app.disclosures import pcds
 from app.records import service as records
-from app.web import current_deal, persona, render, templates
+from app.web import current_deal, gate_page, persona, render, templates
 
 router = APIRouter()
 
@@ -24,7 +24,7 @@ def _ctx(s, deal, **kw):
 def pcds_form(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     return render(request, s, "disclosures/pcds.html", answers={}, error=None, **_ctx(s, deal))
 
 

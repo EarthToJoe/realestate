@@ -10,7 +10,7 @@ from app.db import get_session
 from app.modules.inbox import service
 from app.records import service as records
 from app.records.service import GateError
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -19,7 +19,7 @@ router = APIRouter()
 def inbox(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     gate, ins = None, None
     try:
         ins = service.open_fact_sheet(s, deal)

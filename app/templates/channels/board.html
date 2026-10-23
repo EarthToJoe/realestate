@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% from "components.html" import human_required, ids with context %}
+{% from "components.html" import human_required, ids, decide_as with context %}
 {% block content %}
 <h1 class="title is-4">4. Marketing plan: the channel board</h1>
 {% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{# the gate card in base.html shows what is missing #}
 {% else %}
 <p>Each card says honestly what happens on that channel and who does it. Blue is the AI; grey with a hand is a step
 no software can do today; "fed from the MLS" means the portal copies the MLS entry by itself.</p>
@@ -28,7 +28,7 @@ no software can do today; "fed from the MLS" means the portal copies the MLS ent
       <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Decline</button>
     </div>
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as('seller', persona, 'rec-CP-07') }}{% endif %}
   {% else %}
   <p><b>{{ cp07.reason }}.</b> Decided by the {{ cp07.decided_by }}.</p>
   {% endif %}

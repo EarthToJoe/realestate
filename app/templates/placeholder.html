@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 class="title is-4">{{ step.n }}. {{ step.title }}</h1>
-{% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
-{% endif %}
 <p>This step is built in slice {{ step.slice }}. Its records will appear on the <a href="/timeline">deal timeline</a>
 as they are made.</p>
 {% endblock %}

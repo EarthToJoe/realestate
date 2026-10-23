@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 
 from app.db import get_session
 from app.modules.timeline import service
-from app.web import current_deal, render
+from app.web import current_deal, gate_page, render
 
 router = APIRouter()
 
@@ -16,5 +16,5 @@ router = APIRouter()
 def timeline(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     return render(request, s, "timeline/timeline.html", tl=service.build(s, deal))

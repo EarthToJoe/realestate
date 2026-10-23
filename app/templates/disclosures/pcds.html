@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "components.html" import decision with context %}
+{% from "components.html" import decision, decide_as with context %}
 {% block content %}
 <h1 class="title is-4">Property Condition Disclosure Statement</h1>
 <p><span class="tag is-info is-light">{{ form.statute }}</span> <span class="tag is-light" id="pcds-version">form of {{ form.version }}</span>
@@ -60,7 +60,7 @@ to the buyer before the buyer signs the contract (L43), so the contract step wai
 <textarea class="textarea" name="explanation" rows="3" {{ 'disabled' if not mine }}>{{ answers.get('explanation', '') }}</textarea>
 <p class="help">{{ form.seller_certification }}</p>
 <button class="button is-warning" style="margin-top:8px" {{ 'disabled' if not mine }}>Sign and submit my answers (seller)</button>
-{% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to answer.</p>{% endif %}
+{% if not mine %}<p class="help">You are acting as the {{ persona }}: only the seller answers this form ("Decide as the seller" on the CP-04 card above).</p>{% endif %}
 </form>
 {% endif %}
 {% endblock %}

@@ -67,5 +67,16 @@ def render(request: Request, s: Session, template: str, status_code: int = 200, 
         "kind_label": catalogue.KIND_LABEL, "law_actor_label": catalogue.LAW_ACTOR_LABEL,
         "launch_routes": {c: (e.launch_route, e.launch_link) for c, e in catalogue.load().items() if e.launch_route},
     }
+    if "walk_gate" not in ctx or "ff_steps" not in ctx:
+        from app.demo import walk
+
+        base["walk_gate"] = walk.gate_for(s, deal, request.url.path, ctx.get("gate"))
+        base["ff_steps"] = walk.fast_forward_steps(s, deal) if base["persona"] == "presenter" else set()
     base.update(ctx)
     return templates.TemplateResponse(request, template, base, status_code=status_code)
+
+
+def gate_page(request: Request, s: Session):
+    """A step screen with nothing to show yet (no deal, or no buyer): its own page with the gate card, never a
+    redirect (a presenter clicking a step link must always land where they clicked)."""
+    return render(request, s, "gate.html")

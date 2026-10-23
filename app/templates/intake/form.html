@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h1 class="title is-4">1. Intake: address and facts</h1>
+{% if request.query_params.get('started') %}<div class="notification is-info is-light" id="next-hint"><b>The deal is reset.</b>
+  The demo house is filled in below: press <a href="#start-intake">"Start intake"</a> at the bottom of the form.</div>{% endif %}
 <p>The seller gives the address and a few facts the public record leaves out. The AI does the rest.</p>
 <a class="button is-small is-light" href="/intake?demo=1" id="use-demo">Use demo house</a>
 {% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}

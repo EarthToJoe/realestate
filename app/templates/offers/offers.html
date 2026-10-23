@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% from "components.html" import law_marker, decision, ai_badge with context %}
+{% from "components.html" import law_marker, decision, ai_badge, decide_as with context %}
 {% block content %}
 <h1 class="title is-4">6. Offers: presented, advised, decided, negotiated</h1>
 {% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{# the gate card in base.html shows what is missing #}
 {% else %}
 <p class="tag is-warning is-medium" id="not-binding">{{ not_binding }}</p>
 {% if persona == 'buyer' %}<div class="notification is-light" id="wall-note">You are acting as the buyer. This is the seller's
@@ -77,7 +77,7 @@
       {% endfor %}
     </div>
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the seller to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as('seller', persona, 'rec-CP-12') }}{% endif %}
   {% else %}<p class="help" id="decision-reason">Decided by the {{ cp12.decided_by }}: {{ cp12.reason }}</p>{% endif %}
 </div>
 {% endif %}

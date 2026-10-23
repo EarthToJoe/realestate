@@ -34,7 +34,7 @@
 {# A client decision. `action` posts the choice; buttons are enabled only for the client whose decision it is
    (the server checks again, so a crafted request is refused too). #}
 {% macro decision(cp, persona, action, advice=None, labels=None) -%}
-{% set mine = (cp.actor == persona) or (cp.actor == 'seller_and_buyer' and persona in ('seller', 'buyer')) %}
+{% set mine = (cp.actor == persona) or (cp.actor == 'seller_and_buyer' and persona in ('seller', 'buyer') and (persona ~ '=') not in (cp.decision or '')) %}
 <div class="rec rec-decision" data-code="{{ cp.code }}" id="rec-{{ cp.code }}">
   <div class="rec-head"><span class="rec-badge">Your decision</span> <b>{{ cp.code }}</b> {{ cp.title }}
     <span class="tag {{ 'is-success' if cp.status == 'done' else 'is-warning' }} is-light">{{ cp.status }}{% if cp.decision %}: {{ cp.decision }}{% endif %}</span></div>
@@ -48,9 +48,10 @@
         {% if not mine %}disabled title="Only the {{ cp.actor | replace('_', ' ') }} can decide this"{% endif %}>{{ labels[choice] }}</button>
     {% endfor %}
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the {{ cp.actor | replace('_and_', ' and ') }} to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as(cp.actor, persona, 'rec-' ~ cp.code, cp.decision) }}{% endif %}
   {% else %}
   <p class="help">Decided by the {{ cp.decided_by }}{% if cp.decided_at %} at {{ cp.decided_at.strftime('%H:%M') }}{% endif %}.</p>
+  {% if persona != 'presenter' %}{{ back_to_presenter('rec-' ~ cp.code) }}{% endif %}
   {% endif %}
   <p class="rec-ids">{{ ids(cp) }}</p>
 </div>
@@ -64,6 +65,50 @@
 
 {% macro source_chip(f) -%}
 <span class="src src-{{ f.source }}" title="{{ (f.inferred_reason or f.source_ref or '') }}">{{ {'public_record': 'Public record', 'seller': 'Seller', 'inferred': 'Inferred'}[f.source] or f.source }}</span>
+{%- endmacro %}
+
+{# "Decide as the seller": one tap switches the persona and comes back to the same card. The decision is still the
+   client's own: the record service checks the persona when it is made. #}
+{% macro decide_as(actor, persona, anchor, decided='') -%}
+{% set who = ['seller', 'buyer'] if actor == 'seller_and_buyer' else [actor] %}
+<div class="decide-as">
+  <p class="help">You are acting as the {{ persona }}. {% if actor == 'seller_and_buyer' %}The seller and the buyer each decide this.{% else %}Only the {{ actor }} decides this.{% endif %}</p>
+  <div class="buttons">
+  {% for p in who if p != persona and (p ~ '=') not in (decided or '') %}
+    <form method="post" action="/persona"><input type="hidden" name="persona" value="{{ p }}"><input type="hidden" name="back" value="{{ request.url.path }}#{{ anchor }}">
+      <button class="button is-warning is-light" data-decide-as="{{ p }}">Decide as the {{ p }}</button></form>
+  {% endfor %}
+  </div>
+</div>
+{%- endmacro %}
+
+{% macro back_to_presenter(anchor) -%}
+<form method="post" action="/persona" class="back-to-presenter"><input type="hidden" name="persona" value="presenter"><input type="hidden" name="back" value="{{ request.url.path }}#{{ anchor }}">
+  <button class="button is-small is-light">Back to the Presenter</button></form>
+{%- endmacro %}
+
+{# What a screen is waiting for (app/demo/walk.py): what is missing, on which step, who must do it, and the way
+   there. Shown instead of redirecting, so a step link always lands where it was clicked. #}
+{% macro gate_card(g) -%}
+<div class="gate-card" id="gate-card" data-missing="{{ g.missing.key }}" data-step="{{ g.step.n }}">
+  <p class="gate-head"><span class="rec-badge">Waiting</span> This screen needs an earlier step first</p>
+  {% if g.message %}<p id="gate"><b>Refused for now:</b> {{ g.message }}</p>{% endif %}
+  <p><b>Missing:</b> {{ g.missing.what }}{% if g.missing.code %} ({{ g.missing.code }}){% endif %}.</p>
+  <p><b>Where:</b> step {{ g.step.n }}, {{ g.step.title }}. <b>Who:</b> {{ g.who_label }}{% if g.missing.decision %}: their own decision{% endif %}.</p>
+  <div class="buttons">
+  {% for p in g.decide_as if p != persona %}
+    <form method="post" action="/persona"><input type="hidden" name="persona" value="{{ p }}"><input type="hidden" name="back" value="{{ g.missing.link }}">
+      <button class="button is-warning" data-decide-as="{{ p }}">Decide as the {{ p }}</button></form>
+  {% endfor %}
+    <a class="button {{ 'is-light' if g.decide_as else 'is-warning' }}" href="{{ g.missing.link }}" id="gate-go">Go to step {{ g.step.n }}: {{ g.step.title }}</a>
+  {% if persona == 'presenter' and g.can_fast_forward %}
+    <form method="post" action="/demo/fast-forward/{{ g.target.n }}"><input type="hidden" name="back" value="{{ request.url.path }}">
+      <button class="button is-info" id="gate-ff">Fast-forward the demo to here</button></form>
+  {% endif %}
+  </div>
+  {% if persona == 'presenter' and g.can_fast_forward %}<p class="help">Fast-forward plays the earlier steps the way the demo
+    script does, with the recorded AI answers (no cost). Each seller or buyer decision is recorded as theirs.</p>{% endif %}
+</div>
 {%- endmacro %}
 
 {% macro ai_badge(mode, recorded_at=None) -%}

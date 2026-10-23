@@ -3,7 +3,7 @@
 {% block content %}
 <h1 class="title is-4">3. Listing copy and the fair-housing check</h1>
 {% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{# the gate card in base.html shows what is missing #}
 {% else %}
 {% if error %}<div class="notification is-danger is-light" id="refusal">{{ error }}</div>{% endif %}
 {% if ai_error %}<div class="notification is-light"><b>Not recorded:</b> {{ ai_error }}</div>{% endif %}

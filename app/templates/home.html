@@ -5,13 +5,14 @@
 and the buyer make their own decisions. Wherever New York law today requires a licensed broker or a lawyer, a red
 <b>NY law today</b> marker names the rule and links to the research. It is recorded and does not stop the flow.</p>
 <div class="buttons" style="margin-top:12px">
-  <form method="post" action="/demo/reset"><button class="button is-primary" id="start-demo">Start demo</button></form>
+  <a class="button is-primary" href="/demo/start" id="start-demo">Start demo</a>
   {% if deal %}<a class="button" href="/intake/profile">Continue the current deal</a>
   <a class="button" href="/timeline">Deal timeline</a>{% endif %}
   <a class="button is-light" href="{{ review_url }}" id="review-home">Review documents</a>
 </div>
-<p class="help">Start demo resets the deal to the seed and opens step 1 as the Presenter. Built so far: step 1
-(Intake) and step 9 (Deal timeline). Steps 2 to 8 and 10 arrive in slices 2 to 4.</p>
+<p class="help">Start demo asks first, then resets the deal to the seed and opens step 1 as the Presenter. Built so
+far: steps 1 to 9; step 10 (marketing the business) arrives in slice 4. Any step link works at any time: a step
+that needs an earlier one says what is missing, who does it, and offers "Fast-forward the demo to here".</p>
 <h2 class="title is-6" style="margin-top:18px">How to read the screens</h2>
 <p><span class="chip chip-automated">AI did it</span>
    <span class="chip chip-client_decision">Your decision (seller or buyer)</span>

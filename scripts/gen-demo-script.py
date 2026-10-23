@@ -30,6 +30,21 @@ def generate() -> str:
         "does not stop the flow); grey = a person or third party outside the software. The persona switcher (top",
         "right) changes who is acting: Presenter, Seller or Buyer. Only the client whose decision it is can make it.",
         "",
+        "**The presenter's controls (phone or laptop):**",
+        "",
+        "- **Start demo** asks first (\"This resets the deal to the beginning\"), then opens step 1 with the demo house",
+        "  filled in and one line saying what to press next.",
+        "- **\"As Seller\" / \"As Buyer\" below** means: on the amber card, tap **Decide as the seller** (or buyer). One",
+        "  tap switches the persona and comes back to the same card; the decision is recorded as the client's. Tap",
+        "  **Back to the Presenter** on the card afterwards. The Presenter can never make a client's decision.",
+        "- **Any step link works at any time.** A step that needs an earlier one shows a card: what is missing, on",
+        "  which step, who must do it, and a button to go there.",
+        "- **Fast-forward the demo to here** (on that card, and under each step in the step list): plays the earlier",
+        "  steps with this script's choices and the recorded AI answers (no cost), each client decision recorded as",
+        "  the client's, then opens the step. Use it to jump straight to the part you want to show.",
+        "- **On a phone** the numbered step bar is at the top of every screen (\"All steps\" opens the full list with",
+        "  the fast-forward buttons at the bottom), and the narration card starts folded: tap it to read.",
+        "",
     ]
     order = [s["n"] for s in steps]
     if order != sorted(order):

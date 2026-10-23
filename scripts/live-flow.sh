@@ -10,6 +10,23 @@ JAR=$(mktemp); OUT=$(mktemp)
 c() { curl -s "${AUTH[@]}" -b "$JAR" -c "$JAR" "$@"; }
 fail=0
 ok() { if grep -q -- "$2" "$OUT"; then echo "ok   $1"; else echo "FAIL $1 (missing: $2)"; fail=1; fi; }
+# ---- After a reset, no step link redirects: each answers 200 with its screen or its gate card (BUILD-FIX)
+c "$BASE/demo/start" -o "$OUT"; ok "Start demo asks first" "This resets the deal to the beginning"
+c -X POST "$BASE/demo/reset" -o /dev/null
+c "$BASE/intake?demo=1&started=1" -o "$OUT"; ok "step 1 says what to press next" 'id="next-hint"'
+ROUTES=$(grep -o 'route: /[^ ]*' "$(dirname "$0")/../app/demo/steps.yaml" | sed 's/route: //')
+for r in $ROUTES; do
+  code=$(c "$BASE$r" -o "$OUT" -w '%{http_code}')
+  if [ "$code" != 200 ]; then echo "FAIL step link $r -> HTTP $code (expect 200, never a redirect)"; fail=1
+  elif [ "$r" != /intake ] && [ "$r" != /step/10 ] && ! grep -q 'id="gate-card"' "$OUT"; then echo "FAIL $r: no gate card"; fail=1
+  else echo "ok   step link $r -> 200$([ "$r" != /intake ] && [ "$r" != /step/10 ] && echo ' with its gate card')"; fi
+done
+c "$BASE/pricing" -o "$OUT"; ok "gate card offers fast-forward" 'id="gate-ff"'
+# ---- Fast-forward the whole demo (replays, $0), then start again and walk it by hand below
+c -X POST "$BASE/demo/fast-forward/9" -o /dev/null -w "%{http_code}\n" | sed 's/^/fast-forward to step 9 -> HTTP /'
+c "$BASE/contract" -o "$OUT"; ok "fast-forward reaches the signed contract" 'id="signed"'
+as_() { curl -s "${AUTH[@]}" -b "persona=$1" "${@:2}"; }
+as_ seller -X POST "$BASE/demo/fast-forward/2" -o /dev/null -w "%{http_code}\n" | sed 's/^/seller tries fast-forward -> HTTP (expect 403) /'
 t0=$(date +%s)
 c -X POST "$BASE/demo/reset" -o /dev/null                                   # click 0: Start demo
 c "$BASE/intake?demo=1" -o "$OUT"; ok "demo form prefilled (click 1: Use demo house)" 'value="146 Route 292"'

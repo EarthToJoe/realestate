@@ -128,14 +128,42 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
             resp.set_cookie(COOKIE, persona, httponly=True, samesite="lax")
         return resp
 
+    def _local(path: str | None, default: str = "/") -> str:
+        return path if path and path.startswith("/") and not path.startswith("//") else default
+
+    @app.get("/demo/start")
+    def demo_start(request: Request, back: str = "/", s=Depends(get_session)):
+        """Start demo asks first: the reset removes the current deal."""
+        return render(request, s, "demo_start.html", back=_local(back))
+
     @app.post("/demo/reset")
     def demo_reset():
         """Start demo: rebuild the database from the seed (the spend log is kept), act as the Presenter."""
         db.reset_all()
         log.info("demo_reset")
-        resp = RedirectResponse("/intake?demo=1", status_code=303)
+        resp = RedirectResponse("/intake?demo=1&started=1", status_code=303)
         resp.set_cookie(COOKIE, "presenter", httponly=True, samesite="lax")
         return resp
+
+    @app.post("/demo/fast-forward/{n}")
+    async def demo_fast_forward(n: int, request: Request, s=Depends(get_session)):
+        """Presenter only: play the steps before step n with the demo's scripted choices (replays, $0), each client
+        decision recorded as the client's, then open the step (the screen the presenter was on, if it is in it)."""
+        from app.demo import walk
+        from app.web import persona, screen_for, steps
+
+        if persona(request) != "presenter":
+            raise NotYourDecision("Only the Presenter can fast-forward the demo.")
+        st = next((x for x in steps() if x["n"] == n), None)
+        if st is None or not st["built"]:
+            raise ValueError(f"Step {n} is not built yet, so there is nothing to fast-forward to.")
+        back = _local(str((await request.form()).get("back") or ""), "")
+        back_step, _ = screen_for(back)
+        if not (back_step and back_step["n"] == n):
+            back = st["screens"][0]["route"]
+        played = walk.fast_forward(s, request.app.state.provider, n, back)
+        log.info("demo_fast_forward", step=n, played=[m.key for m in played])
+        return RedirectResponse(back, status_code=303)
 
     @app.get("/step/{n}")
     def step_placeholder(n: int, request: Request, s=Depends(get_session)):

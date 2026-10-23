@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "components.html" import law_marker, ai_badge with context %}
+{% from "components.html" import law_marker, ai_badge, decide_as with context %}
 {% block content %}
 <h1 class="title is-4">8. Buyer side: offer advice, draft and approval</h1>
 <p>The buyer's AI advises on price and terms and drafts the offer from the buyer's own answers; the buyer decides.
@@ -40,7 +40,7 @@ It sees the buyer's private limit and the house's public facts, never the seller
     <button class="button is-warning" name="decision" value="approve" {% if not mine %}disabled title="Only the buyer can decide this"{% endif %}>Approve and send the offer</button>
     <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Not now</button>
   </form>
-  {% if not mine %}<p class="help">You are acting as the {{ persona }}. Switch persona to the buyer to decide.</p>{% endif %}
+  {% if not mine %}{{ decide_as('buyer', persona, 'rec-CP-18') }}{% endif %}
 </div>
 {% endif %}
 {% if bstate.offer %}<div class="notification is-success is-light" id="offer-sent">Offer sent to the seller's side as offer B: ${{ '{:,}'.format(bstate.offer.price) }},
@@ -66,6 +66,7 @@ It sees the buyer's private limit and the house's public facts, never the seller
       <button class="button is-warning" name="decision" value="approve" {% if not mine %}disabled title="Only the buyer can decide this"{% endif %}>Approve; the AI sends it</button>
       <button class="button is-light" name="decision" value="decline" {% if not mine %}disabled{% endif %}>Not this</button>
     </form>
+    {% if not mine %}{{ decide_as('buyer', persona, 'rec-CP-18-reply') }}{% endif %}
   </div>
   {% endif %}
   {% else %}

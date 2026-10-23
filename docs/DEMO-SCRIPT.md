@@ -12,6 +12,21 @@ step waits for it); red = **NY law today** requires a licensed broker or a lawye
 does not stop the flow); grey = a person or third party outside the software. The persona switcher (top
 right) changes who is acting: Presenter, Seller or Buyer. Only the client whose decision it is can make it.
 
+**The presenter's controls (phone or laptop):**
+
+- **Start demo** asks first ("This resets the deal to the beginning"), then opens step 1 with the demo house
+  filled in and one line saying what to press next.
+- **"As Seller" / "As Buyer" below** means: on the amber card, tap **Decide as the seller** (or buyer). One
+  tap switches the persona and comes back to the same card; the decision is recorded as the client's. Tap
+  **Back to the Presenter** on the card afterwards. The Presenter can never make a client's decision.
+- **Any step link works at any time.** A step that needs an earlier one shows a card: what is missing, on
+  which step, who must do it, and a button to go there.
+- **Fast-forward the demo to here** (on that card, and under each step in the step list): plays the earlier
+  steps with this script's choices and the recorded AI answers (no cost), each client decision recorded as
+  the client's, then opens the step. Use it to jump straight to the part you want to show.
+- **On a phone** the numbered step bar is at the top of every screen ("All steps" opens the full list with
+  the fast-forward buttons at the bottom), and the narration card starts folded: tap it to read.
+
 **Walk order:** 1, 2, 3, 4, 5, 8, 6, 7, 9, 10. The step list on screen stays in number order; the
 buyer's side (step 8) is walked before the offers (step 6) because offer B comes from the firm's own
 buyer, and the buyer's reply to the seller's counter is made on step 8's offer screen (decision 34).
@@ -32,7 +47,7 @@ buyer, and the buyer's reply to the seller's counter is made on step 8's offer s
 
 ### 1.3 Disclosure checklist (`/intake/disclosures`)
 
-- **Click:** Switch persona to Seller, answer the disclosure questions, click "Submit my answers".
+- **Click:** Tap "Decide as the seller" on the CP-04 card if you want to show the seller's form; it can wait for step 7.
 - **Say:** The AI works out which disclosures this house needs from the facts: lead paint is not required because it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is the seller's own: the software never pre-fills it. That is an amber "Your decision" card: only the seller can complete it, and contract signing waits for it.
 - **Markers and decisions:** CP-04 seller decision (amber, blocks contract signing)
 
@@ -52,7 +67,7 @@ buyer, and the buyer's reply to the seller's counter is made on step 8's offer s
 
 ### 2.2 The AI's advice, net sheet and the seller's price (`/pricing/advice`)
 
-- **Click:** Click "Let the AI recommend a price". Switch persona to Seller and click "Choose this list price". (Try step 3 first: the copy refuses to start until the seller chooses.)
+- **Click:** Click "Let the AI recommend a price". Tap "Decide as the seller" and click "Choose this list price". (Try step 3 first: the copy refuses to start until the seller chooses.)
 - **Say:** The AI explains the method in plain words, names the weaker sales, and recommends a list price with its reasoning and the net sheet. The red marker is the research: advising a seller on price is the listing agent's fiduciary duty, which New York reserves to a licensed broker. It is recorded and does not stop the flow. The price itself is the seller's decision, and the listing copy waits for it.
 - **Markers and decisions:** CP-25 NY law today (red, licensed broker); CP-05 seller decision (amber, blocks step 3)
 

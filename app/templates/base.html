@@ -9,7 +9,7 @@
 {% block head %}{% endblock %}
 </head>
 <body>
-{% from "components.html" import law_marker, ai_badge with context %}
+{% from "components.html" import law_marker, ai_badge, gate_card with context %}
 <div class="demo-mark" role="note">DEMONSTRATION: not a listing, not for sale through this firm, no owner authority. Fictional people; nothing is sent.</div>
 <nav class="topbar">
   <a href="/" class="brand">{{ firm.name }} <small>demonstration</small></a>
@@ -26,6 +26,10 @@
     <a href="{{ review_url }}" class="review-link">Review documents</a>
   </span>
 </nav>
+<nav class="stepbar" aria-label="The sale, step by step">
+  {% for st in steps | sort(attribute='n') %}<a href="{{ st.screens[0].route }}" title="{{ st.n }}. {{ st.title }}" class="pill {{ 'active' if active_step and active_step.n == st.n }} {{ 'done' if st.n in done_steps }} {{ '' if st.built else 'later' }}">{{ st.n }}{% if active_step and active_step.n == st.n %} {{ st.title }}{% endif %}</a>{% endfor %}
+  <a href="#step-list" class="pill pill-all">All steps</a>
+</nav>
 <div class="layout">
   <aside class="steps" id="step-list">
     <p class="steps-title">The sale, step by step</p>
@@ -35,15 +39,17 @@
         <a href="{{ st.screens[0].route }}"><span class="n">{{ st.n }}</span> {{ st.title }}</a>
         {% if marker_counts.get(st.n) %}<span class="mk" title="NY law today markers recorded">{{ marker_counts[st.n] }}</span>{% endif %}
         {% if not st.built %}<small>slice {{ st.slice }}</small>{% endif %}
+        {% if st.n in ff_steps %}<form method="post" action="/demo/fast-forward/{{ st.n }}" class="ff-form"><button class="button is-small is-text ff" data-ff="{{ st.n }}" title="Plays the steps before it with the demo's scripted choices">Fast-forward the demo to here</button></form>{% endif %}
         {% if active_step and active_step.n == st.n and st.screens|length > 1 %}
         <ul>{% for sc in st.screens %}<li class="{{ 'here' if screen and sc.route == screen.route }}"><a href="{{ sc.route }}">{{ sc.title }}</a></li>{% endfor %}</ul>
         {% endif %}
       </li>
     {% endfor %}
     </ol>
-    <form method="post" action="/demo/reset"><button class="button is-small is-fullwidth">Start demo (reset)</button></form>
+    <a class="button is-small is-fullwidth" href="/demo/start?back={{ request.url.path | urlencode }}">Start demo (reset)</a>
   </aside>
   <main class="content-area">
+    {% if walk_gate %}{{ gate_card(walk_gate) }}{% elif gate %}<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>{% endif %}
     {% if screen %}
     <details class="narration" open id="narration">
       <summary>Narration: {{ active_step.n }}. {{ active_step.title }} · {{ screen.title }}</summary>
@@ -61,6 +67,8 @@
     <a href="/timeline#rec-CP-35">CP-35</a>: {{ cp35.rule }} <a href="{{ cp35.link }}" target="_blank" rel="noopener">Read the finding</a></p>
   <p class="meta">Live model spend so far ${{ '%.4f' % live_spend }} of the ${{ '%.0f' % spend_cap }} cap · <a href="{{ review_url }}">Review documents</a></p>
 </footer>
+<script>/* on a phone the narration starts folded, so the screen itself shows first */
+if (window.matchMedia("(max-width: 760px)").matches) { var n = document.getElementById("narration"); if (n) n.removeAttribute("open"); }</script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

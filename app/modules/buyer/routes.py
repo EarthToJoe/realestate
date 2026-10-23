@@ -15,7 +15,7 @@ from app.db import get_session
 from app.models import Document, Message
 from app.modules.buyer import service
 from app.records import service as records
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -45,7 +45,7 @@ def _messages(s, deal):
 def intake(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     base = _base(request, s, deal)
     if deal.buyer_id and persona(request) in ("buyer", "presenter"):
         log_access(s, persona=persona(request), person_id=deal.buyer_id, fields=["legal_name"],
@@ -84,7 +84,7 @@ async def sign(request: Request, s=Depends(get_session)):
 def search(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None or not deal.buyer_id:
-        return RedirectResponse("/buyer", status_code=303)
+        return gate_page(request, s)
     base = _base(request, s, deal)
     crit = service.default_criteria(s, deal)
     if not base["see_private"]:
@@ -114,7 +114,7 @@ async def alert(request: Request, s=Depends(get_session)):
 def tour(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None or not deal.buyer_id:
-        return RedirectResponse("/buyer", status_code=303)
+        return gate_page(request, s)
     return render(request, s, "buyer/tour.html", listing=service.firm_listing(deal), msgs=_messages(s, deal),
                   cp28=records.latest(s, deal.id, "CP-28"), cp10=records.latest(s, deal.id, "CP-10"),
                   **_base(request, s, deal))
@@ -139,7 +139,7 @@ async def consent(request: Request, s=Depends(get_session)):
 def offer(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None or not deal.buyer_id:
-        return RedirectResponse("/buyer", status_code=303)
+        return gate_page(request, s)
     cp18s = records.records(s, deal.id, "CP-18")
     return render(request, s, "buyer/offer.html", cp18=cp18s[-1] if cp18s else None, cp18s=cp18s,
                   cp31=records.records(s, deal.id, "CP-31"),

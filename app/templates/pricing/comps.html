@@ -3,7 +3,7 @@
 <h1 class="title is-4">2. Pricing: comparable sales and adjustments</h1>
 <p class="tag is-warning is-medium" id="cma-label">{{ label }}</p>
 {% if gate %}
-<div class="notification is-warning" id="gate"><b>Refused for now:</b> {{ gate }}</div>
+{# the gate card in base.html shows what is missing #}
 {% else %}
 {% set sm = pa.summary %}
 <p style="margin-top:8px">The AI took <b>{{ sm.count }} arm's-length one-family sales</b>

@@ -26,7 +26,7 @@ steps:
         marker: none
       - route: /intake/disclosures
         title: Disclosure checklist
-        click: Switch persona to Seller, answer the disclosure questions, click "Submit my answers".
+        click: Tap "Decide as the seller" on the CP-04 card if you want to show the seller's form; it can wait for step 7.
         say: >-
           The AI works out which disclosures this house needs from the facts: lead paint is not required because
           it was built in 1995, and it is not in an agricultural district. The Property Condition Disclosure is
@@ -63,7 +63,7 @@ steps:
       - route: /pricing/advice
         title: The AI's advice, net sheet and the seller's price
         click: >-
-          Click "Let the AI recommend a price". Switch persona to Seller and click "Choose this list price". (Try
+          Click "Let the AI recommend a price". Tap "Decide as the seller" and click "Choose this list price". (Try
           step 3 first: the copy refuses to start until the seller chooses.)
         say: >-
           The AI explains the method in plain words, names the weaker sales, and recommends a list price with its

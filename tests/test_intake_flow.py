@@ -125,7 +125,7 @@ def test_reset_starts_a_fresh_demo_and_keeps_spend(client, session):
 
     before = session.query(ModelCall).count()
     r = client.post("/demo/reset", follow_redirects=False)
-    assert r.status_code == 303 and r.headers["location"] == "/intake?demo=1"
+    assert r.status_code == 303 and r.headers["location"] == "/intake?demo=1&started=1"
     session.expire_all()
     assert current_deal(session) is None
     assert session.query(ModelCall).count() == before

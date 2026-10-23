@@ -10,7 +10,7 @@ from app.model.provider import ReplayMiss, SpendCapReached
 from app.modules.pricing import service
 from app.records import service as records
 from app.records.service import GateError
-from app.web import current_deal, persona, render
+from app.web import current_deal, gate_page, persona, render
 
 router = APIRouter()
 
@@ -36,7 +36,7 @@ def _ctx(s, deal) -> dict:
 def comps(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     return render(request, s, "pricing/comps.html", **_ctx(s, deal))
 
 
@@ -44,7 +44,7 @@ def comps(request: Request, s=Depends(get_session)):
 def advice(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     return render(request, s, "pricing/advice.html", **_ctx(s, deal))
 
 

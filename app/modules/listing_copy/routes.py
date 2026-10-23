@@ -11,7 +11,7 @@ from app.model.provider import ReplayMiss, SpendCapReached
 from app.modules.listing_copy import pdf, service
 from app.records import service as records
 from app.records.service import GateError
-from app.web import current_deal, render
+from app.web import current_deal, gate_page, render
 
 router = APIRouter()
 
@@ -46,7 +46,7 @@ def _page(request, s, deal, status_code=200, **extra):
 def drafts(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     return _page(request, s, deal)
 
 
@@ -113,7 +113,7 @@ def ready_all(request: Request, s=Depends(get_session)):
 def mls(request: Request, s=Depends(get_session)):
     deal = current_deal(s)
     if deal is None:
-        return RedirectResponse("/intake", status_code=303)
+        return gate_page(request, s)
     remarks = next((a for a in service.artifacts(s, deal) if a.channel == "mls_remarks"), None)
     res = fh.latest_result(s, "copy_artifact", remarks.id) if remarks else None
     return render(request, s, "copy/mls.html", gate=_gate(s, deal), remarks=remarks,
