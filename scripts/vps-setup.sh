@@ -82,12 +82,12 @@ trusted || { echo "Trust flag was lost; re-applying and restarting."; trust; sys
 
 echo "== 4. API billing for this session (Joe, 2026-10-23: all of this project's work runs on the API credit)"
 if [ -f /srv/realestate/secrets/claude-code.env ]; then
-  echo "API key already stored; this session bills the API."
+  echo "API key already stored; heavy work bills the credit via scripts/api-run.sh."
 elif [ -t 0 ]; then
   echo "You need an API key from console.anthropic.com (API keys, Create key). Nothing is shown while you paste it."
   read -r -p "Store the Anthropic API key now so THIS session uses the \$200 credit? [Y/n] " yn
   [ -z "$yn" ] && yn=y
-  case "$yn" in y|Y) bash "$PROJ/scripts/secret-set.sh" ANTHROPIC_API_KEY ;; *) echo "Skipped. Later: ssh -t vps sudo bash $PROJ/scripts/secret-set.sh ANTHROPIC_API_KEY" ;; esac
+  case "$yn" in y|Y) bash "$PROJ/scripts/secret-set.sh" ANTHROPIC_API_KEY; bash "$PROJ/scripts/session-billing.sh" off ;; *) echo "Skipped. Later: ssh -t vps sudo bash $PROJ/scripts/secret-set.sh ANTHROPIC_API_KEY" ;; esac
 else
   echo "Not interactive; skipped. Later: ssh -t vps sudo bash $PROJ/scripts/secret-set.sh ANTHROPIC_API_KEY"
 fi

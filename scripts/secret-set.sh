@@ -23,7 +23,7 @@ if [ $remove = 1 ]; then
   if [ "$NAME" = ANTHROPIC_API_KEY ]; then
     rm -f -- "${SEC:?}/claude-code.env" "${DROPIN:?}"; systemctl daemon-reload
     systemctl is-active --quiet "$UNIT" && systemctl restart "$UNIT"
-    echo "API billing off for the realestate session (back to the logged-in account)."
+    echo "API key removed; nothing bills the credit until it is stored again."
   fi
   echo "Removed $NAME."; exit 0
 fi
@@ -37,12 +37,6 @@ echo "Stored $SEC/$NAME (root only)."
 
 if [ "$NAME" = ANTHROPIC_API_KEY ]; then
   printf 'ANTHROPIC_API_KEY=%s\n' "$VALUE" > "$SEC/claude-code.env"
-  install -d -m 755 "$(dirname "$DROPIN")"
-  cat > "$DROPIN" <<CONF
-# Written by scripts/secret-set.sh. Only the realestate session reads this file.
-[Service]
-EnvironmentFile=-$SEC/claude-code.env
-CONF
   # Pre-approve the key so Claude Code does not park on "Do you want to use this API key?" at every start.
   # Claude Code records approvals as the key's last 20 characters in /root/.claude.json.
   python3 - "$VALUE" <<'APPROVE'
@@ -58,8 +52,7 @@ with os.fdopen(fd, 'w') as f: json.dump(d, f, indent=2)
 os.chmod(tmp, 0o600); os.replace(tmp, p)
 print("API key pre-approved in /root/.claude.json")
 APPROVE
-  systemctl daemon-reload
-  if systemctl is-active --quiet "$UNIT"; then systemctl restart "$UNIT"; fi
-  echo "The realestate session now bills the API key (check with /status inside the session: it should say API key)."
-  echo "Other sessions are untouched."
+  echo "Key stored. Heavy work now bills the credit through scripts/api-run.sh; the chat session stays on the"
+  echo "claude.ai login so it appears in the Claude app. (scripts/session-billing.sh on would bill the chat session"
+  echo "itself, at the cost of losing Remote Control.)"
 fi

@@ -53,3 +53,9 @@ with a dated line.
 11. **Lifeboat branch, with permission.** Joe allowed GitHub use; the work is pushed to `realestate-lifeboat`
     in the `shorts` repo (the app cannot create repos). It is a parking spot, not a home: `scripts/repoint-
     origin.sh` moves the VPS clone to `EarthToJoe/realestate` once Joe creates it, and the branch is deleted.
+12. **Chat session on claude.ai, heavy work on the API key (2026-10-23, evening).** Joe's two wishes, reach
+    the session from the Claude app and bill the credit, collide inside one process: Claude Code disables
+    Remote Control while `ANTHROPIC_API_KEY` is set (observed on the VPS: "claude.ai connectors are disabled").
+    Resolution: the interactive session runs on the claude.ai login (`scripts/session-billing.sh off`) and
+    launches headless jobs with `scripts/api-run.sh`, each billed to the key and cost-logged per workstream
+    tag; the POC app bills the key directly. The chat's own orchestration is the only Max usage.

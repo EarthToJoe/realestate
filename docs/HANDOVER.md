@@ -1,10 +1,12 @@
 # Handover to the VPS session (read this first)
 
 You are the **realestate** Remote Control session on Joe's VPS, in `/root/projects/realestate`. Joe wants
-all of this project's work billed to his $200 API credit (expires 2026-11-08), so this session runs on the
-API key stored by `scripts/secret-set.sh`. First thing: run `/status` and confirm it says the API key is in
-use; if it says a claude.ai login, tell Joe the key step was skipped and give him the one command
-(`ssh -t vps sudo bash /root/projects/realestate/scripts/secret-set.sh ANTHROPIC_API_KEY`).
+all of this project's work billed to his $200 API credit (expires 2026-11-08). Because Remote Control is
+disabled when an API key sits in the chat session's environment, the split is: **you orchestrate on the
+claude.ai login; every substantial task runs as a headless job via `bash scripts/api-run.sh --tag WS<n>
+"<prompt>"`, billed to the credit and cost-logged.** Write each job's prompt as a complete brief (goal, files
+to read, file to write, method file to follow, done-when), since the job starts with only CLAUDE.md and the
+prompt. Review what comes back, commit, push, repeat.
 
 ## What the cloud session did on 2026-10-23 (day 1)
 
@@ -45,8 +47,8 @@ appending findings to the same files under a dated "Gap fill" heading.
    `WS6-free-inspection.md`. Method: `docs/research/method/report-writer.md`. Each answers the workstream's
    exact ask in `docs/BRIEF.md`, keeps the source labels, and does not soften. WS1 must give every function an
    ID (F1, F2, ...) and a classification (fully automatable / partially / human or licence required); WS2 must
-   give every constraint an ID (L1, L2, ...). Those IDs feed `docs/TRACEABILITY.md`. Use subagents for the
-   writing so your own context stays clean; one subagent per workstream, in parallel.
+   give every constraint an ID (L1, L2, ...). Those IDs feed `docs/TRACEABILITY.md`. Launch one `scripts/api-run.sh --tag WS<n>` job per workstream, in parallel (`&` then `wait`), so the
+   writing bills the credit and your own context stays clean.
 4. Update `docs/ASSUMPTIONS.md`: a dated status line per assumption, saying which kill criteria were hit,
    dodged or still open, with a link to the deliverable.
 5. Write `docs/PLAN.md` (phases, costs, open questions, human-in-the-loop map) and

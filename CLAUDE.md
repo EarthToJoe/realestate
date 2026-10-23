@@ -14,11 +14,17 @@
   at the start of every session and before any install, build, download or large write. Under 6 GB free:
   warn Joe in `docs/PROGRESS.md` and in your next reply. Under 3 GB: stop anything disk-heavy and tell Joe
   what to free or upgrade. Never reduce the depth or quality of work because of disk; that is Joe's call.
-- **Billing.** Joe wants the $200 API credit (expires 2026-11-08) used before Max. The key is read only
-  through the systemd drop-in for `claude-remote@realestate` (file `/srv/realestate/secrets/claude-code.env`)
-  and by the POC app. Never put `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_BASE_URL` or
-  `apiKeyHelper` in a shell profile, `~/.claude/settings.json`, `/root/.claude.json` or anywhere another
-  session reads. Do not conserve tokens (Joe: thoroughness over cost); do use `/clear` between unrelated tasks.
+- **Billing (two layers, Joe 2026-10-23: all work on the $200 API credit, expires 2026-11-08).** This chat
+  session runs on the claude.ai login because Remote Control (what makes it appear in Joe's app) is disabled
+  whenever an API key is in its environment. So the chat session only orchestrates and reviews: **every
+  substantial piece of work (writing a deliverable, the plan, the summary, building or testing the POC) is
+  launched as a headless job with `bash scripts/api-run.sh --tag WS<n> "<full task prompt>"`**, which bills
+  the credit and logs cost per tag to `/srv/realestate/spend.jsonl` (`scripts/spend-summary.sh` makes the
+  table for `docs/SPEND-LOG.md`). Several jobs can run at once with `&`. The POC app reads the same key from
+  `/srv/realestate/secrets/ANTHROPIC_API_KEY`. Never put `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`,
+  `ANTHROPIC_BASE_URL` or `apiKeyHelper` in a shell profile, `~/.claude/settings.json`, `/root/.claude.json`
+  or anywhere another session reads. Do not conserve tokens (Joe: thoroughness over cost); do use `/clear`
+  between unrelated tasks in this chat.
 - **Working practices (from the brief):** success criteria before building; riskiest assumptions first with
   kill criteria reported plainly; every feature traces to a WS1 function and a WS2 constraint; every decision
   logged with reasoning; daily summary in `docs/PROGRESS.md`; questions in `docs/QUESTIONS-FOR-JOE.md` with a
