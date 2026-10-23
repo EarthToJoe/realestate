@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="title is-4">8. Buyer side: search and alerts</h1>
+<p>Fictional listings plus this firm's own listing. Filters on the home's facts only ({{ filters | join(', ') | replace('_', ' ') }}):
+there is no school-rating, neighbourhood or people filter, so the search cannot steer (L37).</p>
+<form method="post" action="/buyer/alert" class="box" id="search-form">
+  {% if see_private %}<label>Price up to $<input name="max_price" size="8" value="{{ criteria.max_price }}"></label>{% endif %}
+  <label>Bedrooms at least <input name="beds_min" size="2" value="{{ criteria.beds_min }}"></label>
+  <label>Acres at least <input name="acres_min" size="3" value="{{ criteria.acres_min }}"></label>
+  <p>{% for t in towns %}<label class="checkbox"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if t in criteria.towns }}> {{ t }}</label> {% endfor %}</p>
+  <button class="button is-info" id="send-alert">Save the search and let the AI send the alert</button>
+</form>
+<table class="table is-narrow is-fullwidth is-striped" id="matches">
+  <thead><tr><th>Listing</th><th>Town</th><th>Price</th><th>Beds / baths</th><th>Sq ft</th><th>Acres</th><th>Style, year</th><th>Systems</th><th>Days listed</th></tr></thead>
+  <tbody>
+  {% for x in matches %}
+  <tr data-listing="{{ x.id }}" class="{{ 'firm' if x.firm_listing }}"><td>{{ x.label }}<br><small>{{ x.street }}</small>
+    {% if x.firm_listing %}<br><span class="tag is-warning is-light">the firm's own listing: dual agency if you pursue it</span>{% else %}<br><span class="tag is-light">fictional</span>{% endif %}</td>
+    <td>{{ x.town }}</td><td>${{ '{:,}'.format(x.price) }}</td><td>{{ x.beds }} / {{ x.baths }}</td><td>{{ '{:,}'.format(x.sqft) }}</td>
+    <td>{{ x.acres }}</td><td>{{ x.style }}, {{ x.year_built }}</td><td><small>{{ x.heat }}; {{ x.water_sewer }}</small></td><td>{{ x.days_on_market }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<h2 class="title is-6" id="alerts">Messages to the buyer</h2>
+{% for m in msgs %}
+<div class="box msg msg-out" data-status="{{ m.status }}" data-topic="{{ m.topic }}">
+  <p><b>Buyer's AI to {{ m.party }}</b> <span class="tag is-light">{{ m.topic }}</span>
+    <span class="tag {{ 'is-info' if m.status == 'sent' else 'is-danger' }}">{{ 'sent (simulated)' if m.status == 'sent' else m.status }}</span>
+    <span class="tag is-light">fair-housing: {{ m.extra.fair_housing }}</span></p>
+  <p style="white-space:pre-line">{{ m.body }}</p>
+  <p class="identity-block"><small>{{ m.extra.identity_block }}</small></p>
+</div>
+{% else %}<p class="help">No alert sent yet.</p>{% endfor %}
+<p><a class="button is-info" href="/buyer/tour">Next: ask for a tour &rarr;</a></p>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, decision, chip with context %}
+{% block content %}
+<h1 class="title is-4">8. Buyer side: intake and representation</h1>
+<p>The same system, the buyer's side. The AI becomes the buyer's agent: a separate AI context that never sees the
+seller's limits, as the seller's AI never sees the buyer's (information wall, decision 24).</p>
+{% if not has_buyer %}
+{% if error %}<div class="notification is-danger is-light">{{ error }}</div>{% endif %}
+<p><a class="button is-light is-small" href="/buyer?demo=1" id="use-demo-buyer">Use the demo buyer (fictional)</a></p>
+<form method="post" action="/buyer" class="box" id="buyer-form">
+  <p class="label">About you</p>
+  <div class="columns">
+    <div class="column"><label>Name <input class="input is-small" name="name" value="{{ demo.name if demo }}"></label></div>
+    <div class="column"><label>E-mail <input class="input is-small" name="email" value="{{ demo.email if demo }}"></label></div>
+    <div class="column"><label>Phone <input class="input is-small" name="phone" value="{{ demo.phone if demo }}"></label></div>
+  </div>
+  <p class="label">The home you want</p>
+  <label>Bedrooms, at least <input class="input is-small" name="beds_min" size="3" value="{{ demo.beds_min if demo }}"></label>
+  <label>Acres, at least <input class="input is-small" name="acres_min" size="3" value="{{ demo.acres_min if demo }}"></label>
+  <p>Towns: {% for t in towns %}<label class="checkbox"><input type="checkbox" name="towns" value="{{ t }}" {{ 'checked' if demo and t in demo.towns }}> {{ t }}</label> {% endfor %}</p>
+  <label>Must-haves (the home itself) <input class="input is-small" name="must_haves" value="{{ demo.must_haves if demo }}"></label>
+  <label>Timeline <input class="input is-small" name="timeline" value="{{ demo.timeline if demo }}"></label>
+  <p class="label" style="margin-top:8px">Money</p>
+  <label>Pre-approved for a mortgage? <select name="preapproved"><option value="yes" {{ 'selected' if demo and demo.preapproved == 'yes' }}>Yes</option><option value="no">No</option></select></label>
+  <label>Pre-approval amount $<input class="input is-small" name="preapproval_amount" size="8" value="{{ demo.preapproval_amount if demo }}"></label>
+  <p class="label" style="margin-top:8px">Private, for your AI only (never in an offer, never shown to the seller's side)</p>
+  <label>The most you would pay $<input class="input is-small" name="max_price" size="8" value="{{ demo.max_price if demo }}"></label>
+  <label>Private notes <input class="input is-small" name="private_notes" value="{{ demo.private_notes if demo }}"></label>
+  <p class="help">This form asks about the home and the money only. It never asks about family, children, religion,
+    national origin, disability, age or any other protected characteristic, and the search has no school-rating or
+    neighbourhood filter (fair housing, L37).</p>
+  <button class="button is-warning" style="margin-top:8px">Become a client of the firm</button>
+</form>
+{% else %}
+<div class="box" id="buyer-profile">
+  <p><b>Buyer:</b> {% if buyer %}{{ buyer.legal_name }}{% else %}Buyer 1 (name hidden from the {{ persona }}){% endif %}.
+    <b>Needs:</b> at least {{ needs.beds_min }} bedrooms and {{ needs.acres_min }} acres; towns {{ needs.towns | join(', ') }};
+    {{ needs.must_haves }}. Pre-approved: {{ 'yes' if needs.preapproved else 'no' }}{% if needs.preapproved %} (${{ '{:,}'.format(needs.preapproval_amount) }}){% endif %}.</p>
+  {% if private %}<p id="buyer-private"><b>Private to the buyer's side:</b> most they would pay ${{ '{:,}'.format(private.maximum_price) }}; {{ private.notes }}</p>
+  {% else %}<p id="buyer-private-hidden"><i>The buyer's private limits are hidden from the {{ persona }} (information wall).</i></p>{% endif %}
+</div>
+{% if cp30 %}{{ law_marker(cp30) }}{% endif %}
+<p>Sent at first contact (simulated): {% for c in cp24 %}{{ chip(c) }} {% endfor %}</p>
+<div class="box" id="buyer-agreement">
+  <p><b>Buyer agreement</b> (simulated e-sign; L15: before any tour)</p>
+  <ul>{% for t in agreement_terms.terms %}<li>{{ t }}</li>{% endfor %}</ul>
+</div>
+{% if cp16 %}{{ decision(cp16, persona, '/buyer/sign', labels={'sign': 'Acknowledge the agency form and sign the buyer agreement', 'decline': 'Decline'}) }}{% endif %}
+<p><a class="button is-info" href="/buyer/search">Next: search and alerts &rarr;</a></p>
+{% endif %}
+{% endblock %}

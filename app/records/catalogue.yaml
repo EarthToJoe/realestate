@@ -429,6 +429,7 @@ records:
     side: buyer
     rule: Advising the buyer on price and terms is the buyer's agent's fiduciary duty; unlicensed help may only prepare it.
     who: A licensed real estate broker
+    per_item: true
     f_ids: [F23, F44]
     l_ids: [L6, L18, L22]
     link: ws2

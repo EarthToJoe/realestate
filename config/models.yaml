@@ -13,4 +13,8 @@ tasks:
   fairhousing.review: {model: claude-haiku-5-5, max_tokens: 3000}
   inbox.reply: {model: claude-sonnet-5-5, max_tokens: 4000}
   offers.advise: {model: claude-sonnet-5-5, max_tokens: 6000}
+  buyer.alert: {model: claude-haiku-5-5, max_tokens: 2000}
+  buyer.offer_advise: {model: claude-sonnet-5-5, max_tokens: 6000}
+  buyer.counter_advise: {model: claude-sonnet-5-5, max_tokens: 6000}
+  contract.draft: {model: claude-sonnet-5-5, max_tokens: 32000}
   probe.mask_roundtrip: {model: claude-haiku-5-5, max_tokens: 400}

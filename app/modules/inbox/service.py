@@ -181,17 +181,19 @@ def in_window(auth: dict, slot: dict) -> bool:
     return bool(w and w[0] <= slot["hour"] < w[1])
 
 
-def _first_contact(s: Session, deal: Deal, thread: str) -> bool:
-    return not any(m.direction == "out" and m.thread == thread and m.status == "sent" for m in messages(s, deal))
+def _first_contact(s: Session, deal: Deal, thread: str, side: str = "seller") -> bool:
+    return not any(m.direction == "out" and m.thread == thread and m.status == "sent"
+                   for m in messages(s, deal, side))
 
 
 def send(s: Session, deal: Deal, provider: ModelProvider, *, thread: str, party: str, body: str, topic: str,
-         discusses_listing: bool, extra: dict | None = None) -> Message:
-    """Every outgoing message: fair-housing check on the exact text, identity block, CP-24 at first contact,
-    CP-09 when it discusses the listing. A failed check holds the message; it is never sent."""
-    first = _first_contact(s, deal, thread)
-    text = body + (f"\n\n{AGENCY_NOTE}" if first else "")
-    m = Message(deal_id=deal.id, thread=thread, direction="out", party=party, topic=topic, body=text,
+         discusses_listing: bool, extra: dict | None = None, side: str = "seller",
+         agency_note: str | None = None) -> Message:
+    """Every outgoing message, either side: fair-housing check on the exact text, identity block, CP-24 at first
+    contact, CP-09 when it discusses a listing. A failed check holds the message; it is never sent."""
+    first = _first_contact(s, deal, thread, side)
+    text = body + (f"\n\n{agency_note or AGENCY_NOTE}" if first else "")
+    m = Message(deal_id=deal.id, side=side, thread=thread, direction="out", party=party, topic=topic, body=text,
                 status="checking", extra={**(extra or {}), "identity_block": identity_block(deal.brokerage_id),
                                           "first_contact": first})
     s.add(m)
@@ -211,11 +213,11 @@ def send(s: Session, deal: Deal, provider: ModelProvider, *, thread: str, party:
                                                         "disclosure form and fair-housing notice sent (simulated)",
                             attached_to=f"message:{m.id}")
     if discusses_listing:
-        records.mark_law(s, deal.id, "CP-09", reason=f"AI sent a message on thread {thread} to {party} "
-                                                      f"({topic}) without the seller reviewing it",
+        records.mark_law(s, deal.id, "CP-09", reason=f"The {side}'s AI sent a message on thread {thread} to "
+                                                      f"{party} ({topic}) without the {side} reviewing it",
                          attached_to=f"message:{m.id}")
     record_event(s, actor="ai", kind="ai_action", entity="message", entity_id=m.id,
-                 summary=f"AI sent a reply on thread {thread} ({topic}, sent (simulated))")
+                 summary=f"The {side}'s AI sent a message on thread {thread} ({topic}, sent (simulated))")
     s.flush()
     return m
 

@@ -56,10 +56,11 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
     from app.modules.inbox.routes import router as inbox_router
     from app.modules.offers.routes import router as offers_router
     from app.disclosures.routes import router as pcds_router
+    from app.modules.buyer.routes import router as buyer_router
     from app.fairhousing.check import FairHousingBlocked
 
     for r in (intake_router, pcds_router, pricing_router, copy_router, channels_router, inbox_router, offers_router,
-              timeline_router):
+              buyer_router, timeline_router):
         app.include_router(r)
 
     @app.exception_handler(FairHousingBlocked)
@@ -86,6 +87,27 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
         try:
             return render(request, s, "refused.html", status_code=403, title="Refused: not your decision",
                           message=str(exc), code=None)
+        finally:
+            s.close()
+
+    @app.exception_handler(ValueError)
+    async def not_accepted(request: Request, exc: ValueError):
+        s = db.new_session()
+        try:
+            return render(request, s, "refused.html", status_code=422, title="Not accepted", message=str(exc),
+                          code=None)
+        finally:
+            s.close()
+
+    from app.model.provider import ReplayMiss, SpendCapReached
+
+    @app.exception_handler(ReplayMiss)
+    @app.exception_handler(SpendCapReached)
+    async def ai_unavailable(request: Request, exc: Exception):
+        s = db.new_session()
+        try:
+            return render(request, s, "refused.html", status_code=503, title="The AI's answer is not recorded",
+                          message=f"{exc} Nothing was changed.", code=None)
         finally:
             s.close()
 

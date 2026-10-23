@@ -41,13 +41,41 @@ def default(task: str, context: dict) -> dict:
                 "disclosed": ["oil heat", "private well and septic", "no central air"]}
     if task == "offers.advise":
         offers = context["offers"]
-        best = max(offers, key=lambda o: o["net_before_mortgage"])
+        pick = next((o for o in offers if o["label"] == "B"), offers[0])
+        lst = context["list_price"] or 640000
         return {"offers": [{"label": o["label"], "summary": f"${o['price']:,}, {o['financing']}.",
                             "risks": o["contingencies"][:2], "advice": "Workable; counter on price."}
                            for o in offers],
-                "recommendation": f"Work with offer {best['label']}: the highest net. Counter on price; keep its "
-                                  "terms. You decide.",
-                "suggested_counter_price": 640000, "suggested_lowest_price": 635000}
+                "recommendation": f"Work with offer {pick['label']}: shorter contingencies. Counter on price and the "
+                                  "closing date. You decide.",
+                "suggested_offer": pick["label"], "suggested_action": "counter",
+                "suggested_counter_price": lst, "suggested_lowest_price": lst - 10000,
+                "suggested_closing_days": 45, "suggested_terms": "Keep the inspection at 7 days; no requests."}
+    if task == "buyer.alert":
+        return {"message": f"{len(context['listings'])} homes match your search.",
+                "notes": [{"id": x["id"], "why": f"{x['beds']} bedrooms on {x['acres']} acres in {x['town']}."}
+                          for x in context["listings"]]}
+    if task == "buyer.offer_advise":
+        lst = context["listing"]["list_price"]
+        return {"advice": "Offer below the list price: the public sales support it, and the house has no central "
+                          "air. Keep the inspection and the well and septic tests.",
+                "recommended_price": lst - 20000, "walk_away_note": "You have room under your own maximum.",
+                "deposit_pct": 10, "financing": "Conventional mortgage, 25% down; pre-approval attached",
+                "mortgage_days": 30, "inspection_days": 7, "closing_days": 45,
+                "contingencies": ["mortgage commitment", "home inspection", "well and septic tests"],
+                "requests": [], "risks": ["Septic age unknown until tested"]}
+    if task == "buyer.counter_advise":
+        mine, theirs = context["buyer_offer"], context["seller_counter"]
+        mid = (mine["price"] + theirs["price"]) // 2 // 1000 * 1000
+        maximum = context["instructions"]["confidential"]["maximum_price"]
+        if theirs["price"] <= mine["price"] + 6000 or len(context["replies_sent"]) >= 1:
+            return {"advice": "The counter is close and within your limit: accept.", "action": "accept",
+                    "price": theirs["price"], "closing_days": theirs["closing_days"],
+                    "inspection_days": theirs["inspection_days"], "mortgage_days": theirs["mortgage_days"],
+                    "requests": theirs.get("requests") or []}
+        return {"advice": "Meet the seller part way.", "action": "counter", "price": min(mid, maximum),
+                "closing_days": theirs["closing_days"], "inspection_days": theirs["inspection_days"],
+                "mortgage_days": theirs["mortgage_days"], "requests": []}
     if task == "copy.draft":
         price = context.get("list_price") or 0
         return {"mls_remarks": "Raised ranch on 4.18 acres in Holmes with three bedrooms and three full baths, "

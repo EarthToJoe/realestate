@@ -295,5 +295,17 @@ class OfferState(Base):
     state: Mapped[dict | None] = mapped_column(JSON, info={"source": "ai"})
 
 
+class BuyerState(Base):
+    """Step 8: the buyer's side of the deal, one row per deal: the buyer's needs (non-confidential search
+    criteria), search results and alerts, the tour, the buyer's AI's advice and drafts, and the replies the buyer
+    approved. Side-scoped (decision 24): only the buyer's AI and the buyer's screens read it. The buyer's maximum
+    price lives in `client_instructions` (side buyer, confidential), never here."""
+
+    __tablename__ = "buyer_state"
+    id: Mapped[int] = mapped_column(primary_key=True, info=SYS)
+    deal_id: Mapped[int] = mapped_column(ForeignKey("deal.id"), info=SYS)
+    state: Mapped[dict | None] = mapped_column(JSON, info={"source": "buyer"})
+
+
 # Replays are not a table: they are JSON files under replays/ (committed, masked, no PII), so a recorded run
 # survives the demo reset and ships with the image. See app/model/provider.py.

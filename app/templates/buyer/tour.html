@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "components.html" import law_marker, human_required, decision with context %}
+{% block content %}
+<h1 class="title is-4">8. Buyer side: tour request</h1>
+<p>The buyer wants to see <b>{{ listing.street }}</b>, the firm's own listing at ${{ '{:,}'.format(listing.price) }}.
+No tour before a signed buyer agreement (L15): the code refuses it. Because the firm also acts for the seller, both
+clients must consent in writing to dual agency before the firm's buyer can make an offer (L13).</p>
+{% if cp16 and cp16.status != 'done' %}<div class="notification is-warning is-light" id="tour-blocked">A tour request is refused until the buyer signs
+  the buyer agreement (CP-16). <a href="/buyer#rec-CP-16">Sign it on the intake screen.</a></div>{% endif %}
+{% if not bstate.tour %}
+<form method="post" action="/buyer/tour" class="box" id="tour-form">
+  <label class="radio"><input type="radio" name="kind" value="self-guided" checked> Self-guided tour (if the seller allows it)</label>
+  <label class="radio"><input type="radio" name="kind" value="owner-hosted"> The owner shows the house</label>
+  <button class="button is-info" style="margin-left:8px" id="request-tour">Ask the AI to book a tour</button>
+</form>
+{% else %}
+<div class="notification is-success is-light" id="booked">Booked: {{ bstate.tour.when }}, {{ bstate.tour.kind }}. The seller's AI booked it inside the
+  seller's showing hours; the buyer's AI confirmed it to the buyer (fair-housing checked, identity block).</div>
+{% if cp28 %}{{ law_marker(cp28) }}{% endif %}
+{% if cp10 and bstate.tour.kind == 'owner-hosted' %}{{ human_required(cp10) }}{% endif %}
+{% endif %}
+{% if cp17 %}
+{{ decision(cp17, persona, '/buyer/consent', advice="Dual agency means one firm acts for both of you on this house: each side keeps its own AI and its own confidences, and neither AI may tell the other side's limits. You may decline; the buyer could then use another firm.", labels={'consent': 'Consent to dual agency', 'decline': 'Decline'}) }}
+{% endif %}
+<p><a class="button is-info" href="/buyer/offer">Next: the offer &rarr;</a></p>
+{% endblock %}

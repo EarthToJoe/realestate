@@ -1,0 +1,75 @@
+# Step 8 search: fictional listings for the buyer's search and alerts (spec section 3, step 8). Every one is
+# invented (labelled "fictional" on screen; no real address, no photo, no portal copy). The firm's own listing, the
+# demonstration house, is added by code from the deal with the seller's chosen price. Searchable fields are the
+# property's own facts only; there is no school-rating, neighbourhood or people filter (L37).
+listings:
+  - id: F1
+    label: Fictional listing F1
+    street: 10 Example Ridge Road (fictional)
+    town: Beekman
+    price: 589000
+    beds: 3
+    baths: 2
+    sqft: 1980
+    acres: 1.2
+    style: Colonial
+    year_built: 1988
+    heat: Oil, hot water
+    water_sewer: Well and septic
+    days_on_market: 21
+  - id: F2
+    label: Fictional listing F2
+    street: 4 Sample Pond Lane (fictional)
+    town: Pawling
+    price: 712000
+    beds: 4
+    baths: 3
+    sqft: 2890
+    acres: 2.6
+    style: Contemporary
+    year_built: 2001
+    heat: Propane, forced air
+    water_sewer: Well and septic
+    days_on_market: 34
+  - id: F3
+    label: Fictional listing F3
+    street: 77 Placeholder Hill Road (fictional)
+    town: Dover
+    price: 545000
+    beds: 3
+    baths: 2
+    sqft: 1760
+    acres: 5.1
+    style: Ranch
+    year_built: 1979
+    heat: Oil, hot water
+    water_sewer: Well and septic
+    days_on_market: 12
+  - id: F4
+    label: Fictional listing F4
+    street: 23 Demo Meadow Court (fictional)
+    town: East Fishkill
+    price: 668000
+    beds: 4
+    baths: 2.5
+    sqft: 2610
+    acres: 0.9
+    style: Colonial
+    year_built: 1997
+    heat: Gas, forced air
+    water_sewer: Public water and sewer
+    days_on_market: 8
+  - id: F5
+    label: Fictional listing F5
+    street: 5 Mock Orchard Way (fictional)
+    town: Union Vale
+    price: 629000
+    beds: 3
+    baths: 2.5
+    sqft: 2340
+    acres: 3.4
+    style: Cape Cod
+    year_built: 1993
+    heat: Oil, hot water
+    water_sewer: Well and septic
+    days_on_market: 45
