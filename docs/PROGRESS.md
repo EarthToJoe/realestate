@@ -22,6 +22,9 @@ and local trust is real but attaches to a person giving broad service, with two-
 referred or prior agent. Kill criteria K1 to K9 are written in the WS5c notes. The assumptions table in
 `ASSUMPTIONS.md` gets its dated status lines when the deliverables are written.
 
+**VPS session live (evening):** Joe ran the setup command; the `realestate` session is up on the API key. From its
+first prompt it works from `docs/HANDOVER.md`; the cloud session is done.
+
 **Handover.** Per Joe's instruction that all work runs on the API credit, the writing of the six deliverables,
 the plan and the executive summary moves to the VPS session (`docs/HANDOVER.md`), which Joe starts with one
 command (`QUESTIONS-FOR-JOE.md` Q2). The cloud session stops active work here unless Joe says "continue here".

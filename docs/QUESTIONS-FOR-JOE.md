@@ -12,7 +12,7 @@ You have my permission." With that, the work is pushed to a temporary branch `re
 `realestate`, owner EarthToJoe, **private**, no README. Then on the VPS, once:
 `bash /root/projects/realestate/scripts/repoint-origin.sh`. The lifeboat branch gets deleted after.
 
-**Q2. Start the VPS session (the one thing only you can do).** I cannot reach the VPS from the cloud (no
+**Q2. Start the VPS session. Done 2026-10-23: Joe ran the command; the session is up on the API key.** I cannot reach the VPS from the cloud (no
 SSH here; the VPS is only the `ssh vps` alias on your Mac). One command, run once. It clones from the real
 repo if it exists, else from the lifeboat branch; checks disk; sets up the always-on session; and asks for
 the API key with hidden input (press Enter to accept the default "yes").
@@ -77,4 +77,5 @@ extra work. Optional.
 
 ## Answered
 
+- 2026-10-23, Joe: VPS session `realestate` is up and billed to the API key (Q2, Q3 done).
 - 2026-10-23, Joe: "Use GitHub. You have my permission." and "I want all this setup work to be done using the API credit." (see Q1 and Q3).
