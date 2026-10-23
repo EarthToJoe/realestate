@@ -84,6 +84,7 @@ provider. A fully live run of the walk would cost about $0.50 (the Opus contract
 | BUILD-2 | Slice 2: pricing, listing copy and the fair-housing pipeline (39/39 planted phrases caught), marketing plan | 8.43 | API credit |
 | BUILD-3 | Slice 3, first half: pricing reconciled with the demo-house research ($610k to $650k), Step 5 Communications, Step 6 Offers | 3.95 | API credit |
 | BUILD-3 | Slice 3, second half: full PCDS form, Step 8 Buyer side, the offers rework, Step 7 Contract, models, replays, live walk; resumed with its context | notional (see `scripts/spend-summary.sh`) | Max plan |
+| BUILD-FIX | Demo usability fix: gate cards instead of redirects, fast-forward, "Decide as", phone layout; app live spend $0 (all replays) | see `scripts/spend-summary.sh` | as the runner chose (decision 22) |
 
 **Credit after BUILD-1: $171.26 spent; $15 reserved for the demo's own calls; $13.74 left for BUILD-2.** The app's
 own live calls so far: $0.001 (two Haiku calls recording the replay).

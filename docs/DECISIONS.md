@@ -266,3 +266,20 @@ with a dated line.
     floor, lowest price or motivation reaches a buyer-side call. On screen, the buyer's private limit is hidden from
     the seller persona, and the seller's advice and decision are hidden from the buyer persona. The Presenter sees
     both, so the wall can be shown.
+39. **A step link never redirects; the Presenter can fast-forward and "decide as" a client (2026-10-23,
+    BUILD-FIX).** Joe, on his phone, could not get past step 1: after Start demo every later step answered a silent
+    redirect to the intake, and later steps bounced again until a client decision was made under a persona nothing
+    on screen mentioned. Now:
+    - Every step screen renders. When it waits for something, a gate card says what is missing, on which step,
+      who must do it, with a button to go there. The service-layer gates and their tests are unchanged.
+    - The demo's walk is one list of milestones in walk order (`app/demo/walk.py`), each with a "done?" check and a
+      "play" that makes the same choices as `scripts/live-flow.sh` through the same service calls the screens use.
+      The gate card and the fast-forward both read it, so they cannot disagree.
+    - "Fast-forward the demo to here" (the card and the step list, Presenter only) plays the missing milestones
+      on the recorded replays ($0). Each client decision is recorded as the client's (the record service still
+      checks the persona). Chosen over replaying HTTP clicks inside the app, which would need a second client and
+      HTML scraping for the offer figures.
+    - "Decide as the seller/buyer" on each client-decision card switches the persona in one tap and returns to the
+      same card. The Presenter deciding directly is still refused (403).
+    - Start demo asks first. On a phone a numbered step bar sits at the top, buttons are at least 44 px and nothing
+      scrolls sideways, checked on every screen at 390 px by `scripts/phone-check.py`.

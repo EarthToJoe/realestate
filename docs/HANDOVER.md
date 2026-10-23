@@ -68,7 +68,11 @@ Slices 1 to 3 are live (BUILD-1 to BUILD-3): steps 1 to 9 except step 10 (busine
 type on hughesnode. The demo is walked 1 to 5, then 8 (buyer side), 6 and 7 (decision 34). See `README.md` ("The
 demo app") for the code map and commands, the architecture spec section 9 for what each slice must pass, and
 decisions 27 to 29 for hosting, try-first results and replays. After changing code: `make test`, commit,
-`bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh` (it walks steps 1 to 8). New model tasks go in
+`bash scripts/hosting.sh redeploy`, `bash scripts/live-flow.sh` (it walks steps 1 to 8), and for screen changes
+`scripts/phone-check.py https://realestate.hughesnode.com` (390 px). A new step or decision also needs its
+milestone in `app/demo/walk.py` (`WALK` and `NEEDS`), or its gate card and fast-forward will not know it
+(decision 39). The live flow ends with the shared deal walked to the signed contract: leave it that way for Joe's
+links. New model tasks go in
 `config/models.yaml`; record the whole walk's replays with `scripts/slice3-models.py record` (it runs the steps 1
 to 4 path of `scripts/slice2-models.py` first; replay first, misses live and recorded into `replays/`).
 

@@ -1,5 +1,24 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-23 (day 1), late: the demo works from a phone (BUILD-FIX)
+
+Joe could not get past step 1 on his phone: after **Start demo** every other step link silently bounced back to
+the intake. Fixed and live at https://realestate.hughesnode.com (decision 39):
+- **Every step link opens its own screen.** When a step needs an earlier one, a card says what is missing, on
+  which step, who does it (the AI, the seller or the buyer), with a button to go there.
+- **"Fast-forward the demo to here"** on that card and under each step in the step list (Presenter only). It plays
+  the earlier steps exactly as the demo script does, on the recorded AI answers ($0). Each seller or buyer
+  decision is recorded as theirs.
+- **"Decide as the seller" (or buyer)** on every decision card: one tap switches persona and returns to the card.
+  The Presenter still cannot decide for a client.
+- **Start demo asks first**, then opens step 1 with one line saying what to press.
+- **Phone:** numbered step bar at the top of every screen, buttons at least 44 px, nothing scrolls sideways, and
+  the narration starts folded.
+- **Checks:** 137 tests pass (19 new). `scripts/live-flow.sh` now also checks every step link after a reset (all
+  200, none redirects) and a fast-forward to the signed contract; it passes on the live site.
+  `scripts/phone-check.py` passes every screen at 390 px, locally and live. App live spend unchanged ($0 added).
+  The live deal is left walked through every built step. Disk: 16 GB free.
+
 ## 2026-10-23 (day 1), evening: slice 3 is live (contract and buyer side added)
 
 **See it:** https://realestate.hughesnode.com (house login). Press **Start demo** and walk steps 1 to 5, then
