@@ -24,7 +24,7 @@ stands in its way.
 - **One MLS membership reaches every portal.** OneKey MLS feeds Zillow, Realtor.com, Redfin and Homes.com free,
   costs about $3,821 in year one, and may not refuse a broker for offering less service. ([WS3](research/WS3-listing-data-access.md))
 - **The field is open here.** No online, discount or AI brokerage has an office in the eight counties, and nobody
-  anywhere does both sides. ([WS5](research/WS5-competitors.md#in-the-eight-counties-low-fee-rivals-are-remote-small-or-human))
+  here does both sides with software. ([WS5](research/WS5-competitors.md#in-the-eight-counties-low-fee-rivals-are-remote-small-or-human))
 - **People already try it alone.** In May 2026 a New York Times technology writer sold his Hudson Valley house for
   just over $600,000 with Google's Gemini, reckoned he kept about $90,000, and said the AI gave advice he had to
   catch. We do that properly, and checked. ([WS5](research/WS5-competitors.md#seller-side-ai-and-buyer-side-ai-both-exist-nobody-does-both-here))
