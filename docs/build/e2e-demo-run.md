@@ -4,37 +4,12 @@ Written by `scripts/e2e-demo.py`: headless Chromium on a local app in replay mod
 (an AI answer that is not recorded would fail the run), laptop 1280 x 800 and phone 390 x 844.
 Screenshots of every screen: `docs/build/screens/one-path/`.
 
-**Problems found: 24.**
-
-- laptop: 9 buttons or links without a label on /intake
-- laptop: 9 buttons or links without a label on /intake/profile
-- laptop: 9 buttons or links without a label on /intake/onboarding
-- laptop: 10 buttons or links without a label on /pricing
-- laptop: 10 buttons or links without a label on /copy
-- laptop: 16 buttons or links without a label on /channels
-- laptop: 9 buttons or links without a label on /inbox
-- laptop: 9 buttons or links without a label on /buyer
-- laptop: 10 buttons or links without a label on /buyer/offer
-- laptop: 10 buttons or links without a label on /offers
-- laptop: 13 buttons or links without a label on /contract
-- laptop: 28 buttons or links without a label on /timeline
-- phone: 22 buttons or links without a label on /intake
-- phone: 22 buttons or links without a label on /intake/profile
-- phone: 22 buttons or links without a label on /intake/onboarding
-- phone: 23 buttons or links without a label on /pricing
-- phone: 23 buttons or links without a label on /copy
-- phone: 29 buttons or links without a label on /channels
-- phone: 22 buttons or links without a label on /inbox
-- phone: 22 buttons or links without a label on /buyer
-- phone: 23 buttons or links without a label on /buyer/offer
-- phone: 23 buttons or links without a label on /offers
-- phone: 26 buttons or links without a label on /contract
-- phone: 41 buttons or links without a label on /timeline
+**Problems found: 0.**
 
 ## 1. The one-button walk
 
-- laptop: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 174.0 s on this machine.
-- phone: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 51.2 s on this machine.
+- laptop: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 106.0 s on this machine.
+- phone: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 91.4 s on this machine.
 
 ## 2. Back, change and unsaved typing (laptop)
 
@@ -61,5 +36,5 @@ Changing the list price re-opens the listing copy (step 5), the copy marked read
 | `/buyer` | 1 | 0 | 80 | 2456 |
 | `/buyer/offer` | 1 | 1 | 80 | 4320 |
 | `/offers` | 1 | 2 | 80 | 3179 |
-| `/contract` | 1 | 1 | 80 | 2713 |
+| `/contract` | 1 | 0 | 80 | 2713 |
 | `/timeline` | 1 | 0 | 80 | 2239 |

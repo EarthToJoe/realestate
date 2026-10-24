@@ -128,3 +128,7 @@ live calls at the meeting, and $1.36 the runner will not start a job with. From 
 recordings, so about $14.7 is left on the key for the meeting's live calls (the hosted demo replays at $0). Max plan,
 notional: BUILD-3 second half $21.95, BUILD-UX $10.22, BUILD-4 $18.92, BUILD-FIX $6.73, BUILD-POLISH $2.84; total
 $60.66 (what the API would have charged; the plan bills nothing extra).
+
+**2026-10-24, BUILD-PATH (the one-path rebuild, decisions 47 to 51):** Max plan, notional about $75 (the job and five
+parallel sub-agents for the screens). No live model calls: no request was re-recorded; the replay lookup now ignores
+database row ids, so the recorded answers cover the new order of steps. The app's own spend is unchanged.

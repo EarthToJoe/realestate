@@ -98,7 +98,7 @@ body.presenting.notes-open .layout { grid-template-columns: 230px minmax(0, 1fr)
 .flash::before { content: "\2713\00a0\00a0"; }
 
 /* The action bar (decision 47): Back on the left, the one primary button on the right, always in reach. */
-.actionbar { position: sticky; bottom: 0; z-index: 30; margin: 24px -32px 0; padding: 10px 32px; background: rgba(255,255,255,.97);
+.actionbar { position: sticky; bottom: 0; z-index: 30; margin: 24px -32px 0; padding: 10px 32px; background: var(--surface);
   border-top: 1px solid var(--line); box-shadow: 0 -6px 18px rgba(0,0,0,.06); display: flex; align-items: center; gap: 8px 16px; }
 .ab-back { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; color: var(--ink); font-weight: 600; white-space: nowrap; }
 .ab-right { display: flex; flex: 1; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 8px; }
