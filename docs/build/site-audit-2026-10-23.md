@@ -179,3 +179,78 @@ Two build jobs:
   The presenter's tools are off unless you are presenting.
 - **The research site:** `docs/build/jobs/2026-10-23-review-site.md`. Links, phone layout, tables of contents, and an
   index that opens on the demo, the executive summary and the memo.
+
+## Fixed (BUILD-PATH, 2026-10-24; decisions 47 to 51)
+
+The demo was rebuilt as one path of 11 steps, a finale and "one more thing" (decision 51's table), with one action
+bar per screen. Results of the acceptance run are in `docs/build/e2e-demo-run.md`; screenshots of every screen at 390
+and 1280 px are in `docs/build/screens/one-path/`. Finding by finding (this audit, then the separate reviewer's):
+
+**1. Broken**
+1. Step 1 forgets: fixed. The form re-opens with what was saved (`intake.saved_input`); a new sale opens with the demo
+   house. Tested (`test_step_1_reopens_filled_in…`, the browser back-step test).
+2. Sending step 1 again starts a second sale: fixed. The same house and deal are updated; contact details at once, the
+   house only after a confirm naming what is redone. Tested (one deal after re-sends; mid-sale name change).
+3. Next never saves: fixed. Every other "Next" is gone; the one button saves and moves on; typing then leaving asks
+   "Leave without saving?" (`app/static/app.js`). Tested in the browser.
+4. Nothing can be changed: fixed. "Change" on every client decision; superseded records, only dependents re-open,
+   the change on the timeline. Tested (`test_changing_the_price_…`).
+5. "Next" buttons disagree: fixed by construction: the next screen comes from the walk only.
+6. The progress list is wrong: fixed. Done ✓ only when every milestone on the step is done; the timeline is the
+   finale, not a step; the disclosure form belongs to step 11. Tested (`test_the_progress_list_is_honest`).
+7. Broken layout: the offer's terms are a `table.terms` with a minimum label column, stacked on a phone; intake fields
+   are at least 220 px wide.
+8. The notes cover the product: fixed. Notes only when presenting, in a column that narrows the content (laptop) or a
+   bottom sheet that starts closed (phone). Checked in the browser (the notes' left edge is right of the content).
+9. The research site: the other job (BUILD-SITE).
+
+**2. Confusing**
+10. "Who am I?": View as is in the menu; every decision button names the client and works (decision 49, Q51).
+11. ⏩ icons: gone; skip ahead is on the "not yet" card and in the menu, presenting only.
+12. "Do this screen for me" shows no result: it now opens with a one-line confirmation of what it played.
+13. No ending: the finale, "The whole sale, start to finish", with "Start over", "Read the plan" and "One more thing".
+14. Jargon: record codes, L-codes, "(stub)", "Buyer 1", repeated "(simulated)", doubled channel labels and the home
+    page's "bottom right" removed from the visitor's layer; "Recorded on the deal timeline…" said once. Tested (no codes
+    in the visible text of any screen; `test_the_visitors_layer_…` and the browser run).
+15. Why offer B: one line on screen from the recorded advice.
+16. The landing page's button: drawn as an inert picture, labelled as the mock's.
+
+**3. Crowded**
+17-20. Phone chrome is one line plus one bar (the content starts under 90 px; measured per screen in the run); the
+    laptop's side panel holds only the progress list and "Start over"; the footer is one line; the three layers are
+    separated (product by default, presenter opt-in). 21. 20 screens → 11 steps. 22. Communications keeps the two
+    seller decisions, the thread list (one open) and the messages marker; the other cards are in a fold. The pricing
+    advice opens on the recommendation; the reasoning is folded. The channel board is 7 rows.
+
+**4. Missing**: saved forms and Change, one Continue, "Leave without saving?", "The AI is working…", the one-line
+confirmation, honest progress, an ending and "Continue where you left off", and the visitor's line on every screen:
+all built.
+
+**5. The separate reviewer's findings**
+- An off-script figure: in a recorded demo every free figure is the recorded one, with one line saying so; a
+  different one is refused in plain words before anything is saved, with "Put the recorded figure back"
+  (`app/demo/recorded.py`). Tested for the price.
+- Refresh after "mark copy ready": every POST redirects to its screen; a GET to an action's address lands on its
+  screen. Tested.
+- "Re-check" un-readies passing copy: fixed in `listing_copy.check`; re-check is a presenter's tool.
+- The demo house's answers vanish: the form is always pre-filled; no look-alike placeholders.
+- "Start" asks to reset on a first visit: fixed. Tested.
+- The Seller-view dead end on the MLS entry: the person's step works from any view.
+- Decisions played by the demo: marked "(played by the demo)" on the card and the timeline. Tested.
+- Two clocks and two counters: deal times only (recording time in the tooltip); "Step n of 11" only.
+- Contradictions: the comparables' fold explains the adjusted spread against the range; the MLS headline names what is
+  missing; the copy headline never reads "0 ready" as a failure; the profile says "added 6 facts and worked out 3
+  more"; onboarding no longer says "four things".
+- Pricing jargon: plain words outside the folds.
+- Names: "Offer A, from another firm's buyer"; "Offer B, from the firm's own buyer"; "the buyer".
+- The negotiation on step 6: the buyer's reply is on step 10, where the path is.
+- Accessibility: every button and link has text (the run counts unlabelled ones); chrome text 16 px; radios, folds,
+  footer links and the spotlight's buttons at least 44 px.
+- Form errors: next to the field, saying what to enter.
+- "Plant a violation" and "Try a bolder headline": in the presenter's tools.
+- The contract's print view, PDF and DOCX with no sale: the "not yet" card, never a 500. Tested.
+- The slow contract PDF: each version's PDF is cached in memory (never on disk: it carries names) and built ahead
+  in the background once a draft exists.
+
+**Not fixed, and why**
+- The research-site findings belong to BUILD-SITE.

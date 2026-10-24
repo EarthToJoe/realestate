@@ -88,6 +88,24 @@ def request_hash(req: dict) -> str:
     return hashlib.sha256(json.dumps(stable, sort_keys=True).encode()).hexdigest()
 
 
+def _strip_ids(v):
+    if isinstance(v, dict):
+        return {k: _strip_ids(x) for k, x in v.items() if k != "message_id"}
+    if isinstance(v, list):
+        return [_strip_ids(x) for x in v]
+    return v
+
+
+def content_hash(req: dict) -> str:
+    """The request's hash without the database's own row ids (a message's id is not part of what the AI is told
+    about: it shifts when an earlier step adds a message, e.g. the seller answering the questions put to them)."""
+    try:
+        user = json.dumps(_strip_ids(json.loads(req["user"])), sort_keys=True, ensure_ascii=False)
+    except (ValueError, TypeError):
+        user = req["user"]
+    return request_hash({**req, "user": user})
+
+
 def live_spend(s: Session) -> float:
     total = s.execute(select(func.coalesce(func.sum(ModelCall.cost_usd), 0.0)).where(ModelCall.mode == "live"))
     return float(total.scalar_one())
@@ -131,6 +149,19 @@ class ReplayStore:
             if p.exists():
                 return json.loads(p.read_text())
         return None
+
+    def get_like(self, req: dict) -> dict | None:
+        """A recording of the same request up to row ids (`content_hash`), for when the exact one is missing."""
+        if getattr(self, "_like", None) is None:
+            self._like = {}
+            for d in reversed(self.read_dirs):
+                for f in sorted(d.glob("*.json")) if d.is_dir() else []:
+                    try:
+                        rec = json.loads(f.read_text())
+                        self._like[content_hash(rec["request"])] = rec
+                    except (ValueError, KeyError, TypeError):
+                        continue
+        return self._like.get(content_hash(req))
 
     def put(self, h: str, req: dict, output: dict) -> None:
         self.write_dir.mkdir(parents=True, exist_ok=True)
@@ -182,7 +213,7 @@ class ReplayProvider(ModelProvider):
         self.live = live
 
     def _call(self, req, h, schema, s):
-        rec = self.store.get(h)
+        rec = self.store.get(h) or self.store.get_like(req)
         if rec is None:
             if self.live is not None:
                 return self.live._call(req, h, schema, s)

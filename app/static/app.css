@@ -15,8 +15,9 @@
   --bulma-body-size: 1rem;
 }
 html { font-size: 16px; background: var(--bg); scroll-padding-top: 12px; scroll-padding-bottom: 96px; }
-body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 1rem; line-height: 1.55;
-       overflow-x: hidden; }
+/* No overflow on body: with Bulma's html { overflow-x: hidden } it made body a scroll box, and the sticky action
+   bar then sat at the foot of the page instead of the screen. html keeps the sideways guard. */
+body { font-family: var(--font); background: var(--bg); color: var(--ink); font-size: 1rem; line-height: 1.55; }
 a { color: var(--ai); } a:hover { text-decoration: underline; }
 h1, h2, h3, .title { color: var(--ink); font-family: var(--font); }
 .content-area h1, .page-title { font-size: 1.75rem; line-height: 1.25; font-weight: 700; margin: 0 0 .5rem; letter-spacing: -.01em; }
@@ -36,6 +37,7 @@ small, .small { font-size: .875rem; } .help { font-size: .9375rem; } .muted, .he
           border-bottom: 1px solid var(--line); position: relative; z-index: 35; }
 .topbar .brand { font-weight: 750; color: var(--ink); font-size: 1.05rem; text-decoration: none; white-space: nowrap; }
 .topbar .brand-short { display: none; }
+.topbar .tb-label { color: var(--muted); }
 .topbar .tb-where { flex: 1; min-width: 0; font-weight: 600; color: var(--muted); }
 .mode-badge { display: inline-flex; align-items: center; gap: 6px; font-size: .875rem; color: var(--ai);
               background: var(--ai-bg); border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
@@ -68,7 +70,7 @@ small, .small { font-size: .875rem; } .help { font-size: .9375rem; } .muted, .he
 
 .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 70vh; }
 body.presenting.notes-open .layout { grid-template-columns: 230px minmax(0, 1fr) 360px; }
-.progress { padding: 16px 12px; border-right: 1px solid var(--line); background: var(--surface); }
+.pathnav { padding: 16px 12px; border-right: 1px solid var(--line); background: var(--surface); }
 .steps-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin: 0 0 6px 6px; }
 .plist { list-style: none; margin: 0 0 6px; padding: 0; }
 .plist li > a { display: flex; align-items: center; gap: 10px; padding: 6px; color: var(--ink); border-radius: 8px;
@@ -84,12 +86,12 @@ body.presenting.notes-open .layout { grid-template-columns: 230px minmax(0, 1fr)
 .plist .st:empty { display: none; }
 .plist .ps-here .st { color: var(--accent); font-weight: 600; }
 .plist-end { border-top: 1px solid var(--line); padding-top: 6px; }
-.progress .start-over { display: flex; align-items: center; min-height: 44px; padding: 0 8px; margin-top: 8px; color: var(--muted); }
+.pathnav .start-over { display: flex; align-items: center; min-height: 44px; padding: 0 8px; margin-top: 8px; color: var(--muted); }
 
 .content-area { padding: 20px 32px 0; min-width: 0; max-width: 1040px; overflow-wrap: anywhere; }
 .content-area pre, .content-area code { white-space: pre-wrap; word-break: break-word; }
 .content-area img, .content-area iframe, .content-area .leaflet-container { max-width: 100%; }
-.eyebrow { font-size: 1rem; color: var(--muted); font-weight: 600; margin: 0 0 2px !important; }
+.eyebrow { display: none; font-size: 1rem; color: var(--muted); font-weight: 600; margin: 0 0 2px !important; }
 .explain { font-size: 1.125rem; color: var(--ink); margin: 0 0 14px !important; max-width: 70ch; }
 .flash { background: #eef6f1; border: 1px solid #bcd8ca; color: #174a38; border-radius: 10px; padding: 10px 14px;
   font-weight: 600; margin: 0 0 14px !important; max-width: none !important; }
@@ -366,17 +368,17 @@ mark.fh-block { background: #f9c9c4; border-bottom: 2px solid var(--law); } mark
   .content-area h1, .page-title { font-size: 1.4rem; }
   .home-hero .page-title { font-size: 1.55rem; }
   .content-area h2, .section-title { font-size: 1.15rem; }
-  .demo-mark { padding: 2px 10px; }
+  .demo-mark { padding: 2px 6px; font-size: .9375rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .demo-mark .dm-more { display: none; }
   .topbar { padding: 4px 10px; gap: 8px; }
-  .topbar .brand-long { display: none; } .topbar .brand-short { display: inline; font-size: 1rem; }
+  .topbar .brand-long, .topbar .tb-label { display: none; } .topbar .brand-short { display: inline; font-size: 1rem; }
   .topbar .tb-where { color: var(--ink); line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
   .menu > summary { padding: 0 12px; }
   .menu-panel { position: fixed; left: 8px; right: 8px; top: 64px; width: auto; max-height: calc(100vh - 80px); }
   .menu-steps { display: block; }
   .eyebrow { display: none; }
   .layout, body.presenting.notes-open .layout { display: block; }
-  .progress { display: none; }
+  .pathnav { display: none; }
   .content-area { padding: 12px 14px 0; }
   .explain { font-size: 1.0625rem; }
   .actionbar { margin: 20px -14px 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); gap: 6px 10px; }

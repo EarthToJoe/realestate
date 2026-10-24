@@ -251,7 +251,7 @@ class Run:
         page.fill("input[name=street]", "12 Typed Lane")
         seen = []
         page.once("dialog", lambda d: (seen.append(d.message), d.dismiss()))
-        page.click('.progress a[href="/pricing"]')
+        page.click('.pathnav a[href="/pricing"]')
         page.wait_for_timeout(500)
         self.walks["unsaved_prompt"] = seen[:1]
         if not seen or "Leave without saving?" not in seen[0]:
@@ -284,8 +284,9 @@ class Run:
         # Do this screen for me, screen by screen to the end, with the notes open beside the content
         for route in ("/offers", "/contract", "/timeline"):
             page.goto(self.base + route, wait_until="load")
-            page.click("#menu > summary")
-            page.click("#menu [data-notes-toggle]")
+            if not page.is_visible("#presenter-notes"):  # remembered open from the screen before, on a laptop
+                page.click("#menu > summary")
+                page.click("#menu [data-notes-toggle]")
             if not page.is_visible("#presenter-notes"):
                 self.problems.append(f"{name}: the presenter notes did not open on {route}")
             elif vp["width"] > 760:
@@ -374,8 +375,11 @@ def run(widths=(LAPTOP, PHONE), shots: bool = True, base: str | None = None, ful
         for name, vp in widths:
             r.walk(b, name, vp, back_step=full and name == "laptop")
         if full:
-            r.presenting(b, "laptop", LAPTOP[1])
-            r.presenting(b, "phone", PHONE[1])
+            for nm, vp in (LAPTOP, PHONE):
+                try:
+                    r.presenting(b, nm, vp)
+                except Exception as e:  # noqa: BLE001 (recorded as a problem; the report is still written)
+                    r.problems.append(f"{nm}: presenting run stopped: {str(e).splitlines()[0][:200]}")
         b.close()
     return r
 
