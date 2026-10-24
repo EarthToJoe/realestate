@@ -1,5 +1,13 @@
 # Handover to the VPS session (read this first)
 
+**State on 2026-10-24 (BUILD-PATH):** the demo is one path (decisions 47 to 51): `app/demo/steps.yaml` lists the 11
+steps, the finale and "one more thing"; `app/demo/walk.py` holds the milestones and their dependencies;
+`app/demo/path.py` gives each screen its one action-bar button, runs the AI's own work after each client decision
+(the "pump") and implements Change by superseding records. New screens follow that pattern: a decision card with
+the decision's own form (`{% call decision(...) %}`), the bar's button submitting it, and Post/Redirect/Get with
+`web.redirect(url, path.after_action(...))`. Browser acceptance: `scripts/e2e-demo.py` (about an hour on the loaded
+server); the live walk: `scripts/live-flow.sh`.
+
 You are the **realestate** Remote Control session on Joe's VPS, in `/root/projects/realestate`. Joe wants
 all of this project's work billed to his $200 API credit (expires 2026-11-08). Because Remote Control is
 disabled when an API key sits in the chat session's environment, the split is: **you orchestrate on the

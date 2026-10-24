@@ -1,48 +1,65 @@
-# End-to-end demo run (slice 4)
+# End-to-end run of the one path (BUILD-PATH)
 
-Written by `scripts/e2e-demo.py`: headless Chromium plays the guided demo from the home page on a local
-app in replay mode with **no API key**, so any AI answer that is not recorded would fail the run. On
-every screen, in walk order, it opens the screen from the narration card's Next, taps "Do this screen
-for me" where the screen has taps, checks for gate cards, unrecorded answers and sideways scrolling, and
-screenshots what the audience sees (`docs/build/screens/slice4/`).
+Written by `scripts/e2e-demo.py`: headless Chromium on a local app in replay mode with **no API key**
+(an AI answer that is not recorded would fail the run), laptop 1280 x 800 and phone 390 x 844.
+Screenshots of every screen: `docs/build/screens/one-path/`.
 
-**Problems found: 0.**
+**Problems found: 24.**
 
-- phone: 20 screens walked, click path 40.5 s (the machine's time: replays answer at once)
-- laptop: 20 screens walked, click path 34.4 s (the machine's time: replays answer at once)
+- laptop: 9 buttons or links without a label on /intake
+- laptop: 9 buttons or links without a label on /intake/profile
+- laptop: 9 buttons or links without a label on /intake/onboarding
+- laptop: 10 buttons or links without a label on /pricing
+- laptop: 10 buttons or links without a label on /copy
+- laptop: 16 buttons or links without a label on /channels
+- laptop: 9 buttons or links without a label on /inbox
+- laptop: 9 buttons or links without a label on /buyer
+- laptop: 10 buttons or links without a label on /buyer/offer
+- laptop: 10 buttons or links without a label on /offers
+- laptop: 13 buttons or links without a label on /contract
+- laptop: 28 buttons or links without a label on /timeline
+- phone: 22 buttons or links without a label on /intake
+- phone: 22 buttons or links without a label on /intake/profile
+- phone: 22 buttons or links without a label on /intake/onboarding
+- phone: 23 buttons or links without a label on /pricing
+- phone: 23 buttons or links without a label on /copy
+- phone: 29 buttons or links without a label on /channels
+- phone: 22 buttons or links without a label on /inbox
+- phone: 22 buttons or links without a label on /buyer
+- phone: 23 buttons or links without a label on /buyer/offer
+- phone: 23 buttons or links without a label on /offers
+- phone: 26 buttons or links without a label on /contract
+- phone: 41 buttons or links without a label on /timeline
 
-## How long the demo takes with the narration
+## 1. The one-button walk
 
-- Talk: 8.3 min (1175 words of narration plus the introduction, at 150 words a minute)
-- Taps: 45 named buttons in the script at about 4 s each: 3.0 min
-- Looking: 20 screens at about 10 s each before the words start: 3.3 min
-- **Estimated run: 14.6 minutes** (SC11: 12 to 15). Targets in steps.yaml add up to 14.5 minutes.
+- laptop: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 174.0 s on this machine.
+- phone: **29 presses** from Start to the finale (target 30 or fewer), 12 screens, 51.2 s on this machine.
 
-The pace figures are stated assumptions [INFERENCE]; a rehearsal with a person timing it is the
-real test. If a rehearsal runs long, trim in this order: skip the MLS package screen (3.2, about 30 s),
-the search screen (6.2, 25 s) and the disclosure form (8.2, 25 s), whose points the next screens repeat.
+## 2. Back, change and unsaved typing (laptop)
 
-## Per screen (phone run)
+- On every screen, Back showed the previous screen as it was left, the button again duplicated nothing,
+  and the browser's Back and forward returned the same page (any exception is listed above).
+- Mid-sale: the seller's name changed on step 1 after the offers: {'ok': True, 'before': {'deals': 1, 'records': 67, 'messages': 20, 'offers': 2}, 'after': {'deals': 1, 'records': 67, 'messages': 20, 'offers': 2}}; the
+  new name on the contract: True.
+- Changing the price after the copy exists, the confirm says: "Change the list price?
 
-| # | Step | Screen | Words | Taps | Page height (px) |
-|---|---|---|---|---|---|
-| 1 | 1. Intake | Address and facts | 66 | 2 | 3863 |
-| 2 | 1. Intake | Property profile | 54 | 1 | 4282 |
-| 3 | 1. Intake | Disclosure checklist | 60 | 0 | 4040 |
-| 4 | 1. Intake | Seller onboarding | 68 | 3 | 3297 |
-| 5 | 2. Pricing | Comparable sales | 59 | 1 | 2531 |
-| 6 | 2. Pricing | The AI's price advice | 54 | 3 | 4549 |
-| 7 | 3. Listing copy | Drafts and the fair-housing check | 72 | 4 | 3414 |
-| 8 | 3. Listing copy | MLS pre-check and package | 41 | 0 | 2527 |
-| 9 | 4. Marketing plan | Channel board | 59 | 3 | 4472 |
-| 10 | 5. Communications | Fact sheet, authority and inbox | 71 | 2 | 6374 |
-| 11 | 6. Buyer side | Buyer intake | 61 | 3 | 2612 |
-| 12 | 6. Buyer side | Search and alerts | 35 | 1 | 4506 |
-| 13 | 6. Buyer side | Tour and dual-agency consent | 57 | 3 | 2702 |
-| 14 | 6. Buyer side | The buyer's offer | 56 | 2 | 4289 |
-| 15 | 7. Offers | Offers, advice and negotiation | 68 | 4 | 3733 |
-| 16 | 8. Contract | Contract draft and signing | 66 | 2 | 4247 |
-| 17 | 8. Contract | The seller's disclosure form | 31 | 2 | 2360 |
-| 18 | 9. Deal timeline | Deal timeline and hurdle map | 71 | 2 | 4265 |
-| 19 | 10. Marketing the business | The firm's campaign | 69 | 3 | 4012 |
-| 20 | 10. Marketing the business | Who sees the ad | 57 | 4 | 2893 |
+Changing the list price re-opens the listing copy (step 5), the copy marked ready (step 5), the marketing plan (step 6), the MLS entry (step 6), what the AI may say (step 7), the enquiries and the AI's replies (step "
+- Typing then pressing a step: ['Leave without saving? What you typed on this screen is not saved yet.']
+
+## 3. Crowding, measured on every screen (outside folds; the menu closed)
+
+| Screen | Primary buttons (laptop) | Other buttons (laptop) | Chrome above content (phone, px) | Page height (phone, px) |
+|---|---|---|---|---|
+| `/intake` | 1 | 0 | 80 | 3111 |
+| `/intake/profile` | 1 | 0 | 80 | 3280 |
+| `/intake/onboarding` | 1 | 1 | 80 | 1445 |
+| `/pricing` | 1 | 0 | 80 | 2010 |
+| `/copy` | 1 | 0 | 80 | 2174 |
+| `/channels` | 1 | 1 | 80 | 3038 |
+| `/inbox` | 1 | 1 | 80 | 1382 |
+| `/buyer` | 1 | 0 | 80 | 2456 |
+| `/buyer/offer` | 1 | 1 | 80 | 4320 |
+| `/offers` | 1 | 2 | 80 | 3179 |
+| `/contract` | 1 | 1 | 80 | 2713 |
+| `/timeline` | 1 | 0 | 80 | 2239 |

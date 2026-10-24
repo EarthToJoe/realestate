@@ -244,8 +244,8 @@ def plain_failure(exc: Exception, recorded: bool) -> str:
 
 
 def pump(s: Session, provider, *, firm: bool = False) -> list[str]:
-    """The AI does its own work, in path order, as soon as what it waits for is done; it stops at the first decision
-    a client or a person must make. Commits after each act. Returns the keys it played; raises AIStopped (after
+    """The AI does its own work, in path order, as soon as what it waits for is done (`walk.DEPS`); what waits for a
+    decision a client or a person has not made yet waits. Commits after each act. Returns the keys it played; raises AIStopped (after
     keeping everything played) when an act cannot run."""
     seq = FIRM if firm else SALE
     played: list[str] = []
@@ -272,9 +272,6 @@ def pump(s: Session, provider, *, firm: bool = False) -> list[str]:
                 played.append(m.key)
                 progressed = True
                 break
-            if m.key in SKIPPABLE:
-                continue
-            return played
         if not progressed:
             return played
     return played

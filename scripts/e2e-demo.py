@@ -41,7 +41,7 @@ CODES = re.compile(r"\bCP-\d+|\b[FL]\d{1,3}\b|\bWS3-|FH-RULES")
 BAD_TEXT = ("Do this screen for me", "View as", "⏩")
 
 MEASURE = """() => {
-  const vis = e => { if (!e.getClientRects().length) return false; const s = getComputedStyle(e);
+  const vis = e => { if (!e.getClientRects().length || e.closest('details:not([open]) > :not(summary)')) return false; const s = getComputedStyle(e);
                      return s.visibility !== 'hidden' && s.display !== 'none'; };
   const buttons = [...document.querySelectorAll('button, .button, input[type=submit]')].filter(vis)
     .filter(e => !e.closest('.menu'));

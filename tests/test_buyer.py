@@ -49,7 +49,7 @@ def test_ai_takes_the_buyer_on_with_notices_and_cp16(client, session):
     buyer_client(client)
     deal = current_deal(session)
     assert records.latest(session, deal.id, "CP-30").status == "done"
-    sent = [c for c in records.records(session, deal.id, "CP-24") if "buyer" in c.reason]
+    sent = [c for c in records.records(session, deal.id, "CP-24") if c.step == 8]
     assert len(sent) == 3
     assert records.latest(session, deal.id, "CP-16").status == "pending"
     r = client.get("/buyer")
@@ -71,7 +71,7 @@ def test_tour_opens_dual_agency_and_is_self_guided(client, session):
     assert client.post("/buyer/tour", data={"kind": "self-guided"}, follow_redirects=False).status_code == 303
     deal = current_deal(session)
     assert records.latest(session, deal.id, "CP-17").status == "pending"
-    assert any("the buyer" in (c.reason or "") for c in records.records(session, deal.id, "CP-28"))
+    assert records.records(session, deal.id, "CP-28")  # one marker for self-guided tours (the inbox's or the buyer's)
     r = client.get("/buyer")
     assert 'id="booked"' in r.text and 'id="rec-CP-17"' in r.text and 'id="rec-CP-28"' in r.text
 

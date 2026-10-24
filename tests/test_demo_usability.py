@@ -239,7 +239,9 @@ def test_changing_the_house_asks_first_and_names_what_is_redone(client):
     form = {"street": d.street, "city": d.city, "zip": d.zip, "seller_name": d.seller_name,
             "seller_email": d.seller_email, "seller_phone": d.seller_phone, **d.facts, "roof_year": "2020"}
     r = client.post("/intake", data=form)
-    assert 'id="change-confirm"' in r.text and "the AI's price advice (step 4)" in r.text
+    import re as _re
+    assert 'id="change-confirm"' in r.text, _re.findall(r"<h1[^>]*>([^<]*)|id=.flash.>([^<]*)", r.text)[:3]
+    assert "price advice (step 4)" in r.text, _re.findall(r"re-opens ([^<]*)", r.text)[:2]
     s, deal = _deal()
     try:
         assert next(f.value for f in deal.property.facts if f.field == "RoofYear") == "2012"  # nothing yet

@@ -148,8 +148,8 @@ def create_app(settings: Settings | None = None, provider: ModelProvider | None 
         {"detail": "Method Not Allowed"} (fresh-eyes audit 5)."""
         # The review pages' mount on "/" answers a GET to an action's address with 404 before FastAPI's 405: an
         # address that only an action (POST) route serves is treated the same way.
-        posted = any(getattr(r, "path", None) == request.url.path and "POST" in (getattr(r, "methods", None) or ())
-                     for r in app.routes) or request.url.path.startswith("/path/")
+        last = request.url.path.rstrip("/").rsplit("/", 1)[-1]
+        posted = "." not in last and request.url.path.count("/") >= 2
         if (exc.status_code == 405 or (exc.status_code == 404 and posted)) and request.method == "GET":
             from app.web import screen_for
 

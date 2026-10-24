@@ -1,5 +1,26 @@
 # Progress (daily summary, newest first)
 
+## 2026-10-24 (day 2), small hours: the demo rebuilt as one path (BUILD-PATH)
+
+**Joe's complaint, fixed:** going back keeps everything. Every form re-opens filled in, sending step 1 again
+updates the same sale, typing then leaving asks "Leave without saving?", and every decision has a Change link that
+names what it re-opens (decisions 47 to 51).
+
+**What changed:**
+- 20 screens in 10 steps became **11 steps, a finale ("The whole sale, start to finish") and "one more thing"** (how
+  the firm finds sellers).
+- Every screen ends in **one action bar**: Back, and one button that does the next thing or says "Continue".
+- **You play the seller and the buyer** (amber buttons); the AI does everything else on its own, at once (Q51).
+- The presenter's tools (notes, Do this screen for me, skip ahead) only after "I'm presenting" in the menu.
+
+**Measured (browser, recorded answers, no key):** 29 presses from Start to the finale at laptop and phone width;
+the button is on screen without scrolling on every screen; the phone's chrome is 80 px; at most one primary and two
+other buttons on any screen. Report: `docs/build/e2e-demo-run.md`; screenshots: `docs/build/screens/one-path/`.
+
+**Live:** deployed; `scripts/live-flow.sh` walks the whole sale on the live site and leaves it reset.
+
+**Disk: 4 GB free, under the 6 GB warning line** (other projects keep growing). Under 3 GB, builds stop.
+
 ## 2026-10-23 (day 1), late evening: Joe's click-through, a whole-site audit, and a rebuild under way
 
 **Joe's notes:**

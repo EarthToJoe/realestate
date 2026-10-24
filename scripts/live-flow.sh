@@ -51,7 +51,7 @@ c "$BASE/intake/onboarding" -o "$OUT"; ok "3: the AI accepted the listing (red n
 # ---- 4 The price
 c "$BASE/pricing" -o "$OUT"; ok "4: recommendation" 'id="recommended"'; ok "4: CP-25" 'id="rec-CP-25"'; ok "4: not an appraisal" "not an appraisal"
 PRICE=$(grep -o 'id="recommended">\$[0-9,]*' "$OUT" | grep -o '[0-9,]*$' | tr -d ,); echo "recommended: \$$PRICE"
-p /pricing/choose -d as=seller -d price="$PRICE"
+p /pricing/choose -d as=seller -d ui=1 -d price="$PRICE"
 # ---- 5 The listing (written by the AI as soon as the price was chosen)
 c "$BASE/copy" -o "$OUT"; ok "5: six pieces" 'data-channel="flyer"'; ok "5: CP-06" 'id="rec-CP-06"'; ok "5: MLS section" 'id="mls"'
 no "5: no rules version on screen" ">rules FH-RULES"

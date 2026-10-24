@@ -547,11 +547,11 @@ NEEDS = {
 # What each milestone directly depends on, for "Change" (decision 48): changing one undoes only these, transitively.
 # "house" is the seller's address and facts (step 1); "buyer_needs" the buyer's answers (step 8).
 DEPS = {
-    "infer": {"house"}, "agency": set(), "accept": {"house"}, "listing": {"agency", "accept"},
+    "infer": {"house"}, "agency": set(), "accept": {"house", "agency"}, "listing": {"agency", "accept"},
     "advice": {"listing", "house"}, "price": {"advice"}, "copy": {"price"}, "copy_ready": {"copy"},
     "authorise": {"listing", "price"}, "mls": {"authorise", "copy_ready"}, "authority": {"price"},
     "enquiries": {"authority"}, "seller_answers": {"enquiries"},
-    "buyer_agreement": set(), "alert": {"buyer_agreement", "price", "buyer_needs"},
+    "buyer_agreement": {"buyer"}, "alert": {"buyer_agreement", "price", "buyer_needs"},
     "tour": {"buyer_agreement", "authority"}, "dual_agency": {"tour"},
     "offer_advice": {"dual_agency", "price", "buyer_needs"}, "offer": {"offer_advice"},
     "offers_advice": {"offer", "authority"}, "seller_decision": {"offers_advice"}, "agreed": {"seller_decision"},
@@ -569,6 +569,20 @@ def dependents(keys: set[str]) -> list[Milestone]:
         out |= nxt
         frontier = nxt
     return [m for m in WALK if m.key in out]
+
+
+def prerequisites(key: str) -> set[str]:
+    """`key` and everything it depends on, directly or not ("house" is step 1's form, "buyer_needs" the buyer's)."""
+    alias = {"house": "intake", "buyer_needs": "buyer"}
+    out, todo = set(), [key]
+    while todo:
+        k = todo.pop()
+        k = alias.get(k, k)
+        if k in out:
+            continue
+        out.add(k)
+        todo.extend(DEPS.get(k, ()))
+    return out | {"intake"}
 
 
 def is_done(s: Session, deal: Deal | None, m: Milestone) -> bool:
@@ -610,8 +624,8 @@ def gate_for(s: Session, deal: Deal | None, path: str, message: str | None = Non
     target = BY_KEY[need]
     if is_done(s, deal, target):
         return None
-    chain = WALK[:WALK.index(target) + 1]
-    first = next(m for m in chain if not is_done(s, deal, m))
+    need_keys = prerequisites(target.key)
+    first = next(m for m in WALK if m.key in need_keys and not is_done(s, deal, m))
     st, _ = screen_for(path)
     return Gate(missing=first, step=_stop_of(first), target=st or {}, who_label=WHO_LABEL.get(first.who, "The AI"),
                 message=message)
