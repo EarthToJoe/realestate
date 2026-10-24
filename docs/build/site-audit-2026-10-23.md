@@ -254,3 +254,8 @@ all built.
 
 **Not fixed, and why**
 - The research-site findings belong to BUILD-SITE.
+- The browser run screenshots the walk's 12 screens at both widths, not "one more thing" (`/brand`); the live phone
+  check covers `/brand` (it passes).
+- While the buyer's answers are open for a change (`/buyer?edit=1`), the form carries its own "Save" button beside
+  the action bar's button: two primaries on that one state of one screen.
+- Every test passes except where noted in PROGRESS; the full suite is about 14 minutes on this server.
